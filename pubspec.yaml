@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   provider: ^6.0.3
   http: ^0.13.4
+  flutter_native_splash: ^2.2.4
 
 dev_dependencies:
   flutter_test:
@@ -89,3 +90,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+flutter_native_splash:
+  color: "#f5cb42"
+  image: assets/STartLogo.png
+  android: true
+  ios: true
