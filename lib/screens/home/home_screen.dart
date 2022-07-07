@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:start_app/widgets/test_button.dart';
+import 'package:start_app/widgets/main_widget.dart';
+import '../login/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,11 +15,20 @@ class HomeScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()))
+            },
+            icon: Icon(Icons.person_outline),
+            color: Colors.black,
+            iconSize: 40,
+          )
+        ],
       ),
-      body: TestButton(
-        title: 'button',
-        callback: () => {},
-      ),
+      body: MainWidget(
+          title: "총학생회 설명", icon: Icon(Icons.info), onPressed: () => {}),
     );
   }
 }

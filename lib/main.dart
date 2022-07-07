@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '서울과학기술대학교\n총학생회',
+      title: '서울과학기술대학교 총학생회',
       theme: ThemeData(
         primaryColor: Colors.transparent,
       ),
