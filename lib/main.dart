@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'screens/home/home_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // main 함수에서 비동기 처리하기 위함
+
   runApp(const MyApp());
 }
 

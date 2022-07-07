@@ -97,3 +97,5 @@ flutter_native_splash:
   image: assets/STartLogo.png
   android: true
   ios: true
+  android_gravity: fill
+  ios_content_mode: scaleAspectFill
