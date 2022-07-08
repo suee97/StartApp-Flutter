@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:start_app/screens/home/event/event_screen.dart';
+import 'package:start_app/screens/home/festival/festival_screen.dart';
+import 'package:start_app/screens/home/rent/rent_screen.dart';
 import 'package:start_app/widgets/main_widget.dart';
 import '../login/login_screen.dart';
 
@@ -27,8 +30,31 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: MainWidget(
-          title: "총학생회 설명", icon: Icon(Icons.info), onPressed: () => {}),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+        MainWidget(
+            title: "이벤트 참여",
+            icon: Icon(Icons.info),
+            onPressed: () => {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EventScreen()))
+                }),
+        MainWidget(
+            title: "축제",
+            icon: Icon(Icons.info),
+            onPressed: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => FestivalScreen()))
+            }),
+        MainWidget(
+            title: "상시사업",
+            icon: Icon(Icons.info),
+            onPressed: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RentScreen()))
+            }),
+      ]),
     );
   }
 }
