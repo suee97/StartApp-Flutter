@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:start_app/models/event.dart';
+import 'package:provider/provider.dart';
+import 'package:start_app/notifiers/event_notifier.dart';
 import 'package:start_app/screens/home/event/detail/event_detail_screen.dart';
 import 'package:start_app/screens/home/event/event_tile.dart';
 
@@ -10,34 +11,35 @@ class EventScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Event ev1 = Event("그때 그 시절", "image source", Colors.purpleAccent,
-        "google form link", "그때 그 시절 content");
-    Event ev2 = Event("축제 미션 올클리어", "image source", Colors.cyan,
-        "google form link", "축제 미션 올클리어 content");
+    return Consumer<EventNotifier>(builder: (context, eventNotifier, child) {
+      var events = eventNotifier.getEvents();
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("이벤트 참여"),
-        ),
-        body: Column(children: [
-          EventTile(
-            event: ev1,
-            onPressed: () => {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => EventDetailScreen(event: ev1)))
-            },
+      return Scaffold(
+          appBar: AppBar(
+            title: const Text("이벤트 참여"),
           ),
-          EventTile(
-            event: ev2,
-            onPressed: () => {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => EventDetailScreen(event: ev2)))
-            },
-          ),
-        ]));
+          body: Column(children: [
+            EventTile(
+              event: events[0],
+              onPressed: () => {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            EventDetailScreen(event: events[0])))
+              },
+            ),
+            EventTile(
+              event: events[1],
+              onPressed: () => {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            EventDetailScreen(event: events[1])))
+              },
+            ),
+          ]));
+    });
   }
 }
