@@ -15,7 +15,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("event detail screen"),),
       body: Center(
-        child: Text(widget.event.content),
+        child: Text(widget.event.content!),
       ),
     );
   }

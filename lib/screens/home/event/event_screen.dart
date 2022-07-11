@@ -21,6 +21,7 @@ class EventScreen extends StatelessWidget {
           body: Column(children: [
             EventTile(
               event: events[0],
+              enabled: true,
               onPressed: () => {
                 Navigator.push(
                     context,
@@ -31,12 +32,24 @@ class EventScreen extends StatelessWidget {
             ),
             EventTile(
               event: events[1],
+              enabled: true,
               onPressed: () => {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
                             EventDetailScreen(event: events[1])))
+              },
+            ),
+            EventTile(
+              event: events[2],
+              enabled: false,
+              onPressed: () => {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            EventDetailScreen(event: events[2])))
               },
             ),
           ]));

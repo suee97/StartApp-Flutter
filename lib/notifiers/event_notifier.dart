@@ -6,14 +6,14 @@ class EventNotifier extends ChangeNotifier {
       "google form link", "그때 그 시절 content");
   static Event ev2 = Event("축제 미션 올클리어", "image source", Colors.cyan,
       "google form link", "축제 미션 올클리어 content");
+  static Event ev3 =
+      Event("어의체전", "img resource", Colors.blue, "link", "ev3 content");
 
-  List<Event> _events = [ev1, ev2];
+  List<Event> _events = [ev1, ev2, ev3];
 
   List<Event> getEvents() {
     return _events;
   }
 
-  Future<void> fetchEvents() async{
-
-  }
+  Future<void> fetchEvents() async {}
 }
