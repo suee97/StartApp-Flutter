@@ -16,7 +16,7 @@ class EventScreen extends StatelessWidget {
 
       return Scaffold(
         appBar: AppBar(
-          title: Text("이벤트 참여"),
+          title: const Text("이벤트 참여"),
         ),
         body: ListView.builder(
           itemCount: eventList.length,

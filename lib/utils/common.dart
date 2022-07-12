@@ -6,9 +6,6 @@ class Common {
     /// 2022-07-12T22:23:21.159220
     /// -> 2022-07-12
 
-    String period =
-        "${startTime.substring(0, 10)} ~ ${endTime.substring(0, 10)}";
-
-    return period;
+    return "${startTime.substring(0, 10)} ~ ${endTime.substring(0, 10)}";
   }
 }

@@ -17,12 +17,17 @@ class EventTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: ListTile(
-        onTap: onPressed,
-        enabled: !event.isExpired!,
-        subtitle: Text(Common.parseTime(event.startTime!, event.endTime!)),
-        tileColor: Colors.blue,
-        title: Text(event.title!),
+      child: Card(
+        child: ListTile(
+          onTap: onPressed,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0)
+          ),
+          enabled: !event.isExpired!,
+          subtitle: Text(Common.parseTime(event.startTime!, event.endTime!)),
+          tileColor: Colors.blue,
+          title: Text(event.title!),
+        ),
       ),
     );
   }
