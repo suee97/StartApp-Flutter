@@ -12,47 +12,27 @@ class EventScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<EventNotifier>(builder: (context, eventNotifier, child) {
-      var events = eventNotifier.getEvents();
+      var eventList = eventNotifier.getEvents();
 
       return Scaffold(
-          appBar: AppBar(
-            title: const Text("이벤트 참여"),
-          ),
-          body: Column(children: [
-            EventTile(
-              event: events[0],
-              enabled: true,
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            EventDetailScreen(event: events[0])))
-              },
-            ),
-            EventTile(
-              event: events[1],
-              enabled: true,
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            EventDetailScreen(event: events[1])))
-              },
-            ),
-            EventTile(
-              event: events[2],
-              enabled: false,
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            EventDetailScreen(event: events[2])))
-              },
-            ),
-          ]));
+        appBar: AppBar(
+          title: Text("이벤트 참여"),
+        ),
+        body: ListView.builder(
+          itemCount: eventList.length,
+          itemBuilder: (context, index) {
+            return EventTile(
+                event: eventList[index],
+                onPressed: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  EventDetailScreen(event: eventList[index])))
+                    });
+          },
+        ),
+      );
     });
   }
 }

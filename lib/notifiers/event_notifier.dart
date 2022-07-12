@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:start_app/models/event.dart';
+import 'package:start_app/models/event_list.dart';
 
 class EventNotifier extends ChangeNotifier {
-  static Event ev1 = Event("그때 그 시절", "image source", Colors.purpleAccent,
-      "google form link", "그때 그 시절 content");
-  static Event ev2 = Event("축제 미션 올클리어", "image source", Colors.cyan,
-      "google form link", "축제 미션 올클리어 content");
-  static Event ev3 =
-      Event("어의체전", "img resource", Colors.blue, "link", "ev3 content");
-
-  List<Event> _events = [ev1, ev2, ev3];
+  List<Event> _eventList = [
+    Event(1, "그때 그 시절", "https://form", "https://img",
+        "2022-08-05T22:23:21.159220", "2022-08-06T22:23:21.159220", false),
+    Event(2, "축제 미션 올 클리어", "https://form", "https://img",
+        "2022-07-13T22:23:21.159220", "2022-07-22T22:23:21.159220", false),
+    Event(3, "그때 그 시절", "https://form", "https://img",
+        "2022-07-05T22:23:21.159220", "2022-07-10T22:23:21.159220", true)
+  ];
 
   List<Event> getEvents() {
-    return _events;
+    return _eventList;
   }
 
   Future<void> fetchEvents() async {}
