@@ -92,10 +92,16 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
 
+
+# flutter clean
+# flutter pub get
+# flutter pub run flutter_native_splash:create
+
 flutter_native_splash:
-  color: "#f5cb42"
-  image: assets/STartLogo.png
+  color: "#ffffff"
+  image: assets/STart_logo_light.png
   android: true
   ios: true
-  android_gravity: fill
-  ios_content_mode: scaleAspectFill
+  web: false
+  android_gravity: center
+  ios_content_mode: center
