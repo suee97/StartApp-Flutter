@@ -18,10 +18,12 @@ class SignInScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomTextField(
+              label: "Student ID",
               controller: studentIdController,
               isObscure: false,
             ),
             CustomTextField(
+              label: "Password",
               controller: pwController,
               isObscure: true,
             ),

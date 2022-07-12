@@ -5,8 +5,18 @@ import 'package:start_app/notifiers/event_notifier.dart';
 import 'screens/home/home_screen.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); /// 비동기 처리
-  await dotenv.load(fileName: ".env"); /// .env 파일 로딩
+  /// for async logic
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /// load .env data
+  await dotenv.load(fileName: ".env");
+
+  /// load access token & refresh token
+  ///
+  ///
+  ///
+
+
   runApp(const MyApp());
 }
 
@@ -18,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => EventNotifier()) /// 이벤트 notifier
+        ChangeNotifierProvider(create: (_) => EventNotifier())
       ],
       child: MaterialApp(
         title: '서울과학기술대학교 총학생회',
