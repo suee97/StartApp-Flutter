@@ -12,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   /// load .env data
-  await dotenv.load(fileName: ".env");
+  // await dotenv.load(fileName: ".env");
 
   /// load access token & refresh token
   ///
