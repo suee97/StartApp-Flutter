@@ -11,10 +11,11 @@ class Event {
   String? title;
   String? formLink;
   String? imageUrl;
+  String? color;
   String? startTime;
   String? endTime;
   bool? isExpired;
 
-  Event(this.eventId, this.title, this.formLink, this.imageUrl, this.startTime,
+  Event(this.eventId, this.title, this.formLink, this.imageUrl, this.color, this.startTime,
       this.endTime, this.isExpired);
 }

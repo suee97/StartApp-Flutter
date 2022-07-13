@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:start_app/utils/common.dart';
 import '../../../models/event_list.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 /// 단일 이벤트 타일 위젯
 
@@ -16,6 +17,7 @@ class EventTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Material(
       child: Card(
         child: ListTile(
@@ -25,7 +27,7 @@ class EventTile extends StatelessWidget {
           ),
           enabled: !event.isExpired!,
           subtitle: Text(Common.parseTime(event.startTime!, event.endTime!)),
-          tileColor: Colors.blue,
+          tileColor: HexColor(event.color!),
           title: Text(event.title!),
         ),
       ),
