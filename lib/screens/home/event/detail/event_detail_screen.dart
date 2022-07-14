@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/models/event_list.dart';
 import 'package:start_app/screens/home/event/detail/short_line.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'event_apply.dart';
 
 class EventDetailScreen extends StatefulWidget {
@@ -93,7 +93,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
               ),
               EventApply(
                 onPressed: () => {
-
+                  _launchUrl(widget.event.formLink!)
                 },
               )
             ],
@@ -101,6 +101,12 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl(String _uri) async {
+    if (!await launchUrl(Uri.parse(_uri))) {
+      throw 'Could not launch ${_uri}';
+    }
   }
 }
 
