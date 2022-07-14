@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => EventNotifier())],
       child: ScreenUtilInit(
-        designSize: const Size(412, 915),
+        designSize: const Size(360, 640), // context에서 받아와서 브랜치
         builder: (context, child) {
           return MaterialApp(
             title: '서울과학기술대학교 총학생회',

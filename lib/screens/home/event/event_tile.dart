@@ -17,12 +17,13 @@ class EventTile extends StatelessWidget {
     return GestureDetector(
       onTap: event.isExpired == true ? () => {} : onPressed,
       child: Container(
-        margin: EdgeInsets.fromLTRB(18.w, 0.h, 17.w, 16.h),
+        height: 80.w, // h 대신 w
+        margin: EdgeInsets.fromLTRB(18.w, 0.w, 18.w, 7.w),
         child: Stack(alignment: Alignment.centerLeft, children: [
           SvgPicture.asset(
             checkExpiredAndReturn(event.isExpired!),
+            width: double.infinity,
             fit: BoxFit.fitWidth,
-            width: 377.w,
           ),
           Container(
             // color: Colors.red,
