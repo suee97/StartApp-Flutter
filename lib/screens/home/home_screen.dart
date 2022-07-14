@@ -6,7 +6,6 @@ import 'package:start_app/screens/home/plan/plan_screen.dart';
 import 'package:start_app/screens/home/rent/rent_screen.dart';
 import 'package:start_app/screens/home/status/status_screen.dart';
 import 'package:start_app/widgets/main_widget.dart';
-import '../login/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,8 +23,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()))
+              // TODO
             },
             icon: Icon(Icons.person_outline),
             color: Colors.black,

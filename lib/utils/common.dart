@@ -3,7 +3,7 @@
 
 class Common {
 
-  static int SPLASH_DURATION = 2;
+  static int SPLASH_DURATION = 1;
 
   static String parseTime(String startTime, String endTime) {
     /// 2022-07-12T22:23:21.159220
