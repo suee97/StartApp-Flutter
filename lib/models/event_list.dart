@@ -1,12 +1,15 @@
 class EventList {
+  EventList(this.status, this.message, this.data);
+
   int status;
   String message;
   List<Event>? data;
-
-  EventList(this.status, this.message, this.data);
 }
 
 class Event {
+  Event(this.eventId, this.title, this.formLink, this.imageUrl, this.color,
+      this.startTime, this.endTime, this.isExpired);
+
   int? eventId;
   String? title;
   String? formLink;
@@ -15,7 +18,4 @@ class Event {
   String? startTime;
   String? endTime;
   bool? isExpired;
-
-  Event(this.eventId, this.title, this.formLink, this.imageUrl, this.color, this.startTime,
-      this.endTime, this.isExpired);
 }
