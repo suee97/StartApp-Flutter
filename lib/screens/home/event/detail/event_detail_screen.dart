@@ -64,14 +64,42 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
               // SizedBox(
               //   height: 16.w,
               // ),
-              Container(
-                width: double.infinity,
-                height: 300.w,
-                margin: EdgeInsets.only(left: 14.w, right: 14.w),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/poster_dummy.png")
-                  )
+              GestureDetector(
+                onTap: () async {
+                  await showGeneralDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      barrierLabel: MaterialLocalizations.of(context)
+                          .modalBarrierDismissLabel,
+                      barrierColor: Colors.black45,
+                      transitionDuration: const Duration(milliseconds: 150),
+                      pageBuilder: (BuildContext buildContext,
+                          Animation animation,
+                          Animation secondaryAnimation) {
+                        return Center(
+                          child: Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height -  210,
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage("assets/stworld_test_data.png"),
+                                fit: BoxFit.fill
+                              )
+                            ),
+                          ),
+                        );
+                      });
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 300.w,
+                  margin: EdgeInsets.only(left: 14.w, right: 14.w),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/poster_dummy.png")
+                    )
+                  ),
                 ),
               ),
               // SizedBox(
