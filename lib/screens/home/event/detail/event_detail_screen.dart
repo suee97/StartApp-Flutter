@@ -44,7 +44,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
             children: [
               // SizedBox(height: 20.w),
               Container(
-                margin: EdgeInsets.only(left: 28.w, right: 27.w),
+                margin: EdgeInsets.only(left: 27.w, right: 27.w),
                 width: double.infinity,
                 child: Text(
                   widget.event.title!,
@@ -59,7 +59,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                 color: HexColor("#5C7775"),
                 height: 4,
                 width: double.infinity,
-                margin: EdgeInsets.only(left: 18.w, right: 17.w),
+                margin: EdgeInsets.only(left: 17.w, right: 17.w),
               ),
               // SizedBox(
               //   height: 16.w,
@@ -77,15 +77,18 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                           Animation animation,
                           Animation secondaryAnimation) {
                         return Center(
-                          child: Container(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height -  210,
-                            padding: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage("assets/stworld_test_data.png"),
-                                fit: BoxFit.fill
-                              )
+                          child: AspectRatio(
+                            aspectRatio: 1/1.3,
+                            child: Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height -  210,
+                              padding: EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage("assets/stworld_test_data.png"),
+                                  fit: BoxFit.fill
+                                )
+                              ),
                             ),
                           ),
                         );
@@ -102,9 +105,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   ),
                 ),
               ),
-              // SizedBox(
-              //   height: 20.w,
-              // ),
+              const SizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
