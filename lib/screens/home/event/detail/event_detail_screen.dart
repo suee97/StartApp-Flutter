@@ -40,8 +40,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                 bottomRight: Radius.circular(20),
               )),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(height: 20.w),
+              // SizedBox(height: 20.w),
               Container(
                 margin: EdgeInsets.only(left: 28.w, right: 27.w),
                 width: double.infinity,
@@ -51,18 +52,18 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       TextStyle(fontWeight: FontWeight.w600, fontSize: 22.sp),
                 ),
               ),
-              SizedBox(
-                height: 15.w,
-              ),
+              // SizedBox(
+              //   height: 15.w,
+              // ),
               Container(
                 color: HexColor("#5C7775"),
                 height: 4,
                 width: double.infinity,
                 margin: EdgeInsets.only(left: 18.w, right: 17.w),
               ),
-              SizedBox(
-                height: 16.w,
-              ),
+              // SizedBox(
+              //   height: 16.w,
+              // ),
               Container(
                 width: double.infinity,
                 height: 300.w,
@@ -73,9 +74,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   )
                 ),
               ),
-              SizedBox(
-                height: 20.w,
-              ),
+              // SizedBox(
+              //   height: 20.w,
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
@@ -84,13 +85,13 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   ShortLine(),
                 ],
               ),
-              SizedBox(
-                height: 10.w,
-              ),
+              // SizedBox(
+              //   height: 10.w,
+              // ),
               const GoToFormWidget(),
-              SizedBox(
-                height: 8.w,
-              ),
+              // SizedBox(
+              //   height: 8.w,
+              // ),
               EventApply(
                 onPressed: () => {
                   _launchUrl(widget.event.formLink!)

@@ -13,11 +13,12 @@ class EventApply extends StatelessWidget {
       onTap: onPressed,
       child: Stack(alignment: Alignment.center, children: [
         Container(
-          width: 240.w,
-          height: 70.w,
+          width: double.infinity,
+          height: 50.w,
+          margin: EdgeInsets.only(left: 20.w, right: 20.w),
           decoration: BoxDecoration(
-              color: HexColor("#FBBB61"),
-              borderRadius: const BorderRadius.all(Radius.circular(20))),
+              color: HexColor("#FFCEA2"),
+              borderRadius: const BorderRadius.all(Radius.circular(25))),
         ),
         Text(
           "신청하기",
