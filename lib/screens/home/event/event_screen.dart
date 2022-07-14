@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:start_app/notifiers/event_notifier.dart';
@@ -30,8 +31,8 @@ class EventScreen extends StatelessWidget {
                 topRight: Radius.circular(30),
               )),
           child: Column(children: <Widget>[
-            const SizedBox(
-              height: 23,
+            SizedBox(
+              height: 23.h,
             ),
             Container(
               margin: const EdgeInsets.only(left: 26),
@@ -39,14 +40,12 @@ class EventScreen extends StatelessWidget {
               child: Text(
                 "이벤트 참여",
                 style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 24.sp,
                     fontWeight: FontWeight.w700,
                     color: HexColor("#92AEAC")),
               ),
             ),
-            const SizedBox(
-              height: 13,
-            ),
+            SizedBox(height: 13.h,),
             Expanded(
               child: ListView.builder(
                 itemCount: eventList.length,
