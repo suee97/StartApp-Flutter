@@ -19,7 +19,9 @@ class HomeScreen extends StatelessWidget {
           style: TextStyle(color: Colors.black),
           textAlign: TextAlign.center,
         ),
+        elevation: 0,
         backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         actions: [
           IconButton(
             onPressed: () => {

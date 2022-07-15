@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +7,8 @@ import 'package:start_app/screens/home/event/detail/event_detail_screen.dart';
 import 'package:start_app/screens/home/event/event_tile.dart';
 import '../../../models/event_list.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 
 class EventScreen extends StatelessWidget {
   EventScreen({Key? key}) : super(key: key);
@@ -75,10 +76,11 @@ class EventScreen extends StatelessWidget {
         var resString = await http.get(Uri.parse(dotenv.get('API_BASE_URL')));
         Map<String, dynamic> resData = jsonDecode(resString.body);
         var statusCode = resData['status'];
+        var message = resData['message'];
 
         if (statusCode == 400) {
           return Future.error(
-              "#### status code : ${resData['status']}\n#### message : ${resData['message']}");
+              "#### status code : $resData\n#### message : $message");
         } else {
           return resData['data'];
         }
@@ -138,6 +140,27 @@ class EventScreen extends StatelessWidget {
         ]),
       ),
     );
-    ;
+  }
+}
+
+class EventLoadingScreen extends StatelessWidget {
+  const EventLoadingScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (Platform.isIOS) {
+      return const Center(
+        child: CupertinoActivityIndicator(
+          radius: 12,
+          color: Colors.white,
+        ),
+      );
+    } else {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.white,
+        ),
+      );
+    }
   }
 }
