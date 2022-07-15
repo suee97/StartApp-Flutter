@@ -1,6 +1,7 @@
 class User {
-  String? name;
-  int? studentId;
-
   User(this.name, this.studentId);
+
+  int studentId;
+  String name;
+
 }

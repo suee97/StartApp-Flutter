@@ -16,6 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: Common.SPLASH_DURATION), () {
+      /// TODO get login information
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => LoginScreen()));
     });
@@ -33,12 +34,9 @@ class _SplashScreenState extends State<SplashScreen> {
               'assets/STart_logo_light.png',
               height: 280,
             ),
-            const SizedBox(
-              height: 0,
-            ),
             if (Platform.isIOS)
               const CupertinoActivityIndicator(
-                radius: 20,
+                radius: 12,
               )
             else
               const CircularProgressIndicator(

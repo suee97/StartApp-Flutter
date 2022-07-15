@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:start_app/notifiers/event_notifier.dart';
 
 import 'screens/splash/splash_screen.dart.dart';
 
@@ -28,21 +27,17 @@ class MyApp extends StatelessWidget {
   /// 일단 모든 provider 이쪽에 넣고 나중에 리팩토링
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => EventNotifier())],
-      child: ScreenUtilInit(
-        designSize: const Size(360, 640), // context에서 받아와서 브랜치
-        builder: (context, child) {
-          return MaterialApp(
-            title: '서울과학기술대학교 총학생회',
-            theme: ThemeData(
-              primaryColor: Colors.transparent,
-            ),
-            home: const SplashScreen(),
-          );
-        },
-
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(360, 640), // context에서 받아와서 브랜치
+      builder: (context, child) {
+        return MaterialApp(
+          title: '서울과학기술대학교 총학생회',
+          theme: ThemeData(
+            primaryColor: Colors.transparent,
+          ),
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }
