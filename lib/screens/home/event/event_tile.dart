@@ -19,7 +19,7 @@ class EventTile extends StatelessWidget {
       onTap: event.isExpired == true ? () => {} : onPressed,
       child: Container(
         height: 80.w, // h 대신 w
-        margin: EdgeInsets.fromLTRB(18.w, 0.w, 18.w, 7.w),
+        margin: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 7.h),
         child: Stack(alignment: Alignment.centerLeft, children: [
           SvgPicture.asset(
             checkExpiredAndReturn(event.isExpired!),

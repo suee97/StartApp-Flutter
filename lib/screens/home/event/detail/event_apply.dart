@@ -14,7 +14,7 @@ class EventApply extends StatelessWidget {
       child: Stack(alignment: Alignment.center, children: [
         Container(
           width: double.infinity,
-          height: 50.w,
+          height: 50.h,
           margin: EdgeInsets.only(left: 20.w, right: 20.w),
           decoration: BoxDecoration(
               color: HexColor("#FFCEA2"),

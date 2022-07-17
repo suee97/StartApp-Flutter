@@ -30,7 +30,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
           child: Container(
             width: double.infinity,
             margin:
-                EdgeInsets.only(left: 12.w, right: 12.w, top: 0.w, bottom: 14.w),
+                EdgeInsets.only(left: 12.w, right: 12.w, top: 0.h, bottom: 14.h),
             decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -52,18 +52,12 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         TextStyle(fontWeight: FontWeight.w600, fontSize: 22.sp),
                   ),
                 ),
-                // SizedBox(
-                //   height: 15.w,
-                // ),
                 Container(
                   color: HexColor("#5C7775"),
                   height: 4,
                   width: double.infinity,
                   margin: EdgeInsets.only(left: 17.w, right: 17.w),
                 ),
-                // SizedBox(
-                //   height: 16.w,
-                // ),
                 GestureDetector(
                   onTap: () async {
                     await showGeneralDialog(
@@ -159,7 +153,7 @@ class GoToFormWidget extends StatelessWidget {
                 fontWeight: FontWeight.w600),
           ),
           SizedBox(
-            width: 8.w,
+            width: 8.h,
           ),
           Icon(
             Icons.arrow_drop_down,

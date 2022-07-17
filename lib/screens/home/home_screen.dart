@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
           leading: IconButton(
             onPressed: () => {},
             icon: SvgPicture.asset("assets/icon_notification.svg",),
-            iconSize: 24.w,
+            iconSize: 24,
             hoverColor: Colors.transparent,
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
@@ -58,11 +58,11 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 20.w,
+                height: 20.h,
               ),
               Container(
                 width: 300.w,
-                height: 300.w,
+                height: 300.h,
                 child: Image(
                     width: double.infinity,
                     height: double.infinity,
@@ -71,13 +71,13 @@ class HomeScreen extends StatelessWidget {
               Column(children: [
                 Container(
                   width: double.infinity,
-                  height: 12.w,
+                  height: 12.h,
                   child: SvgPicture.asset(
                     "assets/yellow_line.svg",
                   ),
                 ),
                 SizedBox(
-                  height: 16.w,
+                  height: 16.h,
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -114,7 +114,7 @@ class HomeScreen extends StatelessWidget {
                               }),
                     ]),
                 SizedBox(
-                  height: 10.w,
+                  height: 10.h,
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -151,11 +151,11 @@ class HomeScreen extends StatelessWidget {
                               }),
                     ]),
                 SizedBox(
-                  height: 8.w,
+                  height: 8.h,
                 ),
                 Container(
                   width: double.infinity,
-                  height: 12.w,
+                  height: 12.h,
                   child: SvgPicture.asset(
                     "assets/yellow_line.svg",
                   ),

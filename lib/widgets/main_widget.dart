@@ -34,10 +34,10 @@ class MainWidget extends StatelessWidget {
             SvgPicture.asset(
               svgPath,
               width: 50.w,
-              height: 50.w,
+              height: 50.h,
             ),
             SizedBox(
-              height: 10.w,
+              height: 10.h,
             ),
             Text(
               title,

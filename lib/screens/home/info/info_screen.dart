@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class InfoScreen extends StatelessWidget {
@@ -19,22 +20,10 @@ class InfoScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        child:
-        Stack(
-          children: [
-            Container(
-              width: 86.w,
-              height: 26.w,
-              color: HexColor("#425C5A"),
-            ),
-            Container(
-              width: double.infinity,
-              height: 147.w,
-              color: HexColor("#425C5A"),
-              margin: EdgeInsets.only(top: 26.w),
-            ),
-          ],
-        )
+        child: Container(
+          width: double.infinity,
+            child: SvgPicture.asset("assets/test.svg", fit: BoxFit.fill,)
+        ),
       ),
     );
   }
