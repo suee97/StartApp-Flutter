@@ -71,6 +71,7 @@ class EventScreen extends StatelessWidget {
     ]; /// Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy
 
 
+    /// Network Network Network Network Network Network Network Network
     Future<List<Event>> fetchEventList() async {
       try {
         var resString = await http.get(Uri.parse(dotenv.get('API_BASE_URL')));
@@ -88,6 +89,7 @@ class EventScreen extends StatelessWidget {
         return Future.error(e);
       }
     }
+    /// Network Network Network Network Network Network Network Network
 
     return Scaffold(
       appBar: AppBar(

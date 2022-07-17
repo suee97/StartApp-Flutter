@@ -24,112 +24,106 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         backgroundColor: HexColor("#5C7775"),
         foregroundColor: Colors.white,
       ),
-      body: Container(
-        width: double.infinity,
-        color: HexColor("#5C7775"),
-        child: Container(
+         body: Container(
           width: double.infinity,
-          margin:
-              EdgeInsets.only(left: 12.w, right: 12.w, top: 0.w, bottom: 14.w),
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              )),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // SizedBox(height: 20.w),
-              Container(
-                margin: EdgeInsets.only(left: 27.w, right: 27.w),
-                width: double.infinity,
-                child: Text(
-                  widget.event.title!,
-                  style:
-                      TextStyle(fontWeight: FontWeight.w600, fontSize: 22.sp),
-                ),
-              ),
-              // SizedBox(
-              //   height: 15.w,
-              // ),
-              Container(
-                color: HexColor("#5C7775"),
-                height: 4,
-                width: double.infinity,
-                margin: EdgeInsets.only(left: 17.w, right: 17.w),
-              ),
-              // SizedBox(
-              //   height: 16.w,
-              // ),
-              GestureDetector(
-                onTap: () async {
-                  await showGeneralDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      barrierLabel: MaterialLocalizations.of(context)
-                          .modalBarrierDismissLabel,
-                      barrierColor: Colors.black45,
-                      transitionDuration: const Duration(milliseconds: 150),
-                      pageBuilder: (BuildContext buildContext,
-                          Animation animation,
-                          Animation secondaryAnimation) {
-                        return Center(
-                          child: AspectRatio(
-                            aspectRatio: 1/1.3,
-                            child: Container(
-                              width: double.infinity,
-                              height: MediaQuery.of(context).size.height -  210,
-                              padding: EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage("assets/stworld_test_data.png"),
-                                  fit: BoxFit.fill
-                                )
-                              ),
-                            ),
-                          ),
-                        );
-                      });
-                },
-                child: Container(
+          color: HexColor("#5C7775"),
+          child: Container(
+            width: double.infinity,
+            margin:
+                EdgeInsets.only(left: 12.w, right: 12.w, top: 0.w, bottom: 14.w),
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                )),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // SizedBox(height: 20.w),
+                Container(
+                  margin: EdgeInsets.only(left: 27.w, right: 27.w),
                   width: double.infinity,
-                  height: 300.w,
-                  margin: EdgeInsets.only(left: 14.w, right: 14.w),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/poster_dummy.png")
-                    )
+                  child: Text(
+                    widget.event.title!,
+                    style:
+                        TextStyle(fontWeight: FontWeight.w600, fontSize: 22.sp),
                   ),
                 ),
-              ),
-              const SizedBox(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  ShortLine(),
-                  ShortLine(),
-                  ShortLine(),
-                ],
-              ),
-              // SizedBox(
-              //   height: 10.w,
-              // ),
-              const GoToFormWidget(),
-              // SizedBox(
-              //   height: 8.w,
-              // ),
-              EventApply(
-                onPressed: () => {
-                  _launchUrl(widget.event.formLink!)
-                },
-              )
-            ],
+                // SizedBox(
+                //   height: 15.w,
+                // ),
+                Container(
+                  color: HexColor("#5C7775"),
+                  height: 4,
+                  width: double.infinity,
+                  margin: EdgeInsets.only(left: 17.w, right: 17.w),
+                ),
+                // SizedBox(
+                //   height: 16.w,
+                // ),
+                GestureDetector(
+                  onTap: () async {
+                    await showGeneralDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        barrierLabel: MaterialLocalizations.of(context)
+                            .modalBarrierDismissLabel,
+                        barrierColor: Colors.black45,
+                        transitionDuration: const Duration(milliseconds: 150),
+                        pageBuilder: (BuildContext buildContext,
+                            Animation animation,
+                            Animation secondaryAnimation) {
+                          return Center(
+                            child: AspectRatio(
+                              aspectRatio: 1/1.3,
+                              child: Container(
+                                width: double.infinity,
+                                height: MediaQuery.of(context).size.height -  210,
+                                padding: EdgeInsets.all(20.w),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage("assets/stworld_test_data.png"),
+                                    fit: BoxFit.fill
+                                  )
+                                ),
+                              ),
+                            ),
+                          );
+                        });
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 350.w,
+                    margin: EdgeInsets.only(left: 14.w, right: 14.w),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/poster_dummy.png")
+                      )
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    ShortLine(),
+                    ShortLine(),
+                    ShortLine(),
+                  ],
+                ),
+                const GoToFormWidget(),
+                EventApply(
+                  onPressed: () => {
+                    _launchUrl(widget.event.formLink!)
+                  },
+                )
+              ],
+            ),
           ),
         ),
-      ),
+
     );
   }
 

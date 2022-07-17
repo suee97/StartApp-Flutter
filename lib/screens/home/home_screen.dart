@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/event/event_screen.dart';
 import 'package:start_app/screens/home/festival/festival_screen.dart';
 import 'package:start_app/screens/home/info/info_screen.dart';
@@ -15,76 +18,143 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "서울과학기술대학교\n총학생회",
-          style: TextStyle(color: Colors.black),
-          textAlign: TextAlign.center,
+          "서울과학기술대학교 총학생회",
+          style: TextStyle(fontWeight: FontWeight.w700),
         ),
+        centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: HexColor("#425C5A"),
+        foregroundColor: Colors.white,
         actions: [
           IconButton(
             onPressed: () => {
               // TODO
             },
-            icon: Icon(Icons.person_outline),
-            color: Colors.black,
-            iconSize: 40,
+            icon: SvgPicture.asset("assets/icon_person.svg"),
+            iconSize: 24.w,
           )
         ],
+        leading: IconButton(
+          onPressed: () => {},
+          icon: IconButton(
+            onPressed: () => {},
+            icon: SvgPicture.asset("assets/icon_notification.svg"),
+            iconSize: 24.w,
+          ),
+        ),
       ),
-      body: Column(children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          MainWidget(
-              title: "이벤트 참여",
-              icon: Icon(Icons.info),
-              onPressed: () => {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => EventScreen()))
-                  }),
-          MainWidget(
-              title: "축제",
-              icon: Icon(Icons.info),
-              onPressed: () => {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FestivalScreen()))
-                  }),
-          MainWidget(
-              title: "상시사업",
-              icon: Icon(Icons.info),
-              onPressed: () => {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => RentScreen()))
-                  }),
-        ]),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          MainWidget(
-              title: "총학생회 설명",
-              icon: Icon(Icons.info),
-              onPressed: () => {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => InfoScreen()))
-              }),
-          MainWidget(
-              title: "학사일정",
-              icon: Icon(Icons.info),
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PlanScreen()))
-              }),
-          MainWidget(
-              title: "재학생/자치회비\n확인",
-              icon: Icon(Icons.info),
-              onPressed: () => {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => StatusScreen()))
-              }),
-        ])
-      ]),
+      body: Container(
+        color: HexColor("#425C5A"),
+        height: double.infinity,
+        width: double.infinity,
+        child: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              )),
+          child: Column(
+            children: [
+              SizedBox(height: 20.w,),
+              Container(
+                width: 300.w,
+                height: 300.w,
+                child: Image(
+                    width: double.infinity,
+                    height: double.infinity,
+                    image: AssetImage("assets/poster_dummy_2.png")),
+              ),
+              Column(children: [
+                Container(
+                  width: double.infinity,
+                  height: 12.w,
+                  child:SvgPicture.asset("assets/yellow_line.svg",),
+                ),
+                SizedBox(height: 16.w,),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      MainWidget(
+                          title: "총학생회 설명",
+                          svgPath: "assets/icon_info.svg",
+                          isUnderRow: false,
+                          onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => InfoScreen()))
+                              }),
+                      MainWidget(
+                          title: "학사일정",
+                          svgPath: "assets/icon_plan.svg",
+                          isUnderRow: false,
+                          onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PlanScreen()))
+                              }),
+                      MainWidget(
+                          title: "재학생 확인 및\n자치회비 납부 확인",
+                          svgPath: "assets/icon_status.svg",
+                          isUnderRow: false,
+                          onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => StatusScreen()))
+                              }),
+                    ]),
+                SizedBox(
+                  height: 10.w,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      MainWidget(
+                          title: "상시사업",
+                          svgPath: "assets/icon_rent.svg",
+                          isUnderRow: true,
+                          onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RentScreen()))
+                              }),
+                      MainWidget(
+                          title: "축제",
+                          svgPath: "assets/icon_festival.svg",
+                          isUnderRow: true,
+                          onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => FestivalScreen()))
+                              }),
+                      MainWidget(
+                          title: "이벤트 참여",
+                          svgPath: "assets/icon_event.svg",
+                          isUnderRow: true,
+                          onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EventScreen()))
+                              }),
+                    ]),
+                SizedBox(height: 8.w,),
+                Container(
+                  width: double.infinity,
+                  height: 12.w,
+                  child:SvgPicture.asset("assets/yellow_line.svg",),
+                ),
+              ]),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
