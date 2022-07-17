@@ -94,52 +94,55 @@ class EventScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor("#f3f3f3"),
         foregroundColor: Colors.black,
         title: const Text("서울과학기술대학교 총학생회"),
       ),
       body: Container(
-        decoration: BoxDecoration(
-            color: HexColor("#425C5A"),
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            )),
-        child: Column(children: <Widget>[
-          SizedBox(
-            height: 23.h,
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 26),
-            width: double.infinity,
-            child: Text(
-              "이벤트 참여",
-              style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: HexColor("#92AEAC")),
+        color: HexColor("#f3f3f3"),
+        child: Container(
+          decoration: BoxDecoration(
+              color: HexColor("#425C5A"),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              )),
+          child: Column(children: <Widget>[
+            SizedBox(
+              height: 23.h,
             ),
-          ),
-          SizedBox(
-            height: 13.h,
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _eventListDummy.length,
-              itemBuilder: (context, index) {
-                return EventTile(
-                    event: _eventListDummy[index],
-                    onPressed: () => {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EventDetailScreen(
-                                      event: _eventListDummy[index])))
-                        });
-              },
+            Container(
+              margin: const EdgeInsets.only(left: 26),
+              width: double.infinity,
+              child: Text(
+                "이벤트 참여",
+                style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w700,
+                    color: HexColor("#92AEAC")),
+              ),
             ),
-          )
-        ]),
+            SizedBox(
+              height: 13.h,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _eventListDummy.length,
+                itemBuilder: (context, index) {
+                  return EventTile(
+                      event: _eventListDummy[index],
+                      onPressed: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EventDetailScreen(
+                                        event: _eventListDummy[index])))
+                          });
+                },
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }

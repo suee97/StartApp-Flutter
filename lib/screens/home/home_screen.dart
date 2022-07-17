@@ -17,47 +17,49 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "서울과학기술대학교 총학생회",
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: HexColor("#425C5A"),
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: () => {
-              // TODO
-            },
-            icon: SvgPicture.asset("assets/icon_person.svg"),
-            iconSize: 24.w,
-          )
-        ],
-        leading: IconButton(
-          onPressed: () => {},
-          icon: IconButton(
-            onPressed: () => {},
-            icon: SvgPicture.asset("assets/icon_notification.svg"),
-            iconSize: 24.w,
+          title: const Text(
+            "서울과학기술대학교 총학생회",
+            style: TextStyle(fontWeight: FontWeight.w700),
           ),
-        ),
-      ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: HexColor("#425C5A"),
+          foregroundColor: Colors.white,
+          actions: [
+            IconButton(
+              onPressed: () => {},
+              icon: SvgPicture.asset("assets/icon_person.svg"),
+              iconSize: 24.w,
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+            )
+          ],
+          leading: IconButton(
+            onPressed: () => {},
+            icon: SvgPicture.asset("assets/icon_notification.svg",),
+            iconSize: 24.w,
+            hoverColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+          )),
       body: Container(
         color: HexColor("#425C5A"),
         height: double.infinity,
         width: double.infinity,
         child: Container(
           width: double.infinity,
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+              color: HexColor("#f3f3f3"),
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
               )),
           child: Column(
             children: [
-              SizedBox(height: 20.w,),
+              SizedBox(
+                height: 20.w,
+              ),
               Container(
                 width: 300.w,
                 height: 300.w,
@@ -70,9 +72,13 @@ class HomeScreen extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   height: 12.w,
-                  child:SvgPicture.asset("assets/yellow_line.svg",),
+                  child: SvgPicture.asset(
+                    "assets/yellow_line.svg",
+                  ),
                 ),
-                SizedBox(height: 16.w,),
+                SizedBox(
+                  height: 16.w,
+                ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -144,11 +150,15 @@ class HomeScreen extends StatelessWidget {
                                         builder: (context) => EventScreen()))
                               }),
                     ]),
-                SizedBox(height: 8.w,),
+                SizedBox(
+                  height: 8.w,
+                ),
                 Container(
                   width: double.infinity,
                   height: 12.w,
-                  child:SvgPicture.asset("assets/yellow_line.svg",),
+                  child: SvgPicture.asset(
+                    "assets/yellow_line.svg",
+                  ),
                 ),
               ]),
             ],
