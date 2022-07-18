@@ -19,12 +19,7 @@ class InfoScreen extends StatelessWidget {
         backgroundColor: HexColor("#f3f3f3"),
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-            child: SvgPicture.asset("assets/test.svg", fit: BoxFit.fill,)
-        ),
-      ),
+      body: Center(child: Text("총학 설명"),)
     );
   }
 }

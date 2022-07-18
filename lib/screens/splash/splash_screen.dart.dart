@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -51,8 +52,13 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     /// check access token
-
-
+    final baseUrl = dotenv.get("DEV_API_BASE_URL");
+    try {
+      Map<String, String> param01 = { "ACCESS_TOKEN" : ACCESS_TOKEN };
+      var res01String = http.post(Uri.parse(baseUrl), headers: param01);
+    } catch(e) {
+      print("error : $e");
+    }
   }
 
   @override

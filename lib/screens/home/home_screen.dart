@@ -120,7 +120,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       MainWidget(
-                          title: "상시사업",
+                          title: "상시사업 예약",
                           svgPath: "assets/icon_rent.svg",
                           isUnderRow: true,
                           onPressed: () => {
@@ -130,7 +130,7 @@ class HomeScreen extends StatelessWidget {
                                         builder: (context) => RentScreen()))
                               }),
                       MainWidget(
-                          title: "축제",
+                          title: "주 사업",
                           svgPath: "assets/icon_festival.svg",
                           isUnderRow: true,
                           onPressed: () => {

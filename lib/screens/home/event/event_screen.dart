@@ -74,7 +74,7 @@ class EventScreen extends StatelessWidget {
     /// Network Network Network Network Network Network Network Network
     Future<List<Event>> fetchEventList() async {
       try {
-        var resString = await http.get(Uri.parse(dotenv.get('API_BASE_URL')));
+        var resString = await http.get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}event/list"));
         Map<String, dynamic> resData = jsonDecode(resString.body);
         var statusCode = resData['status'];
         var message = resData['message'];
