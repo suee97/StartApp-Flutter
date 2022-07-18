@@ -9,11 +9,10 @@ class FestivalScreen extends StatefulWidget {
 }
 
 class _FestivalScreenState extends State<FestivalScreen> {
-  late GoogleMapController mapController;
-  final LatLng startLocation = const LatLng(37.6324657, 127.0776803);
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
+  static final LatLng _kMapCenter =
+      LatLng(37.6324657, 127.0776803);
+  static final CameraPosition _kInitialPosition =
+      CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
 
   @override
   void initState() {
@@ -23,14 +22,11 @@ class _FestivalScreenState extends State<FestivalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("festival screen"),),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(target: startLocation, zoom: 17.5),
-        markers: {
-
-        },
-      )
-    );
+        appBar: AppBar(
+          title: Text("festival screen"),
+        ),
+        body: GoogleMap(
+          initialCameraPosition: _kInitialPosition,
+        ));
   }
 }
