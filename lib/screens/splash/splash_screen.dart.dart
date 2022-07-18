@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:start_app/widgets/test_button.dart';
 import 'dart:io' show Platform;
-import '../../utils/common.dart';
 import '../login/login_screen.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -12,14 +15,51 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var notifyText = "";
+
+  Future<void> _initializing(NavigatorState navigator) async {
+    /// start
+    setState(() {
+      notifyText = "2초 후 로직이 시작됩니다.";
+    });
+    await Future.delayed(const Duration(seconds: 2));
+
+    /// load env
+    setState(() {
+      notifyText = "env 파일을 로드중입니다.";
+    });
+    try {
+      await dotenv.load(fileName: ".env"); // load .env data
+    } catch (e) {
+      notifyText = "환경변수 파일을 찾지 못했습니다.";
+    }
+
+    /// load access token
+    setState(() {
+      notifyText = "access token 확인중입니다.";
+    });
+    final storage = FlutterSecureStorage();
+    var ACCESS_TOKEN = await storage.read(key: "ACCESS_TOKEN");
+    if (ACCESS_TOKEN == null) {
+      setState(() {
+        notifyText = "access token이 존재하지 않습니다. \n2초 후 로그인화면으로 이동합니다.";
+      });
+      await Future.delayed(const Duration(seconds: 2));
+      navigator.pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginScreen()));
+      return;
+    }
+
+    /// check access token
+
+
+  }
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: Common.SPLASH_DURATION), () {
-      /// TODO get login information
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
-    });
+    final navigator = Navigator.of(context); // Future 안에서 생성 불가
+    _initializing(navigator);
   }
 
   @override
@@ -40,8 +80,16 @@ class _SplashScreenState extends State<SplashScreen> {
               )
             else
               const CircularProgressIndicator(
-                color: Colors.white,
-              )
+                color: Colors.black,
+              ),
+            TestButton(
+                title: "next",
+                onPressed: () => Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()))),
+            Text(
+              notifyText,
+              style: const TextStyle(fontSize: 28),
+            )
           ],
         ),
       ),

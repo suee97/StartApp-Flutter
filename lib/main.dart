@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,15 +8,6 @@ import 'screens/splash/splash_screen.dart.dart';
 void main() async {
   /// for async logic
   WidgetsFlutterBinding.ensureInitialized();
-
-  /// load .env data
-  await dotenv.load(fileName: ".env");
-
-  /// load access token & refresh token
-  ///
-  ///
-  ///
-
   runApp(const MyApp());
 }
 
@@ -26,7 +17,8 @@ class MyApp extends StatelessWidget {
   /// 일단 모든 provider 이쪽에 넣고 나중에 리팩토링
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); //세로 고정
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); // 세로 고정
+
     return ScreenUtilInit(
       designSize: const Size(360, 640),
       builder: (context, child) {
