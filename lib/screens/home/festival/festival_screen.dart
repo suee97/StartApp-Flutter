@@ -1,5 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:app_settings/app_settings.dart';
 
 class FestivalScreen extends StatefulWidget {
   const FestivalScreen({Key? key}) : super(key: key);
@@ -9,10 +13,26 @@ class FestivalScreen extends StatefulWidget {
 }
 
 class _FestivalScreenState extends State<FestivalScreen> {
-  static final LatLng _kMapCenter =
-      LatLng(37.6324657, 127.0776803);
-  static final CameraPosition _kInitialPosition =
-      CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
+  final LatLng initialCameraPosition = const LatLng(37.6324657, 127.0776803);
+  late GoogleMapController _controller;
+  final Location _location = Location();
+
+  void _onMapCreated(GoogleMapController controller)
+  {
+    _controller = controller;
+    _location.onLocationChanged.listen((location) {
+      _controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: LatLng(location.latitude!, location.longitude!),zoom: 15),
+        ),
+      );
+    });
+  }
+
+  Future<bool> checkIfPermissionGranted() async {
+    var status = await Permission.location.status;
+    return status.isGranted;
+  }
 
   @override
   void initState() {
@@ -22,11 +42,15 @@ class _FestivalScreenState extends State<FestivalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("festival screen"),
-        ),
-        body: GoogleMap(
-          initialCameraPosition: _kInitialPosition,
-        ));
+      appBar: AppBar(
+        title: Text("festival screen"),
+      ),
+      body: GoogleMap(
+        initialCameraPosition: CameraPosition(target: initialCameraPosition, zoom: 16.0),
+        mapType: MapType.normal,
+        onMapCreated: _onMapCreated,
+        myLocationEnabled: true,
+      ),
+    );
   }
 }

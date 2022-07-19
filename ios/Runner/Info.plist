@@ -50,11 +50,25 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>The app needs location permission</string>
+
+
+
 	<key>NSBonjourServices</key>
-    	<array>
-    		<string>_dartobservatory._tcp</string>
-    	</array>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
+
+	<key>LSApplicationQueriesSchemes</key>
+	<string>comgooglemaps</string>
+
+	<!-- Permission options for the `location` group -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Need location when in use</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Always and when in use!</string>
+    <key>NSLocationUsageDescription</key>
+    <string>Older devices need location.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Can I have location always?</string>
 </dict>
 </plist>
