@@ -23,7 +23,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
     _location.onLocationChanged.listen((location) {
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(location.latitude!, location.longitude!),zoom: 15),
+          CameraPosition(target: LatLng(location.latitude!, location.longitude!), zoom: 15),
         ),
       );
     });
