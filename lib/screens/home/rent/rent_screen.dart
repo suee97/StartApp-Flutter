@@ -16,21 +16,42 @@ class RentScreen extends StatelessWidget {
       body: Column(
         children: [
           TestButton(
-            title: "앰프",
+            title: "캐너피",
             onPressed: () => {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
             },
           ),
           TestButton(
-            title: "듀라",
+            title: "듀라테이블",
             onPressed: () => {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
             },
           ),
           TestButton(
-            title: "케너피",
+            title: "앰프&마이크",
+            onPressed: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
+            },
+          ),
+          TestButton(
+            title: "리드선",
+            onPressed: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
+            },
+          ),
+          TestButton(
+            title: "엘카",
+            onPressed: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
+            },
+          ),
+          TestButton(
+            title: "의자",
             onPressed: () => {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
