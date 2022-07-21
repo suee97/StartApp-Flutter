@@ -72,6 +72,7 @@ class EventScreen extends StatelessWidget {
 
 
     /// Network Network Network Network Network Network Network Network
+    /// Future Builder 사용 예정
     Future<List<Event>> fetchEventList() async {
       try {
         var resString = await http.get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}event/list"));
@@ -79,7 +80,7 @@ class EventScreen extends StatelessWidget {
         var statusCode = resData['status'];
         var message = resData['message'];
 
-        if (statusCode == 400) {
+        if (statusCode == 404) {
           return Future.error(
               "#### status code : $resData\n#### message : $message");
         } else {

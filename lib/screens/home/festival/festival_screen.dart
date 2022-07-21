@@ -5,8 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:location/location.dart';
+import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:start_app/widgets/test_button.dart';
 
 class FestivalScreen extends StatefulWidget {
   const FestivalScreen({Key? key}) : super(key: key);
@@ -19,17 +21,19 @@ class _FestivalScreenState extends State<FestivalScreen> {
   final LatLng initialCameraPosition = const LatLng(37.6324657, 127.0776803);
   late GoogleMapController _controller;
   final Location _location = Location();
+  var tempString;
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
     _location.onLocationChanged.listen((location) {
-      _controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-              target: LatLng(location.latitude!, location.longitude!),
-              zoom: 15),
-        ),
-      );
+      // _controller.animateCamera(
+      //   CameraUpdate.newCameraPosition(
+      //     CameraPosition(
+      //         target: LatLng(location.latitude!, location.longitude!),
+      //       zoom: 16.0
+      //     ),
+      //   ),
+      // );
     });
   }
 
@@ -38,8 +42,15 @@ class _FestivalScreenState extends State<FestivalScreen> {
     return status.isGranted;
   }
 
+  Future<LocationData> getCurrentLocationGps() async {
+    var currentLocation = await Location().getLocation();
+    print("currentLocation : ${currentLocation}");
+    return currentLocation;
+  }
+
   @override
   void initState() {
+    tempString = "스탬프 찍기";
     super.initState();
   }
 
@@ -47,31 +58,41 @@ class _FestivalScreenState extends State<FestivalScreen> {
   Widget build(BuildContext context) {
     Set<Marker> markerList = {
       Marker(
-          markerId: MarkerId("hyang-hak-ro"),
-          position: LatLng(37.6318730, 127.0771544),
-          onTap: () => {
-                showModalBottomSheet(
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30))),
-                    barrierColor: Colors.transparent,
-                    backgroundColor: HexColor("#F8EAE1"),
-                    context: context,
-                    builder: (context) {
-                      return Column(
-                        children: <Widget>[
-                          ListTile(
-                            leading: Icon(Icons.photo),
-                            title: Text('Photo'),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      );
-                    })
-              }),
+          markerId: const MarkerId("hyang-hak-ro"),
+          position: const LatLng(37.6318730, 127.0771544),
+          onTap: () {
+            showModalBottomSheet(
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30))),
+                barrierColor: Colors.transparent,
+                backgroundColor: HexColor("#F8EAE1"),
+                context: context,
+                builder: (context) {
+                  return StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                    return Column(
+                      children: [
+                        TestButton(
+                            title: tempString,
+                            onPressed: () async {
+                              setState(() {
+                                tempString = "Calculating.....";
+                              });
+                              var curLoc = await getCurrentLocationGps();
+                              print(
+                                  "거리 : ${mp.SphericalUtil.computeDistanceBetween(mp.LatLng(curLoc.latitude!, curLoc.longitude!), mp.LatLng(37.6318730, 127.0771544))}");
+                              setState(() {
+                                tempString = "스탬프 찍기";
+                              });
+                            }),
+                        Text(tempString)
+                      ],
+                    );
+                  });
+                });
+          }),
       Marker(
           markerId: MarkerId("bung-uh-bang"),
           position: LatLng(37.6330957, 127.0785229)),
@@ -86,6 +107,16 @@ class _FestivalScreenState extends State<FestivalScreen> {
           position: LatLng(37.6320294, 127.0765909)),
     };
 
+    Set<Circle> circleList = {
+      Circle(
+          circleId: const CircleId("hyang-hak-ro"),
+          center: const LatLng(37.6318730, 127.0771544),
+          radius: 50,
+          fillColor: Colors.redAccent.withOpacity(0.5),
+          strokeWidth: 3,
+          strokeColor: Colors.redAccent)
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("축제"),
@@ -96,20 +127,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
       body: Stack(children: [
         GoogleMap(
           initialCameraPosition:
-              CameraPosition(target: initialCameraPosition, zoom: 16.0),
+              CameraPosition(target: initialCameraPosition, zoom: 16.5),
           mapType: MapType.normal,
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,
           markers: markerList,
-          circles: {
-            Circle(
-                circleId: CircleId("hyanghakro"),
-                center: LatLng(37.6318730, 127.0771544),
-                radius: 70,
-                fillColor: Colors.redAccent.withOpacity(0.5),
-                strokeWidth: 3,
-                strokeColor: Colors.redAccent)
-          },
+          circles: circleList,
         ),
         Container(
           width: double.infinity,
@@ -121,12 +144,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
                   padding: EdgeInsets.all(8.w),
                   child: SvgPicture.asset("assets/icon_check_stamp.svg"),
                 ),
-                onTap: () async {
-                  await showDialog(
+                onTap: () {
+                  showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: const Text("스탬프 방문트도장 이벤트"),
+                          title: const Text("스탬프 방문 도장 이벤트"),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [

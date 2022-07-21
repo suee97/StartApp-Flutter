@@ -6,13 +6,19 @@ import 'package:start_app/screens/home/event/event_screen.dart';
 import 'package:start_app/screens/home/festival/festival_screen.dart';
 import 'package:start_app/screens/home/info/info_screen.dart';
 import 'package:start_app/screens/home/plan/plan_screen.dart';
+import 'package:start_app/screens/home/profile/profile_screen.dart';
 import 'package:start_app/screens/home/rent/rent_screen.dart';
 import 'package:start_app/screens/home/status/status_screen.dart';
 import 'package:start_app/widgets/main_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +33,10 @@ class HomeScreen extends StatelessWidget {
           foregroundColor: Colors.white,
           actions: [
             IconButton(
-              onPressed: () => {},
+              onPressed: () => {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()))
+              },
               icon: SvgPicture.asset("assets/icon_person.svg"),
               iconSize: 24.w,
               hoverColor: Colors.transparent,
@@ -37,7 +46,9 @@ class HomeScreen extends StatelessWidget {
           ],
           leading: IconButton(
             onPressed: () => {},
-            icon: SvgPicture.asset("assets/icon_notification.svg",),
+            icon: SvgPicture.asset(
+              "assets/icon_notification.svg",
+            ),
             iconSize: 24,
             hoverColor: Colors.transparent,
             highlightColor: Colors.transparent,
