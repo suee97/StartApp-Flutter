@@ -47,7 +47,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   margin: EdgeInsets.only(left: 27.w, right: 27.w),
                   width: double.infinity,
                   child: Text(
-                    widget.event.title!,
+                    widget.event.title,
                     style:
                         TextStyle(fontWeight: FontWeight.w600, fontSize: 22.sp),
                   ),
@@ -110,7 +110,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                 const GoToFormWidget(),
                 EventApply(
                   onPressed: () => {
-                    _launchUrl(widget.event.formLink!)
+                    _launchUrl(widget.event.formLink)
                   },
                 )
               ],

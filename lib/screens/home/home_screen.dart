@@ -32,16 +32,19 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: HexColor("#425C5A"),
           foregroundColor: Colors.white,
           actions: [
-            IconButton(
-              onPressed: () => {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()))
-              },
-              icon: SvgPicture.asset("assets/icon_person.svg"),
-              iconSize: 24.w,
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
+            Padding(
+              padding: const EdgeInsets.only(top: 3.0),
+              child: IconButton(
+                onPressed: () => {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProfileScreen()))
+                },
+                icon: SvgPicture.asset("assets/icon_person.svg"),
+                iconSize: 24.w,
+                hoverColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+              ),
             )
           ],
           leading: IconButton(
@@ -131,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       MainWidget(
-                          title: "상시사업 예약",
+                          title: "상시사업",
                           svgPath: "assets/icon_rent.svg",
                           isUnderRow: true,
                           onPressed: () => {

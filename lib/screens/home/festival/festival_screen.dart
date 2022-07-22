@@ -87,7 +87,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                 tempString = "스탬프 찍기";
                               });
                             }),
-                        Text(tempString)
                       ],
                     );
                   });
