@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,9 +9,10 @@ import 'package:location/location.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:start_app/screens/home/festival/stamp_event_join.dart';
 import 'package:start_app/widgets/test_button.dart';
-
 import '../../../utils/common.dart';
+import 'dart:io' show Platform;
 
 class FestivalScreen extends StatefulWidget {
   const FestivalScreen({Key? key}) : super(key: key);
@@ -23,7 +25,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
   final LatLng initialCameraPosition = const LatLng(37.6324657, 127.0776803);
   late GoogleMapController _controller;
   final Location _location = Location();
-  var tempString;
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -52,7 +53,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   @override
   void initState() {
-    tempString = "스탬프 찍기";
     super.initState();
   }
 
@@ -74,25 +74,63 @@ class _FestivalScreenState extends State<FestivalScreen> {
                 builder: (context) {
                   return StatefulBuilder(
                       builder: (BuildContext context, StateSetter setState) {
-                    return Column(
-                      children: [
-                        TestButton(
-                            title: tempString,
-                            onPressed: () async {
-                              setState(() {
-                                tempString = "Calculating.....";
-                              });
-                              var curLoc = await getCurrentLocationGps();
-                              var distance = mp.SphericalUtil.computeDistanceBetween(mp.LatLng(curLoc.latitude!, curLoc.longitude!), mp.LatLng(37.6318730, 127.0771544));
-                              if(distance > 50) {
-
-                              }
-                              setState(() {
-                                tempString = "스탬프 찍기";
-                              });
-                            }),
-                      ],
-                    );
+                    return Stack(alignment: Alignment.bottomCenter, children: [
+                      ListView(
+                        children: <Widget>[
+                          TestButton(
+                              title: "",
+                              onPressed: () async {
+                                var curLoc = await getCurrentLocationGps();
+                                var distance =
+                                    mp.SphericalUtil.computeDistanceBetween(
+                                        mp.LatLng(curLoc.latitude!,
+                                            curLoc.longitude!),
+                                        mp.LatLng(37.6318730, 127.0771544));
+                                if (distance > 50) {}
+                              }),
+                        ],
+                      ),
+                      StampEventJoin(
+                          onPressed: () => {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("스탬프 방문 도장 이벤트"),
+                                        content: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                                "스탬프 존에 들어오셨나요? 스탬프 존에 들어오셨다면 도장찍기 버튼을 눌러주세요."),
+                                            Container(
+                                              width: double.infinity,
+                                              height: 40.h,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  color: HexColor("#425C5A"),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(15))),
+                                              child: Text(
+                                                "도장찍기",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 20.sp,
+                                                    color: HexColor("#F8EAE1")),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        backgroundColor: HexColor("#F8EAE1"),
+                                      );
+                                    })
+                              })
+                    ]);
                   });
                 });
           }),
@@ -137,6 +175,53 @@ class _FestivalScreenState extends State<FestivalScreen> {
           markers: markerList,
           circles: circleList,
         ),
+        Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                radius: 28.w,
+                child: IconButton(
+                    iconSize: 28,
+                    onPressed: () async {
+                      if (await checkLocationPermission() == true) {
+                        var curLoc = await getCurrentLocationGps();
+                        _controller.animateCamera(
+                            CameraUpdate.newCameraPosition(CameraPosition(
+                                target:
+                                    LatLng(curLoc.latitude!, curLoc.longitude!),
+                                zoom: 16.5)));
+                      } else {
+                        if (Platform.isIOS) {
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: const Text("위치 서비스 사용"),
+                                  content: const Text(
+                                      "위치서비스를 사용할 수 없습니다.\n기기의 \"설정 > Start App > 위치\"에서\n위치서비스를 켜주세요."),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                        isDefaultAction: false,
+                                        child: const Text("확인"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        }),
+                                    CupertinoDialogAction(
+                                        isDefaultAction: false,
+                                        child: const Text("설정으로 이동"),
+                                        onPressed: () async {
+                                          await AppSettings.openAppSettings();
+                                        })
+                                  ],
+                                );
+                              });
+                        }
+                      }
+                    },
+                    icon: Icon(Icons.gps_fixed)),
+              ),
+            )),
         Container(
           width: double.infinity,
           child: Row(
@@ -157,22 +242,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text("스탬프 존에 들어오셨다면 도장찍기를 눌러주세요!"),
-                              Container(
-                                width: double.infinity,
-                                height: 40.h,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: HexColor("#425C5A"),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(15))),
-                                child: Text(
-                                  "도장찍기",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 20.sp,
-                                      color: HexColor("#F8EAE1")),
-                                ),
-                              )
                             ],
                           ),
                           shape: RoundedRectangleBorder(
