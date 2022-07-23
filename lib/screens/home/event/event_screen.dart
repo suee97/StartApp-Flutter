@@ -25,7 +25,6 @@ class _EventScreenState extends State<EventScreen> {
   }
 
   Future<List<Event>> fetchEventList() async {
-    await Future.delayed(const Duration(seconds: 2));
     try {
       var resString = await http
           .get(Uri.parse("${dotenv.get("LOCAL_API_BASE_URL")}/list"))

@@ -10,6 +10,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:start_app/widgets/test_button.dart';
 
+import '../../../utils/common.dart';
+
 class FestivalScreen extends StatefulWidget {
   const FestivalScreen({Key? key}) : super(key: key);
 
@@ -81,8 +83,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                 tempString = "Calculating.....";
                               });
                               var curLoc = await getCurrentLocationGps();
-                              print(
-                                  "거리 : ${mp.SphericalUtil.computeDistanceBetween(mp.LatLng(curLoc.latitude!, curLoc.longitude!), mp.LatLng(37.6318730, 127.0771544))}");
+                              var distance = mp.SphericalUtil.computeDistanceBetween(mp.LatLng(curLoc.latitude!, curLoc.longitude!), mp.LatLng(37.6318730, 127.0771544));
+                              if(distance > 50) {
+
+                              }
                               setState(() {
                                 tempString = "스탬프 찍기";
                               });
@@ -110,7 +114,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
       Circle(
           circleId: const CircleId("hyang-hak-ro"),
           center: const LatLng(37.6318730, 127.0771544),
-          radius: 50,
+          radius: Common.CIRCLE_RADIUS,
           fillColor: Colors.redAccent.withOpacity(0.5),
           strokeWidth: 3,
           strokeColor: Colors.redAccent)

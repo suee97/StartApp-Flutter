@@ -19,6 +19,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,10 +79,10 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 width: 300.w,
                 height: 300.h,
-                child: Image(
-                    width: double.infinity,
-                    height: double.infinity,
-                    image: AssetImage("assets/poster_dummy_2.png")),
+                child: Image.network(
+                  "http://cdn.shopify.com/s/files/1/0151/0741/products/ad1fa8fb3ebf60288317c53c17d5880d_1024x1024.jpg?v=1578648923",
+                  fit: BoxFit.fill,
+                ),
               ),
               Column(children: [
                 Container(
