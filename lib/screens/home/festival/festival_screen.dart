@@ -86,7 +86,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         mp.LatLng(curLoc.latitude!,
                                             curLoc.longitude!),
                                         mp.LatLng(37.6318730, 127.0771544));
-                                if (distance > 50) {}
+                                if (distance > 50) {
+
+                                }
                               }),
                         ],
                       ),
@@ -178,7 +180,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
         Align(
             alignment: Alignment.bottomRight,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: Platform.isIOS ? const EdgeInsets.all(8) : const EdgeInsets.only(bottom: 100, right: 8),
               child: CircleAvatar(
                 radius: 28.w,
                 child: IconButton(
@@ -216,7 +218,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                   ],
                                 );
                               });
-                        }
+                        } else {}
                       }
                     },
                     icon: Icon(Icons.gps_fixed)),

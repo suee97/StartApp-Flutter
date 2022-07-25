@@ -63,12 +63,15 @@
 
 	<!-- Permission options for the `location` group -->
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Need location when in use</string>
+    <string>스탬프 이벤트에 참여하기 위해서 사용자의 위치정보가 필요합니다.</string>
+
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Always and when in use!</string>
+    <string>스탬프 이벤트에 참여하기 위해서 사용자의 위치정보가 필요합니다.</string>
+
     <key>NSLocationUsageDescription</key>
-    <string>Older devices need location.</string>
+    <string>스탬프 이벤트에 참여하기 위해서 사용자의 위치정보가 필요합니다.</string>
+
     <key>NSLocationAlwaysUsageDescription</key>
-    <string>Can I have location always?</string>
+    <string>스탬프 이벤트에 참여하기 위해서 사용자의 위치정보가 필요합니다.</string>
 </dict>
 </plist>

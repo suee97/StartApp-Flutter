@@ -12,21 +12,26 @@ class AmpRentScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("상시사업 현황(앰프)"),
       ),
-      body: Container(
-        width: double.infinity,
-        height: 400.h,
-        child: SfCalendar(
-          view: CalendarView.month,
-          monthViewSettings: const MonthViewSettings(
-              appointmentDisplayCount: 4,
-              appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
-          dataSource: MeetingDataSource(_getDataSource()),
-          todayHighlightColor: Colors.transparent,
-          todayTextStyle:
-              const TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
-          selectionDecoration: const BoxDecoration(),
-          cellBorderColor: Colors.black,
-        ),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 330.w,
+            height: 330.w,
+            child: SfCalendar(
+              view: CalendarView.month,
+              monthViewSettings: const MonthViewSettings(
+                  appointmentDisplayCount: 4,
+                  appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+              dataSource: MeetingDataSource(_getDataSource()),
+              todayHighlightColor: Colors.transparent,
+              todayTextStyle:
+                  const TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+              selectionDecoration: const BoxDecoration(),
+              cellBorderColor: Colors.black,
+            ),
+          ),
+        ],
       ),
     );
   }
