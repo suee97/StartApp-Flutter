@@ -18,7 +18,7 @@ class MainWidget extends StatelessWidget {
   bool isUnderRow = false;
 
   double returnUnderRowHeight(bool isUnderRow) {
-    return isUnderRow == true ? 80.w : 95.w;
+    return isUnderRow == true ? 80.h : 95.h;
   }
 
   @override
