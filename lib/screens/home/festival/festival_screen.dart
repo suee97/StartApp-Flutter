@@ -86,9 +86,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         mp.LatLng(curLoc.latitude!,
                                             curLoc.longitude!),
                                         mp.LatLng(37.6318730, 127.0771544));
-                                if (distance > 50) {
-
-                                }
+                                if (distance > 50) {}
                               }),
                         ],
                       ),
@@ -180,7 +178,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
         Align(
             alignment: Alignment.bottomRight,
             child: Padding(
-              padding: Platform.isIOS ? const EdgeInsets.all(8) : const EdgeInsets.only(bottom: 100, right: 8),
+              padding: Platform.isIOS
+                  ? const EdgeInsets.all(8)
+                  : const EdgeInsets.only(bottom: 100, right: 8),
               child: CircleAvatar(
                 radius: 28.w,
                 child: IconButton(
@@ -218,7 +218,30 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                   ],
                                 );
                               });
-                        } else {}
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text("위치 서비스 사용"),
+                                  content: const Text(
+                                      "위치서비스를 사용할 수 없습니다.\n기기의 설정에서 위치서비스를 켜주세요."),
+                                  actions: [
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("확인")),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          AppSettings.openAppSettings();
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("설정으로 이동")),
+                                  ],
+                                );
+                              });
+                        }
                       }
                     },
                     icon: Icon(Icons.gps_fixed)),
