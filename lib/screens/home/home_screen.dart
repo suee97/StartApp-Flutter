@@ -6,12 +6,20 @@ import 'package:start_app/screens/home/event/event_screen.dart';
 import 'package:start_app/screens/home/festival/festival_screen.dart';
 import 'package:start_app/screens/home/info/info_screen.dart';
 import 'package:start_app/screens/home/plan/plan_screen.dart';
+import 'package:start_app/screens/home/profile/profile_screen.dart';
 import 'package:start_app/screens/home/rent/rent_screen.dart';
 import 'package:start_app/screens/home/status/status_screen.dart';
 import 'package:start_app/widgets/main_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +34,26 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: HexColor("#425C5A"),
           foregroundColor: Colors.white,
           actions: [
-            IconButton(
-              onPressed: () => {},
-              icon: SvgPicture.asset("assets/icon_person.svg"),
-              iconSize: 24.w,
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
+            Padding(
+              padding: const EdgeInsets.only(top: 3.0),
+              child: IconButton(
+                onPressed: () => {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProfileScreen()))
+                },
+                icon: SvgPicture.asset("assets/icon_person.svg"),
+                iconSize: 24.w,
+                hoverColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+              ),
             )
           ],
           leading: IconButton(
             onPressed: () => {},
-            icon: SvgPicture.asset("assets/icon_notification.svg",),
+            icon: SvgPicture.asset(
+              "assets/icon_notification.svg",
+            ),
             iconSize: 24,
             hoverColor: Colors.transparent,
             highlightColor: Colors.transparent,
@@ -63,10 +79,10 @@ class HomeScreen extends StatelessWidget {
               Container(
                 width: 300.w,
                 height: 300.h,
-                child: Image(
-                    width: double.infinity,
-                    height: double.infinity,
-                    image: AssetImage("assets/poster_dummy_2.png")),
+                child: Image.network(
+                  "http://cdn.shopify.com/s/files/1/0151/0741/products/ad1fa8fb3ebf60288317c53c17d5880d_1024x1024.jpg?v=1578648923",
+                  fit: BoxFit.fill,
+                ),
               ),
               Column(children: [
                 Container(
@@ -120,7 +136,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       MainWidget(
-                          title: "상시사업 예약",
+                          title: "상시사업",
                           svgPath: "assets/icon_rent.svg",
                           isUnderRow: true,
                           onPressed: () => {

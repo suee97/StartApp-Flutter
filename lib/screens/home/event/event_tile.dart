@@ -22,7 +22,7 @@ class EventTile extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 7.h),
         child: Stack(alignment: Alignment.centerLeft, children: [
           SvgPicture.asset(
-            checkExpiredAndReturn(event.isExpired!),
+            checkExpiredAndReturn(event.isExpired),
             width: double.infinity,
             fit: BoxFit.fitWidth,
           ),
@@ -33,11 +33,11 @@ class EventTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  event.title!,
+                  event.title,
                   style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  Common.parseTime(event.startTime!, event.endTime!),
+                  Common.parseTime(event.startTime, event.endTime),
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
