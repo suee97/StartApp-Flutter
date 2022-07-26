@@ -13,10 +13,18 @@ class EventTile extends StatelessWidget {
   Event event;
   VoidCallback onPressed;
 
+  VoidCallback checkEventStatus() {
+    if(event.eventStatus == "PROCEEDING") {
+      return onPressed;
+    } else {
+      return () => {};
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: checkEventStatus(),
       child: Container(
         height: 80.w, // h 대신 w
         margin: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 7.h),
