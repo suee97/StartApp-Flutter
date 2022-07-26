@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
+import 'package:hexcolor/hexcolor.dart';
 import '../../../models/metting.dart';
 
 class PlanScreen extends StatelessWidget {
@@ -9,7 +9,15 @@ class PlanScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("학사 일정"),),
+      appBar: AppBar(
+        title: const Text(
+          "학사 일정",
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
+        foregroundColor: Colors.white,
+        backgroundColor: HexColor("#425C5A"),
+        elevation: 0,
+      ),
       body: SfCalendar(
         view: CalendarView.month,
         dataSource: MeetingDataSource(_getDataSource()),
