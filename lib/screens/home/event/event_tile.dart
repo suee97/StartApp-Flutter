@@ -16,13 +16,13 @@ class EventTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: event.isExpired == true ? () => {} : onPressed,
+      onTap: onPressed,
       child: Container(
         height: 80.w, // h 대신 w
         margin: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 7.h),
         child: Stack(alignment: Alignment.centerLeft, children: [
           SvgPicture.asset(
-            checkExpiredAndReturn(event.isExpired),
+            checkExpiredAndReturn(event.eventStatus),
             width: double.infinity,
             fit: BoxFit.fitWidth,
           ),
@@ -52,9 +52,13 @@ class EventTile extends StatelessWidget {
     );
   }
 
-  String checkExpiredAndReturn(bool _isExpired) {
-    return _isExpired == true
-        ? "assets/event_tile_expired.svg"
-        : "assets/event_tile_ongoing.svg";
+  String checkExpiredAndReturn(String _eventStatus) {
+    if (_eventStatus == "END") {
+      return "assets/event_tile_end.svg";
+    } else if(_eventStatus == "PROCEEDING") {
+      return "assets/event_tile_proceeding.svg";
+    } else {
+      return "assets/event_tile_before.svg";
+    }
   }
 }

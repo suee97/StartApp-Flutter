@@ -50,6 +50,7 @@ dependencies:
   permission_handler: ^7.2.0
   app_settings: ^4.1.8
   maps_toolkit: ^2.0.0
+  logger: ^1.1.0
 
 dev_dependencies:
   flutter_test:

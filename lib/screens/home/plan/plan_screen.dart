@@ -13,7 +13,7 @@ class PlanScreen extends StatelessWidget {
       body: SfCalendar(
         view: CalendarView.month,
         dataSource: MeetingDataSource(_getDataSource()),
-        monthViewSettings: MonthViewSettings(showAgenda: true),
+        monthViewSettings: MonthViewSettings(showAgenda: true, appointmentDisplayCount: 5),
       ),
     );
   }
@@ -38,6 +38,17 @@ class PlanScreen extends StatelessWidget {
         'GO', startTime2, endTime, const Color(0xFF0F3374), false));
     meetings.add(Meeting(
         'HLO', startTime, endTime, const Color(0xFF0C1784), false));
+    meetings.add(Meeting(
+        'HLO', startTime, endTime, const Color(0xFF0C1784), false));
+    meetings.add(Meeting(
+        'HLO', startTime, endTime, const Color(0xFF0C1784), false));
+    meetings.add(Meeting(
+        'HLO', startTime, endTime, const Color(0xFF0C1784), false));
+    meetings.add(Meeting(
+        'HLO', startTime, endTime, const Color(0xFF0C1784), false));
+    meetings.add(Meeting(
+        'HLO', startTime, endTime, const Color(0xFF0C1784), false));
+
     return meetings;
   }
 }

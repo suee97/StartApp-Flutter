@@ -9,6 +9,7 @@ import '../../../models/event_list.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 
 class EventScreen extends StatefulWidget {
   EventScreen({Key? key}) : super(key: key);
@@ -18,6 +19,8 @@ class EventScreen extends StatefulWidget {
 }
 
 class _EventScreenState extends State<EventScreen> {
+  var logger = Logger();
+
   @override
   void initState() {
     fetchEventList();
@@ -26,19 +29,28 @@ class _EventScreenState extends State<EventScreen> {
 
   Future<List<Event>> fetchEventList() async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
-      var resString = await http
-          .get(Uri.parse("${dotenv.get("LOCAL_API_BASE_URL")}/list"));
+      await Future.delayed(const Duration(seconds: 1));
+      var resString =
+          await http.get(Uri.parse("${dotenv.get("LOCAL_API_BASE_URL")}/list"));
       Map<String, dynamic> resData = jsonDecode(resString.body);
       List<dynamic> data = resData["data"];
+
       List<Event> _eventList = [];
-      _eventList = data.map((e) => Event.fromJson(e)).toList();
+      for(var e in data) {
+        if(e["eventStatus"] == "END") _eventList.add(Event.fromJson(e));
+      }
+      for(var e in data) {
+        if(e["eventStatus"] == "BEFORE") _eventList.add(Event.fromJson(e));
+      }
+      for(var e in data) {
+        if(e["eventStatus"] == "PROCEEDING") _eventList.add(Event.fromJson(e));
+      }
 
       if (resData["status"] == 404) {
         return Future.error("error 404");
-      } else {
-        return _eventList;
       }
+
+      return _eventList.reversed.toList();
     } catch (e) {
       return Future.error(e);
     }
@@ -106,12 +118,25 @@ class _EventScreenState extends State<EventScreen> {
                       return Column(
                         children: [
                           SizedBox(
-                            height: 200.h,
+                            height: 120.h,
+                          ),
+                          Container(
+                            width: 132.w,
+                            child: const Image(
+                                fit: BoxFit.fitWidth,
+                                image:
+                                    AssetImage("images/logo_wink_ready.png")),
+                          ),
+                          SizedBox(
+                            height: 16.h,
                           ),
                           Text(
-                            "진행중인 이벤트가 없습니다.",
+                            "현재 진행중인\n이벤트가 없습니다.",
                             style: TextStyle(
-                                fontSize: 14, color: HexColor("#f3f3f3")),
+                                fontSize: 20.sp,
+                                color: const Color.fromARGB(128, 216, 232, 231),
+                                fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       );
@@ -119,12 +144,25 @@ class _EventScreenState extends State<EventScreen> {
                       return Column(
                         children: [
                           SizedBox(
-                            height: 200.h,
+                            height: 120.h,
+                          ),
+                          Container(
+                            width: 132.w,
+                            child: const Image(
+                                fit: BoxFit.fitWidth,
+                                image:
+                                    AssetImage("images/logo_crying_ready.png")),
+                          ),
+                          SizedBox(
+                            height: 4.h,
                           ),
                           Text(
-                            "정보를 불러오지 못했습니다.",
+                            "이벤트를 불러오지 못했습니다.",
                             style: TextStyle(
-                                fontSize: 14, color: HexColor("#f3f3f3")),
+                                fontSize: 20.sp,
+                                color: const Color.fromARGB(128, 216, 232, 231),
+                                fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       );
