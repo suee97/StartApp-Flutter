@@ -36,6 +36,12 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
             ),
+            TestButton(title: "회원가입", onPressed: () => {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomeScreen()))
+            }),
             TestButton(title: "로그인 없이 이용하기", onPressed: () => {
               Navigator.pushReplacement(
                   context,

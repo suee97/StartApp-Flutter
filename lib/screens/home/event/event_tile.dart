@@ -40,9 +40,14 @@ class EventTile extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  event.title,
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
+                Container(
+                  width: 200.w,
+                  child: Text(
+                    event.title,
+                    style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 Text(
                   Common.parseTime(event.startTime, event.endTime),

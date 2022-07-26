@@ -5,6 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/event/event_screen.dart';
 import 'package:start_app/screens/home/festival/festival_screen.dart';
 import 'package:start_app/screens/home/info/info_screen.dart';
+import 'package:start_app/screens/home/notification/notification_screen.dart';
 import 'package:start_app/screens/home/plan/plan_screen.dart';
 import 'package:start_app/screens/home/profile/profile_screen.dart';
 import 'package:start_app/screens/home/rent/rent_screen.dart';
@@ -49,7 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ],
           leading: IconButton(
-            onPressed: () => {},
+            onPressed: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NotificationScreen()))
+            },
             icon: SvgPicture.asset(
               "assets/icon_notification.svg",
             ),
