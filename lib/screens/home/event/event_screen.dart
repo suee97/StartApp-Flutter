@@ -186,10 +186,12 @@ class _EventScreenState extends State<EventScreen> {
                           ),
                           Container(
                             width: 132.w,
-                            child: const Image(
-                                fit: BoxFit.fitWidth,
-                                image:
-                                    AssetImage("images/logo_crying_ready.png")),
+                            child: Image(
+                              fit: BoxFit.fitWidth,
+                              image: AssetImage("images/logo_crying_ready.png"),
+                              color: Colors.white.withOpacity(0.5),
+                              colorBlendMode: BlendMode.modulate,
+                            ),
                           ),
                           SizedBox(
                             height: 4.h,
