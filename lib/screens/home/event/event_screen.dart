@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -7,7 +8,7 @@ import 'package:start_app/screens/home/event/detail/event_detail_screen.dart';
 import 'package:start_app/screens/home/event/event_tile.dart';
 import '../../../models/event_list.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, SocketException;
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 
@@ -27,30 +28,64 @@ class _EventScreenState extends State<EventScreen> {
     super.initState();
   }
 
+  Widget BranchByEventStatus(Event event) {
+    if (event.eventStatus == "PROCEEDING") {
+      return EventDetailScreen(
+        event: event,
+        mainColorHex: "#425C5A",
+        buttonHexColor: "FFCEA2",
+        buttonTitle: "신청하기",
+      );
+    } else if (event.eventStatus == "BEFORE") {
+      return EventDetailScreen(
+        event: event,
+        mainColorHex: "#9AA695",
+        buttonHexColor: "#F8EAE1",
+        buttonTitle: "이벤트 시작 전입니다",
+      );
+    } else {
+      return EventDetailScreen(
+        event: event,
+        mainColorHex: "#8E908E",
+        buttonHexColor: "#EBE4DE",
+        buttonTitle: "마감된 이벤트입니다",
+      );
+    }
+  }
+
   Future<List<Event>> fetchEventList() async {
     try {
       await Future.delayed(const Duration(seconds: 1));
-      var resString =
-          await http.get(Uri.parse("${dotenv.get("LOCAL_API_BASE_URL")}/list"));
+      var resString = await http
+          .get(Uri.parse("${dotenv.get("LOCAL_API_BASE_URL")}/list"))
+          .timeout(const Duration(seconds: 5));
       Map<String, dynamic> resData = jsonDecode(resString.body);
-      List<dynamic> data = resData["data"];
 
       List<Event> _eventList = [];
-      for(var e in data) {
-        if(e["eventStatus"] == "END") _eventList.add(Event.fromJson(e));
-      }
-      for(var e in data) {
-        if(e["eventStatus"] == "BEFORE") _eventList.add(Event.fromJson(e));
-      }
-      for(var e in data) {
-        if(e["eventStatus"] == "PROCEEDING") _eventList.add(Event.fromJson(e));
-      }
-
-      if (resData["status"] == 404) {
-        return Future.error("error 404");
+      if (resData["data"] != null) {
+        /// not null
+        List<dynamic> data = resData["data"];
+        for (var e in data) {
+          if (e["eventStatus"] == "END") _eventList.add(Event.fromJson(e));
+        }
+        for (var e in data) {
+          if (e["eventStatus"] == "BEFORE") _eventList.add(Event.fromJson(e));
+        }
+        for (var e in data) {
+          if (e["eventStatus"] == "PROCEEDING")
+            _eventList.add(Event.fromJson(e));
+        }
+      } else {
+        /// null
+        logger.d("${resData["status"]}");
+        return Future.error("");
       }
 
       return _eventList.reversed.toList();
+    } on TimeoutException catch (e) {
+      return Future.error("TimeoutException : $e");
+    } on SocketException catch (e) {
+      return Future.error("SocketException : $e");
     } catch (e) {
       return Future.error(e);
     }
@@ -63,7 +98,11 @@ class _EventScreenState extends State<EventScreen> {
         elevation: 0,
         backgroundColor: HexColor("#f3f3f3"),
         foregroundColor: Colors.black,
-        title: const Text("서울과학기술대학교 총학생회"),
+        centerTitle: true,
+        title: Text(
+          "서울과학기술대학교 총학생회",
+          style: TextStyle(fontSize: 16.5.sp, fontWeight: FontWeight.w600),
+        ),
       ),
       body: Container(
           color: HexColor("#f3f3f3"),
@@ -84,13 +123,13 @@ class _EventScreenState extends State<EventScreen> {
                   child: Text(
                     "이벤트 참여",
                     style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w700,
-                        color: HexColor("#92AEAC")),
+                        fontSize: 21.5.sp,
+                        fontWeight: FontWeight.w600,
+                        color: HexColor("#D8E8E7")),
                   ),
                 ),
                 SizedBox(
-                  height: 13.h,
+                  height: 16.h,
                 ),
                 FutureBuilder(
                   future: fetchEventList(),
@@ -107,9 +146,8 @@ class _EventScreenState extends State<EventScreen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  EventDetailScreen(
-                                                      event: snapshot
-                                                          .data[index])))
+                                                  BranchByEventStatus(
+                                                      snapshot.data[index])))
                                     });
                           },
                         ),

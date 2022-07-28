@@ -13,18 +13,10 @@ class EventTile extends StatelessWidget {
   Event event;
   VoidCallback onPressed;
 
-  VoidCallback checkEventStatus() {
-    if(event.eventStatus == "PROCEEDING") {
-      return onPressed;
-    } else {
-      return () => {};
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: checkEventStatus(),
+      onTap: onPressed,
       child: Container(
         height: 80.w, // h 대신 w
         margin: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 7.h),
@@ -44,7 +36,7 @@ class EventTile extends StatelessWidget {
                   width: 200.w,
                   child: Text(
                     event.title,
-                    style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 19.5.sp, fontWeight: FontWeight.w400),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -53,7 +45,7 @@ class EventTile extends StatelessWidget {
                   Common.parseTime(event.startTime, event.endTime),
                   style: TextStyle(
                     fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white
                   ),
                 )
