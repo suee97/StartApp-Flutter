@@ -1,64 +1,162 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:logger/logger.dart';
+import 'package:start_app/screens/home/rent/rent_widget.dart';
 import 'package:start_app/widgets/test_button.dart';
 import 'detail/amp_rent_screen.dart';
 
-class RentScreen extends StatelessWidget {
+class RentScreen extends StatefulWidget {
   const RentScreen({Key? key}) : super(key: key);
+
+  @override
+  State<RentScreen> createState() => _RentScreenState();
+}
+
+class _RentScreenState extends State<RentScreen> {
+  var logger = Logger();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("rent screen"),
-        backgroundColor: Colors.white,
+        title: const Text("상시사업 예약"),
+        backgroundColor: HexColor("#f3f3f3"),
         foregroundColor: Colors.black,
+        elevation: 0,
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          TestButton(
-            title: "캐너피",
-            onPressed: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
-            },
+      body: Stack(children: [
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          margin: EdgeInsets.only(top: 55.w),
+          decoration: BoxDecoration(
+              color: HexColor("#425C5A"),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              )),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 76.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RentWidget(
+                    onPressed: () {},
+                    title: "캐노피",
+                    svgPath: "assets/icon_canopy.svg",
+                  ),
+                  SizedBox(
+                    width: 16.w,
+                  ),
+                  RentWidget(
+                    onPressed: () {},
+                    title: "듀라테이블",
+                    svgPath: "assets/icon_table.svg",
+                  ),
+                  SizedBox(
+                    width: 16.w,
+                  ),
+                  RentWidget(
+                    onPressed: () {},
+                    title: "amp",
+                    svgPath: "assets/icon_amp.svg",
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RentWidget(
+                    onPressed: () {},
+                    title: "리드선",
+                    svgPath: "assets/icon_wire.svg",
+                  ),
+                  SizedBox(
+                    width: 16.w,
+                  ),
+                  RentWidget(
+                    onPressed: () {},
+                    title: "엘카",
+                    svgPath: "assets/icon_cart.svg",
+                  ),
+                  SizedBox(
+                    width: 16.w,
+                  ),
+                  RentWidget(
+                    onPressed: () {},
+                    title: "의자",
+                    svgPath: "assets/icon_chair.svg",
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 40.h,
+              ),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "안내사항",
+                      style: TextStyle(
+                          fontSize: 17.5.sp, fontWeight: FontWeight.w700, color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 7.h,
+                    ),
+                    Text(
+                      "- 대여 물품이 파손되었을 시, 수리 비용의 80%를 대여인(또는 대여 기구) 측에서 비용하고 나머지 20%는 총학생회 자치회비에서 부담한다.",
+                      style: TextStyle(
+                          fontSize: 11.5.sp, fontWeight: FontWeight.w400, color: Colors.white.withOpacity(0.7)),
+                    ),
+                    Text(
+                      "- 파손에 대해 수리가 불가하다고 판단될 시, 대여인(또는 대여 기구)에서 같은 제품 또는 그에 걸맞는 비용을 부담하여아 한다.",
+                      style: TextStyle(
+                          fontSize: 11.5.sp, fontWeight: FontWeight.w400, color: Colors.white.withOpacity(0.7)),
+                    ),
+
+                  ],
+                ),
+              )
+            ],
           ),
-          TestButton(
-            title: "듀라테이블",
-            onPressed: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
-            },
-          ),
-          TestButton(
-            title: "앰프&마이크",
-            onPressed: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
-            },
-          ),
-          TestButton(
-            title: "리드선",
-            onPressed: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
-            },
-          ),
-          TestButton(
-            title: "엘카",
-            onPressed: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
-            },
-          ),
-          TestButton(
-            title: "의자",
-            onPressed: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AmpRentScreen()))
-            },
-          ),
-        ],
-      ),
+        ),
+        Container(
+          width: 110.w,
+          height: 110.w,
+          margin: EdgeInsets.only(left: 40.w),
+          decoration: BoxDecoration(
+              color: HexColor("#425c5a"),
+              shape: BoxShape.circle,
+              border: Border.all(width: 9.w, color: HexColor("#425C5A"))),
+          child: Container(
+              padding: const EdgeInsets.all(15),
+              decoration: const BoxDecoration(
+                  color: Colors.white, shape: BoxShape.circle),
+              child: SvgPicture.asset(
+                "assets/icon_rent_person.svg",
+                color: HexColor("#425C5A"),
+                fit: BoxFit.fill,
+              )),
+        ),
+      ]),
+      backgroundColor: HexColor("#f3f3f3"),
     );
   }
 }

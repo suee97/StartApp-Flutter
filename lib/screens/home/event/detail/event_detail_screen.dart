@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/models/event_list.dart';
+import 'package:start_app/screens/home/event/detail/event_apply_button.dart';
 import 'package:start_app/screens/home/event/detail/short_line.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'event_apply.dart';
 
-class EventDetailScreen extends StatefulWidget {
-  EventDetailScreen({Key? key, required this.event}) : super(key: key);
+class ProceedingEventDetailScreen extends StatefulWidget {
+  ProceedingEventDetailScreen({Key? key, required this.event}) : super(key: key);
   Event event;
 
   @override
-  State<EventDetailScreen> createState() => _EventDetailScreenState();
+  State<ProceedingEventDetailScreen> createState() => _ProceedingEventDetailScreenState();
 }
 
-class _EventDetailScreenState extends State<EventDetailScreen> {
+class _ProceedingEventDetailScreenState extends State<ProceedingEventDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +49,8 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   width: double.infinity,
                   child: Text(
                     widget.event.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style:
                         TextStyle(fontWeight: FontWeight.w600, fontSize: 22.sp),
                   ),
@@ -108,11 +111,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   ],
                 ),
                 const GoToFormWidget(),
-                EventApply(
-                  onPressed: () => {
-                    _launchUrl(widget.event.formLink)
-                  },
-                )
+                EventApplyButton(eventStatus: widget.event.eventStatus)
               ],
             ),
           ),
