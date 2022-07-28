@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: '서울과학기술대학교 총학생회',
           theme: ThemeData(
+            fontFamily: "SCDream",
             primaryColor: Colors.transparent,
           ),
           home: const SplashScreen(),
