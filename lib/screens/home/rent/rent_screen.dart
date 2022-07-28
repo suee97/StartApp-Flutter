@@ -4,8 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:logger/logger.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
-import 'package:start_app/widgets/test_button.dart';
-import 'detail/amp_rent_screen.dart';
 
 class RentScreen extends StatefulWidget {
   const RentScreen({Key? key}) : super(key: key);
@@ -69,7 +67,7 @@ class _RentScreenState extends State<RentScreen> {
                   ),
                   RentWidget(
                     onPressed: () {},
-                    title: "amp",
+                    title: "앰프&마이크",
                     svgPath: "assets/icon_amp.svg",
                   ),
                 ],
@@ -115,7 +113,9 @@ class _RentScreenState extends State<RentScreen> {
                     Text(
                       "안내사항",
                       style: TextStyle(
-                          fontSize: 17.5.sp, fontWeight: FontWeight.w700, color: Colors.white),
+                          fontSize: 17.5.sp,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
                     ),
                     SizedBox(
                       height: 7.h,
@@ -123,14 +123,21 @@ class _RentScreenState extends State<RentScreen> {
                     Text(
                       "- 대여 물품이 파손되었을 시, 수리 비용의 80%를 대여인(또는 대여 기구) 측에서 비용하고 나머지 20%는 총학생회 자치회비에서 부담한다.",
                       style: TextStyle(
-                          fontSize: 11.5.sp, fontWeight: FontWeight.w400, color: Colors.white.withOpacity(0.7)),
+                          fontSize: 11.5.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white.withOpacity(0.7)),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       "- 파손에 대해 수리가 불가하다고 판단될 시, 대여인(또는 대여 기구)에서 같은 제품 또는 그에 걸맞는 비용을 부담하여아 한다.",
                       style: TextStyle(
-                          fontSize: 11.5.sp, fontWeight: FontWeight.w400, color: Colors.white.withOpacity(0.7)),
+                          fontSize: 11.5.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white.withOpacity(0.7)),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
-
                   ],
                 ),
               )
@@ -140,7 +147,7 @@ class _RentScreenState extends State<RentScreen> {
         Container(
           width: 110.w,
           height: 110.w,
-          margin: EdgeInsets.only(left: 40.w),
+          margin: EdgeInsets.only(left: 38.w),
           decoration: BoxDecoration(
               color: HexColor("#425c5a"),
               shape: BoxShape.circle,
@@ -155,8 +162,62 @@ class _RentScreenState extends State<RentScreen> {
                 fit: BoxFit.fill,
               )),
         ),
+        Container(
+          width: 170.w,
+          height: 90.h,
+          margin: EdgeInsets.only(left: 160.w, top: 30.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "오승언",
+                    style: TextStyle(
+                        fontSize: 17.5.sp,
+                        color: HexColor("#425C5A"),
+                        fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(
+                    width: 12.w,
+                  ),
+                  Container(
+                    width: 100.w,
+                    height: 20.h,
+                    decoration: BoxDecoration(
+                        color: HexColor("#FFCEA2"),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(
+                      child: Text(
+                        "내 예약 확인하기",
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            color: HexColor("#425C5A"),
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              userInfoText("19101686"),
+              userInfoText("에너지바이오대학"),
+              userInfoText("식품공학과"),
+            ],
+          ),
+        )
       ]),
       backgroundColor: HexColor("#f3f3f3"),
+    );
+  }
+
+  Widget userInfoText(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+          color: Colors.white, fontSize: 13.5.sp, fontWeight: FontWeight.w500),
     );
   }
 }

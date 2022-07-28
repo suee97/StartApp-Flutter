@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class RentWidget extends StatelessWidget {
   RentWidget(
@@ -38,7 +39,10 @@ class RentWidget extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 10.h),
               child: Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13.5.sp),
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13.5.sp,
+                    color: HexColor("#425C5A")),
               ),
             ),
           ],
