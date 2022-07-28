@@ -36,19 +36,27 @@ class EventTile extends StatelessWidget {
                   width: 200.w,
                   child: Text(
                     event.title,
-                    style: TextStyle(fontSize: 19.5.sp, fontWeight: FontWeight.w400),
+                    style: TextStyle(
+                        fontSize: 19.5.sp, fontWeight: FontWeight.w400),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Text(
-                  Common.parseTime(event.startTime, event.endTime),
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white
-                  ),
-                )
+                event.eventStatus == "BEFORE"
+                    ? Text(
+                        Common.calDday(event.startTime),
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      )
+                    : Text(
+                        Common.parseTime(event.startTime, event.endTime),
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      )
               ],
             ),
           ),
@@ -60,10 +68,10 @@ class EventTile extends StatelessWidget {
   String checkExpiredAndReturn(String _eventStatus) {
     if (_eventStatus == "END") {
       return "assets/event_tile_end.svg";
-    } else if(_eventStatus == "PROCEEDING") {
+    } else if (_eventStatus == "PROCEEDING") {
       return "assets/event_tile_proceeding.svg";
     } else {
-      return "assets/event_tile_before.svg";
+      return "assets/event_tile_proceeding.svg";
     }
   }
 }

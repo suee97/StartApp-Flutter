@@ -62,6 +62,7 @@ class _EventScreenState extends State<EventScreen> {
       Map<String, dynamic> resData = jsonDecode(resString.body);
 
       List<Event> _eventList = [];
+      List<Event> _tempList = [];
       if (resData["data"] != null) {
         /// not null
         List<dynamic> data = resData["data"];
@@ -69,8 +70,9 @@ class _EventScreenState extends State<EventScreen> {
           if (e["eventStatus"] == "END") _eventList.add(Event.fromJson(e));
         }
         for (var e in data) {
-          if (e["eventStatus"] == "BEFORE") _eventList.add(Event.fromJson(e));
+          if (e["eventStatus"] == "BEFORE") _tempList.add(Event.fromJson(e));
         }
+        _eventList = _eventList + _tempList.reversed.toList();
         for (var e in data) {
           if (e["eventStatus"] == "PROCEEDING")
             _eventList.add(Event.fromJson(e));

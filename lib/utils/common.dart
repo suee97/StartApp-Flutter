@@ -13,4 +13,10 @@ class Common {
 
     return " ${startTime.substring(5, 7)}/${startTime.substring(8, 10)}\n~${endTime.substring(5, 7)}/${endTime.substring(8, 10)}";
   }
+
+  static String calDday(String startTime) {
+    var to = DateTime(int.parse(startTime.substring(0, 4)), int.parse(startTime.substring(5, 7)), int.parse(startTime.substring(8, 10)));
+    var from = DateTime.now();
+    return "D - ${(to.difference(from).inHours / 24).round()} ";
+  }
 }
