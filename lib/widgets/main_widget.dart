@@ -4,13 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class MainWidget extends StatelessWidget {
-  MainWidget({
-    Key? key,
-    required this.title,
-    required this.svgPath,
-    required this.onPressed,
-    required this.isUnderRow
-  }) : super(key: key);
+  MainWidget(
+      {Key? key,
+      required this.title,
+      required this.svgPath,
+      required this.onPressed,
+      required this.isUnderRow})
+      : super(key: key);
 
   String title = "";
   String svgPath;
@@ -26,7 +26,7 @@ class MainWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: 95.w,
+        width: 110.w,
         height: returnUnderRowHeight(isUnderRow),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +42,11 @@ class MainWidget extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12.sp, color: HexColor("#222E2D"), fontWeight: FontWeight.w400),
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  color: HexColor("#222E2D"),
+                  fontWeight: FontWeight.w400,
+                  overflow: TextOverflow.ellipsis),
             )
           ],
         ),

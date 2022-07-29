@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /// 일단은 하드코딩 하고 나중에 리팩토링하면서 필요한 부분 추가
 /// 중요한 정보(api key, api url ..)는 .env파일에 있음
 
@@ -19,5 +21,38 @@ class Common {
     /// 07/12
 
     return " ${startTime.substring(5, 7)}/${startTime.substring(8, 10)}\n~${endTime.substring(5, 7)}/${endTime.substring(8, 10)}";
+  }
+
+  static String calDday(String startTime) {
+    var to = DateTime(int.parse(startTime.substring(0, 4)), int.parse(startTime.substring(5, 7)), int.parse(startTime.substring(8, 10)));
+    var from = DateTime.now();
+    return "D - ${(to.difference(from).inHours / 24).round()} ";
+  }
+}
+
+class NotificationBadge extends StatelessWidget {
+  const NotificationBadge({Key? key, required this.totalNotifications}) : super(key: key);
+
+  final int totalNotifications;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 40,
+        height: 40,
+      decoration: const BoxDecoration(
+        color: Colors.red,
+        shape: BoxShape.circle
+      ),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "$totalNotifications",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+        ),
+      ),
+    );
   }
 }

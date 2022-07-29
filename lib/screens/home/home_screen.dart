@@ -25,9 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text(
+          title: Text(
             "서울과학기술대학교 총학생회",
-            style: TextStyle(fontWeight: FontWeight.w700),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp),
           ),
           centerTitle: true,
           elevation: 0,
@@ -80,11 +80,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10.h,
               ),
               Container(
-                width: 300.w,
-                height: 300.h,
-                child: Image.network(
-                  "http://cdn.shopify.com/s/files/1/0151/0741/products/ad1fa8fb3ebf60288317c53c17d5880d_1024x1024.jpg?v=1578648923",
-                  fit: BoxFit.fill,
+                width: 290.w,
+                height: 290.h,
+                child: AspectRatio(
+                  aspectRatio: 1/1,
+                  child: Image.network(
+                    "http://cdn.shopify.com/s/files/1/0151/0741/products/ad1fa8fb3ebf60288317c53c17d5880d_1024x1024.jpg?v=1578648923",
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Column(children: [
@@ -99,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 16.h,
                 ),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       MainWidget(
                           title: "총학생회 설명",
@@ -136,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 10.h,
                 ),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       MainWidget(
                           title: "상시사업",

@@ -3,15 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ShortLine extends StatelessWidget {
-  const ShortLine({Key? key}) : super(key: key);
+  ShortLine({Key? key, required this.mainHexColor}) : super(key: key);
+
+  String mainHexColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 75.51.w,
+      width: 70.w,
       height: 10.h,
       decoration: BoxDecoration(
-        color: HexColor("#5C7775"),
+        color: HexColor(mainHexColor),
         borderRadius: const BorderRadius.all(Radius.circular(5))
       ),
     );
