@@ -1,10 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../models/metting.dart';
+import 'package:flutter/rendering.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
+import 'package:intl/intl.dart';
+
 
 class PlanScreen extends StatelessWidget {
-  const PlanScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        SfGlobalLocalizations.delegate
+      ],
+      //ignore: always_specify_types
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ko'),
+        // ... other locales the app supports
+      ],
+      locale: const Locale('ko'),
+      home: PlanDetailScreen(),
+    );
+  }
+}
+
+class PlanDetailScreen extends StatelessWidget {
+  // const PlanDetailScreen({Key? key}) : super(key: key);
+
+  late String _month;
+  late String _year;
 
   @override
   Widget build(BuildContext context) {
@@ -14,15 +45,83 @@ class PlanScreen extends StatelessWidget {
           "학사 일정",
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
+        centerTitle: true,
         foregroundColor: Colors.white,
         backgroundColor: HexColor("#425C5A"),
         elevation: 0,
       ),
       body: SfCalendar(
         view: CalendarView.month,
+        headerStyle: CalendarHeaderStyle(
+            textStyle: TextStyle(
+                fontSize: 23,
+                fontStyle: FontStyle.normal,
+                color: Colors.white,
+                fontWeight: FontWeight.w300)),
+        headerDateFormat: 'MMM',
+        backgroundColor: HexColor("#425C5A"),
+        cellBorderColor: Colors.white,
+        todayTextStyle: TextStyle(
+            color: Colors.white),
+        selectionDecoration: BoxDecoration(
+          color: Colors.transparent,
+          border:
+          Border.all(color: Colors.redAccent,
+              width: 1.5),
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
+          shape: BoxShape.rectangle,
+        ),
         dataSource: MeetingDataSource(_getDataSource()),
-        monthViewSettings: MonthViewSettings(showAgenda: true, appointmentDisplayCount: 5),
+        todayHighlightColor: HexColor("#EE795F"),
+        // todayTextStyle: TextStyle(),
+        monthViewSettings: MonthViewSettings(showAgenda: true, appointmentDisplayCount: 4, dayFormat: 'EEE',
+          agendaStyle: AgendaStyle(
+          backgroundColor: Colors.white,
+          appointmentTextStyle: TextStyle(
+          color: HexColor("#425C5A"),
+          fontSize: 13,
+          ),
+          //동그라미 윗 첨자 글씨
+          dayTextStyle: TextStyle(color: HexColor("#425C5A"),
+          fontSize: 13, fontWeight: FontWeight.w200),
+          //동그라미 숫자
+          dateTextStyle: TextStyle(color: HexColor("#425C5A"),
+          fontSize: 17.5.sp,
+          fontWeight: FontWeight.bold,
+          fontStyle: FontStyle.normal),
+          ),
+            navigationDirection: MonthNavigationDirection.horizontal,
+            monthCellStyle
+                : MonthCellStyle(textStyle: TextStyle(fontStyle: FontStyle.
+            normal, fontSize: 12, color: Colors.white),
+                trailingDatesTextStyle: TextStyle(
+                    fontStyle: FontStyle.normal,
+                    fontSize: 15,
+                    color: Colors.grey),
+                leadingDatesTextStyle: TextStyle(
+                    fontStyle: FontStyle.normal,
+                    fontSize: 15,
+                    color: Colors.grey),
+                backgroundColor: Colors.transparent,
+                todayBackgroundColor: Colors.transparent,
+                leadingDatesBackgroundColor: Colors.transparent,
+                trailingDatesBackgroundColor: Colors.transparent),
       ),
+    scheduleViewSettings: ScheduleViewSettings(
+    dayHeaderSettings: DayHeaderSettings(
+    dayFormat: 'EEEE',
+    width: 70,
+    dayTextStyle: TextStyle(
+    fontSize: 10,
+    fontWeight: FontWeight.w300,
+    color: Colors.amber,
+    ),
+    dateTextStyle: TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w300,
+    color: Colors.amber,
+    ))),
+      )
     );
   }
 
@@ -59,4 +158,23 @@ class PlanScreen extends StatelessWidget {
 
     return meetings;
   }
+
+  void setState(Null Function() param0) {
+
+  }
+  void viewChanged(ViewChangedDetails viewChangedDetails) {
+    SchedulerBinding.instance!
+        .addPostFrameCallback((Duration duration) {
+      setState(() {
+        _month = DateFormat('MMMM').format(viewChangedDetails
+            .visibleDates[viewChangedDetails.visibleDates.length ~/ 2]).toString();
+        _year = DateFormat('yyyy').format(viewChangedDetails
+            .visibleDates[viewChangedDetails.visibleDates.length ~/ 2]).toString();
+      });
+    });
+  }
+
+
+
 }
+
