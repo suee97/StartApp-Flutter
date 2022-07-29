@@ -18,7 +18,7 @@ class MainWidget extends StatelessWidget {
   bool isUnderRow = false;
 
   double returnUnderRowHeight(bool isUnderRow) {
-    return isUnderRow == true ? 85.h : 105.h;
+    return isUnderRow == true ? 80.h : 95.h;
   }
 
   @override
@@ -42,11 +42,13 @@ class MainWidget extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontSize: 13.sp,
                   color: HexColor("#222E2D"),
                   fontWeight: FontWeight.w400,
-                  overflow: TextOverflow.ellipsis),
+              ),
             )
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,48 +21,69 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late List<Image> _logos;
+  double pageIndex = 0.0;
+
+  void getMainLogos() {
+    var a = Image.network(
+      "http://cdn.shopify.com/s/files/1/0151/0741/products/ad1fa8fb3ebf60288317c53c17d5880d_1024x1024.jpg?v=1578648923",
+    );
+    var b = Image.network(
+        "http://competitions.teamtalk.com/image-library/square/1000/7/7bb04cbb0265-teamtalk-com.jpg");
+    var c = Image.network(
+        "https://cdn.givemesport.com/wp-content/uploads/2022/04/GettyImages-499043422-1200x1200-c-default.jpg");
+    setState(() {
+      _logos = [a, b, c];
+    });
+  }
+
+  @override
+  void initState() {
+    getMainLogos();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-            "서울과학기술대학교 총학생회",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp),
-          ),
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: HexColor("#425C5A"),
-          foregroundColor: Colors.white,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 3.0),
-              child: IconButton(
-                onPressed: () => {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ProfileScreen()))
-                },
-                icon: SvgPicture.asset("assets/icon_person.svg"),
-                iconSize: 24.w,
-                hoverColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-              ),
-            )
-          ],
-          // leading: IconButton(
-          //   onPressed: () => {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (context) => NotificationScreen()))
-          //   },
-          //   icon: SvgPicture.asset(
-          //     "assets/icon_notification.svg",
-          //   ),
-          //   iconSize: 24,
-          //   hoverColor: Colors.transparent,
-          //   highlightColor: Colors.transparent,
-          //   splashColor: Colors.transparent,
-          // )
+        title: Text(
+          "서울과학기술대학교 총학생회",
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: HexColor("#425C5A"),
+        foregroundColor: Colors.white,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(top: 3.0),
+            child: IconButton(
+              onPressed: () => {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()))
+              },
+              icon: SvgPicture.asset("assets/icon_person.svg"),
+              iconSize: 24.w,
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+            ),
+          )
+        ],
+        // leading: IconButton(
+        //   onPressed: () => {
+        //     Navigator.push(context,
+        //         MaterialPageRoute(builder: (context) => NotificationScreen()))
+        //   },
+        //   icon: SvgPicture.asset(
+        //     "assets/icon_notification.svg",
+        //   ),
+        //   iconSize: 24,
+        //   hoverColor: Colors.transparent,
+        //   highlightColor: Colors.transparent,
+        //   splashColor: Colors.transparent,
+        // )
       ),
       body: Container(
         color: HexColor("#425C5A"),
@@ -78,17 +100,39 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               SizedBox(
-                height: 10.h,
+                height: 25.h,
               ),
               Container(
-                width: 290.w,
-                height: 290.h,
-                child: AspectRatio(
-                  aspectRatio: 1/1,
-                  child: Image.network(
-                    "http://cdn.shopify.com/s/files/1/0151/0741/products/ad1fa8fb3ebf60288317c53c17d5880d_1024x1024.jpg?v=1578648923",
-                    fit: BoxFit.cover,
+                width: 280.w,
+                height: 280.w,
+                child: PageView.builder(
+                  controller: PageController(
+                    initialPage: 0,
                   ),
+                  itemCount: 3,
+                  itemBuilder: (BuildContext context, int index) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      setState(() {
+                        pageIndex = index.toDouble();
+                      });
+                    });
+                    return AspectRatio(
+                      aspectRatio: 1 / 1,
+                      child: _logos.isNotEmpty
+                          ? _logos[index]
+                          : const Center(child: Text("loading...")),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              DotsIndicator(
+                dotsCount: _logos.length,
+                position: pageIndex.toDouble(),
+                decorator: DotsDecorator(
+                  activeColor: HexColor("#EE795F"),
                 ),
               ),
               Column(children: [
@@ -100,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 16.h,
+                  height: 12.h,
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
