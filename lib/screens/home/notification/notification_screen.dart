@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -7,8 +8,10 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("notification screen"),),
-      body: Center(
-        child: Text("notification screen"),
+      body: Container(
+        width: 300.w,
+        height: 21.h,
+        color: Colors.red,
       ),
     );
   }

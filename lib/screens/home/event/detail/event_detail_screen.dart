@@ -135,9 +135,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                 ),
               ),
               SizedBox(height: 13.h),
-              GoToFormWidget(
-                mainColorHex: widget.mainColorHex
-              ),
+              GoToFormWidget(mainColorHex: widget.mainColorHex),
               SizedBox(
                 height: 8.h,
               ),
@@ -146,7 +144,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                 buttonHexColor: widget.buttonHexColor,
                 mainHexColor: widget.mainColorHex,
                 onPressed: () {
-                  _launchUrl(widget.event.formLink);
+                  if (widget.event.eventStatus == "PROCEEDING") {
+                    _launchUrl(widget.event.formLink);
+                  }
                 },
               )
             ],

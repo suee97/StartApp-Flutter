@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
                     controller: pwController,
                     isObscure: true,
                   ),
-                  TestButton(title: "제출", onPressed: () => {
+                  TestButton(title: "로그인", onPressed: () => {
 
                   })
                 ],
