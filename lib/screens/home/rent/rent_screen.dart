@@ -6,6 +6,8 @@ import 'package:start_app/screens/home/rent/detail/amp_rent_screen.dart';
 import 'package:start_app/screens/home/rent/my_rent/my_rent_screen.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
 
+import '../../../utils/common.dart';
+
 class RentScreen extends StatefulWidget {
   const RentScreen({Key? key}) : super(key: key);
 
@@ -25,7 +27,7 @@ class _RentScreenState extends State<RentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("상시사업 예약",
-          style: TextStyle(fontSize: 16.5.sp, fontWeight: FontWeight.w600),),
+          style: Common.startAppBarTextStyle,),
         backgroundColor: HexColor("#f3f3f3"),
         foregroundColor: Colors.black,
         elevation: 0,

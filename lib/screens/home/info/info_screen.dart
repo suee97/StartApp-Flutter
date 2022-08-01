@@ -22,7 +22,7 @@ class _InfoScreenState extends State<InfoScreen> {
       appBar: AppBar(
         title: Text(
           "총학생회 설명",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.5.sp),
+          style: Common.startAppBarTextStyle,
         ),
         centerTitle: true,
         foregroundColor: Colors.white,

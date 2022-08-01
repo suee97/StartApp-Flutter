@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/models/event_list.dart';
 import 'package:start_app/screens/home/event/detail/short_line.dart';
+import 'package:start_app/utils/common.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'event_apply_button.dart';
 
@@ -31,7 +32,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       appBar: AppBar(
         title: Text(
           "이벤트 참여",
-          style: TextStyle(fontSize: 17.5.sp, fontWeight: FontWeight.w500),
+          style: Common.startAppBarTextStyle,
         ),
         elevation: 0,
         centerTitle: true,

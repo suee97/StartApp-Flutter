@@ -9,6 +9,8 @@ import 'package:flutter/rendering.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:intl/intl.dart';
 
+import '../../../utils/common.dart';
+
 
 class PlanScreen extends StatelessWidget {
 
@@ -41,9 +43,9 @@ class PlanDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "학사 일정",
-          style: TextStyle(fontWeight: FontWeight.w700),
+          style: Common.startAppBarTextStyle,
         ),
         centerTitle: true,
         foregroundColor: Colors.white,

@@ -6,12 +6,13 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/event/event_screen.dart';
 import 'package:start_app/screens/home/festival/festival_screen.dart';
 import 'package:start_app/screens/home/info/info_screen.dart';
-import 'package:start_app/screens/home/notification/notification_screen.dart';
 import 'package:start_app/screens/home/plan/plan_screen.dart';
 import 'package:start_app/screens/home/profile/profile_screen.dart';
 import 'package:start_app/screens/home/rent/rent_screen.dart';
 import 'package:start_app/screens/home/status/status_screen.dart';
 import 'package:start_app/widgets/main_widget.dart';
+
+import '../../utils/common.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var c = Image.network(
         "https://cdn.givemesport.com/wp-content/uploads/2022/04/GettyImages-499043422-1200x1200-c-default.jpg");
     setState(() {
-      _logos = [a, b, c];
+      _logos = [b, a, c];
     });
   }
 
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(
           "서울과학기술대학교 총학생회",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp),
+          style: Common.startAppBarTextStyle,
         ),
         centerTitle: true,
         elevation: 0,
@@ -57,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: Colors.white,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(top: 3.0),
+            padding: EdgeInsets.only(top: 3.0.w),
             child: IconButton(
               onPressed: () => {
                 Navigator.push(context,
@@ -104,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Container(
                 width: 280.w,
-                height: 280.w,
+                height: 280.h,
                 child: PageView.builder(
                   controller: PageController(
                     initialPage: 0,

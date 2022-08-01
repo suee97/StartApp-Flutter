@@ -12,6 +12,8 @@ import 'dart:io' show Platform, SocketException;
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 
+import '../../../utils/common.dart';
+
 class EventScreen extends StatefulWidget {
   EventScreen({Key? key}) : super(key: key);
 
@@ -57,7 +59,7 @@ class _EventScreenState extends State<EventScreen> {
     try {
       await Future.delayed(const Duration(seconds: 1));
       var resString = await http
-          .get(Uri.parse("${dotenv.get("LOCAL_API_BASE_URL")}/list"))
+          .get(Uri.parse("${dotenv.get("LOCAL_API_BASE_URL")}/eventList"))
           .timeout(const Duration(seconds: 5));
       Map<String, dynamic> resData = jsonDecode(resString.body);
 
@@ -103,7 +105,7 @@ class _EventScreenState extends State<EventScreen> {
         centerTitle: true,
         title: Text(
           "서울과학기술대학교 총학생회",
-          style: TextStyle(fontSize: 16.5.sp, fontWeight: FontWeight.w600),
+          style: Common.startAppBarTextStyle,
         ),
       ),
       body: Container(

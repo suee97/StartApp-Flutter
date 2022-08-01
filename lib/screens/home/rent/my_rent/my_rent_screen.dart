@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../../../../utils/common.dart';
+
 class MyRentScreen extends StatefulWidget {
   const MyRentScreen({Key? key}) : super(key: key);
 
@@ -22,7 +24,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("내 예약",
-          style: TextStyle(fontSize: 16.5.sp, fontWeight: FontWeight.w500),),
+          style: Common.startAppBarTextStyle,),
         backgroundColor: HexColor("#425C5A"),
         foregroundColor: Colors.white,
         elevation: 0,
