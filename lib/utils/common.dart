@@ -35,7 +35,7 @@ class Common {
     var from = DateTime.now();
     return "D - ${(to
         .difference(from)
-        .inHours / 24).round()} ";
+        .inHours / 24).round()}";
   }
 
   static Future<bool> isNonLogin() async {

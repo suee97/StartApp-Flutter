@@ -27,7 +27,6 @@ class EventDetailScreen extends StatefulWidget {
 }
 
 class _EventDetailScreenState extends State<EventDetailScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,13 +100,18 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                             aspectRatio: 1 / 1.13,
                             child: Container(
                               width: double.infinity,
-                              height: MediaQuery.of(context).size.height - 210,
-                              padding: EdgeInsets.all(20.w),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/stworld_test_data.png"),
-                                      fit: BoxFit.cover)),
+                              height: MediaQuery.of(context).size.height - 210.h,
+                              child: CachedNetworkImage(
+                                imageUrl: widget.event.imageUrl,
+                                placeholder: (context, url) =>
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: const [
+                                        CircularProgressIndicator(color: Colors.black,),
+                                      ],
+                                    ),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         );
@@ -119,7 +123,13 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   margin: EdgeInsets.only(left: 18.w, right: 18.w),
                   child: CachedNetworkImage(
                     imageUrl: widget.event.imageUrl,
-                    placeholder: (context, url) => const CircularProgressIndicator(),
+                    placeholder: (context, url) =>
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            CircularProgressIndicator(color: Colors.black,),
+                          ],
+                        ),
                     fit: BoxFit.cover,
                   ),
                 ),
