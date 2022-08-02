@@ -43,13 +43,18 @@ class EventTile extends StatelessWidget {
                   ),
                 ),
                 event.eventStatus == "BEFORE"
-                    ? Text(
-                        Common.calDday(event.startTime),
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white),
-                      )
+                    ? Container(
+                  width: 50.w,
+                      height: 30.h,
+                      alignment: Alignment.center,
+                      child: Text(
+                          Common.calDday(event.startTime),
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        ),
+                    )
                     : Text(
                         Common.parseTime(event.startTime, event.endTime),
                         style: TextStyle(

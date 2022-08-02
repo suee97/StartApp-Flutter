@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -26,6 +27,7 @@ class EventDetailScreen extends StatefulWidget {
 }
 
 class _EventDetailScreenState extends State<EventDetailScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,10 +117,11 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   width: double.infinity,
                   height: 320.h,
                   margin: EdgeInsets.only(left: 18.w, right: 18.w),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/poster_dummy.png"),
-                          fit: BoxFit.cover)),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.event.imageUrl,
+                    placeholder: (context, url) => const CircularProgressIndicator(),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               SizedBox(

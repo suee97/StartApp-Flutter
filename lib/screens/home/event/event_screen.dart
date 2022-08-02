@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 import 'dart:io' show Platform, SocketException;
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
-
 import '../../../utils/common.dart';
 
 class EventScreen extends StatefulWidget {
@@ -59,9 +58,9 @@ class _EventScreenState extends State<EventScreen> {
     try {
       await Future.delayed(const Duration(seconds: 1));
       var resString = await http
-          .get(Uri.parse("${dotenv.get("LOCAL_API_BASE_URL")}/eventList"))
+          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/events"))
           .timeout(const Duration(seconds: 5));
-      Map<String, dynamic> resData = jsonDecode(resString.body);
+      Map<String, dynamic> resData = jsonDecode(utf8.decode(resString.bodyBytes));
 
       List<Event> _eventList = [];
       List<Event> _tempList = [];
