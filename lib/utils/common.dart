@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Common {
@@ -30,10 +31,14 @@ class Common {
   }
 
   static String calDday(String startTime) {
+    var tmp = DateTime.now();
+    var from = DateTime(tmp.year, tmp.month, tmp.day);
     var to = DateTime(int.parse(startTime.substring(0, 4)),
         int.parse(startTime.substring(5, 7)),
         int.parse(startTime.substring(8, 10)));
-    var from = DateTime.now();
+
+    print(from);
+
     return "D - ${(to
         .difference(from)
         .inHours / 24).round()}";
