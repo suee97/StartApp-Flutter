@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../../models/metting.dart';
+import '../../../models/meeting.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 class PlanCalendar extends StatelessWidget {

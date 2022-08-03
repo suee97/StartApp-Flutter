@@ -4,7 +4,7 @@ import 'package:start_app/screens/home/plan/snapping_grabbing.dart';
 import 'package:start_app/screens/home/plan/plan_content.dart';
 import 'package:start_app/screens/home/plan/plan_calendar.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../../models/metting.dart';
+import '../../../models/meeting.dart';
 import 'package:flutter/rendering.dart';
 import '../../../utils/common.dart';
 
