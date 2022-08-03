@@ -4,7 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/rent/detail/apply/rent_apply_screen.dart';
 import 'package:start_app/screens/home/rent/detail/rent_detail_text.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../../../../models/metting.dart';
+import '../../../../models/meeting.dart';
 import '../../../../utils/common.dart';
 
 class AmpRentScreen extends StatelessWidget {
