@@ -32,16 +32,17 @@ class MyApp extends StatelessWidget {
             fontFamily: "SCDream",
             primaryColor: Colors.transparent,
           ),
-          localizationsDelegates: [
+          localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
-            SfGlobalLocalizations.delegate
+            SfGlobalLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate
           ],
           supportedLocales: const [
             Locale('ko'),
             Locale('en'),
           ],
-          locale: const Locale('ko'),
+          locale: Locale('ko'),
           home: const SplashScreen(),
         );
       },
