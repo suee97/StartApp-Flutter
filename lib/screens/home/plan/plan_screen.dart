@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:start_app/screens/home/plan/plan_calendar.dart';
 import '../../../utils/common.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'line.dart';
+import 'stack_line.dart';
 
 class PlanScreen extends StatelessWidget {
+  const PlanScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -24,24 +24,27 @@ class PlanScreen extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           PlanCalendar(),
-          Line(),
+          const StackLine(),
           DraggableScrollableSheet(
             initialChildSize: 0.58,
             minChildSize: 0.15,
             builder: (BuildContext context, ScrollController scrollController) {
               return SingleChildScrollView(
                 controller: scrollController,
-                child: ButtomSheet(),
+                child: PlanBottomSheet(),
               );
             },
           ),
         ],
       ),
+      backgroundColor: HexColor("#425c5a"),
     );
   }
 }
 
-class ButtomSheet extends StatelessWidget {
+class PlanBottomSheet extends StatelessWidget {
+  const PlanBottomSheet({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -54,13 +57,15 @@ class ButtomSheet extends StatelessWidget {
             borderRadius: BorderRadius.only(topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: Colors.white
         ),
-        child: BottomSheetContent(),
+        child: PlanBottomSheetContent(),
       ),
     );
   }
 }
 
-class BottomSheetContent extends StatelessWidget {
+class PlanBottomSheetContent extends StatelessWidget {
+  const PlanBottomSheetContent({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,7 +76,7 @@ class BottomSheetContent extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DayInfo(),
+            PlanDayInfo(),
             PlanAgenda(),
           ],
         ),
@@ -82,6 +87,8 @@ class BottomSheetContent extends StatelessWidget {
 }
 
 class CustomDraggingHandle extends StatelessWidget {
+  const CustomDraggingHandle({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -94,7 +101,9 @@ class CustomDraggingHandle extends StatelessWidget {
   }
 }
 
-class DayInfo extends StatelessWidget {
+class PlanDayInfo extends StatelessWidget {
+  const PlanDayInfo({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -119,6 +128,8 @@ class DayInfo extends StatelessWidget {
 }
 
 class PlanAgenda extends StatelessWidget {
+  const PlanAgenda({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -144,6 +155,8 @@ class PlanAgenda extends StatelessWidget {
 }
 
 class PlanTile extends StatelessWidget {
+  const PlanTile({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
