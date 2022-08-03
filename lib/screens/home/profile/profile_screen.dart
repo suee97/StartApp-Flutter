@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:start_app/widgets/test_button.dart';
 
 import '../../../utils/common.dart';
 
@@ -10,7 +11,9 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("profile Screen", style: Common.startAppBarTextStyle,),),
       body: Center(
-        child: Text("profile screen"),
+        child: TestButton(onPressed: () => {
+          Common.setNonLogin(false)
+        }, title: "set nonlogin false",)
       ),
     );
   }

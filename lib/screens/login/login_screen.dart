@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/utils/common.dart';
@@ -44,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                       builder: (context) => HomeScreen()))
             }),
             TestButton(title: "로그인 없이 이용하기", onPressed: () => {
-              Common.setNonLoginTrue(),
+              Common.setNonLogin(true),
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

@@ -51,7 +51,7 @@ dependencies:
   connectivity_plus: ^2.3.5
   google_maps_flutter: ^2.1.8
   location: ^4.4.0
-  permission_handler: ^7.2.0
+  permission_handler: ^10.0.0
   app_settings: ^4.1.8
   maps_toolkit: ^2.0.0
   logger: ^1.1.0
