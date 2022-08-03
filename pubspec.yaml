@@ -63,6 +63,7 @@ dependencies:
   shared_preferences: ^2.0.15
   cached_network_image: ^3.2.1
   lottie: ^1.4.0
+  dotted_line: ^3.1.0
 
 dev_dependencies:
   flutter_test:
