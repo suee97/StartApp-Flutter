@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../../models/metting.dart';
+import '../../../../utils/common.dart';
 
 class AmpRentScreen extends StatelessWidget {
   const AmpRentScreen({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class AmpRentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("상시사업 현황(앰프)"),
+        title: Text("상시사업 현황(앰프)", style: Common.startAppBarTextStyle,),
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -160,9 +160,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("축제"),
+        title: Text("축제", style: Common.startAppBarTextStyle,),
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
+        centerTitle: true,
         elevation: 0,
       ),
       body: Stack(children: [
@@ -179,8 +180,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
             alignment: Alignment.bottomRight,
             child: Padding(
               padding: Platform.isIOS
-                  ? const EdgeInsets.all(8)
-                  : const EdgeInsets.only(bottom: 100, right: 8),
+                  ? EdgeInsets.all(8.w)
+                  : EdgeInsets.only(bottom: 100.w, right: 8.w),
               child: CircleAvatar(
                 radius: 28.w,
                 child: IconButton(

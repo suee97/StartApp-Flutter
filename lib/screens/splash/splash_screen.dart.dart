@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:start_app/screens/home/home_screen.dart';
+import 'package:start_app/utils/common.dart';
 import 'package:start_app/widgets/test_button.dart';
 import 'dart:io' show Platform;
 import '../login/login_screen.dart';
@@ -35,6 +37,16 @@ class _SplashScreenState extends State<SplashScreen> {
       notifyText = "환경변수 파일을 찾지 못했습니다.";
     }
 
+    /// 비로그인 pref 체크
+    setState(() {
+      notifyText = "비로그인 정보 확인중입니다.";
+    });
+    if (await Common.isNonLogin()) {
+      navigator.pushReplacement(
+          MaterialPageRoute(builder: (context) => HomeScreen()));
+      return;
+    }
+
     /// load access token
     setState(() {
       notifyText = "access token 확인중입니다.";
@@ -54,9 +66,9 @@ class _SplashScreenState extends State<SplashScreen> {
     /// check access token
     final baseUrl = dotenv.get("DEV_API_BASE_URL");
     try {
-      Map<String, String> param01 = { "ACCESS_TOKEN" : ACCESS_TOKEN };
+      Map<String, String> param01 = {"ACCESS_TOKEN": ACCESS_TOKEN};
       var res01String = http.post(Uri.parse(baseUrl), headers: param01);
-    } catch(e) {
+    } catch (e) {
       print("error : $e");
     }
   }

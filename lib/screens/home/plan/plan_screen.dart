@@ -4,6 +4,9 @@ import 'package:start_app/screens/home/plan/snapping_grabbing.dart';
 import 'package:start_app/screens/home/plan/plan_content.dart';
 import 'package:start_app/screens/home/plan/plan_calendar.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../models/metting.dart';
+import 'package:flutter/rendering.dart';
+import '../../../utils/common.dart';
 
 class PlanScreen extends StatelessWidget {
 
@@ -13,11 +16,14 @@ class PlanScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text(
-            "학사 일정",
-            style: TextStyle(fontWeight: FontWeight.w700),
-          ),
-          backgroundColor: HexColor("#425C5A")
+        title: Text(
+          "학사 일정",
+          style: Common.startAppBarTextStyle,
+        ),
+        centerTitle: true,
+        foregroundColor: Colors.white,
+        backgroundColor: HexColor("#425C5A"),
+        elevation: 0,
       ),
       body: SnappingSheet(
         lockOverflowDrag: true,

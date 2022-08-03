@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/models/event_list.dart';
 import 'package:start_app/screens/home/event/detail/short_line.dart';
+import 'package:start_app/utils/common.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'event_apply_button.dart';
 
@@ -31,7 +33,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       appBar: AppBar(
         title: Text(
           "이벤트 참여",
-          style: TextStyle(fontSize: 17.5.sp, fontWeight: FontWeight.w500),
+          style: Common.startAppBarTextStyle,
         ),
         elevation: 0,
         centerTitle: true,
@@ -98,13 +100,18 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                             aspectRatio: 1 / 1.13,
                             child: Container(
                               width: double.infinity,
-                              height: MediaQuery.of(context).size.height - 210,
-                              padding: EdgeInsets.all(20.w),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/stworld_test_data.png"),
-                                      fit: BoxFit.cover)),
+                              height: MediaQuery.of(context).size.height - 210.h,
+                              child: CachedNetworkImage(
+                                imageUrl: widget.event.imageUrl,
+                                placeholder: (context, url) =>
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: const [
+                                        CircularProgressIndicator(color: Colors.black,),
+                                      ],
+                                    ),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         );
@@ -114,10 +121,17 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   width: double.infinity,
                   height: 320.h,
                   margin: EdgeInsets.only(left: 18.w, right: 18.w),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/poster_dummy.png"),
-                          fit: BoxFit.cover)),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.event.imageUrl,
+                    placeholder: (context, url) =>
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            CircularProgressIndicator(color: Colors.black,),
+                          ],
+                        ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               SizedBox(

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:logger/logger.dart';
+import 'package:start_app/screens/home/rent/detail/amp_rent_screen.dart';
+import 'package:start_app/screens/home/rent/my_rent/my_rent_screen.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
+
+import '../../../utils/common.dart';
 
 class RentScreen extends StatefulWidget {
   const RentScreen({Key? key}) : super(key: key);
@@ -13,7 +16,6 @@ class RentScreen extends StatefulWidget {
 }
 
 class _RentScreenState extends State<RentScreen> {
-  var logger = Logger();
 
   @override
   void initState() {
@@ -24,7 +26,8 @@ class _RentScreenState extends State<RentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("상시사업 예약"),
+        title: Text("상시사업 예약",
+          style: Common.startAppBarTextStyle,),
         backgroundColor: HexColor("#f3f3f3"),
         foregroundColor: Colors.black,
         elevation: 0,
@@ -34,7 +37,7 @@ class _RentScreenState extends State<RentScreen> {
         Container(
           width: double.infinity,
           height: double.infinity,
-          margin: EdgeInsets.only(top: 55.w),
+          margin: EdgeInsets.only(top: 55.h),
           decoration: BoxDecoration(
               color: HexColor("#425C5A"),
               borderRadius: const BorderRadius.only(
@@ -66,7 +69,10 @@ class _RentScreenState extends State<RentScreen> {
                     width: 16.w,
                   ),
                   RentWidget(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          context) => AmpRentScreen()));
+                    },
                     title: "앰프&마이크",
                     svgPath: "assets/icon_amp.svg",
                   ),
@@ -181,19 +187,25 @@ class _RentScreenState extends State<RentScreen> {
                   SizedBox(
                     width: 12.w,
                   ),
-                  Container(
-                    width: 100.w,
-                    height: 20.h,
-                    decoration: BoxDecoration(
-                        color: HexColor("#FFCEA2"),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Center(
-                      child: Text(
-                        "내 예약 확인하기",
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            color: HexColor("#425C5A"),
-                            fontWeight: FontWeight.w500),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => MyRentScreen()));
+                    },
+                    child: Container(
+                      width: 100.w,
+                      height: 20.h,
+                      decoration: BoxDecoration(
+                          color: HexColor("#FFCEA2"),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                        child: Text(
+                          "내 예약 확인하기",
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              color: HexColor("#425C5A"),
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ),
                   )
