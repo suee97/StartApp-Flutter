@@ -126,8 +126,8 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     placeholder: (context, url) =>
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            CircularProgressIndicator(color: Colors.black,),
+                          children: [
+                            CircularProgressIndicator(color: HexColor(widget.mainColorHex),),
                           ],
                         ),
                     fit: BoxFit.cover,
