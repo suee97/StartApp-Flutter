@@ -30,7 +30,7 @@ class DefaultGrabbing extends StatelessWidget {
           )
         ],
         borderRadius: _getBorderRadius(),
-        color: this.color
+        color: color
       ),
       child: Stack(children: [
         Align(
