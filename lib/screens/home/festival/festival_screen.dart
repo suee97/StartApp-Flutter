@@ -25,6 +25,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
   final LatLng initialCameraPosition = const LatLng(37.6324657, 127.0776803);
   late GoogleMapController _controller;
   final Location _location = Location();
+  bool isGetGpsLoading = false;
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -74,24 +75,26 @@ class _FestivalScreenState extends State<FestivalScreen> {
                 builder: (context) {
                   return StatefulBuilder(
                       builder: (BuildContext context, StateSetter setState) {
-                    return Stack(alignment: Alignment.bottomCenter, children: [
-                      ListView(
-                        children: <Widget>[
-                          TestButton(
-                              title: "",
-                              onPressed: () async {
-                                var curLoc = await getCurrentLocationGps();
-                                var distance =
+                        return Stack(
+                            alignment: Alignment.bottomCenter, children: [
+                          ListView(
+                            children: <Widget>[
+                              TestButton(
+                                  title: "",
+                                  onPressed: () async {
+                                    var curLoc = await getCurrentLocationGps();
+                                    var distance =
                                     mp.SphericalUtil.computeDistanceBetween(
                                         mp.LatLng(curLoc.latitude!,
                                             curLoc.longitude!),
                                         mp.LatLng(37.6318730, 127.0771544));
-                                if (distance > 50) {}
-                              }),
-                        ],
-                      ),
-                      StampEventJoin(
-                          onPressed: () => {
+                                    if (distance > 50) {}
+                                  }),
+                            ],
+                          ),
+                          StampEventJoin(
+                              onPressed: () =>
+                              {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -99,7 +102,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         title: const Text("스탬프 방문 도장 이벤트"),
                                         content: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Text(
@@ -111,8 +114,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                               decoration: BoxDecoration(
                                                   color: HexColor("#425C5A"),
                                                   borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(15))),
+                                                  const BorderRadius.all(
+                                                      Radius.circular(15))),
                                               child: Text(
                                                 "도장찍기",
                                                 style: TextStyle(
@@ -125,13 +128,13 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         ),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(20)),
+                                            BorderRadius.circular(20)),
                                         backgroundColor: HexColor("#F8EAE1"),
                                       );
                                     })
                               })
-                    ]);
-                  });
+                        ]);
+                      });
                 });
           }),
       Marker(
@@ -169,7 +172,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
       body: Stack(children: [
         GoogleMap(
           initialCameraPosition:
-              CameraPosition(target: initialCameraPosition, zoom: 16.5),
+          CameraPosition(target: initialCameraPosition, zoom: 16.5),
           mapType: MapType.normal,
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,
@@ -182,70 +185,83 @@ class _FestivalScreenState extends State<FestivalScreen> {
               padding: Platform.isIOS
                   ? EdgeInsets.all(8.w)
                   : EdgeInsets.only(bottom: 100.w, right: 8.w),
-              child: CircleAvatar(
-                radius: 28.w,
-                child: IconButton(
-                    iconSize: 28,
-                    onPressed: () async {
-                      if (await checkLocationPermission() == true) {
-                        var curLoc = await getCurrentLocationGps();
-                        _controller.animateCamera(
-                            CameraUpdate.newCameraPosition(CameraPosition(
-                                target:
-                                    LatLng(curLoc.latitude!, curLoc.longitude!),
-                                zoom: 16.5)));
-                      } else {
-                        if (Platform.isIOS) {
-                          showCupertinoDialog(
-                              context: context,
-                              builder: (context) {
-                                return CupertinoAlertDialog(
-                                  title: const Text("위치 서비스 사용"),
-                                  content: const Text(
-                                      "위치서비스를 사용할 수 없습니다.\n기기의 \"설정 > Start App > 위치\"에서\n위치서비스를 켜주세요."),
-                                  actions: [
-                                    CupertinoDialogAction(
-                                        isDefaultAction: false,
-                                        child: const Text("확인"),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        }),
-                                    CupertinoDialogAction(
-                                        isDefaultAction: false,
-                                        child: const Text("설정으로 이동"),
-                                        onPressed: () async {
-                                          await AppSettings.openAppSettings();
-                                        })
-                                  ],
-                                );
-                              });
+              child: Material(
+                borderRadius: BorderRadius.circular(28.w),
+                elevation: 8,
+                child: CircleAvatar(
+                  radius: 28.w,
+                  backgroundColor: HexColor("#425c5a"),
+                  foregroundColor: Colors.white,
+                  child: IconButton(
+                      iconSize: 28,
+                      onPressed: () async {
+                        if (await checkLocationPermission() == true) {
+                          setState(() {
+                            isGetGpsLoading = true;
+                          });
+                          var curLoc = await getCurrentLocationGps();
+                          setState(() {
+                            isGetGpsLoading = false;
+                          });
+                          _controller.animateCamera(
+                              CameraUpdate.newCameraPosition(CameraPosition(
+                                  target:
+                                  LatLng(curLoc.latitude!, curLoc.longitude!),
+                                  zoom: 16.5)));
                         } else {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text("위치 서비스 사용"),
-                                  content: const Text(
-                                      "위치서비스를 사용할 수 없습니다.\n기기의 설정에서 위치서비스를 켜주세요."),
-                                  actions: [
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text("확인")),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          AppSettings.openAppSettings();
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text("설정으로 이동")),
-                                  ],
-                                );
-                              });
+                          if (Platform.isIOS) {
+                            showCupertinoDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CupertinoAlertDialog(
+                                    title: const Text("위치 서비스 사용"),
+                                    content: const Text(
+                                        "위치서비스를 사용할 수 없습니다.\n기기의 \"설정 > Start App > 위치\"에서\n위치서비스를 켜주세요."),
+                                    actions: [
+                                      CupertinoDialogAction(
+                                          isDefaultAction: false,
+                                          child: const Text("확인"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          }),
+                                      CupertinoDialogAction(
+                                          isDefaultAction: false,
+                                          child: const Text("설정으로 이동"),
+                                          onPressed: () async {
+                                            await AppSettings.openAppSettings();
+                                          })
+                                    ],
+                                  );
+                                });
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text("위치 서비스 사용"),
+                                    content: const Text(
+                                        "위치서비스를 사용할 수 없습니다.\n기기의 설정에서 위치서비스를 켜주세요."),
+                                    actions: [
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("확인")),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            AppSettings.openAppSettings();
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("설정으로 이동")),
+                                    ],
+                                  );
+                                });
+                          }
                         }
-                      }
-                    },
-                    icon: Icon(Icons.gps_fixed)),
+                      },
+                      icon: isGetGpsLoading == false ? Icon(Icons.gps_fixed) : Icon(Icons.access_time)
+                  ),
+                ),
               ),
             )),
         Container(
