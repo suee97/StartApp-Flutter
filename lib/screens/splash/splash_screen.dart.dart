@@ -72,7 +72,8 @@ class _SplashScreenState extends State<SplashScreen> {
       /// access 토큰 로드
       await Future.delayed(const Duration(seconds: 1));
       final secureStorage = FlutterSecureStorage();
-      var ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN"); // 엑세스 토큰 로드
+      var ACCESS_TOKEN =
+          await secureStorage.read(key: "ACCESS_TOKEN"); // 엑세스 토큰 로드
 
       // access 토큰 없을 때
       if (ACCESS_TOKEN == null) {
@@ -86,32 +87,54 @@ class _SplashScreenState extends State<SplashScreen> {
             MaterialPageRoute(builder: (context) => LoginOptionScreen()),
             (route) => false);
         return;
-      } else {
-        // access 토큰 유효확인
+      }
+
+      // access 토큰 유효 확인
+      Map<String, dynamic> resData10 = {};
+      resData10["status"] = 400;
+      try {
+        var resString = await http
+            .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"), headers: {
+          "Authorization": "Bearer $ACCESS_TOKEN"
+        }).timeout(const Duration(seconds: 10));
+        resData10 = jsonDecode(utf8.decode(resString.bodyBytes));
+      } on TimeoutException catch (e) {
+        print(e);
+      } on SocketException catch (e) {
+        print(e);
+      } catch (e) {
+        print(e);
+      }
+
+      if (resData10["status"] == 200) {
+        navigator.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (route) => false);
+        return;
+      }
+
+      // 만료
+      if (resData10["status"] == 401) {
+        var REFRESH_TOKEN = await secureStorage.read(key: "REFRESH_TOKEN");
+        if (REFRESH_TOKEN == null) {
+          Common.setNonLogin(false);
+          Common.setAutoLogin(false);
+          navigator.pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => LoginOptionScreen()),
+              (route) => false);
+          return;
+        }
+
+        Map<String, dynamic> resData11 = {};
+        resData11["status"] = 400;
         try {
           var resString = await http.get(
-              Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"),
+              Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth/refresh"),
               headers: {
-                "Authorization": "Bearer $ACCESS_TOKEN"
+                "Authorization": "Bearer $ACCESS_TOKEN",
+                "Refresh": "Bearer $REFRESH_TOKEN"
               }).timeout(const Duration(seconds: 10));
-          Map<String, dynamic> resData =
-              jsonDecode(utf8.decode(resString.bodyBytes));
-          var status = resData["status"];
-
-          if (status == 200) {
-            navigator.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-                (route) => false);
-            return;
-          }
-
-          if (status == 401) {
-            var REFRESH_TOKEN = await secureStorage.read(key: "REFRESH_TOKEN");
-
-          }
-
-          // 페이지 이동
-
+          resData11 = jsonDecode(utf8.decode(resString.bodyBytes));
         } on TimeoutException catch (e) {
           print(e);
         } on SocketException catch (e) {
@@ -119,7 +142,50 @@ class _SplashScreenState extends State<SplashScreen> {
         } catch (e) {
           print(e);
         }
+
+        if (resData11["status"] == 200) {
+          final secureStorage = FlutterSecureStorage();
+          secureStorage.write(key: "ACCESS_TOKEN", value: resData11["data"][0]["accessToken"]);
+
+          Map<String, dynamic> resData12 = {};
+          resData12["status"] = 400;
+          try {
+            var resString = await http
+                .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"), headers: {
+              "Authorization": "Bearer $ACCESS_TOKEN"
+            }).timeout(const Duration(seconds: 10));
+            resData12 = jsonDecode(utf8.decode(resString.bodyBytes));
+          } on TimeoutException catch (e) {
+            print(e);
+          } on SocketException catch (e) {
+            print(e);
+          } catch (e) {
+            print(e);
+          }
+
+          if (resData12["status"] == 200) {
+            navigator.pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (route) => false);
+            return;
+          }
+          if (resData12["status"] == 401) {
+            Common.setNonLogin(false);
+            Common.setAutoLogin(false);
+            navigator.pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => LoginOptionScreen()),
+                    (route) => false);
+            return;
+          }
+        }
       }
+
+      Common.setNonLogin(false);
+      Common.setAutoLogin(false);
+      navigator.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => LoginOptionScreen()),
+              (route) => false);
+      return;
     }
   }
 

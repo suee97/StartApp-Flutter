@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/widgets/test_button.dart';
 
@@ -17,15 +18,30 @@ class ProfileScreen extends StatelessWidget {
           style: Common.startAppBarTextStyle,
         ),
       ),
-      body: Center(
-          child: TestButton(
-        onPressed: () {
-          Common.setNonLogin(false);
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-              SplashScreen()), (route) => false);
-        },
-        title: "set nonlogin false",
-      )),
+      body: Column(
+        children: [
+          TestButton(
+            onPressed: () {
+              Common.setNonLogin(false);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => SplashScreen()),
+                  (route) => false);
+            },
+            title: "set nonlogin false",
+          ),
+          TestButton(title: "logout", onPressed: () async {
+            /// 로그아웃
+            final secureStorage = FlutterSecureStorage();
+            secureStorage.write(key: "ACCESS_TOKEN", value: "");
+            secureStorage.write(key: "REFRESH_TOKEN", value: "");
+            Common.setAutoLogin(false);
+            Common.setNonLogin(false);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => SplashScreen()),
+                    (route) => false);
+          })
+        ],
+      ),
     );
   }
 }
