@@ -19,25 +19,26 @@ class LoginOptionScreen extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  TestButton(title: "로그인", onPressed: () =>
-                    {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen())
-                      )
-                    }
-                  )
+                  TestButton(
+                      title: "로그인",
+                      onPressed: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()))
+                          })
                 ],
               ),
             ),
-            TestButton(title: "로그인 없이 이용하기", onPressed: () => {
-              Common.setNonLogin(true),
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeScreen()))
-            })
+            TestButton(
+                title: "로그인 없이 이용하기",
+                onPressed: () {
+                  Common.setNonLogin(true);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => HomeScreen()),
+                      (route) => false);
+                })
           ],
         ),
       ),
