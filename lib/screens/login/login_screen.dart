@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:start_app/screens/home/home_screen.dart';
-import 'package:start_app/screens/login/pwsetting_screen.dart';
-import 'package:start_app/screens/login/signup_screen.dart';
 import 'package:start_app/screens/login/stauthcheck_screen.dart';
+import 'package:start_app/screens/login/stauthcheck_su_screen_.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:start_app/widgets/test_button.dart';
 import '../../widgets/custom_text_field.dart';
@@ -167,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SignupScreen()))
+                              builder: (context) => SignupSTAuthCheckScreen()))
                     })
           ],
         ),
