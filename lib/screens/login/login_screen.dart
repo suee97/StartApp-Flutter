@@ -7,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/pwsetting_screen.dart';
 import 'package:start_app/screens/login/signup_screen.dart';
+import 'package:start_app/screens/login/stauthcheck_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:start_app/widgets/test_button.dart';
 import '../../widgets/custom_text_field.dart';
@@ -114,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PWSettingScreen()))
+                              builder: (context) => STAuthCheckScreen()))
                     }),
             TestButton(
                 title: "회원가입",
