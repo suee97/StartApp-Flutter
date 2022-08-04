@@ -96,6 +96,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }).timeout(const Duration(seconds: 10));
                             Map<String, dynamic> resData =
                                 jsonDecode(utf8.decode(resString.bodyBytes));
+                            var status = resData["status"];
+                            if (status == 200) {
+                              if (mounted) {
+                                if (autoLoginCheckBoxState) {
+                                  Common.setAutoLogin(true);
+                                }
+                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                    HomeScreen()), (route) => false);
+                                return;
+                              }
+                            } else {
+                              // status 200 아닐 때 (auth get)
+                            }
                           } on TimeoutException catch (e) {
                             print(e);
                           } on SocketException catch (e) {
@@ -103,6 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           } catch (e) {
                             print(e);
                           }
+                        } else {
+                          // 200 아닐 때 (id/pw post)
                         }
                       })
                 ],
