@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../utils/common.dart';
 
@@ -10,7 +11,7 @@ class StatusScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("status screen", style: Common.startAppBarTextStyle,),),
       body: Center(
-        child: Text("status screen"),
+        child: Lottie.asset("assets/lottie_test.json"),
       ),
     );
   }

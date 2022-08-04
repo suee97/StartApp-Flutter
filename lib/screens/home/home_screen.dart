@@ -11,7 +11,6 @@ import 'package:start_app/screens/home/profile/profile_screen.dart';
 import 'package:start_app/screens/home/rent/rent_screen.dart';
 import 'package:start_app/screens/home/status/status_screen.dart';
 import 'package:start_app/widgets/main_widget.dart';
-
 import '../../utils/common.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -57,20 +56,22 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: HexColor("#425C5A"),
         foregroundColor: Colors.white,
         actions: [
-          Padding(
-            padding: EdgeInsets.only(top: 3.0.w),
-            child: IconButton(
-              onPressed: () => {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()))
-              },
-              icon: SvgPicture.asset("assets/icon_person.svg"),
-              iconSize: 24.w,
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-            ),
-          )
+          // Padding(
+          // padding: EdgeInsets.only(top: 3.0.w),
+          // child: IconButton(
+          IconButton(
+            onPressed: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()))
+            },
+            icon: const Icon(Icons.menu_rounded),
+            // icon: SvgPicture.asset("assets/icon_person.svg"),
+            iconSize: 24.w,
+            hoverColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+          ),
+          // )
         ],
         // leading: IconButton(
         //   onPressed: () => {
@@ -233,6 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+      backgroundColor: HexColor("#425c5a"),
     );
   }
 }

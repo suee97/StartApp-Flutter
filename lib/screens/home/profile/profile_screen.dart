@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/widgets/test_button.dart';
 
 import '../../../utils/common.dart';
@@ -9,12 +10,19 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("profile Screen", style: Common.startAppBarTextStyle,),),
-      body: Center(
-        child: TestButton(onPressed: () => {
-          Common.setNonLogin(false)
-        }, title: "set nonlogin false",)
+      appBar: AppBar(
+        title: Text(
+          "profile Screen",
+          style: Common.startAppBarTextStyle,
+        ),
       ),
+      body: Center(
+          child: TestButton(
+        onPressed: () {
+          Common.setNonLogin(false);
+        },
+        title: "set nonlogin false",
+      )),
     );
   }
 }

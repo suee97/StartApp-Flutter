@@ -75,26 +75,24 @@ class _FestivalScreenState extends State<FestivalScreen> {
                 builder: (context) {
                   return StatefulBuilder(
                       builder: (BuildContext context, StateSetter setState) {
-                        return Stack(
-                            alignment: Alignment.bottomCenter, children: [
-                          ListView(
-                            children: <Widget>[
-                              TestButton(
-                                  title: "",
-                                  onPressed: () async {
-                                    var curLoc = await getCurrentLocationGps();
-                                    var distance =
+                    return Stack(alignment: Alignment.bottomCenter, children: [
+                      ListView(
+                        children: <Widget>[
+                          TestButton(
+                              title: "",
+                              onPressed: () async {
+                                var curLoc = await getCurrentLocationGps();
+                                var distance =
                                     mp.SphericalUtil.computeDistanceBetween(
                                         mp.LatLng(curLoc.latitude!,
                                             curLoc.longitude!),
                                         mp.LatLng(37.6318730, 127.0771544));
-                                    if (distance > 50) {}
-                                  }),
-                            ],
-                          ),
-                          StampEventJoin(
-                              onPressed: () =>
-                              {
+                                if (distance > 50) {}
+                              }),
+                        ],
+                      ),
+                      StampEventJoin(
+                          onPressed: () => {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -102,7 +100,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         title: const Text("스탬프 방문 도장 이벤트"),
                                         content: Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Text(
@@ -114,8 +112,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                               decoration: BoxDecoration(
                                                   color: HexColor("#425C5A"),
                                                   borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(15))),
+                                                      const BorderRadius.all(
+                                                          Radius.circular(15))),
                                               child: Text(
                                                 "도장찍기",
                                                 style: TextStyle(
@@ -128,13 +126,13 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         ),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius.circular(20)),
+                                                BorderRadius.circular(20)),
                                         backgroundColor: HexColor("#F8EAE1"),
                                       );
                                     })
                               })
-                        ]);
-                      });
+                    ]);
+                  });
                 });
           }),
       Marker(
@@ -163,16 +161,19 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("축제", style: Common.startAppBarTextStyle,),
+        title: Text(
+          "축제",
+          style: Common.startAppBarTextStyle,
+        ),
         foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor("#92AEAC"),
         centerTitle: true,
         elevation: 0,
       ),
       body: Stack(children: [
         GoogleMap(
           initialCameraPosition:
-          CameraPosition(target: initialCameraPosition, zoom: 16.5),
+              CameraPosition(target: initialCameraPosition, zoom: 16.5),
           mapType: MapType.normal,
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,
@@ -190,7 +191,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                 elevation: 8,
                 child: CircleAvatar(
                   radius: 28.w,
-                  backgroundColor: HexColor("#425c5a"),
+                  backgroundColor: HexColor("#EE795F"),
                   foregroundColor: Colors.white,
                   child: IconButton(
                       iconSize: 28,
@@ -205,8 +206,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
                           });
                           _controller.animateCamera(
                               CameraUpdate.newCameraPosition(CameraPosition(
-                                  target:
-                                  LatLng(curLoc.latitude!, curLoc.longitude!),
+                                  target: LatLng(
+                                      curLoc.latitude!, curLoc.longitude!),
                                   zoom: 16.5)));
                         } else {
                           if (Platform.isIOS) {
@@ -259,8 +260,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
                           }
                         }
                       },
-                      icon: isGetGpsLoading == false ? Icon(Icons.gps_fixed) : Icon(Icons.access_time)
-                  ),
+                      icon: isGetGpsLoading == false
+                          ? Icon(Icons.gps_fixed)
+                          : Icon(Icons.access_time)),
                 ),
               ),
             )),
@@ -272,7 +274,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
               GestureDetector(
                 child: Padding(
                   padding: EdgeInsets.all(8.w),
-                  child: SvgPicture.asset("assets/icon_check_stamp.svg"),
+                  child: SvgPicture.asset("assets/icon_check_stamp_status.svg"),
                 ),
                 onTap: () {
                   showDialog(

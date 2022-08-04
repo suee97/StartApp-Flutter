@@ -41,9 +41,9 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       notifyText = "비로그인 정보 확인중입니다.";
     });
-    if (await Common.isNonLogin()) {
-      navigator.pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeScreen()));
+    if (await Common.isNonLogin() && await Common.isAutoLogin()) {
+      navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+          HomeScreen()), (route) => false);
       return;
     }
 

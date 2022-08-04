@@ -61,7 +61,7 @@ class Common {
     await pref.setBool('isAutoLogin', value);
   }
 
-  // 로그인 없이 이용하는지에 대한 정보
+  // 비로그인 여부 확인
   static Future<bool> isNonLogin() async {
     final pref = await SharedPreferences.getInstance();
     bool? tmp = pref.getBool("isNonLogin");
