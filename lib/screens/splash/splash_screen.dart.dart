@@ -45,8 +45,9 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     await Future.delayed(const Duration(seconds: 1));
     if (await Common.isNonLogin() && !await Common.isAutoLogin()) {
-      navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-          HomeScreen()), (route) => false);
+      navigator.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (route) => false);
       return;
     }
 
@@ -56,11 +57,11 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     await Future.delayed(const Duration(seconds: 1));
     if (!await Common.isAutoLogin() && !await Common.isAutoLogin()) {
-      navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-          LoginOptionScreen()), (route) => false);
+      navigator.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => LoginOptionScreen()),
+          (route) => false);
       return;
     }
-
 
     /// 자동로그인
     if (!await Common.isNonLogin() && await Common.isAutoLogin()) {
@@ -68,11 +69,12 @@ class _SplashScreenState extends State<SplashScreen> {
         notifyText = "자동로그인 정보 확인중입니다.";
       });
 
-
       /// access 토큰 로드
       await Future.delayed(const Duration(seconds: 1));
       final secureStorage = FlutterSecureStorage();
-      var ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
+      var ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN"); // 엑세스 토큰 로드
+
+      // access 토큰 없을 때
       if (ACCESS_TOKEN == null) {
         setState(() {
           notifyText = "access token이 존재하지 않습니다. \n1초 후 로그인화면으로 이동합니다.";
@@ -80,21 +82,41 @@ class _SplashScreenState extends State<SplashScreen> {
         await Future.delayed(const Duration(seconds: 1));
         Common.setNonLogin(false);
         Common.setAutoLogin(false);
-        navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-            LoginOptionScreen()), (route) => false);
+        navigator.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => LoginOptionScreen()),
+            (route) => false);
         return;
       } else {
+        // access 토큰 유효확인
         try {
-          var resString = await http
-              .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"))
-              .timeout(const Duration(seconds: 10));
-          Map<String, dynamic> resData = jsonDecode(utf8.decode(resString.bodyBytes));
+          var resString = await http.get(
+              Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"),
+              headers: {
+                "Authorization": "Bearer $ACCESS_TOKEN"
+              }).timeout(const Duration(seconds: 10));
+          Map<String, dynamic> resData =
+              jsonDecode(utf8.decode(resString.bodyBytes));
+          var status = resData["status"];
 
-        } on TimeoutException catch(e) {
+          if (status == 200) {
+            navigator.pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                (route) => false);
+            return;
+          }
+
+          if (status == 401) {
+            var REFRESH_TOKEN = await secureStorage.read(key: "REFRESH_TOKEN");
+
+          }
+
+          // 페이지 이동
+
+        } on TimeoutException catch (e) {
           print(e);
-        } on SocketException catch(e) {
+        } on SocketException catch (e) {
           print(e);
-        } catch(e) {
+        } catch (e) {
           print(e);
         }
       }
@@ -130,10 +152,10 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             TestButton(
                 title: "next",
-                onPressed: () =>
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(
-                            builder: (context) => LoginOptionScreen()))),
+                onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginOptionScreen()))),
             Text(
               notifyText,
               style: const TextStyle(fontSize: 28),

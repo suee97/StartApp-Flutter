@@ -60,17 +60,32 @@ class _LoginScreenState extends State<LoginScreen> {
                           "password": pwController.text
                         };
 
-                        var resString = await http.post(
-                            Uri.parse(
-                                "${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
-                            headers: {"Content-Type": "application/json"},
-                            body: json.encode(bodyData));
-                        Map<String, dynamic> resData =
-                            jsonDecode(utf8.decode(resString.bodyBytes));
-                        print(resData);
+                        Map<String, dynamic> resData1 = {};
+                        resData1["status"] = 400;
 
-                        if (resData["status"] == 200) {
-                          List<dynamic> data = resData["data"];
+                        Map<String, dynamic> resData2 = {};
+                        resData2["status"] = 400;
+
+                        try {
+                          var resString = await http
+                              .post(
+                                  Uri.parse(
+                                      "${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
+                                  headers: {"Content-Type": "application/json"},
+                                  body: json.encode(bodyData))
+                              .timeout(const Duration(seconds: 10));
+                          resData1 =
+                              jsonDecode(utf8.decode(resString.bodyBytes));
+                        } on TimeoutException catch (e) {
+                          print(e);
+                        } on SocketException catch (e) {
+                          print(e);
+                        } catch (e) {
+                          print(e);
+                        }
+
+                        if (resData1["status"] == 200) {
+                          List<dynamic> data = resData1["data"];
 
                           var AT = data[0]["accessToken"];
                           var RT = data[0]["refreshToken"];
@@ -94,21 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 headers: {
                                   "Authorization": "Bearer $ACCESS_TOKEN"
                                 }).timeout(const Duration(seconds: 10));
-                            Map<String, dynamic> resData =
+                            resData2 =
                                 jsonDecode(utf8.decode(resString.bodyBytes));
-                            var status = resData["status"];
-                            if (status == 200) {
-                              if (mounted) {
-                                if (autoLoginCheckBoxState) {
-                                  Common.setAutoLogin(true);
-                                }
-                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                                    HomeScreen()), (route) => false);
-                                return;
-                              }
-                            } else {
-                              // status 200 아닐 때 (auth get)
-                            }
                           } on TimeoutException catch (e) {
                             print(e);
                           } on SocketException catch (e) {
@@ -116,9 +118,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           } catch (e) {
                             print(e);
                           }
-                        } else {
-                          // 200 아닐 때 (id/pw post)
+
+                          if (resData2["status"] == 200) {
+                            if (!mounted) return;
+                            if (autoLoginCheckBoxState) {
+                              Common.setAutoLogin(true);
+                            }
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()),
+                                (route) => false);
+                          }
                         }
+
+                        return;
                       })
                 ],
               ),
