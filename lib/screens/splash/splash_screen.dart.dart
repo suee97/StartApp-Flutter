@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/loginoption_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:start_app/widgets/test_button.dart';
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, SocketException;
 import '../login/login_screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -42,36 +43,62 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       notifyText = "비로그인 정보 확인중입니다.";
     });
-    if (await Common.isNonLogin() && await Common.isAutoLogin()) {
+    await Future.delayed(const Duration(seconds: 1));
+    if (await Common.isNonLogin() && !await Common.isAutoLogin()) {
       navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
           HomeScreen()), (route) => false);
       return;
     }
 
-    /// load access token
+    /// 일반 로그인
     setState(() {
-      notifyText = "access token 확인중입니다.";
+      notifyText = "일반 로그인";
     });
-    final storage = FlutterSecureStorage();
-    var ACCESS_TOKEN = await storage.read(key: "ACCESS_TOKEN");
-    if (ACCESS_TOKEN == null) {
-      setState(() {
-        notifyText = "access token이 존재하지 않습니다. \n2초 후 로그인화면으로 이동합니다.";
-      });
-      await Future.delayed(const Duration(seconds: 2));
-      navigator.pushReplacement(
-          MaterialPageRoute(builder: (context) => LoginOptionScreen()));
+    await Future.delayed(const Duration(seconds: 1));
+    if (!await Common.isAutoLogin() && !await Common.isAutoLogin()) {
+      navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+          LoginOptionScreen()), (route) => false);
       return;
     }
 
-    /// check access token
-    final baseUrl = dotenv.get("DEV_API_BASE_URL");
-    try {
-      Map<String, String> param01 = {"ACCESS_TOKEN": ACCESS_TOKEN};
-      var res01String = http.post(Uri.parse(baseUrl), headers: param01);
-    } catch (e) {
-      print("error : $e");
-    }
+
+    // /// 자동로그인
+    // if (!await Common.isNonLogin() && await Common.isAutoLogin()) {
+    //   setState(() {
+    //     notifyText = "자동로그인 정보 확인중입니다.";
+    //   });
+    //
+    //
+    //   /// access 토큰 로드
+    //   await Future.delayed(const Duration(seconds: 1));
+    //   final secureStorage = FlutterSecureStorage();
+    //   var ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
+    //   if (ACCESS_TOKEN == null) {
+    //     setState(() {
+    //       notifyText = "access token이 존재하지 않습니다. \n1초 후 로그인화면으로 이동합니다.";
+    //     });
+    //     await Future.delayed(const Duration(seconds: 1));
+    //     Common.setNonLogin(false);
+    //     Common.setAutoLogin(false);
+    //     navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+    //         LoginOptionScreen()), (route) => false);
+    //     return;
+    //   } else {
+    //     try {
+    //       var resString = await http
+    //           .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"))
+    //           .timeout(const Duration(seconds: 10));
+    //       Map<String, dynamic> resData = jsonDecode(utf8.decode(resString.bodyBytes));
+    //
+    //     } on TimeoutException catch(e) {
+    //       print(e);
+    //     } on SocketException catch(e) {
+    //       print(e);
+    //     } catch(e) {
+    //       print(e);
+    //     }
+    //   }
+    // }
   }
 
   @override
@@ -103,8 +130,10 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             TestButton(
                 title: "next",
-                onPressed: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LoginOptionScreen()))),
+                onPressed: () =>
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(
+                            builder: (context) => LoginOptionScreen()))),
             Text(
               notifyText,
               style: const TextStyle(fontSize: 28),
