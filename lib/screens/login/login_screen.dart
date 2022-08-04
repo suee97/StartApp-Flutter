@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/pwsetting_screen.dart';
 import 'package:start_app/screens/login/signup_screen.dart';
@@ -51,6 +52,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     label: "Password",
                     controller: pwController,
                     isObscure: false,
+                  ),
+                  Row(
+                    children: [
+                      Checkbox(value: autoLoginCheckBoxState, onChanged: (value) {
+                        setState((){
+                          autoLoginCheckBoxState = value!;
+                        });
+                      }),
+                      Text("자동 로그인", style: TextStyle(fontSize: 10.sp)),
+                      TextButton(onPressed: (){
+                        studentIdController.text = "17101246";
+                        pwController.text = "qwer1234";
+                      }, child: Text("ID/PW입력"))
+                    ],
                   ),
                   TestButton(
                       title: "로그인",
@@ -119,6 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         } else {
                           // 200 아닐 때 (id/pw post)
                         }
+
                       })
                 ],
               ),
