@@ -27,7 +27,7 @@ class PlanScreen extends StatelessWidget {
           const StackLine(),
           DraggableScrollableSheet(
             initialChildSize: 0.58,
-            minChildSize: 0.15,
+            minChildSize: 0.58,
             builder: (BuildContext context, ScrollController scrollController) {
               return SingleChildScrollView(
                 controller: scrollController,
@@ -52,7 +52,7 @@ class PlanBottomSheet extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       margin: const EdgeInsets.all(0),
       child: Container(
-        height: 640.h,
+        height: 590.h,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: Colors.white
@@ -94,6 +94,7 @@ class CustomDraggingHandle extends StatelessWidget {
     return Container(
       height: 10,
       width: 100,
+      padding: EdgeInsets.only(bottom: 5), //적용X
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
         color: HexColor("#92AEAC"),),

@@ -1,6 +1,8 @@
 import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:start_app/screens/home/home_screen.dart';
+import 'package:start_app/screens/login/pwsetting_screen.dart';
+import 'package:start_app/screens/login/signup_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:start_app/widgets/test_button.dart';
 import '../../widgets/custom_text_field.dart';
@@ -33,23 +35,23 @@ class LoginScreen extends StatelessWidget {
                     isObscure: true,
                   ),
                   TestButton(title: "로그인", onPressed: () => {
-
+                    // Common.setNonLogin(true),
                   })
                 ],
               ),
             ),
+            TestButton(title: "비밀번호 찾기", onPressed: () => {
+              // Common.setNonLogin(true),
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PWSettingScreen()))
+            }),
             TestButton(title: "회원가입", onPressed: () => {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => HomeScreen()))
-            }),
-            TestButton(title: "로그인 없이 이용하기", onPressed: () => {
-              Common.setNonLogin(true),
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeScreen()))
+                      builder: (context) => SignupScreen()))
             })
           ],
         ),
