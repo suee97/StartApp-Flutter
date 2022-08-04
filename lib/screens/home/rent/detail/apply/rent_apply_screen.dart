@@ -28,7 +28,7 @@ class RentApplyScreen extends StatelessWidget {
               height: double.infinity,
               margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
               child: SvgPicture.asset(
-                "assets/rent_apply_background.svg",
+                "assets/background_rent_apply.svg",
                 fit: BoxFit.fill,
               )),
           Column(

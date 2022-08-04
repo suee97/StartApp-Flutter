@@ -1,17 +1,17 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/event/event_screen.dart';
 import 'package:start_app/screens/home/festival/festival_screen.dart';
 import 'package:start_app/screens/home/info/info_screen.dart';
 import 'package:start_app/screens/home/plan/plan_screen.dart';
-import 'package:start_app/screens/home/profile/setting_screen.dart';
+import 'package:start_app/screens/home/setting/setting_screen.dart';
 import 'package:start_app/screens/home/rent/rent_screen.dart';
 import 'package:start_app/screens/home/status/status_screen.dart';
 import 'package:start_app/widgets/main_widget.dart';
 import '../../utils/common.dart';
+import '../../widgets/yellow_line.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -138,13 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Column(children: [
-                Container(
-                  width: double.infinity,
-                  height: 12.h,
-                  child: SvgPicture.asset(
-                    "assets/yellow_line.svg",
-                  ),
-                ),
+                const YellowLine(),
                 SizedBox(
                   height: 12.h,
                 ),
@@ -222,13 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 8.h,
                 ),
-                Container(
-                  width: double.infinity,
-                  height: 12.h,
-                  child: SvgPicture.asset(
-                    "assets/yellow_line.svg",
-                  ),
-                ),
+                const YellowLine(),
               ]),
             ],
           ),
