@@ -7,7 +7,7 @@ import 'package:start_app/screens/home/event/event_screen.dart';
 import 'package:start_app/screens/home/festival/festival_screen.dart';
 import 'package:start_app/screens/home/info/info_screen.dart';
 import 'package:start_app/screens/home/plan/plan_screen.dart';
-import 'package:start_app/screens/home/profile/profile_screen.dart';
+import 'package:start_app/screens/home/profile/setting_screen.dart';
 import 'package:start_app/screens/home/rent/rent_screen.dart';
 import 'package:start_app/screens/home/status/status_screen.dart';
 import 'package:start_app/widgets/main_widget.dart';
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: () => {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()))
+                  MaterialPageRoute(builder: (context) => SettingScreen()))
             },
             icon: const Icon(Icons.menu_rounded),
             // icon: SvgPicture.asset("assets/icon_person.svg"),

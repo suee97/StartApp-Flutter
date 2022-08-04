@@ -6,9 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/loginoption_screen.dart';
 import 'package:start_app/utils/common.dart';
-import 'package:start_app/widgets/test_button.dart';
 import 'dart:io' show Platform, SocketException;
-import '../login/login_screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -216,12 +214,6 @@ class _SplashScreenState extends State<SplashScreen> {
               const CircularProgressIndicator(
                 color: Colors.black,
               ),
-            TestButton(
-                title: "next",
-                onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginOptionScreen()))),
             Text(
               notifyText,
               style: const TextStyle(fontSize: 28),

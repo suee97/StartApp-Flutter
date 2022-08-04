@@ -1,18 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/widgets/test_button.dart';
 import 'package:http/http.dart' as http;
 import '../../../utils/common.dart';
 import '../../splash/splash_screen.dart.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class SettingScreen extends StatelessWidget {
+  const SettingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
