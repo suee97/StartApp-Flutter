@@ -62,43 +62,43 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
 
-    // /// 자동로그인
-    // if (!await Common.isNonLogin() && await Common.isAutoLogin()) {
-    //   setState(() {
-    //     notifyText = "자동로그인 정보 확인중입니다.";
-    //   });
-    //
-    //
-    //   /// access 토큰 로드
-    //   await Future.delayed(const Duration(seconds: 1));
-    //   final secureStorage = FlutterSecureStorage();
-    //   var ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
-    //   if (ACCESS_TOKEN == null) {
-    //     setState(() {
-    //       notifyText = "access token이 존재하지 않습니다. \n1초 후 로그인화면으로 이동합니다.";
-    //     });
-    //     await Future.delayed(const Duration(seconds: 1));
-    //     Common.setNonLogin(false);
-    //     Common.setAutoLogin(false);
-    //     navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-    //         LoginOptionScreen()), (route) => false);
-    //     return;
-    //   } else {
-    //     try {
-    //       var resString = await http
-    //           .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"))
-    //           .timeout(const Duration(seconds: 10));
-    //       Map<String, dynamic> resData = jsonDecode(utf8.decode(resString.bodyBytes));
-    //
-    //     } on TimeoutException catch(e) {
-    //       print(e);
-    //     } on SocketException catch(e) {
-    //       print(e);
-    //     } catch(e) {
-    //       print(e);
-    //     }
-    //   }
-    // }
+    /// 자동로그인
+    if (!await Common.isNonLogin() && await Common.isAutoLogin()) {
+      setState(() {
+        notifyText = "자동로그인 정보 확인중입니다.";
+      });
+
+
+      /// access 토큰 로드
+      await Future.delayed(const Duration(seconds: 1));
+      final secureStorage = FlutterSecureStorage();
+      var ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
+      if (ACCESS_TOKEN == null) {
+        setState(() {
+          notifyText = "access token이 존재하지 않습니다. \n1초 후 로그인화면으로 이동합니다.";
+        });
+        await Future.delayed(const Duration(seconds: 1));
+        Common.setNonLogin(false);
+        Common.setAutoLogin(false);
+        navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+            LoginOptionScreen()), (route) => false);
+        return;
+      } else {
+        try {
+          var resString = await http
+              .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"))
+              .timeout(const Duration(seconds: 10));
+          Map<String, dynamic> resData = jsonDecode(utf8.decode(resString.bodyBytes));
+
+        } on TimeoutException catch(e) {
+          print(e);
+        } on SocketException catch(e) {
+          print(e);
+        } catch(e) {
+          print(e);
+        }
+      }
+    }
   }
 
   @override

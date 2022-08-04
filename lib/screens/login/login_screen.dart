@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:start_app/screens/home/home_screen.dart';
@@ -19,7 +21,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   bool autoLoginCheckBoxState = false;
 
   @override
@@ -58,19 +59,50 @@ class _LoginScreenState extends State<LoginScreen> {
                           "password": pwController.text
                         };
 
-                        print(bodyData);
-
                         var resString = await http.post(
                             Uri.parse(
                                 "${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
                             headers: {"Content-Type": "application/json"},
-                            body: json.encode(bodyData)
-                        );
+                            body: json.encode(bodyData));
                         Map<String, dynamic> resData =
                             jsonDecode(utf8.decode(resString.bodyBytes));
                         print(resData);
 
-                        
+                        if (resData["status"] == 200) {
+                          List<dynamic> data = resData["data"];
+
+                          var AT = data[0]["accessToken"];
+                          var RT = data[0]["refreshToken"];
+
+                          print("access Token : $AT");
+                          print("refresh Token : $RT");
+
+                          final secureStorage = FlutterSecureStorage();
+                          await secureStorage.write(
+                              key: "ACCESS_TOKEN", value: AT);
+                          await secureStorage.write(
+                              key: "REFRESH_TOKEN", value: RT);
+
+                          var ACCESS_TOKEN =
+                              await secureStorage.read(key: "ACCESS_TOKEN");
+
+                          try {
+                            var resString = await http.get(
+                                Uri.parse(
+                                    "${dotenv.get("DEV_API_BASE_URL")}/auth"),
+                                headers: {
+                                  "Authorization": "Bearer $ACCESS_TOKEN"
+                                }).timeout(const Duration(seconds: 10));
+                            Map<String, dynamic> resData =
+                                jsonDecode(utf8.decode(resString.bodyBytes));
+                          } on TimeoutException catch (e) {
+                            print(e);
+                          } on SocketException catch (e) {
+                            print(e);
+                          } catch (e) {
+                            print(e);
+                          }
+                        }
                       })
                 ],
               ),
