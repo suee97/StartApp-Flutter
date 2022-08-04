@@ -8,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lottie/lottie.dart';
 import 'package:start_app/screens/home/home_screen.dart';
-import 'package:start_app/screens/login/loginoption_screen.dart';
+import 'package:start_app/screens/login/login_option_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'dart:io' show Platform, SocketException;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
