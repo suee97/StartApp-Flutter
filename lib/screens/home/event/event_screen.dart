@@ -10,19 +10,16 @@ import '../../../models/event_list.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform, SocketException;
 import 'package:flutter/cupertino.dart';
-import 'package:logger/logger.dart';
 import '../../../utils/common.dart';
 
 class EventScreen extends StatefulWidget {
-  EventScreen({Key? key}) : super(key: key);
+  const EventScreen({Key? key}) : super(key: key);
 
   @override
   State<EventScreen> createState() => _EventScreenState();
 }
 
 class _EventScreenState extends State<EventScreen> {
-  var logger = Logger();
-
   @override
   void initState() {
     fetchEventList();
@@ -42,7 +39,7 @@ class _EventScreenState extends State<EventScreen> {
         event: event,
         mainColorHex: "#9AA695",
         buttonHexColor: "#F8EAE1",
-        buttonTitle: "이벤트 시작 전입니다",
+        buttonTitle: Common.calDday(event.startTime),
       );
     } else {
       return EventDetailScreen(
@@ -79,7 +76,7 @@ class _EventScreenState extends State<EventScreen> {
         }
       } else {
         /// null
-        logger.d("${resData["status"]}");
+        print("${resData["status"]}");
         return Future.error("");
       }
 
