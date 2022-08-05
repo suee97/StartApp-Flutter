@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:lottie/lottie.dart';
 import 'package:start_app/screens/home/home_screen.dart';
-import 'package:start_app/screens/login/loginoption_screen.dart';
+import 'package:start_app/screens/login/login_option_screen.dart';
 import 'package:start_app/utils/common.dart';
-import 'package:start_app/widgets/test_button.dart';
 import 'dart:io' show Platform, SocketException;
-import '../login/login_screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -145,15 +147,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
         if (resData11["status"] == 200) {
           final secureStorage = FlutterSecureStorage();
-          secureStorage.write(key: "ACCESS_TOKEN", value: resData11["data"][0]["accessToken"]);
+          secureStorage.write(
+              key: "ACCESS_TOKEN", value: resData11["data"][0]["accessToken"]);
 
           Map<String, dynamic> resData12 = {};
           resData12["status"] = 400;
           try {
-            var resString = await http
-                .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"), headers: {
-              "Authorization": "Bearer $ACCESS_TOKEN"
-            }).timeout(const Duration(seconds: 10));
+            var resString = await http.get(
+                Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"),
+                headers: {
+                  "Authorization": "Bearer $ACCESS_TOKEN"
+                }).timeout(const Duration(seconds: 10));
             resData12 = jsonDecode(utf8.decode(resString.bodyBytes));
           } on TimeoutException catch (e) {
             print(e);
@@ -166,7 +170,7 @@ class _SplashScreenState extends State<SplashScreen> {
           if (resData12["status"] == 200) {
             navigator.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => HomeScreen()),
-                    (route) => false);
+                (route) => false);
             return;
           }
           if (resData12["status"] == 401) {
@@ -174,7 +178,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Common.setAutoLogin(false);
             navigator.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => LoginOptionScreen()),
-                    (route) => false);
+                (route) => false);
             return;
           }
         }
@@ -184,7 +188,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Common.setAutoLogin(false);
       navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => LoginOptionScreen()),
-              (route) => false);
+          (route) => false);
       return;
     }
   }
@@ -199,36 +203,42 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
+      body: Container(
+        width: double.infinity,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/STart_logo_light.png',
-              height: 280,
+            SizedBox(height: 150.h,),
+            Container(
+              width: 250.w,
+              height: 250.h,
+              child: Lottie.asset(
+                "assets/lottie_splash.json",
+              ),
             ),
+            SizedBox(height: 30.h,),
             if (Platform.isIOS)
               const CupertinoActivityIndicator(
                 radius: 12,
               )
             else
               const CircularProgressIndicator(
-                color: Colors.black,
+                color: Colors.white,
               ),
-            TestButton(
-                title: "next",
-                onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginOptionScreen()))),
+            SizedBox(height: 50.h,),
             Text(
               notifyText,
-              style: const TextStyle(fontSize: 28),
-            )
+              style: const TextStyle(fontSize: 28, color: Colors.white),
+            ),
+            SizedBox(height: 10.h,),
+            Container(
+                width: 100.w,
+                height: 40.h,
+                child: SvgPicture.asset("assets/logo_start.svg", color: Colors.white,)),
           ],
         ),
       ),
+      backgroundColor: HexColor("#035338"),
     );
   }
 }
