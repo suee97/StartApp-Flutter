@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class RentCustomTextField extends StatelessWidget {
   const RentCustomTextField(
@@ -7,7 +8,7 @@ class RentCustomTextField extends StatelessWidget {
       required this.controller,
       required this.isObscure,
       required this.label,
-        required this.labelHint,
+      required this.labelHint,
       required this.inputType})
       : super(key: key);
 
@@ -23,15 +24,26 @@ class RentCustomTextField extends StatelessWidget {
       controller: controller,
       maxLines: 1,
       decoration: InputDecoration(
-        labelText: label,
-        hintText: labelHint,
-        labelStyle: TextStyle(color: Colors.black, fontSize: 21.5.sp, fontWeight: FontWeight.w400),
-        hintStyle: TextStyle(color: Colors.grey, fontSize: 14.5.sp, fontWeight: FontWeight.w300)
-      ),
+          labelText: label,
+          hintText: labelHint,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: HexColor("#425c5a")),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: HexColor("#425c5a")),
+          ),
+          labelStyle: TextStyle(
+              color: HexColor("#425c5a"),
+              fontSize: 17.5.sp,
+              fontWeight: FontWeight.w400),
+          hintStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 14.5.sp,
+              fontWeight: FontWeight.w300)),
       style: TextStyle(color: Colors.black, fontSize: 17.5.sp),
-      enableSuggestions: true,
       obscureText: isObscure,
-        keyboardType: inputType
+      keyboardType: inputType,
+      cursorColor: HexColor("#425c5a"),
     );
   }
 }
