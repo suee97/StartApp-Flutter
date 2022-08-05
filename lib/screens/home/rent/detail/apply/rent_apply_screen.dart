@@ -63,11 +63,12 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
               )),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
                   width: 300.w,
                   height: 40.h,
-                  margin: EdgeInsets.only(top: 30.h, bottom: 7.5.h, left: 30.w),
+                  margin: EdgeInsets.only(top: 20.h, bottom: 0.h, left: 30.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -89,9 +90,8 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                   DottedLineWidget(),
                 ],
               ),
-              SizedBox(height: 10.h),
               Padding(
-                padding: EdgeInsets.only(top: 10.5.h, left: 30.w),
+                padding: EdgeInsets.only( left: 30.w),
                 child: Text(
                   "기간",
                   textAlign: TextAlign.left,
@@ -103,7 +103,6 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
               ),
               _selectedDateRange == null
                   ? Container(
-                      height: 30.h,
                       padding: EdgeInsets.only(left: 30.w),
                       child: Row(children: [
                         Text('0000.00.00 ~ 0000.00.00',
@@ -112,7 +111,9 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                           width: 12.w,
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            _show();
+                          },
                           child: Icon(
                             Icons.date_range,
                             size: 22,
@@ -144,22 +145,20 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     isObscure: false,
                     inputType: TextInputType.text),
               ),
-              SizedBox(
-                height: 10.h,
-              ),
+
               Padding(
                 padding: EdgeInsets.only(left: 30.w, right: 30.w),
-                child: RentCustomTextField(
-                  label: "수량",
-                  labelHint: '대여할 물품의 수량을 적어주세요.',
-                  controller: rentamountControlloer,
-                  isObscure: false,
-                  inputType: TextInputType.number,
+                child: Container(
+                  child: RentCustomTextField(
+                    label: "수량",
+                    labelHint: '대여할 물품의 수량을 적어주세요.',
+                    controller: rentamountControlloer,
+                    isObscure: false,
+                    inputType: TextInputType.number,
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 14.h,
-              ),
+
               Padding(
                 padding: EdgeInsets.only(left: 30.w),
                 child: Text(
@@ -220,9 +219,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                   ),
                 ]),
               ),
-              SizedBox(
-                height: 10.h,
-              ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
@@ -230,12 +227,13 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                 ],
               ),
               GestureDetector(
-                onTap: () => {},
+                onTap: () {
+                },
                 child: Container(
                   width: 290.w,
                   height: 44.h,
                   margin: EdgeInsets.only(
-                      top: 10.h, left: 35.w, right: 35.w, bottom: 10.h),
+                       left: 35.w, right: 35.w, bottom: 20.h),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       color: HexColor("#EE795F"),
