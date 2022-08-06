@@ -44,6 +44,15 @@ class Common {
         .inHours / 24).round()}";
   }
 
+  static String dateRange(String startTime, String endTime) {
+      // 2022-07-12T22:23:21.159220
+      // to
+      // 07.12
+
+      return " ${startTime.substring(2, 4)}.${startTime.substring(5, 7)}.${startTime.substring(
+          8, 10)} ~ ${endTime.substring(2, 4)}.${endTime.substring(5, 7)}.${endTime.substring(8, 10)}";
+    }
+
   // 자동로그인 여부 확인
   static Future<bool> isAutoLogin() async {
     final pref = await SharedPreferences.getInstance();
