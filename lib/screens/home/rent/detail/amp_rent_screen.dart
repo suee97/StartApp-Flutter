@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/rent/detail/apply/rent_apply_screen.dart';
+import 'package:start_app/screens/home/rent/detail/rent_calendar.dart';
 import 'package:start_app/screens/home/rent/detail/rent_detail_text.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../../models/meeting.dart';
@@ -62,25 +63,26 @@ class AmpRentScreen extends StatelessWidget {
                       topRight: Radius.circular(30))),
               child: Padding(
                 padding: EdgeInsets.only(top: 4.h),
-                child: SfCalendar(
-                  view: CalendarView.month,
-                  headerDateFormat: "MMMM",
-                  headerStyle: CalendarHeaderStyle(
-                      textAlign: TextAlign.center,
-                      textStyle: TextStyle(fontSize: 11.5.sp)),
-                  monthViewSettings: const MonthViewSettings(
-                      appointmentDisplayCount: 4,
-                      appointmentDisplayMode:
-                          MonthAppointmentDisplayMode.appointment,
-                      monthCellStyle: MonthCellStyle(
-                          textStyle: TextStyle(color: Colors.black))),
-                  dataSource: MeetingDataSource(_getDataSource()),
-                  todayHighlightColor: Colors.orange,
-                  todayTextStyle: const TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w700),
-                  selectionDecoration: const BoxDecoration(),
-                  cellBorderColor: HexColor("#425c5a"),
-                ),
+                child: RentCalendar()
+                // child: SfCalendar(
+                //   view: CalendarView.month,
+                //   headerDateFormat: "MMMM",
+                //   headerStyle: CalendarHeaderStyle(
+                //       textAlign: TextAlign.center,
+                //       textStyle: TextStyle(fontSize: 11.5.sp)),
+                //   monthViewSettings: const MonthViewSettings(
+                //       appointmentDisplayCount: 4,
+                //       appointmentDisplayMode:
+                //           MonthAppointmentDisplayMode.appointment,
+                //       monthCellStyle: MonthCellStyle(
+                //           textStyle: TextStyle(color: Colors.black))),
+                //   dataSource: MeetingDataSource(_getDataSource()),
+                //   todayHighlightColor: Colors.orange,
+                //   todayTextStyle: const TextStyle(
+                //       color: Colors.black, fontWeight: FontWeight.w700),
+                //   selectionDecoration: const BoxDecoration(),
+                //   cellBorderColor: HexColor("#425c5a"),
+                // ),
               ),
             ),
             Container(

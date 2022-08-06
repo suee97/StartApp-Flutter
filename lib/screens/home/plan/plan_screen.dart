@@ -23,11 +23,15 @@ class PlanScreen extends StatelessWidget {
       ),
       body: Stack(
         children: <Widget>[
-          PlanCalendar(),
-          const StackLine(),
+          Container(
+            padding: EdgeInsets.only(top: 5.h, bottom: 5.h, right: 5.h, left: 5.w),
+              child:
+              Stack(
+                  children: [PlanCalendar(),
+          const StackLine(),])),
           DraggableScrollableSheet(
-            initialChildSize: 0.58,
-            minChildSize: 0.58,
+            initialChildSize: 0.40,
+            minChildSize: 0.40,
             builder: (BuildContext context, ScrollController scrollController) {
               return SingleChildScrollView(
                 controller: scrollController,

@@ -10,8 +10,8 @@ class PlanCalendar extends StatelessWidget {
     return Container(
       color: HexColor("#425C5A"),
       padding: EdgeInsets.only(left: 10.w, right: 10.w),
-      child: Column(children: [
-        SfCalendar(
+      height: 330.h,
+      child: SfCalendar(
           view: CalendarView.month,
           cellEndPadding: 5,
           headerStyle: CalendarHeaderStyle(
@@ -63,7 +63,6 @@ class PlanCalendar extends StatelessWidget {
                 trailingDatesBackgroundColor: Colors.transparent),
           ),
         ),
-      ]),
     );
   }
 
