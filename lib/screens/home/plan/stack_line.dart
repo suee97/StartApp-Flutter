@@ -8,10 +8,10 @@ class StackLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250.h,
+      height: 300.h,
       width: 2.w,
       margin: EdgeInsets.only(top: 42.h, left: 9.w),
-      color: HexColor("425c5a"),
+      color: HexColor("#425C5A"),
     );
   }
 }
