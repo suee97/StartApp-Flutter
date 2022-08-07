@@ -1,8 +1,16 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:start_app/models/meeting.dart';
 
 class PlanNotifier extends ChangeNotifier {
   int _curDay = DateTime.now().day;
   int _curWeekDay = DateTime.now().weekday;
+  List<Meeting> _meetingList = [];
 
   int getCurDay() {
     return _curDay;
@@ -36,6 +44,53 @@ class PlanNotifier extends ChangeNotifier {
 
   void setCurWeekDay(int value) {
     _curWeekDay = value;
+    notifyListeners();
+  }
+
+  List<Meeting> getMeetingList() {
+    return _meetingList;
+  }
+
+  Future<void> fetchMeetingList(int year, int month) async {
+    final List<Meeting> tempMeetingList = [];
+    Map<String, dynamic> resData = {};
+    resData["status"] = 400;
+
+    try {
+      var resString = await http
+          .get(Uri.parse(
+              "${dotenv.get("DEV_API_BASE_URL")}/plan?year=$year&month=$month"))
+          .timeout(const Duration(seconds: 10));
+      resData = jsonDecode(utf8.decode(resString.bodyBytes));
+    } on TimeoutException catch (e) {
+      return print("TimeoutException : $e");
+    } on SocketException catch (e) {
+      return print("SocketException : $e");
+    } catch (e) {
+      return print("error : $e");
+    }
+
+    if (resData["status"] != 200) {
+      return;
+    }
+
+    List<dynamic> data = resData["data"];
+    for (var e in data) {
+      tempMeetingList.add(Meeting(
+          e["planName"],
+          DateTime(
+              int.parse(e["startTime"].substring(0, 4)),
+              int.parse(e["startTime"].substring(5, 7)),
+              int.parse(e["startTime"].substring(8, 10))),
+          DateTime(
+              int.parse(e["endTime"].substring(0, 4)),
+              int.parse(e["endTime"].substring(5, 7)),
+              int.parse(e["endTime"].substring(8, 10))),
+          HexColor("#ffffff"),
+          false));
+    }
+
+    _meetingList = tempMeetingList;
     notifyListeners();
   }
 }

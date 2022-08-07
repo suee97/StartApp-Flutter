@@ -71,8 +71,9 @@ class _EventScreenState extends State<EventScreen> {
         }
         _eventList = _eventList + _tempList.reversed.toList();
         for (var e in data) {
-          if (e["eventStatus"] == "PROCEEDING")
+          if (e["eventStatus"] == "PROCEEDING") {
             _eventList.add(Event.fromJson(e));
+          }
         }
       } else {
         /// null
