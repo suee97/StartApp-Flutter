@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -132,16 +133,72 @@ class _SettingScreenState extends State<SettingScreen> {
                   SizedBox(
                     height: 8.h,
                   ),
-                  SettingSemiTitle(title: "로그아웃", onPressed: () {},),
-                  SettingSemiTitle(title: "비밀번호 변경", onPressed: () {},),
-                  SettingSemiTitle(title: "회원탈퇴", onPressed: () {},),
+                  SettingSemiTitle(
+                    title: "로그아웃",
+                    onPressed: () {
+                      if (Platform.isIOS) {
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                content: const Text(
+                                    "로그아웃 하시겠습니까?"),
+                                actions: [
+                                  CupertinoDialogAction(
+                                      isDefaultAction: false,
+                                      child: const Text("확인"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }),
+                                  CupertinoDialogAction(
+                                      isDefaultAction: false,
+                                      child: const Text("취소"),
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                      })
+                                ],
+                              );
+                            });
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: const Text("로그아웃 하시겠습니까?"),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () async {
+                                        await _logout(navigator);
+                                      },
+                                      child: const Text("확인")),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("취소")),
+                                ],
+                              );
+                            });
+                      }
+                    },
+                  ),
+                  SettingSemiTitle(
+                    title: "비밀번호 변경",
+                    onPressed: () {},
+                  ),
+                  SettingSemiTitle(
+                    title: "회원탈퇴",
+                    onPressed: () {},
+                  ),
                   SizedBox(
                     height: 8.h,
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 8.h,),
+            SizedBox(
+              height: 8.h,
+            ),
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(left: 10.w, right: 10.w),
@@ -169,17 +226,24 @@ class _SettingScreenState extends State<SettingScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset("assets/icon_insta.svg", width: 30.w,),
+                      SvgPicture.asset(
+                        "assets/icon_insta.svg",
+                        width: 30.w,
+                      ),
                       SvgPicture.asset("assets/icon_youtube.svg", width: 35.w),
                       SvgPicture.asset("assets/icon_kakao.svg", width: 32.w),
                       SvgPicture.asset("assets/icon_web.svg", width: 30.w)
                     ],
                   ),
-                  SizedBox(height: 18.h,),
+                  SizedBox(
+                    height: 18.h,
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 8.h,),
+            SizedBox(
+              height: 8.h,
+            ),
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(left: 10.w, right: 10.w),
@@ -204,10 +268,22 @@ class _SettingScreenState extends State<SettingScreen> {
                   SizedBox(
                     height: 8.h,
                   ),
-                  SettingSemiTitle(title: "서비스 이용약관", onPressed: () {},),
-                  SettingSemiTitle(title: "위치기반서비스 이용약관", onPressed: () {},),
-                  SettingSemiTitle(title: "개인정보 처리방침", onPressed: () {},),
-                  SettingSemiTitle(title: "정보제공처", onPressed: () {},),
+                  SettingSemiTitle(
+                    title: "서비스 이용약관",
+                    onPressed: () {},
+                  ),
+                  SettingSemiTitle(
+                    title: "위치기반서비스 이용약관",
+                    onPressed: () {},
+                  ),
+                  SettingSemiTitle(
+                    title: "개인정보 처리방침",
+                    onPressed: () {},
+                  ),
+                  SettingSemiTitle(
+                    title: "정보제공처",
+                    onPressed: () {},
+                  ),
                   SizedBox(
                     height: 8.h,
                   ),
@@ -241,8 +317,14 @@ class _SettingScreenState extends State<SettingScreen> {
                   SizedBox(
                     height: 8.h,
                   ),
-                  SettingSemiTitle(title: "업데이트", onPressed: () {},),
-                  SettingSemiTitle(title: "개발 관련 정보", onPressed: () {},),
+                  SettingSemiTitle(
+                    title: "업데이트",
+                    onPressed: () {},
+                  ),
+                  SettingSemiTitle(
+                    title: "개발 관련 정보",
+                    onPressed: () {},
+                  ),
                   SizedBox(
                     height: 8.h,
                   ),
@@ -258,12 +340,6 @@ class _SettingScreenState extends State<SettingScreen> {
               },
               title: "set nonlogin false",
             ),
-            TestButton(
-                title: "logout",
-                onPressed: () async {
-                  // 로그인 되어있는지부터 확인해야 함
-                  _logout(navigator);
-                })
           ],
         ),
       ),
@@ -276,8 +352,8 @@ class _SettingScreenState extends State<SettingScreen> {
   /// ################################################
   Future<void> _logout(NavigatorState navigator) async {
     final secureStorage = FlutterSecureStorage();
-    final ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
-    final REFRESH_TOKEN = await secureStorage.read(key: "REFRESH_TOKEN");
+    var ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
+    var REFRESH_TOKEN = await secureStorage.read(key: "REFRESH_TOKEN");
 
     Map<String, dynamic> resData91 = {};
     resData91["status"] = 400;
@@ -300,6 +376,8 @@ class _SettingScreenState extends State<SettingScreen> {
 
     await secureStorage.write(key: "ACCESS_TOKEN", value: "");
     await secureStorage.write(key: "REFRESH_TOKEN", value: "");
+    ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
+    REFRESH_TOKEN = await secureStorage.read(key: "REFRESH_TOKEN");
 
     await Common.setNonLogin(false);
     await Common.setAutoLogin(false);
