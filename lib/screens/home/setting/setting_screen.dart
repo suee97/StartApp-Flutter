@@ -147,13 +147,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                   CupertinoDialogAction(
                                       isDefaultAction: false,
                                       child: const Text("확인"),
-                                      onPressed: () {
-                                        Navigator.pop(context);
+                                      onPressed: () async {
+                                        await _logout(navigator);
                                       }),
                                   CupertinoDialogAction(
                                       isDefaultAction: false,
                                       child: const Text("취소"),
-                                      onPressed: () async {
+                                      onPressed: () {
                                         Navigator.pop(context);
                                       })
                                 ],
