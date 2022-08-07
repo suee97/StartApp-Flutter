@@ -182,7 +182,7 @@ class PlanTile extends StatelessWidget {
           height: 40.h,
           decoration: BoxDecoration(
             color: HexColor("#7999FF"),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Container(
             padding: EdgeInsets.only(left: 10.w),
