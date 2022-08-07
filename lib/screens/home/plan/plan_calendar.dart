@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:start_app/notifiers/plan_notifier.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../models/meeting.dart';
@@ -7,12 +9,20 @@ import '../../../models/meeting.dart';
 class PlanCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: HexColor("#425C5A"),
-      padding: EdgeInsets.only(left: 10.w, right: 10.w),
-      height: 330.h,
-      child: SfCalendar(
+
+    return Consumer<PlanNotifier>(builder: (context, planNotifier, child) {
+      return Container(
+        color: HexColor("#425C5A"),
+        padding: EdgeInsets.only(left: 10.w, right: 10.w),
+        height: 330.h,
+        child: SfCalendar(
           view: CalendarView.month,
+          onSelectionChanged: (_) {
+            var tmp1 = _.date?.day;
+            var tmp2 = _.date?.weekday;
+            planNotifier.setCurDay(tmp1!);
+            planNotifier.setCurWeekDay(tmp2!);
+          },
           cellEndPadding: 5,
           headerStyle: CalendarHeaderStyle(
               textStyle: TextStyle(
@@ -63,7 +73,8 @@ class PlanCalendar extends StatelessWidget {
                 trailingDatesBackgroundColor: Colors.transparent),
           ),
         ),
-    );
+      );
+    });
   }
 
   List<Meeting> _getDataSource() {
