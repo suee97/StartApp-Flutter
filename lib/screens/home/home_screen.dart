@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SettingScreen()))
             },
-            icon: const Icon(Icons.menu_rounded),
+            icon: const Icon(Icons.settings_outlined),
             // icon: SvgPicture.asset("assets/icon_person.svg"),
             iconSize: 24.w,
             hoverColor: Colors.transparent,
