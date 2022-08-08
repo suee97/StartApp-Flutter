@@ -6,6 +6,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:start_app/models/meeting.dart';
+import 'package:string_to_hex/string_to_hex.dart';
 
 class PlanNotifier extends ChangeNotifier {
   int _curDay = DateTime.now().day;
@@ -86,10 +87,9 @@ class PlanNotifier extends ChangeNotifier {
               int.parse(e["endTime"].substring(0, 4)),
               int.parse(e["endTime"].substring(5, 7)),
               int.parse(e["endTime"].substring(8, 10))),
-          HexColor("#ffffff"),
+          Color(StringToHex.toColor("0x${e["color"].substring(1,9)}")),
           false));
     }
-
     _meetingList = tempMeetingList;
     notifyListeners();
   }
