@@ -12,7 +12,6 @@ class PlanCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<PlanNotifier>(builder: (context, planNotifier, child) {
-
       var _source = planNotifier.getMeetingList();
 
       return Container(
@@ -22,12 +21,12 @@ class PlanCalendar extends StatelessWidget {
         child: SfCalendar(
           view: CalendarView.month,
           onViewChanged: (ViewChangedDetails viewChangedDetails) {
-            SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+            SchedulerBinding.instance.addPostFrameCallback((Duration duration) async {
               var _year = DateFormat('yyyy').format(viewChangedDetails
                   .visibleDates[viewChangedDetails.visibleDates.length ~/ 2]);
               var _month = DateFormat('M').format(viewChangedDetails
                   .visibleDates[viewChangedDetails.visibleDates.length ~/ 2]);
-              planNotifier.fetchMeetingList(
+              await planNotifier.fetchMeetingList(
                   int.parse(_year), int.parse(_month));
               print("현재 연도 & 달 : $_year , $_month");
               print(_source.length);
@@ -38,6 +37,8 @@ class PlanCalendar extends StatelessWidget {
             var tmp2 = _.date?.weekday;
             planNotifier.setCurDay(tmp1!);
             planNotifier.setCurWeekDay(tmp2!);
+            planNotifier.setSelectedDayMeetingList(
+                _.date?.year, _.date?.month, _.date?.day);
           },
           cellEndPadding: 5,
           headerStyle: CalendarHeaderStyle(

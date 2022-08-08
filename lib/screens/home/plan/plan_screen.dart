@@ -148,30 +148,24 @@ class PlanAgenda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 15.h, left: 16.w),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            PlanTile(),
-            const SizedBox(height: 12),
-            PlanTile(),
-            const SizedBox(height: 12),
-            PlanTile(),
-            const SizedBox(height: 12),
-            PlanTile(),
-            const SizedBox(height: 12),
-          ],
-        ),
-      ),
-    );
+    return Consumer<PlanNotifier>(builder: (context, planNotifier, child) {
+      return Padding(
+          padding: EdgeInsets.only(top: 15.h, left: 16.w),
+          child: Column(
+            children: [
+              for (var item
+                  in planNotifier.getSelectedDayMeetingList())
+                PlanTile(title: item.eventName)
+            ],
+          ));
+    });
   }
 }
 
 class PlanTile extends StatelessWidget {
-  const PlanTile({Key? key}) : super(key: key);
+  PlanTile({Key? key, required this.title}) : super(key: key);
+
+  String title;
 
   @override
   Widget build(BuildContext context) {
@@ -180,6 +174,7 @@ class PlanTile extends StatelessWidget {
       child: Container(
           width: 270.w,
           height: 40.h,
+          margin: EdgeInsets.only(bottom: 10.h),
           decoration: BoxDecoration(
             color: HexColor("#7999FF"),
             borderRadius: BorderRadius.circular(10),
@@ -188,7 +183,7 @@ class PlanTile extends StatelessWidget {
             padding: EdgeInsets.only(left: 10.w),
             child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text("이벤트",
+                child: Text(title,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         fontSize: 12.5.sp, fontWeight: FontWeight.w400))),

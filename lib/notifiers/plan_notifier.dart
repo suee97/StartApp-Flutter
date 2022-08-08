@@ -10,6 +10,7 @@ class PlanNotifier extends ChangeNotifier {
   int _curDay = DateTime.now().day;
   int _curWeekDay = DateTime.now().weekday;
   List<Meeting> _meetingList = [];
+  List<Meeting> _selectedMeetingList = [];
 
   int getCurDay() {
     return _curDay;
@@ -85,7 +86,6 @@ class PlanNotifier extends ChangeNotifier {
               int.parse(e["endTime"].substring(0, 4)),
               int.parse(e["endTime"].substring(5, 7)),
               int.parse(e["endTime"].substring(8, 10))),
-          // Color(0xFFFF0000),
           hexToColor(e["color"]),
           false));
     }
@@ -95,5 +95,24 @@ class PlanNotifier extends ChangeNotifier {
 
   Color hexToColor(String code) {
     return Color(int.parse(code.substring(1, 9), radix: 16) + 0x00000000);
+  }
+
+  List<Meeting> getSelectedDayMeetingList() {
+    return _selectedMeetingList;
+  }
+
+  void setSelectedDayMeetingList(int? year, int? month, int? day) {
+
+    var tempDateTime = DateTime(year!, month!, day!);
+
+    List<Meeting> selectedDayMeetingList = [];
+    for(var item in _meetingList) {
+      if(tempDateTime.difference(item.from) >= Duration(seconds: 0) && tempDateTime.difference(item.to) <= Duration(seconds: 0)) {
+        selectedDayMeetingList.add(item);
+      }
+    }
+
+    _selectedMeetingList = selectedDayMeetingList;
+    notifyListeners();
   }
 }
