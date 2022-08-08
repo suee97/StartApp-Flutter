@@ -64,7 +64,6 @@ dependencies:
   cached_network_image: ^3.2.1
   lottie: ^1.4.0
   dotted_line: ^3.1.0
-  string_to_hex: ^0.2.2
 
 dev_dependencies:
   flutter_test:

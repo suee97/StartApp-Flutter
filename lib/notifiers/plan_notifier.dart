@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:start_app/models/meeting.dart';
-import 'package:string_to_hex/string_to_hex.dart';
 
 class PlanNotifier extends ChangeNotifier {
   int _curDay = DateTime.now().day;
@@ -87,10 +85,15 @@ class PlanNotifier extends ChangeNotifier {
               int.parse(e["endTime"].substring(0, 4)),
               int.parse(e["endTime"].substring(5, 7)),
               int.parse(e["endTime"].substring(8, 10))),
-          Color(StringToHex.toColor("0x${e["color"].substring(1,9)}")),
+          // Color(0xFFFF0000),
+          hexToColor(e["color"]),
           false));
     }
     _meetingList = tempMeetingList;
     notifyListeners();
+  }
+
+  Color hexToColor(String code) {
+    return Color(int.parse(code.substring(1, 9), radix: 16) + 0x00000000);
   }
 }
