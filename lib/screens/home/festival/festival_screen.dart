@@ -61,8 +61,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
   Widget build(BuildContext context) {
     Set<Marker> markerList = {
       Marker(
-          markerId: const MarkerId("hyang-hak-ro"),
-          position: const LatLng(37.6318730, 127.0771544),
+          markerId: const MarkerId("jun-si"),
+          position: const LatLng(37.6313962,127.0767797),
           onTap: () {
             showModalBottomSheet(
                 shape: const RoundedRectangleBorder(
@@ -136,27 +136,55 @@ class _FestivalScreenState extends State<FestivalScreen> {
                 });
           }),
       Marker(
-          markerId: MarkerId("bung-uh-bang"),
-          position: LatLng(37.6330957, 127.0785229)),
+          markerId: MarkerId("market"),
+          position: LatLng(37.6327762,127.077273)),
       Marker(
-          markerId: MarkerId("un-dong-jang"),
-          position: LatLng(37.6298287, 127.0770952)),
+          markerId: MarkerId("sang-sang"),
+          position: LatLng(37.63089,127.0796858)),
       Marker(
-          markerId: MarkerId("sang-sang-gwan"),
-          position: LatLng(37.6308725, 127.0799307)),
+          markerId: MarkerId("bung-uh"),
+          position: LatLng(37.6331603,127.0785649)),
       Marker(
-          markerId: MarkerId("hi-tech"),
-          position: LatLng(37.6320294, 127.0765909)),
+          markerId: MarkerId("sand-undong"),
+          position: LatLng(37.6297553,127.0770174)),
     };
 
     Set<Circle> circleList = {
       Circle(
-          circleId: const CircleId("hyang-hak-ro"),
-          center: const LatLng(37.6318730, 127.0771544),
+          circleId: const CircleId("jun-si"),
+          center: const LatLng(37.6313962,127.0767797),
           radius: Common.CIRCLE_RADIUS,
-          fillColor: Colors.redAccent.withOpacity(0.5),
-          strokeWidth: 3,
-          strokeColor: Colors.redAccent)
+          fillColor: Colors.redAccent.withOpacity(0.2),
+          strokeWidth: 2,
+          strokeColor: Colors.redAccent),
+      Circle(
+          circleId: const CircleId("market"),
+          center: const LatLng(37.6327762,127.077273),
+          radius: Common.CIRCLE_RADIUS,
+          fillColor: Colors.redAccent.withOpacity(0.2),
+          strokeWidth: 2,
+          strokeColor: Colors.redAccent),
+      Circle(
+          circleId: const CircleId("sang-sang"),
+          center: const LatLng(37.63089,127.0796858),
+          radius: Common.CIRCLE_RADIUS,
+          fillColor: Colors.redAccent.withOpacity(0.2),
+          strokeWidth: 2,
+          strokeColor: Colors.redAccent),
+      Circle(
+          circleId: const CircleId("bung-uh"),
+          center: const LatLng(37.6331603,127.0785649),
+          radius: Common.CIRCLE_RADIUS,
+          fillColor: Colors.redAccent.withOpacity(0.2),
+          strokeWidth: 2,
+          strokeColor: Colors.redAccent),
+      Circle(
+          circleId: const CircleId("sand-undong"),
+          center: const LatLng(37.6297553,127.0770174),
+          radius: Common.CIRCLE_RADIUS,
+          fillColor: Colors.redAccent.withOpacity(0.2),
+          strokeWidth: 2,
+          strokeColor: Colors.redAccent),
     };
 
     return Scaffold(
