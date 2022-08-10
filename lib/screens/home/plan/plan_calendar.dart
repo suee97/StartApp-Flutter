@@ -68,6 +68,7 @@ class PlanCalendar extends StatelessWidget {
           todayHighlightColor: HexColor("#EE795F"),
           monthViewSettings: const MonthViewSettings(
             showAgenda: false,
+            numberOfWeeksInView: 6,
             appointmentDisplayCount: 4,
             dayFormat: 'EEE',
             navigationDirection: MonthNavigationDirection.horizontal,
@@ -79,11 +80,11 @@ class PlanCalendar extends StatelessWidget {
                 trailingDatesTextStyle: TextStyle(
                     fontStyle: FontStyle.normal,
                     fontSize: 15,
-                    color: Colors.grey),
+                    color: Colors.transparent),
                 leadingDatesTextStyle: TextStyle(
                     fontStyle: FontStyle.normal,
                     fontSize: 15,
-                    color: Colors.grey),
+                    color: Colors.transparent),
                 backgroundColor: Colors.transparent,
                 todayBackgroundColor: Colors.transparent,
                 leadingDatesBackgroundColor: Colors.transparent,
