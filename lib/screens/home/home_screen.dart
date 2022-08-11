@@ -73,19 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           // )
         ],
-        // leading: IconButton(
-        //   onPressed: () => {
-        //     Navigator.push(context,
-        //         MaterialPageRoute(builder: (context) => NotificationScreen()))
-        //   },
-        //   icon: SvgPicture.asset(
-        //     "assets/icon_notification.svg",
-        //   ),
-        //   iconSize: 24,
-        //   hoverColor: Colors.transparent,
-        //   highlightColor: Colors.transparent,
-        //   splashColor: Colors.transparent,
-        // )
       ),
       body: Container(
         color: HexColor("#425C5A"),
