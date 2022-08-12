@@ -115,26 +115,32 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: CircularProgressIndicator(
                           color: HexColor("#425c5a"),
                         )),
-                        errorWidget: (context, url, error) => Container(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image(
-                                  image: AssetImage(
-                                      "images/logo_crying_ready.png")),
-                              Text(
-                                "이미지를 불러오지 못했습니다.",
-                                style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: HexColor("#6c6c6c")),
-                              )
-                            ],
+                        errorWidget: (context, url, error) => Center(
+                          child: AspectRatio(
+                            aspectRatio: 1/1,
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: HexColor("#c4c4c4"),
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Image(
+                                      image: AssetImage(
+                                          "images/logo_crying_ready.png")),
+                                  Text(
+                                    "이미지를 불러오지 못했습니다.",
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: HexColor("#6c6c6c")),
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
-                          decoration: BoxDecoration(
-                              color: HexColor("#c4c4c4"),
-                              borderRadius: BorderRadius.circular(8)),
                         ),
                       ),
                     );
