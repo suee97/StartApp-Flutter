@@ -8,9 +8,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:start_app/screens/home/setting/policy/info_support_screen.dart';
+import 'package:start_app/screens/home/setting/policy/location_policy_screen.dart';
+import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
 import 'package:start_app/screens/home/setting/setting_semi_title.dart';
 import 'package:start_app/widgets/test_button.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import '../../../utils/common.dart';
 import '../../splash/splash_screen.dart.dart';
 
@@ -141,8 +145,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             context: context,
                             builder: (context) {
                               return CupertinoAlertDialog(
-                                content: const Text(
-                                    "로그아웃 하시겠습니까?"),
+                                content: const Text("로그아웃 하시겠습니까?"),
                                 actions: [
                                   CupertinoDialogAction(
                                       isDefaultAction: false,
@@ -183,7 +186,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                   ),
                   SettingSemiTitle(
-                    title: "비밀번호 변경",
+                    title: "비밀번호 재설정",
                     onPressed: () {},
                   ),
                   SettingSemiTitle(
@@ -226,13 +229,25 @@ class _SettingScreenState extends State<SettingScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SvgPicture.asset(
-                        "assets/icon_insta.svg",
-                        width: 30.w,
+                      GestureDetector(
+                        onTap: () async {
+
+                        },
+                        child: SvgPicture.asset(
+                          "assets/icon_insta.svg",
+                          width: 30.w,
+                        ),
                       ),
+                      /// https://pub.dev/packages/external_app_launcher
                       SvgPicture.asset("assets/icon_youtube.svg", width: 35.w),
                       SvgPicture.asset("assets/icon_kakao.svg", width: 32.w),
-                      SvgPicture.asset("assets/icon_web.svg", width: 30.w)
+                      GestureDetector(
+                        onTap: () async {
+                          _launchUrl("https://gwack2.seoultech.ac.kr/");
+                        },
+                        child: SvgPicture.asset("assets/icon_web.svg",
+                            width: 30.w),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -274,15 +289,24 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   SettingSemiTitle(
                     title: "위치기반서비스 이용약관",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => LocationPolicyScreen()));
+                    },
                   ),
                   SettingSemiTitle(
                     title: "개인정보 처리방침",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => PrivacyPolicyScreen()));
+                    },
                   ),
                   SettingSemiTitle(
                     title: "정보제공처",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => InfoSupportScreen()));
+                    },
                   ),
                   SizedBox(
                     height: 8.h,
@@ -336,7 +360,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 Common.setNonLogin(false);
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => SplashScreen()),
-                    (route) => false);
+                        (route) => false);
               },
               title: "set nonlogin false",
             ),
@@ -345,6 +369,12 @@ class _SettingScreenState extends State<SettingScreen> {
       ),
       backgroundColor: HexColor("#425c5a"),
     );
+  }
+
+  Future<void> _launchUrl(String _uri) async {
+    if (!await launchUrl(Uri.parse(_uri))) {
+      throw 'Could not launch ${_uri}';
+    }
   }
 
   /// ################################################
@@ -389,6 +419,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
     navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => SplashScreen()),
-        (route) => false);
+            (route) => false);
   }
 }

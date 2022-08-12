@@ -64,6 +64,7 @@ dependencies:
   cached_network_image: ^3.2.1
   lottie: ^1.4.0
   dotted_line: ^3.1.0
+  external_app_launcher: ^3.1.0
 
 dev_dependencies:
   flutter_test:
