@@ -155,7 +155,7 @@ class PlanAgenda extends StatelessWidget {
             children: [
               for (var item
                   in planNotifier.getSelectedDayMeetingList())
-                PlanTile(title: item.eventName)
+                PlanTile(title: item.eventName, color: item.background,)
             ],
           ));
     });
@@ -163,9 +163,10 @@ class PlanAgenda extends StatelessWidget {
 }
 
 class PlanTile extends StatelessWidget {
-  PlanTile({Key? key, required this.title}) : super(key: key);
+  PlanTile({Key? key, required this.title, required this.color}) : super(key: key);
 
   String title;
+  Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +177,7 @@ class PlanTile extends StatelessWidget {
           height: 40.h,
           margin: EdgeInsets.only(bottom: 10.h),
           decoration: BoxDecoration(
-            color: HexColor("#7999FF"),
+            color: color,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Container(
