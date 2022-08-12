@@ -276,8 +276,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
             )),
         Container(
           width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               GestureDetector(
                 child: Padding(
@@ -294,6 +294,30 @@ class _FestivalScreenState extends State<FestivalScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text("스탬프 존에 들어오셨다면 도장찍기를 눌러주세요!"),
+                            ],
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          backgroundColor: HexColor("#F8EAE1"),
+                        );
+                      });
+                },
+              ),
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.all(8.w),
+                  child: SvgPicture.asset("assets/icon_festival_info.svg"),
+                ),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("이벤트 정보"),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text("이벤트 정보를 보여줄게요."),
                             ],
                           ),
                           shape: RoundedRectangleBorder(
