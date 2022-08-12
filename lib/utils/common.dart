@@ -84,6 +84,24 @@ class Common {
     final pref = await SharedPreferences.getInstance();
     await pref.setBool('isNonLogin', value);
   }
+
+  static void showSnackBar(BuildContext context, String inputMsg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(inputMsg,
+          style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+        backgroundColor: Colors.black,
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: const BorderSide(
+            width: 0,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 // class NotificationBadge extends StatelessWidget {
