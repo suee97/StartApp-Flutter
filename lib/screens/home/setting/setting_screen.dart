@@ -8,6 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:start_app/screens/home/setting/app_info/dev_info_screen.dart';
+import 'package:start_app/screens/home/setting/app_info/update_info_screen.dart';
 import 'package:start_app/screens/home/setting/policy/info_support_screen.dart';
 import 'package:start_app/screens/home/setting/policy/location_policy_screen.dart';
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
@@ -343,11 +345,17 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   SettingSemiTitle(
                     title: "업데이트",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => UpdateInfoScreen()));
+                    },
                   ),
                   SettingSemiTitle(
                     title: "개발 관련 정보",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => DevInfoScreen()));
+                    },
                   ),
                   SizedBox(
                     height: 8.h,

@@ -27,9 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _initializing(NavigatorState navigator) async {
     /// start
     setState(() {
-      notifyText = "2초 후 로직이 시작됩니다.";
+      notifyText = "1초 후 로직이 시작됩니다.";
     });
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
 
     /// load env
     setState(() {
