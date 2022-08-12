@@ -9,8 +9,7 @@ import 'package:location/location.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
-import 'package:start_app/screens/home/festival/stamp_event_join.dart';
-import 'package:start_app/widgets/test_button.dart';
+import 'package:start_app/screens/home/festival/stamp_button.dart';
 import '../../../utils/common.dart';
 import 'dart:io' show Platform;
 
@@ -59,128 +58,109 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Set<Marker> markerList = {
+    
+    Set<Marker> _markerList = {
       Marker(
-          markerId: const MarkerId("jun-si"),
-          position: const LatLng(37.6313962,127.0767797),
+          markerId: const MarkerId("jeon-si"),
+          position: const LatLng(37.6313962, 127.0767797),
           onTap: () {
-            showModalBottomSheet(
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                barrierColor: Colors.transparent,
-                backgroundColor: HexColor("#F8EAE1"),
+            showDialog(
                 context: context,
                 builder: (context) {
                   return StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
-                    return Stack(alignment: Alignment.bottomCenter, children: [
-                      ListView(
-                        children: <Widget>[
-                          TestButton(
-                              title: "",
-                              onPressed: () async {
-                                var curLoc = await getCurrentLocationGps();
-                                var distance =
-                                    mp.SphericalUtil.computeDistanceBetween(
-                                        mp.LatLng(curLoc.latitude!,
-                                            curLoc.longitude!),
-                                        mp.LatLng(37.6318730, 127.0771544));
-                                if (distance > 50) {}
-                              }),
-                        ],
-                      ),
-                      StampEventJoin(
-                          onPressed: () => {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text("스탬프 방문 도장 이벤트"),
-                                        content: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                                "스탬프 존에 들어오셨나요? 스탬프 존에 들어오셨다면 도장찍기 버튼을 눌러주세요."),
-                                            Container(
-                                              width: double.infinity,
-                                              height: 40.h,
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                  color: HexColor("#425C5A"),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(15))),
-                                              child: Text(
-                                                "도장찍기",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 20.sp,
-                                                    color: HexColor("#F8EAE1")),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        backgroundColor: HexColor("#F8EAE1"),
-                                      );
-                                    })
-                              })
-                    ]);
-                  });
+                    builder: (BuildContext context, StateSetter setState) {
+                      return AlertDialog(
+                        backgroundColor: HexColor("#F8EAE1"),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        title: Column(
+                          children: <Widget>[
+                            Text(
+                              "최첨단 방문 도장 이벤트",
+                              style: TextStyle(
+                                  fontSize: 17.5.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: HexColor("#425C5A")),
+                            ),
+                          ],
+                        ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "도장 존에 들어오셨나요? 도장 존에 들어오셨다면 도장 찍기를 눌러주세요!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 13.5.sp,
+                                  fontWeight: FontWeight.w300,
+                                  color: HexColor("#5C7775"),),
+                            ),
+                            StampButton(title: "도장찍기", onPressed: () {})
+                          ],
+                        ),
+                      );
+                    },
+                  );
                 });
-          }),
+
+            // return TestButton(
+            //                         title: "",
+            //                         onPressed: () async {
+            //                           var curLoc = await getCurrentLocationGps();
+            //                           var distance =
+            //                               mp.SphericalUtil.computeDistanceBetween(
+            //                                   mp.LatLng(curLoc.latitude!,
+            //                                       curLoc.longitude!),
+            //                                   mp.LatLng(37.6318730, 127.0771544));
+            //                           if (distance > 50) {}
+            //                         })
+          },),
       Marker(
           markerId: MarkerId("market"),
-          position: LatLng(37.6327762,127.077273)),
+          position: LatLng(37.6327762, 127.077273)),
       Marker(
           markerId: MarkerId("sang-sang"),
-          position: LatLng(37.63089,127.0796858)),
+          position: LatLng(37.63089, 127.0796858)),
       Marker(
           markerId: MarkerId("bung-uh"),
-          position: LatLng(37.6331603,127.0785649)),
+          position: LatLng(37.6331603, 127.0785649)),
       Marker(
           markerId: MarkerId("sand-undong"),
-          position: LatLng(37.6297553,127.0770174)),
+          position: LatLng(37.6297553, 127.0770174)),
     };
 
     Set<Circle> circleList = {
       Circle(
-          circleId: const CircleId("jun-si"),
-          center: const LatLng(37.6313962,127.0767797),
+          circleId: const CircleId("jeon-si"),
+          center: const LatLng(37.6313962, 127.0767797),
           radius: Common.CIRCLE_RADIUS,
           fillColor: Colors.redAccent.withOpacity(0.2),
           strokeWidth: 2,
           strokeColor: Colors.redAccent),
       Circle(
           circleId: const CircleId("market"),
-          center: const LatLng(37.6327762,127.077273),
+          center: const LatLng(37.6327762, 127.077273),
           radius: Common.CIRCLE_RADIUS,
           fillColor: Colors.redAccent.withOpacity(0.2),
           strokeWidth: 2,
           strokeColor: Colors.redAccent),
       Circle(
           circleId: const CircleId("sang-sang"),
-          center: const LatLng(37.63089,127.0796858),
+          center: const LatLng(37.63089, 127.0796858),
           radius: Common.CIRCLE_RADIUS,
           fillColor: Colors.redAccent.withOpacity(0.2),
           strokeWidth: 2,
           strokeColor: Colors.redAccent),
       Circle(
           circleId: const CircleId("bung-uh"),
-          center: const LatLng(37.6331603,127.0785649),
+          center: const LatLng(37.6331603, 127.0785649),
           radius: Common.CIRCLE_RADIUS,
           fillColor: Colors.redAccent.withOpacity(0.2),
           strokeWidth: 2,
           strokeColor: Colors.redAccent),
       Circle(
           circleId: const CircleId("sand-undong"),
-          center: const LatLng(37.6297553,127.0770174),
+          center: const LatLng(37.6297553, 127.0770174),
           radius: Common.CIRCLE_RADIUS,
           fillColor: Colors.redAccent.withOpacity(0.2),
           strokeWidth: 2,
@@ -205,7 +185,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
           mapType: MapType.normal,
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,
-          markers: markerList,
+          markers: _markerList,
           circles: circleList,
         ),
         Align(
