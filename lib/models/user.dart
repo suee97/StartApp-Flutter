@@ -1,7 +1,9 @@
 class User {
-  User(this.name, this.studentId);
+  User(this.inappName, this.inappStudentNo, this.inappDepartment,
+      this.inappStudentStatue);
 
-  int studentId;
-  String name;
-
+  String inappName;
+  String inappStudentNo;
+  String inappDepartment;
+  String inappStudentStatue;
 }

@@ -22,25 +22,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late List<Image> _logos;
   double pageIndex = 0.0;
-
-  void getMainLogos() {
-    var a = Image.network(
-      "http://cdn.shopify.com/s/files/1/0151/0741/products/ad1fa8fb3ebf60288317c53c17d5880d_1024x1024.jpg?v=1578648923",
-    );
-    var b = Image.network(
-        "http://competitions.teamtalk.com/image-library/square/1000/7/7bb04cbb0265-teamtalk-com.jpg");
-    var c = Image.network(
-        "https://cdn.givemesport.com/wp-content/uploads/2022/04/GettyImages-499043422-1200x1200-c-default.jpg");
-    setState(() {
-      _logos = [b, a, c];
-    });
-  }
 
   @override
   void initState() {
-    getMainLogos();
     super.initState();
   }
 
@@ -110,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       aspectRatio: 1 / 1,
                       child: CachedNetworkImage(
                         imageUrl:
-                            "https://cdn.givemesport.com/wp-content/uploads/2022/04/GettyImages-499043422-1200x1200-c-default.jpg1",
+                            "https://cdn.givemesport.com/wp-content/uploads/2022/04/GettyImages-499043422-1200x1200-c-default.jpg",
                         placeholder: (context, url) => Center(
                             child: CircularProgressIndicator(
                           color: HexColor("#425c5a"),
@@ -151,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 4.h,
               ),
               DotsIndicator(
-                dotsCount: _logos.length,
+                dotsCount: 3,
                 position: pageIndex.toDouble(),
                 decorator: DotsDecorator(
                   activeColor: HexColor("#EE795F"),

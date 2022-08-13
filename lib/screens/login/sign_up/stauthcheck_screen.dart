@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:start_app/screens/login/pw_setting_screen.dart';
-import '../../widgets/custom_text_field.dart';
-import '../../widgets/test_button.dart';
+import 'package:start_app/screens/login/sign_up/pw_setting_screen.dart';
+import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/test_button.dart';
 
 class STAuthCheckScreen extends StatelessWidget {
   const STAuthCheckScreen({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:start_app/screens/login/signup_screen.dart';
-import '../../widgets/test_button.dart';
+import 'package:start_app/screens/login/sign_up/signup_screen.dart';
+import '../../../widgets/test_button.dart';
 
 
 class STAuthAgreeScreen extends StatefulWidget {

@@ -16,7 +16,6 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      decoration: InputDecoration(label: Text(label)),
       maxLines: 1,
       style: const TextStyle(fontSize: 28),
       enableSuggestions: false,

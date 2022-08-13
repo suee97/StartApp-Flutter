@@ -4,7 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../utils/common.dart';
 import '../home/home_screen.dart';
 import 'login_nav_button.dart';
-import 'login_screen.dart';
+import 'sign_in/login_screen.dart';
 
 class LoginOptionScreen extends StatelessWidget {
   const LoginOptionScreen({Key? key}) : super(key: key);

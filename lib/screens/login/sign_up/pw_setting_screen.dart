@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:start_app/utils/common.dart';
-import '../../widgets/custom_text_field.dart';
+import '../../../widgets/custom_text_field.dart';
 import 'package:start_app/widgets/test_button.dart';
 
-import 'login_screen.dart';
+import '../sign_in/login_screen.dart';
 
 class PWSettingScreen extends StatelessWidget {
   const PWSettingScreen({Key? key}) : super(key: key);
