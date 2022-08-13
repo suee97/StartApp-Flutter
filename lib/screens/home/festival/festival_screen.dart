@@ -58,63 +58,64 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     Set<Marker> _markerList = {
       Marker(
-          markerId: const MarkerId("jeon-si"),
-          position: const LatLng(37.6313962, 127.0767797),
-          onTap: () {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
-                      return AlertDialog(
-                        backgroundColor: HexColor("#F8EAE1"),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        title: Column(
-                          children: <Widget>[
-                            Text(
-                              "최첨단 방문 도장 이벤트",
-                              style: TextStyle(
-                                  fontSize: 17.5.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: HexColor("#425C5A")),
+        markerId: const MarkerId("jeon-si"),
+        position: const LatLng(37.6313962, 127.0767797),
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return AlertDialog(
+                      backgroundColor: HexColor("#F8EAE1"),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      title: Column(
+                        children: <Widget>[
+                          Text(
+                            "최첨단 방문 도장 이벤트",
+                            style: TextStyle(
+                                fontSize: 17.5.sp,
+                                fontWeight: FontWeight.w600,
+                                color: HexColor("#425C5A")),
+                          ),
+                        ],
+                      ),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "도장 존에 들어오셨나요? 도장 존에 들어오셨다면 도장 찍기를 눌러주세요!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 13.5.sp,
+                              fontWeight: FontWeight.w300,
+                              color: HexColor("#5C7775"),
                             ),
-                          ],
-                        ),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "도장 존에 들어오셨나요? 도장 존에 들어오셨다면 도장 찍기를 눌러주세요!",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 13.5.sp,
-                                  fontWeight: FontWeight.w300,
-                                  color: HexColor("#5C7775"),),
-                            ),
-                            StampButton(title: "도장찍기", onPressed: () {})
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                });
+                          ),
+                          StampButton(title: "도장찍기", onPressed: () {})
+                        ],
+                      ),
+                    );
+                  },
+                );
+              });
 
-            // return TestButton(
-            //                         title: "",
-            //                         onPressed: () async {
-            //                           var curLoc = await getCurrentLocationGps();
-            //                           var distance =
-            //                               mp.SphericalUtil.computeDistanceBetween(
-            //                                   mp.LatLng(curLoc.latitude!,
-            //                                       curLoc.longitude!),
-            //                                   mp.LatLng(37.6318730, 127.0771544));
-            //                           if (distance > 50) {}
-            //                         })
-          },),
+          // return TestButton(
+          //                         title: "",
+          //                         onPressed: () async {
+          //                           var curLoc = await getCurrentLocationGps();
+          //                           var distance =
+          //                               mp.SphericalUtil.computeDistanceBetween(
+          //                                   mp.LatLng(curLoc.latitude!,
+          //                                       curLoc.longitude!),
+          //                                   mp.LatLng(37.6318730, 127.0771544));
+          //                           if (distance > 50) {}
+          //                         })
+        },
+      ),
       Marker(
           markerId: MarkerId("market"),
           position: LatLng(37.6327762, 127.077273)),
@@ -310,27 +311,82 @@ class _FestivalScreenState extends State<FestivalScreen> {
                 ),
                 onTap: () {
                   showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text("이벤트 정보"),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text("이벤트 정보를 보여줄게요."),
-                            ],
-                          ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          backgroundColor: HexColor("#F8EAE1"),
-                        );
-                      });
-                },
-              ),
-            ],
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DraggableScrollableSheet(
+                          initialChildSize: 0.80,
+                          minChildSize: 0.40,
+                          builder: (BuildContext context,
+                              ScrollController scrollController) {
+                            return SingleChildScrollView(
+                              controller: scrollController,
+                              child: FestivalInfoBottomSheet(),
+                            );
+                          });
+                    },
+                  );
+                })],
           ),
         )
       ]),
+    );
+  }
+}
+
+class FestivalInfoBottomSheet extends StatelessWidget {
+  const FestivalInfoBottomSheet({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 12.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      margin: const EdgeInsets.all(0),
+      child: Container(
+        height: 540.h,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(24), topLeft: Radius.circular(24)),
+            color: HexColor("#F8EAE1")),
+        child: FestivalBottomSheetContent(),
+      ),
+    );
+  }
+}
+
+class FestivalBottomSheetContent extends StatelessWidget {
+  const FestivalBottomSheetContent({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(onPressed: (){}, child: Text("컨텐츠"), style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(24), bottomLeft: Radius.circular(24)),
+                        // side: BorderSide(color: Colors.red)
+                    )
+                )
+            )),
+            TextButton(onPressed: (){}, child: Text("무대 라인업"), style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(24), bottomRight: Radius.circular(24)),
+                      // side: BorderSide(color: Colors.red)
+                    )
+                )
+            ))
+          ],
+        )
+      ],
     );
   }
 }
