@@ -3,15 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:start_app/screens/login/stauthagree_screen.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/test_button.dart';
+import 'auth_webview_screen.dart';
 
-class SignupSTAuthCheckScreen extends StatelessWidget {
-  const SignupSTAuthCheckScreen({Key? key}) : super(key: key);
+class GetStudentIdScreen extends StatelessWidget {
+  const GetStudentIdScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
     final studentIdController = TextEditingController();
-    final pwController = TextEditingController();
 
     return Scaffold(
         body: Center(
@@ -26,17 +26,12 @@ class SignupSTAuthCheckScreen extends StatelessWidget {
                     controller: studentIdController,
                     isObscure: false,
                   ),
-                  CustomTextField(
-                    label: "비밀번호",
-                    controller: pwController,
-                    isObscure: true,
-                  ),
                   TestButton(title: "확인", onPressed: () => {
                     // Common.setNonLogin(true),
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => STAuthAgreeScreen()))
+                            builder: (context) => AuthWebviewScreen()))
                   })]
             )));
   }
