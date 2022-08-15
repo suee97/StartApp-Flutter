@@ -1,26 +1,20 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:start_app/screens/login/sign_up/auth_webview_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/test_button.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
-class GetStudentIdScreen extends StatefulWidget {
-  const GetStudentIdScreen({Key? key}) : super(key: key);
+class CheckDuplication extends StatefulWidget {
+  const CheckDuplication({Key? key}) : super(key: key);
 
   @override
-  State<GetStudentIdScreen> createState() => _GetStudentIdScreenState();
+  State<CheckDuplication> createState() => _CheckDuplicationState();
 }
 
-class _GetStudentIdScreenState extends State<GetStudentIdScreen> {
-
+class _CheckDuplicationState extends State<CheckDuplication> {
   @override
   void initState() {
     super.initState();
@@ -55,15 +49,16 @@ class _GetStudentIdScreenState extends State<GetStudentIdScreen> {
                 String studentNo = studentIdController.text;
                 var uuid = Uuid();
                 var key = uuid.v4();
-                String path = "https://for-a.seoultech.ac.kr/STECH/API/VIEW/login.jsp?orgnCd=${dotenv.env["COMPUTERIZATION_BUSINESS_KEY"]}&returnUrl=";
-                String authUrl = "$path${dotenv.env["DEV_API_BASE_URL"]}/seoultech?studentNo=$studentNo&key=$key";
+                String path =
+                    "https://for-a.seoultech.ac.kr/STECH/API/VIEW/login.jsp?orgnCd=${dotenv.env["COMPUTERIZATION_BUSINESS_KEY"]}&returnUrl=";
+                String authUrl =
+                    "$path${dotenv.env["DEV_API_BASE_URL"]}/seoultech?studentNo=$studentNo&key=$key";
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context)=>AuthWebviewScreen(url:authUrl)),
+                  MaterialPageRoute(
+                      builder: (context) => AuthWebviewScreen(url: authUrl)),
                 );
               })
         ])));
   }
-
-
 }
