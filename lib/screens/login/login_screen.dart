@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/sign_up/stauthcheck_screen.dart';
 import 'package:start_app/screens/login/sign_up/get_student_id_screen.dart';
@@ -53,19 +54,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(width: 28.w,),
                   Text("학번", style: TextStyle(
                     fontSize: 20.sp,
-                    fontWeight: FontWeight.w300
+                    fontWeight: FontWeight.w300,
+                    color: HexColor("#425c5a")
                   ),),
                 ],
               ),
-              CustomTextField(
-                label: "",
+              TextField(
                 controller: studentIdController,
-                isObscure: false,
               ),
-              CustomTextField(
-                label: "",
+              Row(
+                children: [
+                  SizedBox(width: 28.w,),
+                  Text("비밀번호", style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w300,
+                      color: HexColor("#425c5a")
+                  ),),
+                ],
+              ),
+              TextField(
                 controller: pwController,
-                isObscure: false,
               ),
               Row(
                 children: [
@@ -194,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
           TestButton(
-              title: "비밀번호 찾기",
+              title: "비밀번호 재설정",
               onPressed: () => {
                     // Common.setNonLogin(true),
                     Navigator.pushReplacement(
