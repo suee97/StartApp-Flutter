@@ -205,35 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (snapshot.data == StatusCode.SERVER_ERROR) {
                     return Column(
                       children: [
-                        Container(
-                          width: 280.w,
-                          height: 280.h,
-                          child: AspectRatio(
-                            aspectRatio: 1 / 1,
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#c4c4c4"),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Image(
-                                      image: AssetImage(
-                                          "images/logo_crying_ready.png")),
-                                  Text(
-                                    "이미지를 가져오지 못했습니다.",
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: HexColor("#6c6c6c")),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        BannerContainer("이미지를 불러오지 못했습니다."),
                         SizedBox(
                           height: 24.h,
                         )
@@ -242,35 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (snapshot.data == StatusCode.UNCATCHED_ERROR) {
                     return Column(
                       children: [
-                        Container(
-                          width: 280.w,
-                          height: 280.h,
-                          child: AspectRatio(
-                            aspectRatio: 1 / 1,
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#c4c4c4"),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Image(
-                                      image: AssetImage(
-                                          "images/logo_crying_ready.png")),
-                                  Text(
-                                    "이미지를 가져오지 못했습니다.",
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: HexColor("#6c6c6c")),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        BannerContainer("이미지를 불러오지 못했습니다."),
                         SizedBox(
                           height: 24.h,
                         )
@@ -279,35 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (snapshot.data == StatusCode.TIMEOUT_ERROR) {
                     return Column(
                       children: [
-                        Container(
-                          width: 280.w,
-                          height: 280.h,
-                          child: AspectRatio(
-                            aspectRatio: 1 / 1,
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#c4c4c4"),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Image(
-                                      image: AssetImage(
-                                          "images/logo_crying_ready.png")),
-                                  Text(
-                                    "이미지를 가져오지 못했습니다.",
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: HexColor("#6c6c6c")),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        BannerContainer("이미지를 불러오지 못했습니다."),
                         SizedBox(
                           height: 24.h,
                         )
@@ -316,35 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (snapshot.data == StatusCode.CONNECTION_ERROR) {
                     return Column(
                       children: [
-                        Container(
-                          width: 280.w,
-                          height: 280.h,
-                          child: AspectRatio(
-                            aspectRatio: 1 / 1,
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#c4c4c4"),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Image(
-                                      image: AssetImage(
-                                          "images/logo_crying_ready.png")),
-                                  Text(
-                                    "네트워크 연결상태를 확인해주세요.",
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: HexColor("#6c6c6c")),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        BannerContainer("네트워크 연결상태를 확인해주세요."),
                         SizedBox(
                           height: 24.h,
                         )
@@ -457,6 +345,36 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       backgroundColor: HexColor("#425c5a"),
+    );
+  }
+
+  Widget BannerContainer(String title) {
+    return Container(
+      width: 280.w,
+      height: 280.h,
+      child: AspectRatio(
+        aspectRatio: 1 / 1,
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: HexColor("#c4c4c4"),
+              borderRadius: BorderRadius.circular(8)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Image(image: AssetImage("images/logo_crying_ready.png")),
+              Text(
+                title,
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: HexColor("#6c6c6c")),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
