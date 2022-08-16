@@ -7,7 +7,7 @@ class LoginNavButton extends StatelessWidget {
       {Key? key,
       required this.onPressed,
       required this.title,
-      required this.colorHex})
+      required this.colorHex, required double width})
       : super(key: key);
 
   VoidCallback onPressed;

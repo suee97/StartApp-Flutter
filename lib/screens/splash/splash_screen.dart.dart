@@ -220,6 +220,7 @@ class _SplashScreenState extends State<SplashScreen> {
             if (Platform.isIOS)
               const CupertinoActivityIndicator(
                 radius: 12,
+                color: Colors.white
               )
             else
               const CircularProgressIndicator(
@@ -231,7 +232,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: const TextStyle(fontSize: 28, color: Colors.white),
             ),
             SizedBox(height: 10.h,),
-            Container(
+            SizedBox(
                 width: 100.w,
                 height: 40.h,
                 child: SvgPicture.asset("assets/logo_start.svg", color: Colors.white,)),
