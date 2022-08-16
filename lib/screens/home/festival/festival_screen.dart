@@ -10,7 +10,6 @@ import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:start_app/screens/home/festival/stamp_button.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../../utils/common.dart';
 import 'dart:io' show Platform;
 
@@ -29,6 +28,11 @@ class _FestivalScreenState extends State<FestivalScreen> {
   final Location _location = Location();
   bool isGetGpsLoading = false;
 
+  bool isJeonSi = false;
+  bool isMarket = false;
+  bool isSangSang = false;
+  bool isBungUh = false;
+  bool isSandUndong = false;
   bool isContents = true;
 
   static List<FestivalInfoWidget> contentsList = <FestivalInfoWidget>[
@@ -101,7 +105,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                       title: Column(
                         children: <Widget>[
                           Text(
-                            "최첨단 방문 도장 이벤트",
+                            "최-첨단 방문 도장 이벤트",
                             style: TextStyle(
                                 fontSize: 17.5.sp,
                                 fontWeight: FontWeight.w600,
@@ -121,6 +125,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
                               color: HexColor("#5C7775"),
                             ),
                           ),
+                          SizedBox(height: 22.h,),
+                          isJeonSi ? SvgPicture.asset("assets/stamp_exhibition.svg", width: 130.w, height: 130.h) : SvgPicture.asset("assets/gray_stamp_exhibition.svg", width: 130.w, height: 130.h),
+                          SizedBox(height: 23.h,),
                           StampButton(title: "도장찍기", onPressed: () {})
                         ],
                       ),
@@ -144,7 +151,49 @@ class _FestivalScreenState extends State<FestivalScreen> {
       ),
       Marker(
           markerId: MarkerId("market"),
-          position: LatLng(37.6327762, 127.077273)),
+          position: LatLng(37.6327762, 127.077273),
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                      return AlertDialog(
+                        backgroundColor: HexColor("#F8EAE1"),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        title: Column(
+                          children: <Widget>[
+                            Text(
+                              "최-첨단 방문 도장 이벤트",
+                              style: TextStyle(
+                                  fontSize: 17.5.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: HexColor("#425C5A")),
+                            ),
+                          ],
+                        ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "도장 존에 들어오셨나요? 도장 존에 들어오셨다면 도장 찍기를 눌러주세요!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13.5.sp,
+                                fontWeight: FontWeight.w300,
+                                color: HexColor("#5C7775"),
+                              ),
+                            ),
+                            SvgPicture.asset("assets/stamp_exhibition.svg", width: 147.w, height: 147.h),
+                            StampButton(title: "도장찍기", onPressed: () {})
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                });
+          }),
       Marker(
           markerId: MarkerId("sang-sang"),
           position: LatLng(37.63089, 127.0796858)),
@@ -315,25 +364,63 @@ class _FestivalScreenState extends State<FestivalScreen> {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text("스탬프 방문 도장 이벤트"),
-                          content: Column(
+                        return Dialog(
+                            backgroundColor: HexColor("#F8EAE1"),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Container(
+                          width: 340.w,
+                          height: 240.h,
+                          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),
+                              color: HexColor("#F8EAE1")),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                              children:[
+                                Text("최-첨단 방문 도장 이벤트 현황", style: TextStyle(
+                                  fontSize: 17.5.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: HexColor("#425C5A")),),
+                          Container(
+                            margin: EdgeInsets.only(top: 14.h, bottom: 18.h),
+                            child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("스탬프 존에 들어오셨다면 도장찍기를 눌러주세요!"),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  isSandUndong ? SvgPicture.asset("assets/stamp_ground.svg", width: 67.w, height: 67.h,) : SvgPicture.asset("assets/gray_stamp_ground.svg", width: 67.w, height: 67.h),
+                                  SizedBox(width: 14.w,),
+                                  isJeonSi ? SvgPicture.asset("assets/stamp_exhibition.svg", width: 67.w, height: 67.h) : SvgPicture.asset("assets/gray_stamp_exhibition.svg", width: 67.w, height: 67.h),
+                                ],
+                              ),
+                              SizedBox(height: 10.h,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                isMarket ? SvgPicture.asset("assets/stamp_fleamarket.svg", width: 67.w, height: 67.h) : SvgPicture.asset("assets/gray_tamp_fleamarket.svg", width: 67.w, height: 67.h),
+                                  SizedBox(width: 14.w,),
+                                  isBungUh ? SvgPicture.asset("assets/stamp_bungeobang.svg", width: 67.w, height: 67.h) : SvgPicture.asset("assets/gray_stamp_bungeobang.svg", width: 67.w, height: 67.h),
+                                  SizedBox(width: 14.w,),
+                                  isSangSang ? SvgPicture.asset("assets/stamp_sangsang.svg", width: 67.w, height: 67.h) : SvgPicture.asset("assets/gray_stamp_sangsang.svg", width: 67.w, height: 67.h),
+                              ],)
                             ],
-                          ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          backgroundColor: HexColor("#F8EAE1"),
-                        );
+                          ),),])
+                        ));
                       });
                 },
               ),
               GestureDetector(
                 child: Padding(
-                  padding: EdgeInsets.all(8.w),
-                  child: SvgPicture.asset("assets/icon_festival_info.svg"),
+                  padding: EdgeInsets.only(right: 8.w),
+                  child: Container(child: SvgPicture.asset("assets/icon_festival_info.svg"), decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 4,
+                        offset: Offset(4, 8), // Shadow position
+                      ),
+                    ],
+                  ),),
                 ),
                 onTap: () {
                   showModalBottomSheet(

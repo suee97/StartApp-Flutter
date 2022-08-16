@@ -6,8 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/home_screen.dart';
-import 'package:start_app/screens/login/sign_up/stauthcheck_screen.dart';
-import 'package:start_app/screens/login/sign_up/get_student_id_screen.dart';
+import 'package:start_app/screens/login/sign_up/check_duplication_screen.dart';
+import 'package:start_app/screens/login/sign_up/check_info_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:start_app/widgets/test_button.dart';
 import '../../../widgets/custom_text_field.dart';
@@ -53,9 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   SizedBox(width: 28.w,),
                   Text("학번", style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w300,
-                    color: HexColor("#425c5a")
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w300,
+                      color: HexColor("#425c5a")
                   ),),
                 ],
               ),
@@ -110,10 +110,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     try {
                       var resString = await http
                           .post(
-                              Uri.parse(
-                                  "${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
-                              headers: {"Content-Type": "application/json"},
-                              body: json.encode(bodyData))
+                          Uri.parse(
+                              "${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
+                          headers: {"Content-Type": "application/json"},
+                          body: json.encode(bodyData))
                           .timeout(const Duration(seconds: 10));
                       resData1 =
                           jsonDecode(utf8.decode(resString.bodyBytes));
@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           key: "REFRESH_TOKEN", value: RT);
 
                       var ACCESS_TOKEN =
-                          await secureStorage.read(key: "ACCESS_TOKEN");
+                      await secureStorage.read(key: "ACCESS_TOKEN");
 
                       try {
                         var resString = await http.get(
@@ -192,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => HomeScreen()),
-                            (route) => false);
+                                (route) => false);
                         return;
                       }
                     }
@@ -204,20 +204,20 @@ class _LoginScreenState extends State<LoginScreen> {
           TestButton(
               title: "비밀번호 재설정",
               onPressed: () => {
-                    // Common.setNonLogin(true),
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => STAuthCheckScreen()))
-                  }),
+                // Common.setNonLogin(true),
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => STAuthAgreeScreen()))
+              }),
           TestButton(
               title: "회원가입",
               onPressed: () => {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GetStudentIdScreen()))
-                  })
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CheckDuplication()))
+              })
         ],
       ),
     );

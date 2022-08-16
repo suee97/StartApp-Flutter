@@ -39,8 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       var resString = await http
           .get(
-            Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/banner"),
-          )
+        Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/banner"),
+      )
           .timeout(const Duration(seconds: 10));
       resData = jsonDecode(utf8.decode(resString.bodyBytes));
 
@@ -152,38 +152,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                     imageUrl: bannerLinkList[index],
                                     placeholder: (context, url) => Center(
                                         child: CircularProgressIndicator(
-                                      color: HexColor("#425c5a"),
-                                    )),
+                                          color: HexColor("#425c5a"),
+                                        )),
                                     errorWidget: (context, url, error) =>
                                         Center(
-                                      child: AspectRatio(
-                                        aspectRatio: 1 / 1,
-                                        child: Container(
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                              color: HexColor("#c4c4c4"),
-                                              borderRadius:
+                                          child: AspectRatio(
+                                            aspectRatio: 1 / 1,
+                                            child: Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                  color: HexColor("#c4c4c4"),
+                                                  borderRadius:
                                                   BorderRadius.circular(8)),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
                                                 MainAxisAlignment.center,
-                                            children: [
-                                              const Image(
-                                                  image: AssetImage(
-                                                      "images/logo_crying_ready.png")),
-                                              Text(
-                                                "이미지를 불러오지 못했습니다.",
-                                                style: TextStyle(
-                                                    fontSize: 16.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: HexColor("#6c6c6c")),
-                                              )
-                                            ],
+                                                children: [
+                                                  const Image(
+                                                      image: AssetImage(
+                                                          "images/logo_crying_ready.png")),
+                                                  Text(
+                                                    "이미지를 불러오지 못했습니다.",
+                                                    style: TextStyle(
+                                                        fontSize: 16.sp,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: HexColor("#6c6c6c")),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
                                   ),
                                 );
                               },
@@ -191,15 +191,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 4.h,
                         ),
-                        Container(
-                            height: 20.h,
-                            child: DotsIndicator(
-                              dotsCount: bannerLinkList.length,
-                              position: pageIndex.toDouble(),
-                              decorator: DotsDecorator(
-                                activeColor: HexColor("#EE795F"),
-                              ),
-                            )),
+                        DotsIndicator(
+                          dotsCount: bannerLinkList.length,
+                          position: pageIndex.toDouble(),
+                          decorator: DotsDecorator(
+                            activeColor: HexColor("#EE795F"),
+                          ),
+                        ),
                       ],
                     );
                   } else if (snapshot.data == StatusCode.SERVER_ERROR) {
@@ -247,10 +245,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Platform.isIOS
                                 ? CupertinoActivityIndicator()
                                 : Center(
-                                    child: CircularProgressIndicator(
-                                      color: HexColor("#425c5a"),
-                                    ),
-                                  )),
+                              child: CircularProgressIndicator(
+                                color: HexColor("#425c5a"),
+                              ),
+                            )),
                         SizedBox(
                           height: 24.h,
                         )
@@ -272,31 +270,31 @@ class _HomeScreenState extends State<HomeScreen> {
                           svgPath: "assets/icon_info.svg",
                           isUnderRow: false,
                           onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => InfoScreen()))
-                              }),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => InfoScreen()))
+                          }),
                       MainWidget(
                           title: "학사일정",
                           svgPath: "assets/icon_plan.svg",
                           isUnderRow: false,
                           onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PlanScreen()))
-                              }),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PlanScreen()))
+                          }),
                       MainWidget(
                           title: "재학생 확인 및\n자치회비 납부 확인",
                           svgPath: "assets/icon_status.svg",
                           isUnderRow: false,
                           onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => StatusScreen()))
-                              }),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => StatusScreen()))
+                          }),
                     ]),
                 SizedBox(
                   height: 10.h,
@@ -309,31 +307,31 @@ class _HomeScreenState extends State<HomeScreen> {
                           svgPath: "assets/icon_rent.svg",
                           isUnderRow: true,
                           onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => RentScreen()))
-                              }),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RentScreen()))
+                          }),
                       MainWidget(
                           title: "주 사업",
                           svgPath: "assets/icon_festival.svg",
                           isUnderRow: true,
                           onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => FestivalScreen()))
-                              }),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FestivalScreen()))
+                          }),
                       MainWidget(
                           title: "이벤트 참여",
                           svgPath: "assets/icon_event.svg",
                           isUnderRow: true,
                           onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => EventScreen()))
-                              }),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EventScreen()))
+                          }),
                     ]),
                 SizedBox(
                   height: 8.h,

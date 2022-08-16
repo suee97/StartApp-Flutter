@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:start_app/screens/login/sign_up/get_student_id_screen.dart';
 import 'package:start_app/screens/login/sign_up/signup_screen.dart';
 
 import '../../../utils/common.dart';
+import 'check_duplication_screen.dart';
 
 class AuthWebviewScreen extends StatefulWidget {
 
@@ -68,14 +68,14 @@ class _AuthWebviewScreenState extends State<AuthWebviewScreen> {
               Navigator.pushAndRemoveUntil(
                   context, MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      GetStudentIdScreen()), (route) => false);
+                      CheckDuplication()), (route) => false);
               Common.showSnackBar(context, '네트워크 오류가 발생했습니다.');
             },
             onLoadHttpError: (controller, url, intnum, string){
               Navigator.pushAndRemoveUntil(
                   context, MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      GetStudentIdScreen()), (route) => false);
+                      CheckDuplication()), (route) => false);
               print("loadhttperror$intnum$string");
               Common.showSnackBar(context, '네트워크 오류가 발생했습니다.');
             },

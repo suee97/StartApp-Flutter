@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class FestivalInfoWidget extends StatefulWidget {
   FestivalInfoWidget({Key? key, required this.contentTitle, required this.contentImg, required this.contentCrowded, required this.openTime, required this.contentFee}) : super(key: key);
