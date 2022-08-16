@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/models/status_code.dart';
 import 'package:start_app/screens/login/sign_up/auth_webview_screen.dart';
 import 'package:start_app/utils/common.dart';
@@ -14,20 +15,26 @@ import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 
-class CheckDuplication extends StatefulWidget {
-  const CheckDuplication({Key? key}) : super(key: key);
+class CheckDuplicationScreen extends StatefulWidget {
+  const CheckDuplicationScreen({Key? key}) : super(key: key);
 
   @override
-  State<CheckDuplication> createState() => _CheckDuplicationState();
+  State<CheckDuplicationScreen> createState() => _CheckDuplicationScreenState();
 }
 
-class _CheckDuplicationState extends State<CheckDuplication> {
+class _CheckDuplicationScreenState extends State<CheckDuplicationScreen> {
   bool isLoading = false;
   final studentIdController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    studentIdController.dispose();
+    super.dispose();
   }
 
   @override
@@ -127,8 +134,16 @@ class _CheckDuplicationState extends State<CheckDuplication> {
                   });
 
                   if (statusCode == StatusCode.SUCCESS) {
-                    var uuid = Uuid();
-                    var key = uuid.v4();
+                    final uuid = Uuid();
+                    final key = uuid.v4();
+
+                    final pref = await SharedPreferences.getInstance();
+                    await pref.setString("uuidKey", key);
+                    await pref.setString("studentId", studentIdController.text);
+
+                    print("uuidKey 저장 : $key");
+                    print("studentId 저장 : ${studentIdController.text}");
+
                     String basePath =
                         "https://for-a.seoultech.ac.kr/STECH/API/VIEW/login.jsp?orgnCd=${dotenv.env["COMPUTERIZATION_BUSINESS_KEY"]}&returnUrl=";
                     String authUrl =
@@ -152,7 +167,7 @@ class _CheckDuplicationState extends State<CheckDuplication> {
                     return;
                   }
 
-                  if (statusCode == StatusCode.DEFAULT) {
+                  if (statusCode == StatusCode.UNCATCHED_ERROR) {
                     if (mounted) {
                       Common.showSnackBar(context, "중복된 아이디입니다.");
                     }
@@ -218,10 +233,10 @@ class _CheckDuplicationState extends State<CheckDuplication> {
       }
 
       if (resData["status"] == 400) {
-        return StatusCode.DEFAULT; // 중복
+        return StatusCode.UNCATCHED_ERROR; // 중복
       }
 
-      return StatusCode.DEFAULT;
+      return StatusCode.UNCATCHED_ERROR;
     } on TimeoutException catch (e) {
       return StatusCode.TIMEOUT_ERROR;
     } on SocketException catch (e) {

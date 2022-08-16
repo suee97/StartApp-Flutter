@@ -34,52 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<String> bannerLinkList = [];
 
-  Future<StatusCode> fetchBannerLinkList() async {
-    Map<String, dynamic> resData = {};
-    try {
-      var resString = await http
-          .get(
-        Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/banner"),
-      )
-          .timeout(const Duration(seconds: 10));
-      resData = jsonDecode(utf8.decode(resString.bodyBytes));
-
-      if (resData["status"] == 200) {
-        List<String> tempBannerLinkList = [];
-
-        for (var e in resData["data"]) {
-          tempBannerLinkList.add(e["imageUrl"]);
-        }
-
-        bannerLinkList = tempBannerLinkList;
-        return StatusCode.SUCCESS;
-      }
-
-      if (resData["status"] == 500) {
-        return StatusCode.SERVER_ERROR;
-      }
-
-      if (resData["status"] != 200) {
-        return StatusCode.UNCATCHED_ERROR;
-      }
-
-      return StatusCode.DEFAULT;
-    } on TimeoutException catch (e) {
-      print("TimeoutException : $e");
-      return StatusCode.TIMEOUT_ERROR;
-    } on SocketException catch (e) {
-      print("SocketException : $e");
-      return StatusCode.CONNECTION_ERROR;
-    } catch (e) {
-      print("UnCatchedError : $e");
-      return StatusCode.UNCATCHED_ERROR;
-    }
-  }
-
   @override
   void initState() {
-    super.initState();
     fetchBannerLinkList();
+    super.initState();
   }
 
   @override
@@ -131,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (snapshot.data == StatusCode.SUCCESS) {
                     return Column(
                       children: [
-                        Container(
+                        SizedBox(
                             width: 280.w,
                             height: 280.h,
                             child: PageView.builder(
@@ -191,11 +149,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 4.h,
                         ),
-                        DotsIndicator(
-                          dotsCount: bannerLinkList.length,
-                          position: pageIndex.toDouble(),
-                          decorator: DotsDecorator(
-                            activeColor: HexColor("#EE795F"),
+                        SizedBox(
+                          height: 20.h,
+                          child: DotsIndicator(
+                            dotsCount: bannerLinkList.length,
+                            position: pageIndex.toDouble(),
+                            decorator: DotsDecorator(
+                              activeColor: HexColor("#EE795F"),
+                            ),
                           ),
                         ),
                       ],
@@ -230,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (snapshot.data == StatusCode.CONNECTION_ERROR) {
                     return Column(
                       children: [
-                        BannerContainer("네트워크 연결상태를 확인해주세요."),
+                        BannerContainer("오류가 발생했습니다."),
                         SizedBox(
                           height: 24.h,
                         )
@@ -273,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => InfoScreen()))
+                                    builder: (context) => const InfoScreen()))
                           }),
                       MainWidget(
                           title: "학사일정",
@@ -283,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PlanScreen()))
+                                    builder: (context) => const PlanScreen()))
                           }),
                       MainWidget(
                           title: "재학생 확인 및\n자치회비 납부 확인",
@@ -293,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => StatusScreen()))
+                                    builder: (context) => const StatusScreen()))
                           }),
                     ]),
                 SizedBox(
@@ -310,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => RentScreen()))
+                                    builder: (context) => const RentScreen()))
                           }),
                       MainWidget(
                           title: "주 사업",
@@ -320,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => FestivalScreen()))
+                                    builder: (context) => const FestivalScreen()))
                           }),
                       MainWidget(
                           title: "이벤트 참여",
@@ -330,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => EventScreen()))
+                                    builder: (context) => const EventScreen()))
                           }),
                     ]),
                 SizedBox(
@@ -347,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget BannerContainer(String title) {
-    return Container(
+    return SizedBox(
       width: 280.w,
       height: 280.h,
       child: AspectRatio(
@@ -374,5 +335,45 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  Future<StatusCode> fetchBannerLinkList() async {
+    Map<String, dynamic> resData = {};
+
+    try {
+      var resString = await http
+          .get(
+        Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/banner"),
+      )
+          .timeout(const Duration(seconds: 10));
+      resData = jsonDecode(utf8.decode(resString.bodyBytes));
+
+      if (resData["status"] == 200) {
+        List<String> tempBannerLinkList = [];
+
+        for (var e in resData["data"]) {
+          tempBannerLinkList.add(e["imageUrl"]);
+        }
+
+        bannerLinkList = tempBannerLinkList;
+        return StatusCode.SUCCESS;
+      }
+
+      if (resData["status"] == 500) {
+        return StatusCode.SERVER_ERROR;
+      }
+
+      if (resData["status"] != 200) {
+        return StatusCode.UNCATCHED_ERROR;
+      }
+
+      return StatusCode.UNCATCHED_ERROR;
+    } on TimeoutException catch (e) {
+      return StatusCode.TIMEOUT_ERROR;
+    } on SocketException catch (e) {
+      return StatusCode.CONNECTION_ERROR;
+    } catch (e) {
+      return StatusCode.UNCATCHED_ERROR;
+    }
   }
 }
