@@ -1,7 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:start_app/models/status_code.dart';
 import 'package:start_app/screens/login/sign_up/signup_screen.dart';
-import '../../../models/status_code.dart';
 import '../../../widgets/test_button.dart';
 
 class CheckInfoScreen extends StatefulWidget {
@@ -16,6 +22,7 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
 
   @override
   void initState() {
+    getUserDataAndCheckStudentId();
     super.initState();
   }
 
@@ -112,8 +119,53 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
         ])));
   }
 
-  // Future<StatusCode> checkInfo(String key) async{
-  //
-  // }
+  Future<StatusCode> getUserDataAndCheckStudentId() async {
+    // 기존 pref 불러오기
+    final pref = await SharedPreferences.getInstance();
+    String? key = pref.getString("uuidKey");
+    if (key == null) {
+      return StatusCode.UNCATCHED_ERROR;
+    }
+    String? studentId = pref.getString("studentId");
+    if (studentId == null) {
+      return StatusCode.UNCATCHED_ERROR;
+    }
 
+    print("uuidKey 로드 : $key");
+    print("studentId 로드 : $studentId");
+
+    // 기존 키로 요청하기
+    Map<String, dynamic> resData = {};
+
+    try {
+      var resString = await http
+          .get(
+            Uri.parse(
+                "${dotenv.get("DEV_API_BASE_URL")}/auth/seoultech/check?key=$key"),
+          )
+          .timeout(const Duration(seconds: 10));
+      resData = jsonDecode(utf8.decode(resString.bodyBytes));
+
+      if (resData["status"] != 200) {
+        return StatusCode.UNCATCHED_ERROR;
+      }
+
+      // 학번 일치하는지 확인하기
+      var decodedString =
+          utf8.decode(base64.decode(resData["data"][0]["jsonValue"]));
+      String afterId = jsonDecode(decodedString)["STNT_NUMB"];
+
+      if (studentId.toString() == afterId.toString()) {
+        return StatusCode.SUCCESS;
+      }
+
+      return StatusCode.UNCATCHED_ERROR;
+    } on TimeoutException catch (e) {
+      return StatusCode.TIMEOUT_ERROR;
+    } on SocketException catch (e) {
+      return StatusCode.CONNECTION_ERROR;
+    } catch (e) {
+      return StatusCode.UNCATCHED_ERROR;
+    }
+  }
 }

@@ -1,5 +1,4 @@
 enum StatusCode {
-  DEFAULT,
   SUCCESS,
   REQUEST_ERROR,
   SERVER_ERROR,

@@ -263,27 +263,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text("회원가입"),
               ],
             ),
-            // TestButton(
-            //     title: "비밀번호 재설정",
-            //     onPressed: () => {
-            //           // Common.setNonLogin(true),
-            //           Navigator.pushReplacement(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) => STAuthCheckScreen()))
-            //         }),
             TestButton(
                 title: "회원가입",
                 onPressed: () => {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => CheckDuplication()))
+                          builder: (context) => CheckDuplicationScreen()))
                 })
           ],
         ),
         backgroundColor: HexColor("#f3f3f3"),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    studentIdController.dispose();
+    pwController.dispose();
+    super.dispose();
   }
 }

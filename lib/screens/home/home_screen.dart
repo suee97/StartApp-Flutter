@@ -367,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return StatusCode.UNCATCHED_ERROR;
       }
 
-      return StatusCode.DEFAULT;
+      return StatusCode.UNCATCHED_ERROR;
     } on TimeoutException catch (e) {
       return StatusCode.TIMEOUT_ERROR;
     } on SocketException catch (e) {

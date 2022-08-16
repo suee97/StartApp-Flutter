@@ -76,7 +76,7 @@ class _AuthWebviewScreenState extends State<AuthWebviewScreen> {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => CheckDuplication()),
+                    builder: (BuildContext context) => CheckDuplicationScreen()),
                     (route) => false);
             print("loadhttperror$intnum$string");
             Common.showSnackBar(context, '네트워크 오류가 발생했습니다.');
