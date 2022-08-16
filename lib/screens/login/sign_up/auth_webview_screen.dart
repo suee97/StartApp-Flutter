@@ -49,7 +49,7 @@ class _AuthWebviewScreenState extends State<AuthWebviewScreen> {
           initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
           initialOptions: InAppWebViewGroupOptions(
             crossPlatform:
-                InAppWebViewOptions(useShouldOverrideUrlLoading: true),
+            InAppWebViewOptions(useShouldOverrideUrlLoading: true),
           ),
           onWebViewCreated: (controller) {
             _controller = controller;
@@ -70,14 +70,14 @@ class _AuthWebviewScreenState extends State<AuthWebviewScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => CheckInfoScreen()),
-                (route) => false);
+                    (route) => false);
           },
           onLoadHttpError: (controller, url, intnum, string) {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => CheckDuplication()),
-                (route) => false);
+                    (route) => false);
             print("loadhttperror$intnum$string");
             Common.showSnackBar(context, '네트워크 오류가 발생했습니다.');
           },

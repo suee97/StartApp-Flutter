@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/login_widgets.dart';
-import 'package:start_app/screens/login/sign_up/stauthcheck_screen.dart';
 import 'package:start_app/screens/login/sign_up/check_duplication_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:start_app/widgets/test_button.dart';
@@ -167,10 +166,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 try {
                   var resString = await http
                       .post(
-                          Uri.parse(
-                              "${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
-                          headers: {"Content-Type": "application/json"},
-                          body: json.encode(bodyData))
+                      Uri.parse(
+                          "${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
+                      headers: {"Content-Type": "application/json"},
+                      body: json.encode(bodyData))
                       .timeout(const Duration(seconds: 10));
                   resData1 = jsonDecode(utf8.decode(resString.bodyBytes));
                 } on TimeoutException catch (e) {
@@ -195,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   await secureStorage.write(key: "REFRESH_TOKEN", value: RT);
 
                   var ACCESS_TOKEN =
-                      await secureStorage.read(key: "ACCESS_TOKEN");
+                  await secureStorage.read(key: "ACCESS_TOKEN");
 
                   try {
                     var resString = await http.get(
@@ -239,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (context) => HomeScreen()),
-                        (route) => false);
+                            (route) => false);
                     return;
                   }
                 }
@@ -276,11 +275,11 @@ class _LoginScreenState extends State<LoginScreen> {
             TestButton(
                 title: "회원가입",
                 onPressed: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CheckDuplication()))
-                    })
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CheckDuplication()))
+                })
           ],
         ),
         backgroundColor: HexColor("#f3f3f3"),

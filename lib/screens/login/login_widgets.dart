@@ -5,10 +5,10 @@ import 'package:hexcolor/hexcolor.dart';
 class LoginNavButton extends StatelessWidget {
   LoginNavButton(
       {Key? key,
-      required this.onPressed,
-      required this.title,
-      required this.colorHex,
-      required this.width})
+        required this.onPressed,
+        required this.title,
+        required this.colorHex,
+        required this.width})
       : super(key: key);
 
   VoidCallback onPressed;
@@ -25,7 +25,7 @@ class LoginNavButton extends StatelessWidget {
         height: 54.h,
         decoration: BoxDecoration(
             color: HexColor(colorHex),
-          borderRadius: BorderRadius.circular(10)
+            borderRadius: BorderRadius.circular(10)
         ),
         alignment: Alignment.center,
         child: Text(
@@ -52,8 +52,8 @@ class LoginInputField extends StatelessWidget {
       child: TextField(
         controller: controller,
         style: TextStyle(
-          fontSize: 17.5.sp,
-          fontWeight: FontWeight.w300
+            fontSize: 17.5.sp,
+            fontWeight: FontWeight.w300
         ),
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
