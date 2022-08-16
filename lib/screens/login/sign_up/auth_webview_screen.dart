@@ -47,6 +47,7 @@ class _AuthWebviewScreenState extends State<AuthWebviewScreen> {
       body: Stack(children: [
         InAppWebView(
           initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
+          // initialUrlRequest: URLRequest(url: Uri.parse("https://for-a.seoultech.ac.kr/STECH/API/VIEW/login.jsp?orgnCd=571d03af1ce527b6d19dc0ddd8c0&returnUrl=https://8907-2001-e60-87b2-1406-f4bd-9b52-8d8c-4940.ngrok.io/api/auth/seoultech/key=asdf")),
           initialOptions: InAppWebViewGroupOptions(
             crossPlatform:
             InAppWebViewOptions(useShouldOverrideUrlLoading: true),

@@ -32,6 +32,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void dispose() {
+    studentIdController.dispose();
+    pwController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -276,12 +283,5 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: HexColor("#f3f3f3"),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    studentIdController.dispose();
-    pwController.dispose();
-    super.dispose();
   }
 }
