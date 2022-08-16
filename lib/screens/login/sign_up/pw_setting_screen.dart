@@ -4,7 +4,7 @@ import 'package:start_app/utils/common.dart';
 import '../../../widgets/custom_text_field.dart';
 import 'package:start_app/widgets/test_button.dart';
 
-import '../sign_in/login_screen.dart';
+import '../login_screen.dart';
 
 class PWSettingScreen extends StatelessWidget {
   const PWSettingScreen({Key? key}) : super(key: key);

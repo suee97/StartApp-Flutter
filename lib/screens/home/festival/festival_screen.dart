@@ -10,8 +10,11 @@ import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:start_app/screens/home/festival/stamp_button.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../../utils/common.dart';
 import 'dart:io' show Platform;
+
+import 'festival_info_widget.dart';
 
 class FestivalScreen extends StatefulWidget {
   const FestivalScreen({Key? key}) : super(key: key);
@@ -25,6 +28,29 @@ class _FestivalScreenState extends State<FestivalScreen> {
   late GoogleMapController _controller;
   final Location _location = Location();
   bool isGetGpsLoading = false;
+
+  bool isContents = true;
+
+  static List<FestivalInfoWidget> contentsList = <FestivalInfoWidget>[
+    FestivalInfoWidget(contentTitle: "과기대잡화점의기적", contentImg: "festival_postoffice_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "나만의 전시회", contentImg: "festival_exhibition_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "낙서 캔버스", contentImg: "festival_doodlewall_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "마당사업", contentImg: "festival_madangbiz_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "미니바이킹", contentImg: "festival_biking_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "씨씨는 사랑을 싣고", contentImg: "festival_cc_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "제1안내소", contentImg: "festival_info1_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "매표소", contentImg: "festival_ticketbooth_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "제3안내소", contentImg: "festival_info3_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "플리마켓", contentImg: "festival_fleamarket_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "포토존", contentImg: "festival_photozone_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "포토부스", contentImg: "festival_photoism_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "패션투표", contentImg: "festival_fashionvote_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "전당포", contentImg: "festival_pawnshop_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "인화부스", contentImg: "festival_photoprinting_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "믓쟁이 의상소", contentImg: "festival_costume_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "오락부스", contentImg: "festival_gameroom_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    FestivalInfoWidget(contentTitle: "어의상회", contentImg: "festival_startshop_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  ];
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -310,83 +336,90 @@ class _FestivalScreenState extends State<FestivalScreen> {
                   child: SvgPicture.asset("assets/icon_festival_info.svg"),
                 ),
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return DraggableScrollableSheet(
-                          initialChildSize: 0.80,
-                          minChildSize: 0.40,
-                          builder: (BuildContext context,
-                              ScrollController scrollController) {
-                            return SingleChildScrollView(
-                              controller: scrollController,
-                              child: FestivalInfoBottomSheet(),
-                            );
-                          });
-                    },
+                  showModalBottomSheet(
+                    backgroundColor: HexColor("#F8EAE1"),
+                      isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
+                      ),
+                      context: context,
+                      builder: (context) {
+                        return StatefulBuilder(
+                            builder: (BuildContext context, StateSetter setState) {
+                              return DraggableScrollableSheet(
+                                  expand: false,
+                                  builder: (BuildContext context, ScrollController scrollController) {
+                                    return Column(children: <Widget>[
+                                      SizedBox(
+                                        height: 12.h,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height: 40.h,
+                                            width: 160.w,
+                                            child: TextButton(onPressed: (){
+                                              setState((){
+                                                  isContents = true;
+                                              });
+                                          }, child: Text("컨텐츠" , style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#425C5A"))),
+                                                style: ButtonStyle(
+                                              backgroundColor: isContents ? MaterialStateProperty.all<Color>(HexColor("#50FFFFFF")) : MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
+                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
+                                                    // side: BorderSide(color: Colors.red)
+                                                  )
+                                              )
+                                          ))),
+                                          SizedBox(
+                                            height: 40.h,
+                                            width: 160.w,
+                                            child: TextButton(onPressed: (){
+                                              setState((){
+                                                  isContents = false;
+                                              });
+                                            },
+                                                child: Text("무대 라인업", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#425C5A")),),
+                                                style: ButtonStyle(
+                                              backgroundColor: !isContents ? MaterialStateProperty.all<Color>(HexColor("#50FFFFFF")) : MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
+                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.only(
+                                                        topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                                                    // side: BorderSide(color: Colors.red)
+                                                  )
+                                              )
+                                          )))
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 14.h,
+                                      ),
+                                      Expanded(
+                                        child: isContents ? ListView.builder(
+                                            controller: scrollController,
+                                            itemCount: contentsList.length,
+                                            itemBuilder: (context, index) {
+                                              return contentsList[index];
+                                            }) : Container(
+                                    width: 320.w,
+                                    height: 450.h,
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),
+                                    color: HexColor("#FFFFFF")),)
+                                      )
+                                    ]);
+                                  }
+                              );
+                            }
+                        );}
                   );
                 })],
           ),
         )
       ]),
-    );
-  }
-}
-
-class FestivalInfoBottomSheet extends StatelessWidget {
-  const FestivalInfoBottomSheet({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 12.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      margin: const EdgeInsets.all(0),
-      child: Container(
-        height: 540.h,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(24), topLeft: Radius.circular(24)),
-            color: HexColor("#F8EAE1")),
-        child: FestivalBottomSheetContent(),
-      ),
-    );
-  }
-}
-
-class FestivalBottomSheetContent extends StatelessWidget {
-  const FestivalBottomSheetContent({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(onPressed: (){}, child: Text("컨텐츠"), style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(24), bottomLeft: Radius.circular(24)),
-                        // side: BorderSide(color: Colors.red)
-                    )
-                )
-            )),
-            TextButton(onPressed: (){}, child: Text("무대 라인업"), style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(24), bottomRight: Radius.circular(24)),
-                      // side: BorderSide(color: Colors.red)
-                    )
-                )
-            ))
-          ],
-        )
-      ],
     );
   }
 }
