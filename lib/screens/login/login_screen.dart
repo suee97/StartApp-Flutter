@@ -277,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => CheckDuplicationScreen()))
-                })
+                }),
           ],
         ),
         backgroundColor: HexColor("#f3f3f3"),

@@ -9,7 +9,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/models/status_code.dart';
-import 'package:start_app/screens/login/sign_up/auth_webview_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
@@ -149,13 +148,13 @@ class _CheckDuplicationScreenState extends State<CheckDuplicationScreen> {
                     String authUrl =
                         "$basePath${dotenv.env["DEV_API_BASE_URL"]}/auth/seoultech?key=$key";
 
-                    if (mounted) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AuthWebviewScreen(url: authUrl)),
-                      );
-                    }
+                    // if (mounted) {
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => AuthWebviewScreen(url: authUrl)),
+                    //   );
+                    // }
                     return;
                   }
 

@@ -55,8 +55,6 @@ dependencies:
   app_settings: ^4.1.8
   maps_toolkit: ^2.0.0
   logger: ^1.1.0
-  firebase_core: ^1.20.0
-  firebase_messaging: ^12.0.1
   overlay_support: ^2.0.1
   dots_indicator: ^2.1.0
   snapping_sheet: ^3.1.0
@@ -65,7 +63,6 @@ dependencies:
   lottie: ^1.4.0
   dotted_line: ^3.1.0
   external_app_launcher: ^3.1.0
-  flutter_inappwebview: ^5.4.3+7
   uuid: ^3.0.6
 
 dev_dependencies:
