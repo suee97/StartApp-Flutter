@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 
 import '../../../widgets/test_button.dart';
@@ -22,6 +23,7 @@ class SignUpEndScreen extends StatelessWidget {
               (route) => false);
         },
       ),
+      backgroundColor: HexColor("#f3f3f3"),
     );
   }
 }

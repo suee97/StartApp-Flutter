@@ -164,6 +164,7 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
             ],
           ),
         ),
+        backgroundColor: HexColor("#f3f3f3"),
       ),
     );
   }
