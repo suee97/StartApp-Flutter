@@ -28,6 +28,10 @@
 	<string>comgooglemaps</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
+	<key>NSAllowsArbitraryLoadsInWebContent</key>
+	<true/>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_dartobservatory._tcp</string>
@@ -40,12 +44,13 @@
 	<string>스탬프 이벤트에 참여하기 위해서 사용자의 위치정보가 필요합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>스탬프 이벤트에 참여하기 위해서 사용자의 위치정보가 필요합니다.</string>
+	<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
-		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -68,13 +73,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
-
-    <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-    <true/>
-	<key>NSAllowsArbitraryLoads</key>
-    <true/>
-    <key>NSAllowsArbitraryLoadsInWebContent</key>
-    <true/>
 </dict>
 </plist>
