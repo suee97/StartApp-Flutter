@@ -8,9 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/models/status_code.dart';
-import 'package:start_app/screens/login/sign_up/pw_resetting_screen.dart';
 import 'package:start_app/screens/login/sign_up/pw_setting_screen.dart';
-import 'package:start_app/utils/common.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 
