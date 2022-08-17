@@ -282,6 +282,7 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
             ],
           ),
         ),
+        backgroundColor: HexColor("#f3f3f3"),
       ),
     );
   }
