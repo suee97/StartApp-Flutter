@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/login_widgets.dart';
-import 'package:start_app/screens/login/sign_up/get_info_screen.dart';
+import 'package:start_app/screens/login/sign_up/check_info_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:start_app/widgets/test_button.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -276,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => GetInfoScreen()))
+                          builder: (context) => CheckInfoScreen()))
                 }),
           ],
         ),
