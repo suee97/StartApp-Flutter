@@ -15,6 +15,7 @@ class PostCertificateScreen extends StatefulWidget {
 
 class _PostCertificateScreenState extends State<PostCertificateScreen> {
   File? imageFile;
+  final ImagePicker imagePicker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +30,43 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             GestureDetector(
-              onTap: () {
-                getImage(source: ImageSource.camera);
+              onTap: () async {
+                final file = await ImagePicker().pickImage(
+                    source: ImageSource.camera,
+                    maxWidth: 640,
+                    maxHeight: 280,
+                    imageQuality: 100 //0-100
+                    );
+
+                if (file?.path != null) {
+                  setState(() {
+                    imageFile = File(file!.path);
+                    print(imageFile?.path);
+                  });
+                }
               },
-              child: Container(
-                width: 320.w,
-                height: 320.h,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(30)
-                ),
-              ),
+              child: imageFile != null
+                  ? Container(
+                      width: 320.w,
+                      height: 320.h,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(30),
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: FileImage(File(imageFile!.path)))),
+                    )
+                  : Container(
+                      width: 320.w,
+                      height: 320.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(30),
+                      )),
             ),
-            SizedBox(height: 16.h,),
+            SizedBox(
+              height: 16.h,
+            ),
             LoginNavButton(
                 onPressed: () {
                   // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -55,17 +80,5 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
       ),
       backgroundColor: HexColor("#f3f3f3"),
     );
-  }
-
-  void getImage({required ImageSource source}) async {
-    final file = await ImagePicker().pickImage(
-        source: source, maxWidth: 640, maxHeight: 280, imageQuality: 100 //0-100
-    );
-
-    if (file?.path != null) {
-      setState(() {
-        imageFile = File(file!.path);
-      });
-    }
   }
 }

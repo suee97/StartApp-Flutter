@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'dart:io' show Platform;
-
 import 'package:start_app/screens/login/sign_up/post_certificate_screen.dart';
 
 class PwSettingScreen extends StatefulWidget {
@@ -24,6 +23,8 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
 
   @override
   void dispose() {
+    appPw1.dispose();
+    appPw2.dispose();
     super.dispose();
   }
 
@@ -51,8 +52,46 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                   ),
                 ),
               ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 28.w,
+                  ),
+                  Text(
+                    "회원가입",
+                    style: TextStyle(
+                        fontSize: 21.5.sp,
+                        fontWeight: FontWeight.w600,
+                        color: HexColor("#425c5a")),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 28.w,
+                  ),
+                  Text(
+                    "ST'art 어플에서 사용할 비밀번호를 설정해주세요.",
+                    style:
+                        TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 28.w,
+                  ),
+                  Text(
+                    "영어 대소문자, 숫자, 특수문를 각 1개 이상 사용",
+                    style:
+                        TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w300),
+                  ),
+                ],
+              ),
               SizedBox(
-                height: 340.h,
+                height: 290.h,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -79,6 +118,7 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                             cursorColor: HexColor("#425C5A"),
                             maxLines: 1,
                             enableSuggestions: false,
+                            obscureText: true,
                             style: TextStyle(
                                 fontSize: 17.5.sp, fontWeight: FontWeight.w300),
                             decoration: InputDecoration(
@@ -119,6 +159,7 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                             cursorColor: HexColor("#425C5A"),
                             maxLines: 1,
                             enableSuggestions: false,
+                            obscureText: true,
                             style: TextStyle(
                                 fontSize: 17.5.sp, fontWeight: FontWeight.w300),
                             decoration: InputDecoration(
