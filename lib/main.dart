@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:start_app/notifiers/plan_notifier.dart';
+import 'package:start_app/notifiers/sign_up_notifier.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'screens/splash/splash_screen.dart.dart';
 
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MultiProvider(
           providers: [
-            ChangeNotifierProvider(create: (_) => PlanNotifier())
+            ChangeNotifierProvider(create: (_) => PlanNotifier()),
+            ChangeNotifierProvider(create: (_) => SignUpNotifier()),
           ],
           child: MaterialApp(
             title: '서울과학기술대학교 총학생회',

@@ -102,13 +102,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               itemCount: bannerLinkList.length,
                               itemBuilder: (BuildContext context, int index) {
-                                // WidgetsBinding.instance
-                                //     .addPostFrameCallback((_) {
-                                //   setState(() {
-                                //     pageIndex = index.toDouble();
-                                //   });
-                                // }
-                                // );
                                 return AspectRatio(
                                   aspectRatio: 1 / 1,
                                   child: CachedNetworkImage(
@@ -352,7 +345,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<StatusCode> fetchBannerLinkList() async {
-
     print("api 호출");
 
     Map<String, dynamic> resData = {};

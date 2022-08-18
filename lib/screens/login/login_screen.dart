@@ -22,12 +22,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool autoLoginCheckBoxState = false;
+  late bool autoLoginCheckBoxState;
+  late bool isLoading;
   final studentIdController = TextEditingController();
   final pwController = TextEditingController();
 
   @override
   void initState() {
+    autoLoginCheckBoxState = false;
+    isLoading = false;
     super.initState();
   }
 
@@ -159,6 +162,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             LoginNavButton(
               onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
+
                 Map bodyData = {
                   "studentNo": studentIdController.text,
                   "password": pwController.text
@@ -173,10 +180,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 try {
                   var resString = await http
                       .post(
-                      Uri.parse(
-                          "${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
-                      headers: {"Content-Type": "application/json"},
-                      body: json.encode(bodyData))
+                          Uri.parse(
+                              "${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
+                          headers: {"Content-Type": "application/json"},
+                          body: json.encode(bodyData))
                       .timeout(const Duration(seconds: 10));
                   resData1 = jsonDecode(utf8.decode(resString.bodyBytes));
                 } on TimeoutException catch (e) {
@@ -201,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   await secureStorage.write(key: "REFRESH_TOKEN", value: RT);
 
                   var ACCESS_TOKEN =
-                  await secureStorage.read(key: "ACCESS_TOKEN");
+                      await secureStorage.read(key: "ACCESS_TOKEN");
 
                   try {
                     var resString = await http.get(
@@ -243,12 +250,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       print(e);
                     }
 
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                            (route) => false);
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    if (mounted) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          (route) => false);
+                    }
                     return;
                   }
                 }
+                setState(() {
+                  isLoading = false;
+                });
                 return;
               },
               title: "로그인",
@@ -273,11 +289,11 @@ class _LoginScreenState extends State<LoginScreen> {
             TestButton(
                 title: "회원가입",
                 onPressed: () => {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CheckInfoScreen()))
-                }),
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CheckInfoScreen()))
+                    }),
           ],
         ),
         backgroundColor: HexColor("#f3f3f3"),
