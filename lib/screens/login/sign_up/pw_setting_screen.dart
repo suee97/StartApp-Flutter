@@ -192,7 +192,7 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                               borderRadius: BorderRadius.circular(10)),
                           alignment: Alignment.center,
                           child: Text(
-                            "확인",
+                            "다음",
                             style: TextStyle(
                                 fontSize: 19.5.sp,
                                 fontWeight: FontWeight.w500,

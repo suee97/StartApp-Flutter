@@ -15,13 +15,14 @@ class PlanCalendar extends StatelessWidget {
       var _source = planNotifier.getMeetingList();
 
       return Container(
-        color: HexColor("#425C5A"),
+        color: planNotifier.getIsLoading() ? HexColor("#929d9c") : HexColor("#425C5A"),
         padding: EdgeInsets.only(left: 10.w, right: 10.w),
         height: 330.h,
         child: SfCalendar(
           view: CalendarView.month,
           onViewChanged: (ViewChangedDetails viewChangedDetails) {
-            SchedulerBinding.instance.addPostFrameCallback((Duration duration) async {
+            SchedulerBinding.instance
+                .addPostFrameCallback((Duration duration) async {
               var _year = DateFormat('yyyy').format(viewChangedDetails
                   .visibleDates[viewChangedDetails.visibleDates.length ~/ 2]);
               var _month = DateFormat('M').format(viewChangedDetails
@@ -54,7 +55,9 @@ class PlanCalendar extends StatelessWidget {
                 color: Color(0xffff5eaea),
                 fontWeight: FontWeight.w500),
           ),
-          backgroundColor: HexColor("#425C5A"),
+          backgroundColor: planNotifier.getIsLoading()
+              ? HexColor("#929d9c")
+              : HexColor("#425c5a"),
           cellBorderColor: Colors.white,
           todayTextStyle: const TextStyle(color: Colors.white),
           //선택 날짜 border. 기본 파랑색.

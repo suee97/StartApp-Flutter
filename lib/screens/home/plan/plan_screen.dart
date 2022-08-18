@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -6,45 +7,93 @@ import 'package:start_app/screens/home/plan/plan_calendar.dart';
 import '../../../utils/common.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'stack_line.dart';
+import 'dart:io' show Platform;
 
-class PlanScreen extends StatelessWidget {
+class PlanScreen extends StatefulWidget {
+
   const PlanScreen({Key? key}) : super(key: key);
 
   @override
+  State<PlanScreen> createState() => _PlanScreenState();
+}
+
+class _PlanScreenState extends State<PlanScreen> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "학사 일정",
-          style: Common.startAppBarTextStyle,
-        ),
-        centerTitle: true,
-        foregroundColor: Colors.white,
-        backgroundColor: HexColor("#425C5A"),
-        elevation: 0,
-      ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-              padding:
-                  EdgeInsets.only(top: 5.h, bottom: 5.h, right: 5.h, left: 5.w),
-              child: Stack(children: [
-                PlanCalendar(),
-                const StackLine(),
-              ])),
-          DraggableScrollableSheet(
-            initialChildSize: 0.40,
-            minChildSize: 0.40,
-            builder: (BuildContext context, ScrollController scrollController) {
-              return SingleChildScrollView(
-                controller: scrollController,
-                child: PlanBottomSheet(),
-              );
-            },
+    return Consumer<PlanNotifier>(
+      builder: (context, planNotifier, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "학사 일정",
+              style: Common.startAppBarTextStyle,
+            ),
+            centerTitle: true,
+            foregroundColor: Colors.white,
+            backgroundColor: HexColor("#425C5A"),
+            elevation: 0,
           ),
-        ],
-      ),
-      backgroundColor: HexColor("#425c5a"),
+          body: planNotifier.getIsLoading() == false
+              ? Stack(
+                  children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.only(
+                            top: 5.h, bottom: 5.h, right: 5.h, left: 5.w),
+                        child: Stack(children: [
+                          PlanCalendar(),
+                          StackLine(colorHex: "#425c5a"),
+                        ])),
+                    DraggableScrollableSheet(
+                      initialChildSize: 0.40,
+                      minChildSize: 0.40,
+                      builder: (BuildContext context,
+                          ScrollController scrollController) {
+                        return SingleChildScrollView(
+                          controller: scrollController,
+                          child: PlanBottomSheet(),
+                        );
+                      },
+                    ),
+                  ],
+                )
+              : Stack(
+                  children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.only(
+                            top: 5.h, bottom: 5.h, right: 5.h, left: 5.w),
+                        child: Stack(children: [
+                          PlanCalendar(),
+                          StackLine(colorHex: "#929d9c"),
+                        ])),
+                    DraggableScrollableSheet(
+                      initialChildSize: 0.40,
+                      minChildSize: 0.40,
+                      builder: (BuildContext context,
+                          ScrollController scrollController) {
+                        return SingleChildScrollView(
+                          controller: scrollController,
+                          child: PlanBottomSheet(),
+                        );
+                      },
+                    ),
+                    Container(
+                        child: Platform.isIOS
+                            ? const Center(
+                                child: CupertinoActivityIndicator(
+                                  color: Colors.black,
+                                ),
+                              )
+                            : const Center(
+                                child: CircularProgressIndicator(
+                                color: Colors.black,
+                              ))),
+                  ],
+                ),
+          backgroundColor: planNotifier.getIsLoading()
+              ? HexColor("#929d9c")
+              : HexColor("#425C5a"),
+        );
+      },
     );
   }
 }
@@ -153,9 +202,11 @@ class PlanAgenda extends StatelessWidget {
           padding: EdgeInsets.only(top: 15.h, left: 16.w),
           child: Column(
             children: [
-              for (var item
-                  in planNotifier.getSelectedDayMeetingList())
-                PlanTile(title: item.eventName, color: item.background,)
+              for (var item in planNotifier.getSelectedDayMeetingList())
+                PlanTile(
+                  title: item.eventName,
+                  color: item.background,
+                )
             ],
           ));
     });
@@ -163,7 +214,8 @@ class PlanAgenda extends StatelessWidget {
 }
 
 class PlanTile extends StatelessWidget {
-  PlanTile({Key? key, required this.title, required this.color}) : super(key: key);
+  PlanTile({Key? key, required this.title, required this.color})
+      : super(key: key);
 
   String title;
   Color color;

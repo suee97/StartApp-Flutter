@@ -275,7 +275,7 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
                         alignment: Alignment.center,
                         child: isLoading == false
                             ? Text(
-                                "확인",
+                                "다음",
                                 style: TextStyle(
                                     fontSize: 19.5.sp,
                                     fontWeight: FontWeight.w500,

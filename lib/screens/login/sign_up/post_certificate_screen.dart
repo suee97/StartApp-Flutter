@@ -20,15 +20,38 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("PostCertificateScreen"),
-      ),
       body: Container(
         width: double.infinity,
         color: Colors.lightGreen,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 28.w,
+                ),
+                Text(
+                  "회원가입",
+                  style: TextStyle(
+                      fontSize: 21.5.sp,
+                      fontWeight: FontWeight.w600,
+                      color: HexColor("#425c5a")),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 28.w,
+                ),
+                Text(
+                  "학생증을 촬영하여 업로드해주세요.",
+                  style:
+                      TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
             GestureDetector(
               onTap: () async {
                 final file = await ImagePicker().pickImage(
@@ -48,7 +71,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
               child: imageFile != null
                   ? Container(
                       width: 320.w,
-                      height: 320.h,
+                      height: 220.h,
                       decoration: BoxDecoration(
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(30),
@@ -58,23 +81,50 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                     )
                   : Container(
                       width: 320.w,
-                      height: 320.h,
+                      height: 220.h,
                       decoration: BoxDecoration(
-                        color: Colors.grey,
+                        color: HexColor("#b2bfb6"),
                         borderRadius: BorderRadius.circular(30),
                       )),
             ),
             SizedBox(
               height: 16.h,
             ),
-            LoginNavButton(
-                onPressed: () {
-                  // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                  //     builder: (context) => SignUpEndScreen()), (route) => false);
-                },
-                title: "확인",
-                colorHex: "425c5a",
-                width: 304.w)
+            GestureDetector(
+              onTap: () async {},
+              child: imageFile != null
+                  ? Container(
+                      width: 304.w,
+                      height: 54.h,
+                      decoration: BoxDecoration(
+                          color: HexColor("#425C5A"),
+                          borderRadius: BorderRadius.circular(10)),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "다음",
+                        style: TextStyle(
+                            fontSize: 19.5.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      ))
+                  : Container(
+                      width: 304.w,
+                      height: 54.h,
+                      decoration: BoxDecoration(
+                          color: HexColor("#929d9c"),
+                          borderRadius: BorderRadius.circular(10)),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "다음",
+                        style: TextStyle(
+                            fontSize: 19.5.sp,
+                            fontWeight: FontWeight.w500,
+                            color: HexColor("#d9d9d9")),
+                      )),
+            ),
+            SizedBox(
+              height: 14.h,
+            )
           ],
         ),
       ),

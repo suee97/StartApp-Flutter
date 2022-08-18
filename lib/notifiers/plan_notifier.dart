@@ -11,9 +11,14 @@ class PlanNotifier extends ChangeNotifier {
   int _curWeekDay = DateTime.now().weekday;
   List<Meeting> _meetingList = [];
   List<Meeting> _selectedMeetingList = [];
+  bool _isLoading = false;
 
   int getCurDay() {
     return _curDay;
+  }
+
+  bool getIsLoading() {
+    return _isLoading;
   }
 
   void setCurDay(int value) {
@@ -74,6 +79,8 @@ class PlanNotifier extends ChangeNotifier {
       return;
     }
 
+    _isLoading = false;
+
     List<dynamic> data = resData["data"];
     for (var e in data) {
       tempMeetingList.add(Meeting(
@@ -113,6 +120,11 @@ class PlanNotifier extends ChangeNotifier {
     }
 
     _selectedMeetingList = selectedDayMeetingList;
+    notifyListeners();
+  }
+
+  void setIsLoading(bool value) {
+    _isLoading = value;
     notifyListeners();
   }
 }
