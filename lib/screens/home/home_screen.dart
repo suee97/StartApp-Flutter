@@ -36,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    fetchBannerLinkList();
     super.initState();
   }
 
@@ -96,14 +95,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               controller: PageController(
                                 initialPage: 0,
                               ),
+                              onPageChanged: (page) {
+                                setState(() {
+                                  pageIndex = page.toDouble();
+                                });
+                              },
                               itemCount: bannerLinkList.length,
                               itemBuilder: (BuildContext context, int index) {
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  setState(() {
-                                    pageIndex = index.toDouble();
-                                  });
-                                });
+                                // WidgetsBinding.instance
+                                //     .addPostFrameCallback((_) {
+                                //   setState(() {
+                                //     pageIndex = index.toDouble();
+                                //   });
+                                // }
+                                // );
                                 return AspectRatio(
                                   aspectRatio: 1 / 1,
                                   child: CachedNetworkImage(
@@ -347,6 +352,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<StatusCode> fetchBannerLinkList() async {
+
+    print("api 호출");
+
     Map<String, dynamic> resData = {};
 
     try {
