@@ -649,8 +649,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                               setState((){
                                                   isContents = true;
                                               });
-                                          }, child: Text("컨텐츠" , style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#425C5A"))),
+                                          }, child: !isContents ?  Text("무대 라인업", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#50425C5A"))) : Text("컨텐츠" , style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#425C5A"))),
                                                 style: ButtonStyle(
+                                    overlayColor : MaterialStateColor.resolveWith((states) => HexColor("#F8EAE1")),
                                               backgroundColor: isContents ? MaterialStateProperty.all<Color>(HexColor("#50FFFFFF")) : MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
                                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                   RoundedRectangleBorder(
@@ -668,8 +669,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                   isContents = false;
                                               });
                                             },
-                                                child: Text("무대 라인업", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#425C5A")),),
+                                                child: !isContents ?  Text("무대 라인업", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#50425C5A"))) : Text("무대 라인업", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#425C5A")),),
                                                 style: ButtonStyle(
+                                              overlayColor : MaterialStateColor.resolveWith((states) => HexColor("#F8EAE1")),
                                               backgroundColor: !isContents ? MaterialStateProperty.all<Color>(HexColor("#50FFFFFF")) : MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
                                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                   RoundedRectangleBorder(
