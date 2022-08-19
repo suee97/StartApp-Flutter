@@ -13,7 +13,6 @@ import 'package:start_app/screens/login/sign_up/pw_resetting_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-
 import '../../models/status_code.dart';
 
 class LoginScreen extends StatefulWidget {

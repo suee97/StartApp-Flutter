@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/setting/app_info/dev_info_screen.dart';
 import 'package:start_app/screens/home/setting/app_info/update_info_screen.dart';
 import 'package:start_app/screens/home/setting/policy/info_support_screen.dart';
@@ -233,14 +234,13 @@ class _SettingScreenState extends State<SettingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: () async {
-
-                        },
+                        onTap: () async {},
                         child: SvgPicture.asset(
                           "assets/icon_insta.svg",
                           width: 30.w,
                         ),
                       ),
+
                       /// https://pub.dev/packages/external_app_launcher
                       SvgPicture.asset("assets/icon_youtube.svg", width: 35.w),
                       SvgPicture.asset("assets/icon_kakao.svg", width: 32.w),
@@ -293,22 +293,28 @@ class _SettingScreenState extends State<SettingScreen> {
                   SettingSemiTitle(
                     title: "위치기반서비스 이용약관",
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => LocationPolicyScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LocationPolicyScreen()));
                     },
                   ),
                   SettingSemiTitle(
                     title: "개인정보 처리방침",
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => PrivacyPolicyScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PrivacyPolicyScreen()));
                     },
                   ),
                   SettingSemiTitle(
                     title: "정보제공처",
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => InfoSupportScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => InfoSupportScreen()));
                     },
                   ),
                   SizedBox(
@@ -347,15 +353,19 @@ class _SettingScreenState extends State<SettingScreen> {
                   SettingSemiTitle(
                     title: "업데이트",
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => UpdateInfoScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UpdateInfoScreen()));
                     },
                   ),
                   SettingSemiTitle(
                     title: "개발 관련 정보",
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => DevInfoScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DevInfoScreen()));
                     },
                   ),
                   SizedBox(
@@ -369,7 +379,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 Common.setNonLogin(false);
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => SplashScreen()),
-                        (route) => false);
+                    (route) => false);
               },
               title: "set nonlogin false",
             ),
@@ -426,8 +436,20 @@ class _SettingScreenState extends State<SettingScreen> {
     print("ACCESS_TOKEN : $ACCESS_TOKEN");
     print("REFRESH_TOKEN : $REFRESH_TOKEN");
 
+    final pref = await SharedPreferences.getInstance();
+    pref.remove("appMemberId");
+    pref.remove("appStudentNo");
+    pref.remove("appName");
+    pref.remove("department");
+    pref.remove("appMemberShip");
+    pref.remove("appCreatedAt");
+    pref.remove("appUpdatedAt");
+    pref.remove("appMemberStatus");
+    pref.remove("appPhoneNo");
+    print("유저 관련 모든 preference를 삭제했습니다.");
+
     navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const SplashScreen()),
-            (route) => false);
+        (route) => false);
   }
 }
