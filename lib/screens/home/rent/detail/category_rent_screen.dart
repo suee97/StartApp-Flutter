@@ -4,15 +4,23 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/rent/detail/apply/rent_apply_screen.dart';
 import 'package:start_app/screens/home/rent/detail/rent_calendar.dart';
 import 'package:start_app/screens/home/rent/detail/rent_detail_text.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../../../../models/meeting.dart';
 import '../../../../utils/common.dart';
 
 class CategoryRentScreen extends StatelessWidget {
+  CategoryRentScreen(
+      {Key? key,
+      required this.category,
+      required this.itemIcon,
+      required this.itemImg,
+      required this.itemPurpose,
+      required this.itemWarning})
+      : super(key: key);
 
-  var category, itemIcon, itemImg, itemPurpose, itemWarning;
-
-  CategoryRentScreen({Key? key, required this.category, required this.itemIcon, required this.itemImg, required this.itemPurpose, required this.itemWarning}) : super(key: key);
+  String category;
+  String itemIcon;
+  String itemImg;
+  String itemPurpose;
+  String itemWarning;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +58,10 @@ class CategoryRentScreen extends StatelessWidget {
                 SizedBox(
                   width: 12.w,
                 ),
-                RentDetailText(category: category, itemPurpose: itemPurpose, itemWarning: itemWarning)
+                RentDetailText(
+                    category: category,
+                    itemPurpose: itemPurpose,
+                    itemWarning: itemWarning)
               ],
             ),
             SizedBox(
@@ -65,9 +76,7 @@ class CategoryRentScreen extends StatelessWidget {
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30))),
               child: Padding(
-                padding: EdgeInsets.only(top: 4.h),
-                child: RentCalendar()
-              ),
+                  padding: EdgeInsets.only(top: 4.h), child: RentCalendar()),
             ),
             Container(
               width: double.infinity,
@@ -93,7 +102,8 @@ class CategoryRentScreen extends StatelessWidget {
                           margin: EdgeInsets.only(right: 16.w),
                           child: Text("1개 대여중",
                               style: TextStyle(
-                                  fontSize: 11.5.sp, fontWeight: FontWeight.w400)),
+                                  fontSize: 11.5.sp,
+                                  fontWeight: FontWeight.w400)),
                         ),
                       ],
                     ),
@@ -103,7 +113,10 @@ class CategoryRentScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RentApplyScreen(category: category, itemIcon: itemIcon,)))
+                              builder: (context) => RentApplyScreen(
+                                    category: category,
+                                    itemIcon: itemIcon,
+                                  )))
                     },
                     child: Container(
                       width: 320.w,
@@ -119,7 +132,9 @@ class CategoryRentScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.h,)
+                  SizedBox(
+                    height: 20.h,
+                  )
                 ],
               ),
             ),
@@ -129,19 +144,4 @@ class CategoryRentScreen extends StatelessWidget {
       backgroundColor: HexColor("#425C5A"),
     );
   }
-}
-
-List<Meeting> _getDataSource() {
-  final List<Meeting> meetings = <Meeting>[];
-  final DateTime startTime = DateTime(2022, 8, 15);
-  final DateTime endTime = DateTime(2022, 8, 17);
-
-  meetings.add(Meeting('', startTime, endTime, const Color(0xFF0F8644), true));
-  meetings.add(Meeting(
-      '', DateTime(2022, 8, 21), DateTime(2022, 8, 23), Colors.red, true));
-  meetings.add(Meeting(
-      '', DateTime(2022, 8, 22), DateTime(2022, 8, 24), Colors.orange, true));
-  meetings.add(Meeting('', DateTime(2022, 8, 22), DateTime(2022, 8, 24),
-      Colors.pinkAccent, true));
-  return meetings;
 }

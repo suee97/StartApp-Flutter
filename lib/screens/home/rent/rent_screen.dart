@@ -5,7 +5,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/rent/detail/category_rent_screen.dart';
 import 'package:start_app/screens/home/rent/my_rent/my_rent_screen.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
-
 import '../../../utils/common.dart';
 
 class RentScreen extends StatefulWidget {
