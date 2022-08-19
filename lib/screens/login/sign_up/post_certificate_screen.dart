@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,9 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:start_app/models/status_code.dart';
 import 'package:start_app/notifiers/sign_up_notifier.dart';
+import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/sign_up/sign_up_end_screen.dart';
 import 'package:start_app/utils/common.dart';
@@ -34,7 +37,6 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
       return Scaffold(
         body: Container(
           width: double.infinity,
-          color: Colors.lightGreen,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -64,13 +66,45 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 16.h,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 28.w,
+                  ),
+                  Text(
+                    "주의사항",
+                    style: TextStyle(
+                        fontSize: 21.5.sp,
+                        fontWeight: FontWeight.w600,
+                        color: HexColor("#425c5a")),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 28.w,
+                  ),
+                  Text(
+                    "1. 카드 번호, 유효기간, 사진을 가리고 업로드 해주세요.\n2. 빛 반사에 주의해주세요.\n3. 학생증이 손상된 경우 문의해주세요.",
+                    style:
+                        TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 36.h,
+              ),
               GestureDetector(
                 onTap: () async {
                   final file = await ImagePicker().pickImage(
                       source: ImageSource.camera,
                       maxWidth: 640,
                       maxHeight: 280,
-                      imageQuality: 10 //0-100
+                      imageQuality: 50 //0-100
                       );
 
                   if (file?.path != null) {
@@ -88,31 +122,43 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(30),
                             image: DecorationImage(
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                                 image: FileImage(File(imageFile!.path)))),
                       )
-                    : Container(
-                        width: 320.w,
-                        height: 220.h,
-                        decoration: BoxDecoration(
-                          color: HexColor("#b2bfb6"),
-                          borderRadius: BorderRadius.circular(30),
-                        )),
+                    : noCertificateContainer(),
               ),
               SizedBox(
-                height: 16.h,
+                height: 8.h,
+              ),
+              SizedBox(
+                height: 56.h,
               ),
               GestureDetector(
                 onTap: imageFile != null
-                    ? () {
+                    ? () async {
                         var studentNo = signUpNotifier.getStudentNo();
                         var appPassword = signUpNotifier.getAppPassword();
                         var name = signUpNotifier.getName();
                         var department = signUpNotifier.getDepartment();
-                        var fcmToken = signUpNotifier.getFcmToken();
+                        var fcmToken = signUpNotifier.getFcmToken(); // 미구현, 미사용
 
-                        postCertificate(studentNo, appPassword, name,
-                            department, fcmToken);
+                        var postCertificateResult = await postCertificate(
+                            studentNo, appPassword, name, department, fcmToken);
+
+                        if (postCertificateResult != StatusCode.SUCCESS) {
+                          if (mounted) {
+                            Common.showSnackBar(context, "회원가입 요청 오류가 발생했습니다.");
+                          }
+                          return;
+                        }
+
+                        if (mounted) {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUpEndScreen()),
+                              (route) => false);
+                        }
                       }
                     : () {
                         Common.showSnackBar(context, "카메라로 사진을 찍어 업로드해주세요.");
@@ -158,34 +204,56 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
     });
   }
 
-  Future<void> postCertificate(String studentNo, String appPassword,
+  Future<StatusCode> postCertificate(String studentNo, String appPassword,
       String name, String department, String fcmToken) async {
-
     Dio dio = Dio();
     dio.options.contentType = 'multipart/form-data';
 
-    final _file = await MultipartFile.fromFile(
-        imageFile!.path,
-        filename: "file_name",
-        contentType: MediaType("image", "jpg"));
-
+    final _file = await MultipartFile.fromFile(imageFile!.path,
+        filename: "file_name", contentType: MediaType("image", "jpg"));
 
     FormData _formData = FormData.fromMap({
-      "studentNo": "19101686",
-      "appPassword": "aaa1111a",
-      "name": "sss",
-      "department": "safasdfsa",
-      "fcmToken": "asdfsaf123",
+      "studentNo": studentNo,
+      "appPassword": appPassword,
+      "name": name,
+      "department": department,
+      "fcmToken": "none",
       "file": _file
     });
 
     try {
-      final resString = await dio.post(
-          "${dotenv.get("DEV_API_BASE_URL")}/member",
-          data: _formData);
-      print(resString);
-    } catch(e) {
-      print(e);
+      final resString = await dio
+          .post("${dotenv.get("DEV_API_BASE_URL")}/member", data: _formData);
+
+      if (resString.data["status"] == 201) {
+        print("postCertificate() call success");
+        return StatusCode.SUCCESS;
+      }
+
+      return StatusCode.UNCATCHED_ERROR;
+    } catch (e) {
+      print("error $e");
+      return StatusCode.UNCATCHED_ERROR;
     }
+  }
+
+  Widget noCertificateContainer() {
+    return Container(
+      width: 320.w,
+      height: 220.h,
+      decoration: BoxDecoration(
+        color: HexColor("#b2bfb6"),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Center(
+        child: Text(
+          "이곳을 누르면 카메라가 열립니다.",
+          style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w400,
+              color: HexColor("#f26464")),
+        ),
+      ),
+    );
   }
 }
