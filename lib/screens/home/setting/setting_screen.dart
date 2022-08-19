@@ -11,11 +11,9 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/setting/app_info/dev_info_screen.dart';
 import 'package:start_app/screens/home/setting/app_info/update_info_screen.dart';
-import 'package:start_app/screens/home/setting/policy/info_support_screen.dart';
 import 'package:start_app/screens/home/setting/policy/location_policy_screen.dart';
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
 import 'package:start_app/screens/home/setting/setting_semi_title.dart';
-import 'package:start_app/screens/login/login_option_screen.dart';
 import 'package:start_app/widgets/test_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -306,15 +304,6 @@ class _SettingScreenState extends State<SettingScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => PrivacyPolicyScreen()));
-                    },
-                  ),
-                  SettingSemiTitle(
-                    title: "정보제공처",
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InfoSupportScreen()));
                     },
                   ),
                   SizedBox(
