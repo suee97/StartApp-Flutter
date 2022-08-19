@@ -122,14 +122,36 @@ class _RentCalendarState extends State<RentCalendar> {
           monthViewSettings: const MonthViewSettings(
               appointmentDisplayCount: 4,
               appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-              monthCellStyle:
-                  MonthCellStyle(textStyle: TextStyle(color: Colors.black))),
+            monthCellStyle: MonthCellStyle(
+                textStyle: TextStyle(
+                    fontStyle: FontStyle.normal,
+                    fontSize: 12,
+                    color: Colors.black),
+                trailingDatesTextStyle: TextStyle(
+                    fontStyle: FontStyle.normal,
+                    fontSize: 15,
+                    color: Colors.transparent),
+                leadingDatesTextStyle: TextStyle(
+                    fontStyle: FontStyle.normal,
+                    fontSize: 15,
+                    color: Colors.transparent),
+                backgroundColor: Colors.transparent,
+                todayBackgroundColor: Colors.transparent,
+                leadingDatesBackgroundColor: Colors.transparent,
+                trailingDatesBackgroundColor: Colors.transparent),
+          ),
           dataSource: MeetingDataSource(_getDataSource()),
-          todayHighlightColor: Colors.orange,
+          todayHighlightColor: HexColor("#EE795F"),
           todayTextStyle:
               const TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
-          selectionDecoration: const BoxDecoration(),
+          selectionDecoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border.all(color: Colors.redAccent, width: 1.5),
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
+            shape: BoxShape.rectangle,
+          ),
           cellBorderColor: HexColor("#425c5a"),
+
         ),
       )
     ]);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:start_app/screens/home/rent/detail/amp_rent_screen.dart';
+import 'package:start_app/screens/home/rent/detail/category_rent_screen.dart';
 import 'package:start_app/screens/home/rent/my_rent/my_rent_screen.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
 
@@ -16,6 +16,8 @@ class RentScreen extends StatefulWidget {
 }
 
 class _RentScreenState extends State<RentScreen> {
+
+  String selectedItem = "";
 
   @override
   void initState() {
@@ -53,7 +55,10 @@ class _RentScreenState extends State<RentScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RentWidget(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          context) => CategoryRentScreen(category: "캐노피", itemIcon: "assets/icon_canopy_green.svg", itemImg: "images/rent_canopy_img.jpg", itemPurpose: "기둥과 천막으로 부스를 만들 수 있습니다.", itemWarning: "천막이 찢어지지 않도록 주의해주세요.",)));
+                    },
                     title: "캐노피",
                     svgPath: "assets/icon_canopy.svg",
                   ),
@@ -61,7 +66,10 @@ class _RentScreenState extends State<RentScreen> {
                     width: 16.w,
                   ),
                   RentWidget(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          context) => CategoryRentScreen(category: "듀라테이블", itemIcon: "assets/icon_table_green.svg", itemImg: "images/rent_table_img.jpg", itemPurpose: "간이 테이블로 사용할 수 있습니다.", itemWarning: "테이블을 깨끗하게 닦아주세요.",)));
+                    },
                     title: "듀라테이블",
                     svgPath: "assets/icon_table.svg",
                   ),
@@ -71,7 +79,7 @@ class _RentScreenState extends State<RentScreen> {
                   RentWidget(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (
-                          context) => AmpRentScreen()));
+                          context) => CategoryRentScreen(category: "앰프&마이크", itemIcon: "assets/icon_amp_green.svg", itemImg: "images/rent_amp_img.jpg", itemPurpose: "행사 시에 큰 음향을 낼 수 있습니다.", itemWarning: "비 또는 모레 등의 이물질이 들어가지 않도록 해주세요.",)));
                     },
                     title: "앰프&마이크",
                     svgPath: "assets/icon_amp.svg",
@@ -85,7 +93,10 @@ class _RentScreenState extends State<RentScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RentWidget(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          context) => CategoryRentScreen(category: "리드선", itemIcon: "assets/icon_lead_green.svg", itemImg: "images/rent_wire_img.jpg", itemPurpose: "콘센트를 연장하여 사용할 수 있습니다.", itemWarning: "비에 젖지 않도록 해주세요.",)));
+                    },
                     title: "리드선",
                     svgPath: "assets/icon_wire.svg",
                   ),
@@ -93,7 +104,10 @@ class _RentScreenState extends State<RentScreen> {
                     width: 16.w,
                   ),
                   RentWidget(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          context) => CategoryRentScreen(category: "엘카", itemIcon: "assets/icon_cart_green.svg", itemImg: "images/rent_cart_img.jpg", itemPurpose: "여러 짐을 한 번에 옮길 수 있습니다.", itemWarning: "바퀴가 고장나지 않도록 주의 해주세요.")));
+                    },
                     title: "엘카",
                     svgPath: "assets/icon_cart.svg",
                   ),
@@ -101,7 +115,10 @@ class _RentScreenState extends State<RentScreen> {
                     width: 16.w,
                   ),
                   RentWidget(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          context) => CategoryRentScreen(category: "의자", itemIcon: "assets/icon_chair_green.svg", itemImg: "images/rent_chair_img.jpg", itemPurpose: "외부 행사 시에 간이 의자로 활용할 수 있습니다.", itemWarning:"부서지지 않도록 주의 해주세요.")));
+                    },
                     title: "의자",
                     svgPath: "assets/icon_chair.svg",
                   ),

@@ -106,14 +106,20 @@ class _StatusScreenState extends State<StatusScreen> {
         child: Stack(
           children: [
             isPaid == "학생회비 납부자"
-                ? SvgPicture.asset(
-                    "assets/card_payer.svg",
-                    fit: BoxFit.fill,
-                  )
-                : SvgPicture.asset(
-                    "assets/card_unpaid.svg",
-                    fit: BoxFit.fill,
-                  ),
+                ? Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: Image(
+                image: AssetImage(
+                    "images/card_payer.png"), width: 320.w, height: 550.h, fit: BoxFit.fill),
+            alignment: Alignment(0.0, 0.0),)
+                : Container(
+                width: double.infinity,
+                height: double.infinity,
+                child: Image(
+                image: AssetImage(
+                    "images/card_unpaid.png"), width: 320.w, height: 550.h, fit: BoxFit.fill),
+                alignment: Alignment(0.0, 0.0)),
             Column(
               children: [
                 SizedBox(
@@ -123,7 +129,6 @@ class _StatusScreenState extends State<StatusScreen> {
                   width: 320.w,
                   height: 184.h,
                   decoration: BoxDecoration(
-                    color: HexColor("#FFFFFF"),
                     borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30)),
