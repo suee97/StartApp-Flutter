@@ -240,7 +240,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 final getStudentInfoAndSaveResult =
                     await getStudentInfoAndSave();
                 if (getStudentInfoAndSaveResult != StatusCode.SUCCESS) {
-                  print("getStudentInfoAndSave() call error");
                   setState(() {
                     isLoading = false;
                   });
@@ -426,26 +425,26 @@ class _LoginScreenState extends State<LoginScreen> {
             "Bearer ${await secureStorage.read(key: "ACCESS_TOKEN")}"
       }).timeout(const Duration(seconds: 10));
       final resData = jsonDecode(utf8.decode(resString.bodyBytes));
-      print("getStudentInfoAndSave() call : ${resData["data"]}");
 
       if (resData["status"] == 200) {
         print("getStudentInfoAndSave() call success");
+        print(resData["data"]);
         final pref = await SharedPreferences.getInstance();
         List<dynamic> data = resData["data"];
 
-        pref.setInt("appMemberId", data[0]["memberId"]);
-        pref.setString("appStudentNo", data[0]["studentNo"]);
-        pref.setString("appName", data[0]["name"]);
-        pref.setString("department", data[0]["department"]);
-        pref.setBool("appMemberShip", data[0]["memberShip"]);
-        pref.setString("appCreatedAt", data[0]["createdAt"]);
-        pref.setString("appUpdatedAt", data[0]["updatedAt"]);
-        pref.setString("appMemberStatus", data[0]["memberStatus"]);
-        pref.setString("appPhoneNo", data[0]["phoneNo"]);
+        await pref.setInt("appMemberId", data[0]["memberId"]);
+        await pref.setString("appStudentNo", data[0]["studentNo"]);
+        await pref.setString("appName", data[0]["name"]);
+        await pref.setString("department", data[0]["department"]);
+        await pref.setBool("appMemberShip", data[0]["memberShip"]);
+        await pref.setString("appCreatedAt", data[0]["createdAt"]);
+        await pref.setString("appUpdatedAt", data[0]["updatedAt"]);
+        await pref.setString("appMemberStatus", data[0]["memberStatus"]);
 
         return StatusCode.SUCCESS;
       }
 
+      print("getStudentInfoAndSave() call error");
       return StatusCode.UNCATCHED_ERROR;
     } catch (e) {
       print(e);
