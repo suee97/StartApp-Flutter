@@ -7,7 +7,9 @@ import '../../../../../widgets/rent_custom_text_field.dart';
 import 'dotted_line_widget.dart';
 
 class RentApplyScreen extends StatefulWidget {
-  const RentApplyScreen({Key? key}) : super(key: key);
+  var category, itemIcon;
+
+  RentApplyScreen({Key? key, required this.category, required this.itemIcon}) : super(key: key);
 
   @override
   State<RentApplyScreen> createState() => _RentApplyScreenState();
@@ -73,12 +75,12 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SvgPicture.asset(
-                        "assets/icon_amp_green.svg",
+                        widget.itemIcon,
                         fit: BoxFit.contain,
                       ),
                       SizedBox(width: 11.w),
                       Text(
-                        "앰프&마이크",
+                        widget.category.toString(),
                         style: TextStyle(
                             fontSize: 21.sp, fontWeight: FontWeight.w600),
                       )

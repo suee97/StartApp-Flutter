@@ -8,8 +8,11 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../../models/meeting.dart';
 import '../../../../utils/common.dart';
 
-class AmpRentScreen extends StatelessWidget {
-  const AmpRentScreen({Key? key}) : super(key: key);
+class CategoryRentScreen extends StatelessWidget {
+
+  var category, itemIcon, itemImg, itemPurpose, itemWarning;
+
+  CategoryRentScreen({Key? key, required this.category, required this.itemIcon, required this.itemImg, required this.itemPurpose, required this.itemWarning}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +41,16 @@ class AmpRentScreen extends StatelessWidget {
                 Container(
                   width: 144.w,
                   height: 192.h,
-                  color: Colors.grey,
+                  color: HexColor("#F3F3F3"),
                   child: Image(
-                    image: AssetImage("images/logo_crying_ready.png"),
+                    image: AssetImage(itemImg),
                     fit: BoxFit.fill,
                   ),
                 ),
                 SizedBox(
                   width: 12.w,
                 ),
-                const RentDetailText()
+                RentDetailText(category: category, itemPurpose: itemPurpose, itemWarning: itemWarning)
               ],
             ),
             SizedBox(
@@ -64,25 +67,6 @@ class AmpRentScreen extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(top: 4.h),
                 child: RentCalendar()
-                // child: SfCalendar(
-                //   view: CalendarView.month,
-                //   headerDateFormat: "MMMM",
-                //   headerStyle: CalendarHeaderStyle(
-                //       textAlign: TextAlign.center,
-                //       textStyle: TextStyle(fontSize: 11.5.sp)),
-                //   monthViewSettings: const MonthViewSettings(
-                //       appointmentDisplayCount: 4,
-                //       appointmentDisplayMode:
-                //           MonthAppointmentDisplayMode.appointment,
-                //       monthCellStyle: MonthCellStyle(
-                //           textStyle: TextStyle(color: Colors.black))),
-                //   dataSource: MeetingDataSource(_getDataSource()),
-                //   todayHighlightColor: Colors.orange,
-                //   todayTextStyle: const TextStyle(
-                //       color: Colors.black, fontWeight: FontWeight.w700),
-                //   selectionDecoration: const BoxDecoration(),
-                //   cellBorderColor: HexColor("#425c5a"),
-                // ),
               ),
             ),
             Container(
@@ -119,7 +103,7 @@ class AmpRentScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RentApplyScreen()))
+                              builder: (context) => RentApplyScreen(category: category, itemIcon: itemIcon,)))
                     },
                     child: Container(
                       width: 320.w,
