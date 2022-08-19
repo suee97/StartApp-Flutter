@@ -220,7 +220,9 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
                             if (mounted) {
                               Common.showSnackBar(context, "오류가 발생했습니다.");
                             }
-
+                            setState(() {
+                              isLoading = false;
+                            });
                             return;
                           }
 
@@ -228,6 +230,9 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
                             if (mounted) {
                               Common.showSnackBar(context, "같은 학번으로 가입된 계정이 존재합니다.");
                             }
+                            setState(() {
+                              isLoading = false;
+                            });
                             return;
                           }
 
@@ -334,7 +339,7 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
         return StatusCode.SUCCESS;
       }
 
-      if (resData["status"] == 400) {
+      if (resData["status"] == 409) {
         return StatusCode.UNCATCHED_ERROR; // 중복
       }
 

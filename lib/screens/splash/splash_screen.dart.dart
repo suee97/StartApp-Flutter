@@ -27,9 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _initializing(NavigatorState navigator) async {
     /// start
     setState(() {
-      notifyText = "1초 후 로직이 시작됩니다.";
+      notifyText = "0.5초 후 로직이 시작됩니다.";
     });
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     /// load env
     setState(() {
@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     /// 일반 로그인
     setState(() {
-      notifyText = "일반 로그인";
+      notifyText = "일반 로그인 정보 확인중입니다.";
     });
     await Future.delayed(const Duration(seconds: 1));
     if (!await Common.isAutoLogin() && !await Common.isAutoLogin()) {
@@ -91,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
 
-      // access 토큰 유효 확인
+      // access 토큰 있을 때 -> 유효한지 확인
       Map<String, dynamic> resData10 = {};
       resData10["status"] = 400;
       try {
@@ -112,10 +112,11 @@ class _SplashScreenState extends State<SplashScreen> {
         navigator.pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false);
+        /// TODO 정보 불러와서 pref 에 저장
         return;
       }
 
-      // 만료
+      /// 만료
       if (resData10["status"] == 401) {
         var REFRESH_TOKEN = await secureStorage.read(key: "REFRESH_TOKEN");
         if (REFRESH_TOKEN == null) {

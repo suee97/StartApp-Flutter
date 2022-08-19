@@ -9,6 +9,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/sign_up/check_info_screen.dart';
+import 'package:start_app/screens/login/sign_up/policy_agree_screen.dart';
 import 'package:start_app/screens/login/sign_up/pw_resetting_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -169,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         value: autoLoginCheckBoxState,
                         checkColor: autoLoginCheckBoxState == false
-                            ? HexColor("#EE795F")
+                            ? Colors.white
                             : Colors.white,
                         activeColor: HexColor("#425C5A"),
                         onChanged: (value) {
@@ -323,7 +324,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CheckInfoScreen()));
+                            builder: (context) => PolicyAgreeScreen()));
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 20.w),
@@ -414,9 +415,9 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  /// #########################################################
-  /// ##################### 유저 정보 가져오기 #####################
-  /// #########################################################
+  /// #############################################################
+  /// ##################### 유저 정보 가져와서 저장 #####################
+  /// #############################################################
   Future<StatusCode> getStudentInfoAndSave() async {
     try {
       var resString = await http
