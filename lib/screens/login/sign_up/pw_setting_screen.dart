@@ -88,7 +88,7 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                       width: 28.w,
                     ),
                     Text(
-                      "영어 대소문자, 숫자, 특수문를 각 1개 이상 사용",
+                      "최소 8자. 영어 대소문자, 숫자, 특수문를 각 1개 이상 사용",
                       style: TextStyle(
                           fontSize: 12.sp, fontWeight: FontWeight.w300),
                     ),
@@ -185,14 +185,29 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          if (appPwController_1.text !=
-                              appPwController_2.text) {
+                          String pw1 = appPwController_1.text;
+                          String pw2 = appPwController_2.text;
+
+
+                          /// 비어있는지 확인
+                          if (pw1.isEmpty || pw2.isEmpty) {
+                            Common.showSnackBar(
+                                context, "비어있는 필드가 있는지 확인해주세요.");
+                            return;
+                          }
+
+                          /// 같은지 확인
+                          if (pw1 != pw2) {
                             Common.showSnackBar(
                                 context, "비밀번호 입력이 동일한지 확인해주세요.");
                             return;
                           }
 
-                          signUpNotifier.setAppPassword(appPwController_1.text);
+                          /// 정규표현식 매칭
+
+
+
+                          signUpNotifier.setAppPassword(pw1);
 
                           Navigator.push(
                               context,
@@ -225,5 +240,9 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
         ),
       );
     });
+  }
+
+  void onPressed(BuildContext context) {
+
   }
 }

@@ -1,18 +1,20 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/home_screen.dart';
-import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/sign_up/check_info_screen.dart';
+import 'package:start_app/screens/login/sign_up/pw_resetting_screen.dart';
 import 'package:start_app/utils/common.dart';
-import 'package:start_app/widgets/test_button.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+
+import '../../models/status_code.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -26,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late bool isLoading;
   final studentIdController = TextEditingController();
   final pwController = TextEditingController();
+  final secureStorage = FlutterSecureStorage();
 
   @override
   void initState() {
@@ -142,16 +145,44 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 )),
+            SizedBox(
+              height: 12.h,
+            ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Checkbox(
-                    value: autoLoginCheckBoxState,
-                    onChanged: (value) {
-                      setState(() {
-                        autoLoginCheckBoxState = value!;
-                      });
-                    }),
-                Text("자동 로그인", style: TextStyle(fontSize: 10.sp)),
+                SizedBox(
+                  width: 24.w,
+                ),
+                SizedBox(
+                  width: 32.w,
+                  height: 30.h,
+                  child: Transform.scale(
+                    scale: 1.2,
+                    child: Checkbox(
+                        shape: const CircleBorder(),
+                        side: MaterialStateBorderSide.resolveWith(
+                          (states) => BorderSide(
+                              width: 2.w,
+                              color: autoLoginCheckBoxState == false
+                                  ? HexColor("#929d9c")
+                                  : HexColor("#425C5A")),
+                        ),
+                        value: autoLoginCheckBoxState,
+                        checkColor: autoLoginCheckBoxState == false
+                            ? HexColor("#EE795F")
+                            : Colors.white,
+                        activeColor: HexColor("#425C5A"),
+                        onChanged: (value) {
+                          setState(() {
+                            autoLoginCheckBoxState = value!;
+                          });
+                        }),
+                  ),
+                ),
+                Text("자동 로그인",
+                    style: TextStyle(
+                        fontSize: 14.sp, fontWeight: FontWeight.w300)),
                 TextButton(
                     onPressed: () {
                       studentIdController.text = "17101246";
@@ -160,144 +191,265 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text("ID/PW입력"))
               ],
             ),
-            LoginNavButton(
-              onPressed: () async {
+            SizedBox(
+              height: 60.h,
+            ),
+            GestureDetector(
+              onTap: () async {
                 setState(() {
                   isLoading = true;
                 });
 
-                Map bodyData = {
-                  "studentNo": studentIdController.text,
-                  "password": pwController.text
-                };
-
-                Map<String, dynamic> resData1 = {};
-                resData1["status"] = 400;
-
-                Map<String, dynamic> resData2 = {};
-                resData2["status"] = 400;
-
-                try {
-                  var resString = await http
-                      .post(
-                          Uri.parse(
-                              "${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
-                          headers: {"Content-Type": "application/json"},
-                          body: json.encode(bodyData))
-                      .timeout(const Duration(seconds: 10));
-                  resData1 = jsonDecode(utf8.decode(resString.bodyBytes));
-                } on TimeoutException catch (e) {
-                  print(e);
-                } on SocketException catch (e) {
-                  print(e);
-                } catch (e) {
-                  print(e);
+                /// 유효성 검사
+                if (studentIdController.text.isEmpty ||
+                    pwController.text.isEmpty) {
+                  Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
+                  setState(() {
+                    isLoading = false;
+                  });
+                  return;
                 }
 
-                if (resData1["status"] == 200) {
-                  List<dynamic> data = resData1["data"];
-
-                  var AT = data[0]["accessToken"];
-                  var RT = data[0]["refreshToken"];
-
-                  print("access Token : $AT");
-                  print("refresh Token : $RT");
-
-                  final secureStorage = FlutterSecureStorage();
-                  await secureStorage.write(key: "ACCESS_TOKEN", value: AT);
-                  await secureStorage.write(key: "REFRESH_TOKEN", value: RT);
-
-                  var ACCESS_TOKEN =
-                      await secureStorage.read(key: "ACCESS_TOKEN");
-
-                  try {
-                    var resString = await http.get(
-                        Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"),
-                        headers: {
-                          "Authorization": "Bearer $ACCESS_TOKEN"
-                        }).timeout(const Duration(seconds: 10));
-                    resData2 = jsonDecode(utf8.decode(resString.bodyBytes));
-                  } on TimeoutException catch (e) {
-                    print(e);
-                  } on SocketException catch (e) {
-                    print(e);
-                  } catch (e) {
-                    print(e);
+                /// ID/PW 인증하고 토큰 받기
+                final loginAuthAndGetTokenResult = await loginAuthAndGetToken();
+                if (loginAuthAndGetTokenResult != StatusCode.SUCCESS) {
+                  print("loginAuthAndGetToken() call error");
+                  setState(() {
+                    isLoading = false;
+                  });
+                  if (mounted) {
+                    Common.showSnackBar(context, "인증에 실패했습니다.");
                   }
-
-                  if (resData2["status"] == 200) {
-                    if (!mounted) return;
-                    if (autoLoginCheckBoxState) {
-                      Common.setAutoLogin(true);
-                    }
-
-                    Map<String, dynamic> resData = {};
-                    resData["status"] = 400;
-                    try {
-                      var resString = await http.get(
-                          Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/member"),
-                          headers: {
-                            "Authorization": "Bearer $ACCESS_TOKEN"
-                          }).timeout(const Duration(seconds: 10));
-                      resData = jsonDecode(utf8.decode(resString.bodyBytes));
-
-                      print(resData);
-                    } on TimeoutException catch (e) {
-                      print(e);
-                    } on SocketException catch (e) {
-                      print(e);
-                    } catch (e) {
-                      print(e);
-                    }
-
-                    setState(() {
-                      isLoading = false;
-                    });
-
-                    if (mounted) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                          (route) => false);
-                    }
-                    return;
-                  }
+                  return;
                 }
+
+                /// Access Token 으로 로그인 인증
+                final authAccessTokenResult = await authAccessToken();
+                if (authAccessTokenResult != StatusCode.SUCCESS) {
+                  print("authAccessToken() call error");
+                  setState(() {
+                    isLoading = false;
+                  });
+                  if (mounted) {
+                    Common.showSnackBar(context, "인증에 실패했습니다.");
+                  }
+                  return;
+                }
+
+                /// 토큰으로 유저 정보 가져오기
+                final getStudentInfoAndSaveResult =
+                    await getStudentInfoAndSave();
+                if (getStudentInfoAndSaveResult != StatusCode.SUCCESS) {
+                  print("getStudentInfoAndSave() call error");
+                  setState(() {
+                    isLoading = false;
+                  });
+                  if (mounted) {
+                    Common.showSnackBar(context, "유저 정보를 불러오지 못했습니다.");
+                  }
+                  return;
+                }
+
+                if (autoLoginCheckBoxState) {
+                  Common.setAutoLogin(true);
+                }
+
                 setState(() {
                   isLoading = false;
                 });
+
+                if (mounted) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      (route) => false);
+                }
                 return;
               },
-              title: "로그인",
-              colorHex: "#425c5a",
-              width: 330.w,
+              child: Container(
+                width: 320.w,
+                height: 54.h,
+                decoration: BoxDecoration(
+                    color: HexColor("#425C5A"),
+                    borderRadius: BorderRadius.circular(10)),
+                alignment: Alignment.center,
+                child: isLoading == false
+                    ? Text(
+                        "로그인",
+                        style: TextStyle(
+                            fontSize: 19.5.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      )
+                    : Center(
+                        child: Platform.isIOS
+                            ? const CupertinoActivityIndicator(
+                                color: Colors.white,
+                              )
+                            : CircularProgressIndicator(
+                                color: HexColor("#f3f3f3"),
+                              ),
+                      ),
+              ),
             ),
             SizedBox(
-              height: 12.h,
+              height: 4.h,
             ),
-            Stack(
-              alignment: Alignment.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("비밀번호 재설정"),
-                Container(
-                  width: 2.w,
-                  height: 22.h,
-                  color: HexColor("#425c5a"),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PwResettingScreen()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: 20.w),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 8.h, bottom: 8.h, left: 8.w, right: 8.w),
+                      child: Text(
+                        "비밀번호 재설정",
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w400,
+                            color: HexColor("#425C5A")),
+                      ),
+                    ),
+                  ),
                 ),
-                Text("회원가입"),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CheckInfoScreen()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 20.w),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 8.h, bottom: 8.h, left: 8.w, right: 8.w),
+                      child: Text(
+                        "회원가입",
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w400,
+                            color: HexColor("#425C5A")),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
-            TestButton(
-                title: "회원가입",
-                onPressed: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CheckInfoScreen()))
-                    }),
           ],
         ),
         backgroundColor: HexColor("#f3f3f3"),
       ),
     );
+  }
+
+  /// ########################################################
+  /// ##################### 인증 후 토큰발급 #####################
+  /// ########################################################
+  Future<StatusCode> loginAuthAndGetToken() async {
+    Map bodyData = {
+      "studentNo": studentIdController.text,
+      "password": pwController.text
+    };
+
+    try {
+      var resString = await http
+          .post(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
+              headers: {"Content-Type": "application/json"},
+              body: json.encode(bodyData))
+          .timeout(const Duration(seconds: 10));
+      final resData = jsonDecode(utf8.decode(resString.bodyBytes));
+
+      if (resData["status"] == 200) {
+        print("loginAuthAndGetToken() call success");
+
+        List<dynamic> data = resData["data"];
+        var AT = data[0]["accessToken"];
+        var RT = data[0]["refreshToken"];
+        await secureStorage.write(key: "ACCESS_TOKEN", value: AT);
+        await secureStorage.write(key: "REFRESH_TOKEN", value: RT);
+
+        print("#################### 로그인 성공 ####################");
+        print("access Token : $AT");
+        print("refresh Token : $RT");
+
+        return StatusCode.SUCCESS;
+      }
+      return StatusCode.UNCATCHED_ERROR;
+    } catch (e) {
+      print(e);
+      return StatusCode.UNCATCHED_ERROR;
+    }
+  }
+
+  /// #######################################################
+  /// ##################### 토큰으로 로그인 #####################
+  /// #######################################################
+  Future<StatusCode> authAccessToken() async {
+    final AT = await secureStorage.read(key: "ACCESS_TOKEN");
+
+    try {
+      var resString = await http
+          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"), headers: {
+        "Authorization": "Bearer $AT"
+      }).timeout(const Duration(seconds: 10));
+      final resData = jsonDecode(utf8.decode(resString.bodyBytes));
+      print("authAccessToken() call : ${resData["data"]}");
+
+      if (resData["status"] == 200) {
+        print("authAccessToken() call success");
+        return StatusCode.SUCCESS;
+      }
+
+      return StatusCode.UNCATCHED_ERROR;
+    } catch (e) {
+      print(e);
+      return StatusCode.UNCATCHED_ERROR;
+    }
+  }
+
+  /// #########################################################
+  /// ##################### 유저 정보 가져오기 #####################
+  /// #########################################################
+  Future<StatusCode> getStudentInfoAndSave() async {
+    try {
+      var resString = await http
+          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/member"), headers: {
+        "Authorization":
+            "Bearer ${await secureStorage.read(key: "ACCESS_TOKEN")}"
+      }).timeout(const Duration(seconds: 10));
+      final resData = jsonDecode(utf8.decode(resString.bodyBytes));
+      print("getStudentInfoAndSave() call : ${resData["data"]}");
+
+      if (resData["status"] == 200) {
+        print("getStudentInfoAndSave() call success");
+        final pref = await SharedPreferences.getInstance();
+        List<dynamic> data = resData["data"];
+
+        pref.setInt("appMemberId", data[0]["memberId"]);
+        pref.setString("appStudentNo", data[0]["studentNo"]);
+        pref.setString("appName", data[0]["name"]);
+        pref.setString("department", data[0]["department"]);
+        pref.setBool("appMemberShip", data[0]["memberShip"]);
+        pref.setString("appCreatedAt", data[0]["createdAt"]);
+        pref.setString("appUpdatedAt", data[0]["updatedAt"]);
+        pref.setString("appMemberStatus", data[0]["memberStatus"]);
+        pref.setString("appPhoneNo", data[0]["phoneNo"]);
+
+        return StatusCode.SUCCESS;
+      }
+
+      return StatusCode.UNCATCHED_ERROR;
+    } catch (e) {
+      print(e);
+      return StatusCode.UNCATCHED_ERROR;
+    }
   }
 }

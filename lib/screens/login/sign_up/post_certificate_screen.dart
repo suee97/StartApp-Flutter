@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http_parser/http_parser.dart';
@@ -21,6 +22,11 @@ class PostCertificateScreen extends StatefulWidget {
 class _PostCertificateScreenState extends State<PostCertificateScreen> {
   File? imageFile;
   final ImagePicker imagePicker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +70,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                       source: ImageSource.camera,
                       maxWidth: 640,
                       maxHeight: 280,
-                      imageQuality: 100 //0-100
+                      imageQuality: 10 //0-100
                       );
 
                   if (file?.path != null) {
@@ -106,7 +112,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                         var fcmToken = signUpNotifier.getFcmToken();
 
                         postCertificate(studentNo, appPassword, name,
-                            department, fcmToken, imageFile);
+                            department, fcmToken);
                       }
                     : () {
                         Common.showSnackBar(context, "카메라로 사진을 찍어 업로드해주세요.");
@@ -153,27 +159,33 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
   }
 
   Future<void> postCertificate(String studentNo, String appPassword,
-      String name, String department, String fcmToken, dynamic file) async {
+      String name, String department, String fcmToken) async {
+
     Dio dio = Dio();
-
-    final MultipartFile _file = await MultipartFile.fromFile(
-        imageFile!.path,
-        contentType: MediaType("image", "jpg"));
-
     dio.options.contentType = 'multipart/form-data';
 
+    final _file = await MultipartFile.fromFile(
+        imageFile!.path,
+        filename: "file_name",
+        contentType: MediaType("image", "jpg"));
+
+
     FormData _formData = FormData.fromMap({
-      "studentNo": studentNo,
-      "appPassword": appPassword,
-      "name": name,
-      "department": department,
-      "fcmToken": fcmToken,
+      "studentNo": "19101686",
+      "appPassword": "aaa1111a",
+      "name": "sss",
+      "department": "safasdfsa",
+      "fcmToken": "asdfsaf123",
       "file": _file
     });
 
-    final resString = await dio.post("https://dev.seoultech-startapp.com/api/member",
-        data: _formData);
-
-    print(resString);
+    try {
+      final resString = await dio.post(
+          "${dotenv.get("DEV_API_BASE_URL")}/member",
+          data: _formData);
+      print(resString);
+    } catch(e) {
+      print(e);
+    }
   }
 }
