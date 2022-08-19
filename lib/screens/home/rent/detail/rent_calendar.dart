@@ -15,7 +15,7 @@ class RentCalendar extends StatefulWidget {
 }
 
 class _RentCalendarState extends State<RentCalendar> {
-  CalendarController _calendarController = CalendarController();
+  final _calendarController = CalendarController();
   final DateTime today = DateTime.now();
   late String _headerText = today.month.toString();
 
