@@ -276,8 +276,19 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
 
                       /// https://pub.dev/packages/external_app_launcher
-                      SvgPicture.asset("assets/icon_youtube.svg", width: 35.w),
-                      SvgPicture.asset("assets/icon_kakao.svg", width: 32.w),
+                      GestureDetector(
+                          onTap: () async {
+                            _launchUrl(
+                                "https://www.youtube.com/channel/UCLYljVZiYHeJxaHTbRpVauQ");
+                          },
+                          child: SvgPicture.asset("assets/icon_youtube.svg",
+                              width: 35.w)),
+                      GestureDetector(
+                          onTap: () {
+                            _launchUrl("https://pf.kakao.com/_yxatCV");
+                          },
+                          child: SvgPicture.asset("assets/icon_kakao.svg",
+                              width: 32.w)),
                       GestureDetector(
                         onTap: () async {
                           _launchUrl("https://gwack2.seoultech.ac.kr/");

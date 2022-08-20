@@ -7,7 +7,7 @@ import 'package:start_app/screens/home/rent/detail/category_rent_screen.dart';
 import 'package:start_app/screens/home/rent/my_rent/my_rent_screen.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
 import '../../../utils/common.dart';
-import '../../../utils/departmentST.dart';
+import '../../../utils/department.dart';
 
 class RentScreen extends StatefulWidget {
   const RentScreen({Key? key}) : super(key: key);

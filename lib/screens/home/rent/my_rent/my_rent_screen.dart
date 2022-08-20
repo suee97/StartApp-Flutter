@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io' show Platform, SocketException;
 import '../../../../models/rent_list.dart';
 import '../../../../utils/common.dart';
-import '../../../../utils/departmentST.dart';
+import '../../../../utils/department.dart';
 
 class MyRentScreen extends StatefulWidget {
   const MyRentScreen({Key? key}) : super(key: key);

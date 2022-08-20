@@ -5,7 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:http/http.dart' as http;
-import 'package:start_app/utils/departmentST.dart';
+import 'package:start_app/utils/department.dart';
 
 class StatusScreen extends StatefulWidget {
   const StatusScreen({Key? key}) : super(key: key);
