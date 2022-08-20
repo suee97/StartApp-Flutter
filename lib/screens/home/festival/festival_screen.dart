@@ -31,6 +31,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
   bool isGetGpsLoading = false;
 
   List<String> crowdedInfo = [];
+  int postofficeCrowded = 1, exhibitionCrowded = 1, bikingCrowded = 1, ccCrowded = 1, info1Crowded = 1, photozoneCrowded = 1, photoismCrowded = 1, pawnshopCrowded = 1, photoprintingCrowded = 1, costumeCrowded = 1, gameroomCrowded = 1, startshopCrowded = 1;
 
   bool isJeonSi = true;
   bool isMarket = true;
@@ -43,98 +44,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   bool isContents = true;
 
-  List<FestivalInfoWidget> contentsList = <FestivalInfoWidget>[
-    FestivalInfoWidget(
-        contentTitle: "과기대\n잡화점의 기적",
-        contentImg: "festival_postoffice_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "나만의 전시회",
-        contentImg: "festival_exhibition_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "낙서 캔버스",
-        contentImg: "festival_doodlewall_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "마당사업",
-        contentImg: "festival_madangbiz_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "미니바이킹",
-        contentImg: "festival_biking_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "씨씨는 사랑을 싣고",
-        contentImg: "festival_cc_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "제1안내소",
-        contentImg: "festival_info1_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "매표소",
-        contentImg: "festival_ticketbooth_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "제3안내소",
-        contentImg: "festival_info3_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "플리마켓",
-        contentImg: "festival_fleamarket_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "포토존",
-        contentImg: "festival_photozone_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "포토부스",
-        contentImg: "festival_photoism_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "패션투표",
-        contentImg: "festival_fashionvote_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "전당포",
-        contentImg: "festival_pawnshop_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "인화부스",
-        contentImg: "festival_photoprinting_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "믓쟁이 의상소",
-        contentImg: "festival_costume_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "오락부스",
-        contentImg: "festival_gameroom_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "어의상회",
-        contentImg: "festival_startshop_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-  ];
+  late List<FestivalInfoWidget> contentsList;
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -205,8 +115,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   @override
   void initState() {
-    fetchCrowded();
     super.initState();
+    setContentsInfo();
   }
 
   @override
@@ -220,30 +130,99 @@ class _FestivalScreenState extends State<FestivalScreen> {
     Map<String, dynamic> resData = {};
 
     try {
-      //헤더 추가
       var resString = await http
-          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/festival"), ).timeout(const Duration(seconds: 10));
+          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/booth")).timeout(const Duration(seconds: 10));
       resData = jsonDecode(utf8.decode(resString.bodyBytes));
 
-      print("하이$resData");
       if (resData["status"] == 200) {
         List<dynamic> data = resData["data"];
 
-        print("엥${resData["data"]}");
+        List<String> _boothInfo = [];
+        List<int> _crowdedInfo = [];
 
-        List<String> _crowdedInfo = [];
+        for (Map e in data) {
+          _boothInfo.add(e.values.toList()[1]);
+          _crowdedInfo.add(e.values.toList()[2]);
+        }
 
-        for (int i = 0; i < contentsList.length; i++) {
-          for (var e in data) {
-            _crowdedInfo.add(e["name"]);
-            _crowdedInfo.add(e["crowded"]);
+        int num, crowded;
+
+        for(String booth in _boothInfo){
+          if(booth == "과기대잡화점의기적"){
+            num = _boothInfo.indexOf(booth);
+            int crowded = _crowdedInfo[num];
+            setState(() {
+              postofficeCrowded = crowded;
+            });
+          }else if(booth == "나만의 전시회"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              exhibitionCrowded = crowded;
+            });
+          }else if(booth == "미니바이킹"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              bikingCrowded = crowded;
+            });
+          }else if(booth == "씨씨는 사랑을 싣고"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              ccCrowded = crowded;
+            });
+          }else if(booth == "제1안내소"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              info1Crowded = crowded;
+            });
+          }else if(booth == "포토존"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              photozoneCrowded = crowded;
+            });
+          }else if(booth == "포토부스"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              photoismCrowded = crowded;
+            });
+          }else if(booth == "전당포"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              pawnshopCrowded = crowded;
+            });
+          }else if(booth == "인화부스"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              photoprintingCrowded = crowded;
+            });
+          }else if(booth == "믓쟁이 의상소"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              costumeCrowded = crowded;
+            });
+          }else if(booth == "오락부스"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              gameroomCrowded = crowded;
+            });
+          }else if(booth == "어의상회"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              startshopCrowded = crowded;
+            });
           }
         }
 
-        crowdedInfo = _crowdedInfo;
-        for (int i = 1; i < contentsList.length; i = i+2) {
-          contentsList[i-1].contentCrowded = int.parse(crowdedInfo[i].toString()); // 이런식으로 crowdedInfo에서 int에 해당하는 string 값 찾아서 넣기
-        }
       }
 
     } on TimeoutException catch (e) {
@@ -253,6 +232,120 @@ class _FestivalScreenState extends State<FestivalScreen> {
     } catch (e) {
       "error $e";
     }
+  }
+
+  Future<void> setContentsInfo() async{
+    await fetchCrowded();
+        contentsList = <FestivalInfoWidget>[
+        FestivalInfoWidget(
+        contentTitle: "과기대\n잡화점의 기적",
+        contentImg: "festival_postoffice_img",
+        openTime: "11:00~12:00",
+        contentCrowded: postofficeCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "나만의 전시회",
+        contentImg: "festival_exhibition_img",
+        openTime: "11:00~12:00",
+        contentCrowded: exhibitionCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "낙서 캔버스",
+        contentImg: "festival_doodlewall_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "마당사업",
+        contentImg: "festival_madangbiz_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "미니바이킹",
+        contentImg: "festival_biking_img",
+        openTime: "11:00~12:00",
+        contentCrowded: bikingCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "씨씨는 사랑을 싣고",
+        contentImg: "festival_cc_img",
+        openTime: "11:00~12:00",
+        contentCrowded: ccCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "제1안내소",
+        contentImg: "festival_info1_img",
+        openTime: "11:00~12:00",
+        contentCrowded: info1Crowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "매표소",
+        contentImg: "festival_ticketbooth_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "제3안내소",
+        contentImg: "festival_info3_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "플리마켓",
+        contentImg: "festival_fleamarket_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "포토존",
+        contentImg: "festival_photozone_img",
+        openTime: "11:00~12:00",
+        contentCrowded: photozoneCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "포토부스",
+        contentImg: "festival_photoism_img",
+        openTime: "11:00~12:00",
+        contentCrowded: photoismCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "패션투표",
+        contentImg: "festival_fashionvote_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "전당포",
+        contentImg: "festival_pawnshop_img",
+        openTime: "11:00~12:00",
+        contentCrowded: pawnshopCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "인화부스",
+        contentImg: "festival_photoprinting_img",
+        openTime: "11:00~12:00",
+        contentCrowded: photoprintingCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "믓쟁이 의상소",
+        contentImg: "festival_costume_img",
+        openTime: "11:00~12:00",
+        contentCrowded: costumeCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "오락부스",
+        contentImg: "festival_gameroom_img",
+        openTime: "11:00~12:00",
+        contentCrowded: gameroomCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "어의상회",
+        contentImg: "festival_startshop_img",
+        openTime: "11:00~12:00",
+        contentCrowded: startshopCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        ];
   }
 
   @override
@@ -1230,12 +1323,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                     ),
                                     Expanded(
                                         child: isContents
-                                            ? ListView.builder(
-                                            controller: scrollController,
-                                            itemCount: contentsList.length,
-                                            itemBuilder: (context, index) {
-                                              return contentsList[index];
-                                            })
+                                            ? _getContentsCrowded(scrollController)
                                             : Container(
                                           width: 320.w,
                                           height: 450.h,

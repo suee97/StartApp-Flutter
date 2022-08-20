@@ -8,7 +8,7 @@ class FestivalInfoWidget extends StatefulWidget {
       {Key? key,
         required this.contentTitle,
         required this.contentImg,
-        this.contentCrowded = 1,
+        required this.contentCrowded,
         required this.openTime,
         required this.contentFee})
       : super(key: key);
@@ -64,7 +64,10 @@ class _FestivalInfoWidgetState extends State<FestivalInfoWidget> {
                 SizedBox(
                   height: 5.h,
                 ),
-                Text("혼잡도",
+                widget.contentCrowded == 0 ? Text("   ",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                    )): Text("혼잡도",
                     style: TextStyle(
                       fontSize: 12.sp,
                     )),
@@ -99,6 +102,13 @@ class _FestivalInfoWidgetState extends State<FestivalInfoWidget> {
   }
 
   Widget getCrowdedSvgFromList(int crowded) {
+    if (crowded == 0) {
+      return SizedBox(
+        width: 80.w,
+        height: 10.h
+      );
+    }
+
     if (crowded == 2) {
       return SvgPicture.asset(
         "assets/mid_crowded.svg",
