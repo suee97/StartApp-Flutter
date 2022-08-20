@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(
               height: 150.h,
             ),
-            Container(
+            SizedBox(
               width: 250.w,
               height: 250.h,
               child: Lottie.asset(
@@ -108,8 +108,9 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     await Future.delayed(const Duration(seconds: 1));
     if (await Common.isNonLogin() && !await Common.isAutoLogin()) {
+      await Common.clearStudentInfoPref();
       navigator.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false);
       return;
     }
@@ -120,8 +121,9 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     await Future.delayed(const Duration(seconds: 1));
     if (!await Common.isNonLogin() && !await Common.isAutoLogin()) {
+      await Common.clearStudentInfoPref();
       navigator.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => LoginOptionScreen()),
+          MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
           (route) => false);
       return;
     }
@@ -133,8 +135,9 @@ class _SplashScreenState extends State<SplashScreen> {
     if (await Common.isNonLogin() && await Common.isAutoLogin()) {
       await Common.setNonLogin(false);
       await Common.setAutoLogin(false);
+      await Common.clearStudentInfoPref();
       navigator.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => LoginOptionScreen()),
+          MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
           (route) => false);
       return;
     }
@@ -147,7 +150,7 @@ class _SplashScreenState extends State<SplashScreen> {
       notifyText = "access token 로드 중";
     });
     await Future.delayed(const Duration(seconds: 1));
-    var ACCESS_TOKEN =
+    final ACCESS_TOKEN =
         await secureStorage.read(key: "ACCESS_TOKEN"); // 엑세스 토큰 로드
 
     /// access 토큰 없을 때
@@ -158,6 +161,7 @@ class _SplashScreenState extends State<SplashScreen> {
       await Future.delayed(const Duration(seconds: 1));
       await Common.setNonLogin(false);
       await Common.setAutoLogin(false);
+      await Common.clearStudentInfoPref();
       navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => LoginOptionScreen()),
           (route) => false);
@@ -165,7 +169,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     /// access 토큰 있을 때 -> 유효한지 확인 -> 인증되면 유저정보 저장 -> 저장되면 홈화면 이동
-    var authAccessTokenFromAutoLoginResult =
+    final authAccessTokenFromAutoLoginResult =
         await authAccessTokenFromAutoLogin();
     if (authAccessTokenFromAutoLoginResult == StatusCode.SUCCESS) {
       StatusCode getStudentInfoAndSaveFromAutoLoginResult =
@@ -184,8 +188,9 @@ class _SplashScreenState extends State<SplashScreen> {
       if (REFRESH_TOKEN == null || REFRESH_TOKEN.isEmpty) {
         Common.setNonLogin(false);
         Common.setAutoLogin(false);
+        await Common.clearStudentInfoPref();
         navigator.pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => LoginOptionScreen()),
+            MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
             (route) => false);
         return;
       }
@@ -200,7 +205,7 @@ class _SplashScreenState extends State<SplashScreen> {
               await getStudentInfoAndSaveFromAutoLogin();
           if (getStudentInfoAndSaveFromAutoLoginResult == StatusCode.SUCCESS) {
             navigator.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
                 (route) => false);
             return;
           }
@@ -210,8 +215,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Common.setNonLogin(false);
     Common.setAutoLogin(false);
+    await Common.clearStudentInfoPref();
     navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginOptionScreen()),
+        MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
         (route) => false);
     return;
   }
@@ -223,7 +229,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final AT = await secureStorage.read(key: "ACCESS_TOKEN");
 
     try {
-      var resString = await http
+      final resString = await http
           .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"), headers: {
         "Authorization": "Bearer $AT"
       }).timeout(const Duration(seconds: 10));
@@ -254,7 +260,7 @@ class _SplashScreenState extends State<SplashScreen> {
   /// #############################################################
   Future<StatusCode> getStudentInfoAndSaveFromAutoLogin() async {
     try {
-      var resString = await http
+      final resString = await http
           .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/member"), headers: {
         "Authorization":
             "Bearer ${await secureStorage.read(key: "ACCESS_TOKEN")}"
@@ -294,7 +300,7 @@ class _SplashScreenState extends State<SplashScreen> {
   /// #############################################################
   Future<StatusCode> getAccessTokenFromRefreshToken() async {
     try {
-      var resString = await http.get(
+      final resString = await http.get(
           Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth/refresh"),
           headers: {
             "Authorization":
