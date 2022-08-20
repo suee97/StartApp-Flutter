@@ -19,7 +19,7 @@ import 'package:start_app/screens/login/login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../utils/common.dart';
-import '../../../utils/departmentMatch.dart';
+import '../../../utils/department_match.dart';
 import '../../splash/splash_screen.dart.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -87,77 +87,77 @@ class _SettingScreenState extends State<SettingScreen> {
                   padding: EdgeInsets.only(left: 15.w),
                   child: Common.getIsLogin()
                       ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _name,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _name,
+                        style: TextStyle(
+                            fontSize: 15.5.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 8.h,
+                      ),
+                      Text(
+                        _studentNo,
+                        style: TextStyle(
+                            fontSize: 13.5.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(_studentGroup,
+                          style: TextStyle(
+                              fontSize: 13.5.sp,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500)),
+                      Text(_department,
+                          style: TextStyle(
+                              fontSize: 13.5.sp,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  )
+                      : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "로그인이 필요합니다.",
+                        style: TextStyle(
+                            fontSize: 15.5.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 8.h,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const LoginScreen()),
+                                  (route) => false);
+                        },
+                        child: Container(
+                          width: 100.w,
+                          height: 20.h,
+                          decoration: BoxDecoration(
+                              color: HexColor("#FFCEA2"),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Center(
+                            child: Text(
+                              "로그인하러 가기",
                               style: TextStyle(
-                                  fontSize: 15.5.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: 8.h,
-                            ),
-                            Text(
-                              _studentNo,
-                              style: TextStyle(
-                                  fontSize: 13.5.sp,
-                                  color: Colors.white,
+                                  fontSize: 12.sp,
+                                  color: HexColor("#425C5A"),
                                   fontWeight: FontWeight.w500),
                             ),
-                            Text(_studentGroup,
-                                style: TextStyle(
-                                    fontSize: 13.5.sp,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500)),
-                            Text(_department,
-                                style: TextStyle(
-                                    fontSize: 13.5.sp,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500)),
-                          ],
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "로그인이 필요합니다.",
-                              style: TextStyle(
-                                  fontSize: 15.5.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: 8.h,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen()),
-                                    (route) => false);
-                              },
-                              child: Container(
-                                width: 100.w,
-                                height: 20.h,
-                                decoration: BoxDecoration(
-                                    color: HexColor("#FFCEA2"),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Center(
-                                  child: Text(
-                                    "로그인하러 가기",
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: HexColor("#425C5A"),
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
+                          ),
                         ),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
@@ -520,20 +520,19 @@ class _SettingScreenState extends State<SettingScreen> {
 
     await Common.setNonLogin(false);
     await Common.setAutoLogin(false);
+    await Common.clearStudentInfoPref();
 
     print("#################### 로그아웃 ####################");
     print("ACCESS_TOKEN & RESFRESH_TOKEN 을 모두 지웠습니다.");
     print("ACCESS_TOKEN : $ACCESS_TOKEN");
     print("REFRESH_TOKEN : $REFRESH_TOKEN");
 
-    await Common.clearStudentInfoPref();
-
     navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const SplashScreen()),
-        (route) => false);
+            (route) => false);
   }
 
-  _loadStudentInfo() async {
+  void _loadStudentInfo() async {
     if (!Common.getIsLogin()) return;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -545,7 +544,7 @@ class _SettingScreenState extends State<SettingScreen> {
     });
   }
 
-  _launchInstagram() async {
+  void _launchInstagram() async {
     const nativeUrl = "instagram://user?username=seoultech_38";
     const webUrl = "https://www.instagram.com/seoultech_38/";
     if (await canLaunchUrl(Uri.parse(nativeUrl))) {
@@ -556,33 +555,4 @@ class _SettingScreenState extends State<SettingScreen> {
       print("can't open Instagram");
     }
   }
-
-// _launchYoutube() async {
-//   const nativeUrl = "youtube://www.youtube.com/channel/UCLYljVZiYHeJxaHTbRpVauQ";
-//   const webUrl = "https://www.instagram.com/seoultech_38/";
-//   if (await canLaunchUrlString(nativeUrl)) {
-//     await launchUrl(Uri.parse(nativeUrl));
-//   } else if (await canLaunchUrlString(webUrl)) {
-//     await launchUrlString(webUrl);
-//   } else {
-//     print("can't open Instagram");
-//   }
-// }
-
-// Future<void> setStudentInfo() async {
-//   if (!Common.getIsLogin()) {
-//     return;
-//   }
-//   final pref = await SharedPreferences.getInstance();
-//   if (pref.getString("appName") != null) {
-//     setState(() {
-//       name = pref.getString("appName")!;
-//     });
-//   }
-//   if (pref.getString("appStudentNo") != null) {
-//     setState(() {
-//       studentNo = pref.getString("appStudentNo")!;
-//     });
-//   }
-// }
 }

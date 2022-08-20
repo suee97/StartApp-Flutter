@@ -142,13 +142,13 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                         setState(() {
                           isLoading = true;
                         });
-                        var studentNo = signUpNotifier.getStudentNo();
-                        var appPassword = signUpNotifier.getAppPassword();
-                        var name = signUpNotifier.getName();
-                        var department = signUpNotifier.getDepartment();
-                        var fcmToken = signUpNotifier.getFcmToken(); // 미구현, 미사용
+                        final studentNo = signUpNotifier.getStudentNo();
+                        final appPassword = signUpNotifier.getAppPassword();
+                        final name = signUpNotifier.getName();
+                        final department = signUpNotifier.getDepartment();
+                        final fcmToken = signUpNotifier.getFcmToken(); // 미구현, 미사용
 
-                        var postCertificateResult = await postCertificate(
+                        final postCertificateResult = await postCertificate(
                             studentNo, appPassword, name, department, fcmToken);
 
                         if (postCertificateResult != StatusCode.SUCCESS) {

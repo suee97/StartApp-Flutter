@@ -213,7 +213,7 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
                           }
 
                           /// 학번 중복 검사
-                          var statusCode = await checkIdDuplication(
+                          final statusCode = await checkIdDuplication(
                               studentIdController.text, context);
 
                           if (statusCode == StatusCode.CONNECTION_ERROR) {
@@ -327,7 +327,7 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
     Map<String, dynamic> resData = {};
 
     try {
-      var resString = await http
+      final resString = await http
           .get(
             Uri.parse(
                 "${dotenv.get("DEV_API_BASE_URL")}/member/duplicate?studentNo=${_studentId}"),

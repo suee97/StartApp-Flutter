@@ -361,7 +361,7 @@ class _LoginScreenState extends State<LoginScreen> {
     };
 
     try {
-      var resString = await http
+      final resString = await http
           .post(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth/login"),
               headers: {"Content-Type": "application/json"},
               body: json.encode(bodyData))
@@ -372,8 +372,8 @@ class _LoginScreenState extends State<LoginScreen> {
         print("loginAuthAndGetToken() call success");
 
         List<dynamic> data = resData["data"];
-        var AT = data[0]["accessToken"];
-        var RT = data[0]["refreshToken"];
+        final AT = data[0]["accessToken"];
+        final RT = data[0]["refreshToken"];
         await secureStorage.write(key: "ACCESS_TOKEN", value: AT);
         await secureStorage.write(key: "REFRESH_TOKEN", value: RT);
 
@@ -397,7 +397,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final AT = await secureStorage.read(key: "ACCESS_TOKEN");
 
     try {
-      var resString = await http
+      final resString = await http
           .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth"), headers: {
         "Authorization": "Bearer $AT"
       }).timeout(const Duration(seconds: 10));
@@ -421,7 +421,7 @@ class _LoginScreenState extends State<LoginScreen> {
   /// #############################################################
   Future<StatusCode> getStudentInfoAndSave() async {
     try {
-      var resString = await http
+      final resString = await http
           .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/member"), headers: {
         "Authorization":
             "Bearer ${await secureStorage.read(key: "ACCESS_TOKEN")}"

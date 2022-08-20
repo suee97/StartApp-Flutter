@@ -7,7 +7,7 @@ import 'package:start_app/screens/home/rent/detail/category_rent_screen.dart';
 import 'package:start_app/screens/home/rent/my_rent/my_rent_screen.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
 import '../../../utils/common.dart';
-import '../../../utils/departmentMatch.dart';
+import '../../../utils/department_match.dart';
 import '../../login/login_screen.dart';
 
 class RentScreen extends StatefulWidget {

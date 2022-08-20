@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io' show Platform, SocketException;
 import '../../../../models/rent_list.dart';
 import '../../../../utils/common.dart';
-import '../../../../utils/departmentMatch.dart';
+import '../../../../utils/department_match.dart';
 
 class MyRentScreen extends StatefulWidget {
   const MyRentScreen({Key? key}) : super(key: key);
@@ -47,7 +47,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
 
   Future<List<Rent>> fetchRentList() async {
     try {
-      var resString = await http
+      final resString = await http
           .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/member/rent"))
           .timeout(const Duration(seconds: 10));
       Map<String, dynamic> resData =
