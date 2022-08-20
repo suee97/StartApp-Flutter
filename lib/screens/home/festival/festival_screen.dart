@@ -455,6 +455,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
           mapType: MapType.normal,
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,
+          myLocationButtonEnabled: false,
           markers: _markerList,
           circles: circleList,
         ),
