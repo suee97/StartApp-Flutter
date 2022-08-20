@@ -421,21 +421,11 @@ class _SettingScreenState extends State<SettingScreen> {
     await Common.setAutoLogin(false);
 
     print("#################### 로그아웃 ####################");
-    print("ACCESS_TOKEN & REFRESH_TOKEN");
+    print("ACCESS_TOKEN & RESFRESH_TOKEN 을 모두 지웠습니다.");
     print("ACCESS_TOKEN : $ACCESS_TOKEN");
     print("REFRESH_TOKEN : $REFRESH_TOKEN");
 
-    final pref = await SharedPreferences.getInstance();
-    pref.remove("appMemberId");
-    pref.remove("appStudentNo");
-    pref.remove("appName");
-    pref.remove("department");
-    pref.remove("appMemberShip");
-    pref.remove("appCreatedAt");
-    pref.remove("appUpdatedAt");
-    pref.remove("appMemberStatus");
-    pref.remove("appPhoneNo");
-    print("유저 관련 모든 preference를 삭제했습니다.");
+    await Common.clearStudentInfoPref();
 
     navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const SplashScreen()),

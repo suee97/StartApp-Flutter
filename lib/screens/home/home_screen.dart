@@ -345,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<StatusCode> fetchBannerLinkList() async {
-    print("api 호출");
+    print("배너 이미지를 호출합니다.");
 
     Map<String, dynamic> resData = {};
 
