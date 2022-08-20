@@ -17,6 +17,7 @@ import 'package:start_app/screens/home/setting/setting_semi_title.dart';
 import 'package:http/http.dart' as http;
 import 'package:start_app/screens/login/login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../../utils/common.dart';
 import '../../../utils/departmentMatch.dart';
 import '../../splash/splash_screen.dart.dart';
@@ -130,28 +131,31 @@ class _SettingScreenState extends State<SettingScreen> {
                             SizedBox(
                               height: 8.h,
                             ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                                  const LoginScreen()), (route) => false);
-                            },
-                            child: Container(
-                              width: 100.w,
-                              height: 20.h,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#FFCEA2"),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(
-                                child: Text(
-                                  "로그인하러 가기",
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: HexColor("#425C5A"),
-                                      fontWeight: FontWeight.w500),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginScreen()),
+                                    (route) => false);
+                              },
+                              child: Container(
+                                width: 100.w,
+                                height: 20.h,
+                                decoration: BoxDecoration(
+                                    color: HexColor("#FFCEA2"),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Text(
+                                    "로그인하러 가기",
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: HexColor("#425C5A"),
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
+                            )
                           ],
                         ),
                 )
@@ -277,14 +281,14 @@ class _SettingScreenState extends State<SettingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: () async {},
+                        onTap: () async {
+                          _launchInstagram();
+                        },
                         child: SvgPicture.asset(
                           "assets/icon_insta.svg",
                           width: 30.w,
                         ),
                       ),
-
-                      /// https://pub.dev/packages/external_app_launcher
                       GestureDetector(
                           onTap: () async {
                             _launchUrl(
@@ -386,6 +390,51 @@ class _SettingScreenState extends State<SettingScreen> {
                   Container(
                       margin: EdgeInsets.only(left: 20.w),
                       child: Text(
+                        "제안사항",
+                        style: TextStyle(
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.w500,
+                            color: HexColor("#425c5a")),
+                      )),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  SettingSemiTitle(
+                    title: "기능개선 제안",
+                    onPressed: () {},
+                  ),
+                  SettingSemiTitle(
+                    title: "오류 신고",
+                    onPressed: () {},
+                  ),
+                  SettingSemiTitle(
+                    title: "기타 제안",
+                    onPressed: () {},
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 8.h,
+            ),
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(left: 10.w, right: 10.w),
+              decoration: BoxDecoration(
+                  color: HexColor("#f3f3f3"),
+                  borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 14.h,
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(left: 20.w),
+                      child: Text(
                         "정보",
                         style: TextStyle(
                             fontSize: 17.sp,
@@ -405,7 +454,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                   ),
                   SettingSemiTitle(
-                    title: "개발 관련 정보 및 문의하기",
+                    title: "개발 관련 정보 및 문의",
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -419,6 +468,9 @@ class _SettingScreenState extends State<SettingScreen> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 16.h,
+            )
           ],
         ),
       ),
@@ -491,23 +543,46 @@ class _SettingScreenState extends State<SettingScreen> {
       _department = (prefs.getString('department') ?? '');
       _studentGroup = DepartmentMatch.getDepartment(_department);
     });
-
   }
 
-  // Future<void> setStudentInfo() async {
-  //   if (!Common.getIsLogin()) {
-  //     return;
-  //   }
-  //   final pref = await SharedPreferences.getInstance();
-  //   if (pref.getString("appName") != null) {
-  //     setState(() {
-  //       name = pref.getString("appName")!;
-  //     });
-  //   }
-  //   if (pref.getString("appStudentNo") != null) {
-  //     setState(() {
-  //       studentNo = pref.getString("appStudentNo")!;
-  //     });
-  //   }
-  // }
+  _launchInstagram() async {
+    const nativeUrl = "instagram://user?username=seoultech_38";
+    const webUrl = "https://www.instagram.com/seoultech_38/";
+    if (await canLaunchUrl(Uri.parse(nativeUrl))) {
+      await launchUrl(Uri.parse(nativeUrl));
+    } else if (await canLaunchUrlString(webUrl)) {
+      await launchUrlString(webUrl);
+    } else {
+      print("can't open Instagram");
+    }
+  }
+
+// _launchYoutube() async {
+//   const nativeUrl = "youtube://www.youtube.com/channel/UCLYljVZiYHeJxaHTbRpVauQ";
+//   const webUrl = "https://www.instagram.com/seoultech_38/";
+//   if (await canLaunchUrlString(nativeUrl)) {
+//     await launchUrl(Uri.parse(nativeUrl));
+//   } else if (await canLaunchUrlString(webUrl)) {
+//     await launchUrlString(webUrl);
+//   } else {
+//     print("can't open Instagram");
+//   }
+// }
+
+// Future<void> setStudentInfo() async {
+//   if (!Common.getIsLogin()) {
+//     return;
+//   }
+//   final pref = await SharedPreferences.getInstance();
+//   if (pref.getString("appName") != null) {
+//     setState(() {
+//       name = pref.getString("appName")!;
+//     });
+//   }
+//   if (pref.getString("appStudentNo") != null) {
+//     setState(() {
+//       studentNo = pref.getString("appStudentNo")!;
+//     });
+//   }
+// }
 }
