@@ -14,7 +14,6 @@ import 'package:start_app/screens/home/setting/app_info/update_info_screen.dart'
 import 'package:start_app/screens/home/setting/policy/location_policy_screen.dart';
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
 import 'package:start_app/screens/home/setting/setting_semi_title.dart';
-import 'package:start_app/widgets/test_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import '../../../utils/common.dart';
@@ -40,7 +39,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "설정",
+          Common.getIsLogin() ? "로그인 됨" : "로그인 안됨", // 설정
           style: Common.startAppBarTextStyle,
         ),
         foregroundColor: Colors.white,
@@ -340,7 +339,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     height: 8.h,
                   ),
                   SettingSemiTitle(
-                    title: "업데이트",
+                    title: "업데이트 로그",
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -349,7 +348,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                   ),
                   SettingSemiTitle(
-                    title: "개발 관련 정보",
+                    title: "개발 관련 정보 및 문의하기",
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -362,15 +361,6 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                 ],
               ),
-            ),
-            TestButton(
-              onPressed: () {
-                Common.setNonLogin(false);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => SplashScreen()),
-                    (route) => false);
-              },
-              title: "set nonlogin false",
             ),
           ],
         ),
@@ -392,6 +382,8 @@ class _SettingScreenState extends State<SettingScreen> {
     final secureStorage = FlutterSecureStorage();
     var ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
     var REFRESH_TOKEN = await secureStorage.read(key: "REFRESH_TOKEN");
+
+    Common.setIsLogin(false);
 
     Map<String, dynamic> resData91 = {};
     resData91["status"] = 400;

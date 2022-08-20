@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/login_option_screen.dart';
 import 'package:start_app/utils/common.dart';
-import 'dart:io' show Platform, SocketException;
+import 'dart:io' show Platform;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import '../../models/status_code.dart';
@@ -24,7 +24,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final secureStorage = FlutterSecureStorage();
+  final secureStorage = const FlutterSecureStorage();
   var notifyText = "";
 
   @override
@@ -109,6 +109,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 1));
     if (await Common.isNonLogin() && !await Common.isAutoLogin()) {
       await Common.clearStudentInfoPref();
+      Common.setIsLogin(false);
       navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false);
@@ -122,6 +123,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 1));
     if (!await Common.isNonLogin() && !await Common.isAutoLogin()) {
       await Common.clearStudentInfoPref();
+      Common.setIsLogin(false);
       navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
           (route) => false);
@@ -135,6 +137,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (await Common.isNonLogin() && await Common.isAutoLogin()) {
       await Common.setNonLogin(false);
       await Common.setAutoLogin(false);
+      Common.setIsLogin(false);
       await Common.clearStudentInfoPref();
       navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
@@ -161,9 +164,10 @@ class _SplashScreenState extends State<SplashScreen> {
       await Future.delayed(const Duration(seconds: 1));
       await Common.setNonLogin(false);
       await Common.setAutoLogin(false);
+      Common.setIsLogin(false);
       await Common.clearStudentInfoPref();
       navigator.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => LoginOptionScreen()),
+          MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
           (route) => false);
       return;
     }
@@ -175,6 +179,7 @@ class _SplashScreenState extends State<SplashScreen> {
       StatusCode getStudentInfoAndSaveFromAutoLoginResult =
           await getStudentInfoAndSaveFromAutoLogin();
       if (getStudentInfoAndSaveFromAutoLoginResult == StatusCode.SUCCESS) {
+        Common.setIsLogin(true);
         navigator.pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const HomeScreen()),
             (route) => false);
@@ -188,6 +193,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (REFRESH_TOKEN == null || REFRESH_TOKEN.isEmpty) {
         Common.setNonLogin(false);
         Common.setAutoLogin(false);
+        Common.setIsLogin(false);
         await Common.clearStudentInfoPref();
         navigator.pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
@@ -204,6 +210,7 @@ class _SplashScreenState extends State<SplashScreen> {
           final getStudentInfoAndSaveFromAutoLoginResult =
               await getStudentInfoAndSaveFromAutoLogin();
           if (getStudentInfoAndSaveFromAutoLoginResult == StatusCode.SUCCESS) {
+            Common.setIsLogin(true);
             navigator.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const HomeScreen()),
                 (route) => false);
@@ -215,6 +222,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Common.setNonLogin(false);
     Common.setAutoLogin(false);
+    Common.setIsLogin(false);
     await Common.clearStudentInfoPref();
     navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
