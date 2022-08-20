@@ -8,6 +8,7 @@ import 'package:start_app/screens/home/rent/my_rent/my_rent_screen.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
 import '../../../utils/common.dart';
 import '../../../utils/departmentST.dart';
+import '../../login/login_screen.dart';
 
 class RentScreen extends StatefulWidget {
   const RentScreen({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _RentScreenState extends State<RentScreen> {
   _loadStudentInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _name = (prefs.getString('appName') ?? '로그인이 필요한 정보입니다.');
+      _name = (prefs.getString('appName') ?? '로그인이 필요합니다.');
       _studentNo = (prefs.getString('appStudentNo') ?? '');
       _department = (prefs.getString('department') ?? '');
       _studentGroup = DepartmentST.getDepartment(_department);
@@ -202,7 +203,8 @@ class _RentScreenState extends State<RentScreen> {
                 fit: BoxFit.fill,
               )),
         ),
-        Container(
+        Common.getIsLogin()
+            ? Container(
           width: 170.w,
           height: 90.h,
           margin: EdgeInsets.only(left: 160.w, top: 30.h),
@@ -253,7 +255,53 @@ class _RentScreenState extends State<RentScreen> {
               userInfoText(_department),
             ],
           ),
+        ) : Container(
+          width: 170.w,
+          height: 90.h,
+          margin: EdgeInsets.only(left: 160.w, top: 30.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    _name,
+                    style: TextStyle(
+                        fontSize: 17.5.sp,
+                        color: HexColor("#425C5A"),
+                        fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  const LoginScreen()), (route) => false);
+                },
+                child: Container(
+                  width: 100.w,
+                  height: 20.h,
+                  decoration: BoxDecoration(
+                      color: HexColor("#FFCEA2"),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Center(
+                    child: Text(
+                      "로그인하러 가기",
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          color: HexColor("#425C5A"),
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         )
+
       ]),
       backgroundColor: HexColor("#f3f3f3"),
     );

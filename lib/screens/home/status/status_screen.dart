@@ -7,6 +7,8 @@ import 'package:start_app/utils/common.dart';
 import 'package:http/http.dart' as http;
 import 'package:start_app/utils/departmentST.dart';
 
+import '../../login/login_screen.dart';
+
 class StatusScreen extends StatefulWidget {
   const StatusScreen({Key? key}) : super(key: key);
 
@@ -68,9 +70,13 @@ class _StatusScreenState extends State<StatusScreen> {
         foregroundColor: Colors.black,
         elevation: 0,
       ),
-      body: Center(
+      body: Common.getIsLogin()
+          ? Center(
           child: statusCard(
-              _name, _studentNo, _studentGroup, _department, membership)),
+              _name, _studentNo, _studentGroup, _department, membership))
+          : Center(
+          child: statusCard(
+          "로그인이 필요한 정보입니다.", "", "", "", "")),
       backgroundColor: HexColor("#f3f3f3"),
     );
   }

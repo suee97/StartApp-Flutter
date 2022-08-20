@@ -15,8 +15,10 @@ import 'package:start_app/screens/home/setting/policy/location_policy_screen.dar
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
 import 'package:start_app/screens/home/setting/setting_semi_title.dart';
 import 'package:http/http.dart' as http;
+import 'package:start_app/screens/login/login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../utils/common.dart';
+import '../../../utils/departmentST.dart';
 import '../../splash/splash_screen.dart.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -27,13 +29,15 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  late String? name = "";
-  late String? studentNo = "";
+  String _name = '';
+  String _studentNo = '';
+  String _studentGroup = '';
+  String _department = '';
 
   @override
   void initState() {
-    setStudentInfo();
     super.initState();
+    _loadStudentInfo();
   }
 
   @override
@@ -85,7 +89,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              name!,
+                              _name,
                               style: TextStyle(
                                   fontSize: 15.5.sp,
                                   color: Colors.white,
@@ -95,18 +99,18 @@ class _SettingScreenState extends State<SettingScreen> {
                               height: 8.h,
                             ),
                             Text(
-                              studentNo!,
+                              _studentNo,
                               style: TextStyle(
                                   fontSize: 13.5.sp,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500),
                             ),
-                            Text("에너지바이오대학",
+                            Text(_studentGroup,
                                 style: TextStyle(
                                     fontSize: 13.5.sp,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500)),
-                            Text("식품공학과",
+                            Text(_department,
                                 style: TextStyle(
                                     fontSize: 13.5.sp,
                                     color: Colors.white,
@@ -117,7 +121,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "오승언",
+                              "로그인이 필요합니다.",
                               style: TextStyle(
                                   fontSize: 15.5.sp,
                                   color: Colors.white,
@@ -126,23 +130,28 @@ class _SettingScreenState extends State<SettingScreen> {
                             SizedBox(
                               height: 8.h,
                             ),
-                            Text(
-                              "19101686",
-                              style: TextStyle(
-                                  fontSize: 13.5.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                  const LoginScreen()), (route) => false);
+                            },
+                            child: Container(
+                              width: 100.w,
+                              height: 20.h,
+                              decoration: BoxDecoration(
+                                  color: HexColor("#FFCEA2"),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                child: Text(
+                                  "로그인하러 가기",
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: HexColor("#425C5A"),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
                             ),
-                            Text("에너지바이오대학",
-                                style: TextStyle(
-                                    fontSize: 13.5.sp,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500)),
-                            Text("식품공학과",
-                                style: TextStyle(
-                                    fontSize: 13.5.sp,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500)),
+                          )
                           ],
                         ),
                 )
@@ -461,20 +470,33 @@ class _SettingScreenState extends State<SettingScreen> {
         (route) => false);
   }
 
-  Future<void> setStudentInfo() async {
-    if (!Common.getIsLogin()) {
-      return;
-    }
-    final pref = await SharedPreferences.getInstance();
-    if (pref.getString("appName") != null) {
-      setState(() {
-        name = pref.getString("appName")!;
-      });
-    }
-    if (pref.getString("appStudentNo") != null) {
-      setState(() {
-        studentNo = pref.getString("appStudentNo")!;
-      });
-    }
+  _loadStudentInfo() async {
+    if (!Common.getIsLogin()) return;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _name = (prefs.getString('appName') ?? '로그인이 필요합니다.');
+      _studentNo = (prefs.getString('appStudentNo') ?? '');
+      _department = (prefs.getString('department') ?? '');
+      _studentGroup = DepartmentST.getDepartment(_department);
+    });
+
   }
+
+  // Future<void> setStudentInfo() async {
+  //   if (!Common.getIsLogin()) {
+  //     return;
+  //   }
+  //   final pref = await SharedPreferences.getInstance();
+  //   if (pref.getString("appName") != null) {
+  //     setState(() {
+  //       name = pref.getString("appName")!;
+  //     });
+  //   }
+  //   if (pref.getString("appStudentNo") != null) {
+  //     setState(() {
+  //       studentNo = pref.getString("appStudentNo")!;
+  //     });
+  //   }
+  // }
 }

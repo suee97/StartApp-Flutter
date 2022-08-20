@@ -108,7 +108,8 @@ class CategoryRentScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  GestureDetector(
+                  Common.getIsLogin()
+                      ? GestureDetector(
                     onTap: () => {
                       Navigator.push(
                           context,
@@ -117,6 +118,23 @@ class CategoryRentScreen extends StatelessWidget {
                                     category: category,
                                     itemIcon: itemIcon,
                                   )))
+                    },
+                    child: Container(
+                      width: 320.w,
+                      height: 50.h,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: HexColor("#ffcea2"),
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Text(
+                        "대여하러 가기",
+                        style: TextStyle(
+                            fontSize: 21.5.sp, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ) : GestureDetector(
+                    onTap: () => {
+                    Common.showSnackBar(context, "로그인이 필요합니다.")
                     },
                     child: Container(
                       width: 320.w,
