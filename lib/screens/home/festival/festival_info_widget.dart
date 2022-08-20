@@ -59,7 +59,7 @@ class _FestivalInfoWidgetState extends State<FestivalInfoWidget> {
                 Text(
                   widget.contentTitle,
                   style:
-                  TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
                   height: 5.h,
@@ -96,6 +96,30 @@ class _FestivalInfoWidgetState extends State<FestivalInfoWidget> {
         height: 20.h,
       )
     ]);
+  }
+
+  Widget getCrowdedSvgFromList(int crowded) {
+    if (crowded == 2) {
+      return SvgPicture.asset(
+        "assets/mid_crowded.svg",
+        width: 80.w,
+        height: 10.h,
+      );
+    }
+
+    if (crowded == 3) {
+      return SvgPicture.asset(
+        "assets/high_crowded.svg",
+        width: 80.w,
+        height: 10.h,
+      );
+    }
+
+    return SvgPicture.asset(
+      "assets/low_crowded.svg",
+      width: 80.w,
+      height: 10.h,
+    );
   }
 
   Widget getCrowdedSvgFromList(int crowded) {

@@ -7,9 +7,11 @@ import '../../../../../widgets/rent_custom_text_field.dart';
 import 'dotted_line_widget.dart';
 
 class RentApplyScreen extends StatefulWidget {
-  var category, itemIcon;
+  RentApplyScreen({Key? key, required this.category, required this.itemIcon})
+      : super(key: key);
 
-  RentApplyScreen({Key? key, required this.category, required this.itemIcon}) : super(key: key);
+  String category;
+  String itemIcon;
 
   @override
   State<RentApplyScreen> createState() => _RentApplyScreenState();
@@ -93,7 +95,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only( left: 30.w),
+                padding: EdgeInsets.only(left: 30.w),
                 child: Text(
                   "기간",
                   textAlign: TextAlign.left,
@@ -147,7 +149,6 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     isObscure: false,
                     inputType: TextInputType.text),
               ),
-
               Padding(
                 padding: EdgeInsets.only(left: 30.w, right: 30.w),
                 child: Container(
@@ -160,7 +161,6 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                   ),
                 ),
               ),
-
               Padding(
                 padding: EdgeInsets.only(left: 30.w),
                 child: Text(
@@ -194,7 +194,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
-                          height: 32.h,
+                            height: 32.h,
                             alignment: Alignment.center,
                             child: Text("동의합니다",
                                 style: TextStyle(fontSize: 10.sp))),
@@ -221,7 +221,6 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                   ),
                 ]),
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
@@ -229,13 +228,12 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                 ],
               ),
               GestureDetector(
-                onTap: () {
-                },
+                onTap: () {},
                 child: Container(
                   width: 290.w,
                   height: 44.h,
-                  margin: EdgeInsets.only(
-                       left: 35.w, right: 35.w, bottom: 20.h),
+                  margin:
+                      EdgeInsets.only(left: 35.w, right: 35.w, bottom: 20.h),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       color: HexColor("#EE795F"),

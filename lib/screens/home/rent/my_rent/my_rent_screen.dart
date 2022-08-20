@@ -100,12 +100,12 @@ class _MyRentScreenState extends State<MyRentScreen> {
               padding: EdgeInsets.only(top: 72.h, left: 20.w, right: 20.w),
               child: Column(
                 children: [
-
                   /// RENT TILE UI TEST
-                  RentTile2(
+                  RentTile(
                       rent: Rent(1, "TABLE", "2022-08-05T22:23:21.159220",
                           "2022-08-07T22:23:21.159220", 5, "CONFIRM"),
                       onPressed: () {}),
+
                   /// RENT TILE UI TEST
 
                   FutureBuilder(
