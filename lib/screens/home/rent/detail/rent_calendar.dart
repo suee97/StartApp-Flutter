@@ -15,9 +15,20 @@ class RentCalendar extends StatefulWidget {
 }
 
 class _RentCalendarState extends State<RentCalendar> {
-  CalendarController _calendarController = CalendarController();
+  final _calendarController = CalendarController();
   final DateTime today = DateTime.now();
   late String _headerText = today.month.toString();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _calendarController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +51,8 @@ class _RentCalendarState extends State<RentCalendar> {
                   width: 20.w,
                   height: 18.h,
                   child: Padding(
-                    padding: EdgeInsets.only(left: 6.w, right: 6.w, top: 4.h, bottom: 4.h),
+                    padding: EdgeInsets.only(
+                        left: 6.w, right: 6.w, top: 4.h, bottom: 4.h),
                     child: SvgPicture.asset(
                       'assets/back_btn.svg',
                       fit: BoxFit.fill,
@@ -58,16 +70,17 @@ class _RentCalendarState extends State<RentCalendar> {
               onTap: () {
                 _calendarController.forward!();
               },
-                child: Container(
-                    width: 20.w,
-                    height: 18.h,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 6.w, right: 6.w, top: 4.h, bottom: 4.h),
-                      child: SvgPicture.asset(
-                        'assets/forward_btn.svg',
-                        fit: BoxFit.fill,
-                      ),
-                    )),
+              child: Container(
+                  width: 20.w,
+                  height: 18.h,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 6.w, right: 6.w, top: 4.h, bottom: 4.h),
+                    child: SvgPicture.asset(
+                      'assets/forward_btn.svg',
+                      fit: BoxFit.fill,
+                    ),
+                  )),
             ),
             // IconButton(icon: Icon(Icons.arrow_forward),
             //   onPressed: () {
@@ -120,8 +133,8 @@ class _RentCalendarState extends State<RentCalendar> {
             });
           },
           monthViewSettings: const MonthViewSettings(
-              appointmentDisplayCount: 4,
-              appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+            appointmentDisplayCount: 4,
+            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
             monthCellStyle: MonthCellStyle(
                 textStyle: TextStyle(
                     fontStyle: FontStyle.normal,
@@ -151,7 +164,6 @@ class _RentCalendarState extends State<RentCalendar> {
             shape: BoxShape.rectangle,
           ),
           cellBorderColor: HexColor("#425c5a"),
-
         ),
       )
     ]);

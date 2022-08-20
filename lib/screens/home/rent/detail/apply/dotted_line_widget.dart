@@ -13,10 +13,8 @@ class DottedLineWidget extends StatelessWidget {
         Container(
           width: 6.w,
           height: 6.w,
-          decoration: BoxDecoration(
-            color: HexColor("#425c5a"),
-            shape: BoxShape.circle
-          ),
+          decoration:
+              BoxDecoration(color: HexColor("#425c5a"), shape: BoxShape.circle),
         ),
         DottedLine(
           direction: Axis.horizontal,
@@ -30,10 +28,8 @@ class DottedLineWidget extends StatelessWidget {
         Container(
           width: 6.w,
           height: 6.w,
-          decoration: BoxDecoration(
-              color: HexColor("#425c5a"),
-              shape: BoxShape.circle
-          ),
+          decoration:
+              BoxDecoration(color: HexColor("#425c5a"), shape: BoxShape.circle),
         ),
       ],
     );

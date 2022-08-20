@@ -4,11 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class RentDetailText extends StatelessWidget {
   var category, itemPurpose, itemWarning;
 
-  RentDetailText({Key? key, required this.category, required this.itemPurpose, required this.itemWarning}) : super(key: key);
+  RentDetailText(
+      {Key? key,
+      required this.category,
+      required this.itemPurpose,
+      required this.itemWarning})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       width: 172.w,
       height: 150.h,
@@ -23,7 +27,9 @@ class RentDetailText extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: Colors.white),
           ),
-          SizedBox(height: 10.h,),
+          SizedBox(
+            height: 10.h,
+          ),
           Text(
             "수량 : 2개",
             style: TextStyle(
@@ -36,7 +42,9 @@ class RentDetailText extends StatelessWidget {
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w400,
                   color: Colors.white)),
-          SizedBox(height: 10.h,),
+          SizedBox(
+            height: 10.h,
+          ),
           Text("주의사항 : ${itemWarning}",
               style: TextStyle(
                   fontSize: 13.sp,
