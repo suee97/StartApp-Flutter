@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-class DepartmentST {
+class DepartmentMatch {
   static Set<String> engineerDepartments = {
     '기계시스템디자인공학과기계',
     '자동차공학과',
@@ -67,7 +64,7 @@ class DepartmentST {
   static String getDepartment(String department) {
     String group = '';
     String temp = '';
-    for (var x in DepartmentST.groups) {
+    for (var x in DepartmentMatch.groups) {
       for (var y in x.values) {
         if (y.contains(department)) {
           temp = x.keys.toString();

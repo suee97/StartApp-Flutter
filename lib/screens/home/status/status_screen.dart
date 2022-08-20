@@ -5,7 +5,9 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:http/http.dart' as http;
-import 'package:start_app/utils/department.dart';
+import 'package:start_app/utils/departmentMatch.dart';
+
+import '../../login/login_screen.dart';
 
 class StatusScreen extends StatefulWidget {
   const StatusScreen({Key? key}) : super(key: key);
@@ -35,7 +37,7 @@ class _StatusScreenState extends State<StatusScreen> {
       _name = (prefs.getString('appName') ?? '로그인이 필요한 정보입니다.');
       _studentNo = (prefs.getString('appStudentNo') ?? '');
       _department = (prefs.getString('department') ?? '');
-      _studentGroup = DepartmentST.getDepartment(_department);
+      _studentGroup = DepartmentMatch.getDepartment(_department);
       _membership = (prefs.getBool('appMemberShip') ?? false);
       if (_membership) {
             setState((){
@@ -68,9 +70,13 @@ class _StatusScreenState extends State<StatusScreen> {
         foregroundColor: Colors.black,
         elevation: 0,
       ),
-      body: Center(
+      body: Common.getIsLogin()
+          ? Center(
           child: statusCard(
-              _name, _studentNo, _studentGroup, _department, membership)),
+              _name, _studentNo, _studentGroup, _department, membership))
+          : Center(
+          child: statusCard(
+          "로그인이 필요한 정보입니다.", "", "", "", "")),
       backgroundColor: HexColor("#f3f3f3"),
     );
   }

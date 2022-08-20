@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io' show Platform, SocketException;
 import '../../../../models/rent_list.dart';
 import '../../../../utils/common.dart';
-import '../../../../utils/department.dart';
+import '../../../../utils/departmentMatch.dart';
 
 class MyRentScreen extends StatefulWidget {
   const MyRentScreen({Key? key}) : super(key: key);
@@ -41,7 +41,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
       _name = (prefs.getString('appName') ?? '로그인이 필요한 정보입니다.');
       _studentNo = (prefs.getString('appStudentNo') ?? '');
       _department = (prefs.getString('department') ?? '');
-      _studentGroup = DepartmentST.getDepartment(_department);
+      _studentGroup = DepartmentMatch.getDepartment(_department);
     });
   }
 
