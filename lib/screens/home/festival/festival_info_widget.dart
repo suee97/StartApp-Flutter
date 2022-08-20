@@ -59,7 +59,7 @@ class _FestivalInfoWidgetState extends State<FestivalInfoWidget> {
                 Text(
                   widget.contentTitle,
                   style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                  TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
                   height: 5.h,
