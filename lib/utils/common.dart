@@ -85,6 +85,7 @@ class Common {
     await pref.setBool('isNonLogin', value);
   }
 
+  // 스낵바
   static void showSnackBar(BuildContext context, String inputMsg) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -101,6 +102,21 @@ class Common {
         ),
       ),
     );
+  }
+
+  // 유저정보 관련 pref 초기화
+  static Future<void> clearStudentInfoPref() async {
+    final pref = await SharedPreferences.getInstance();
+    pref.remove("appMemberId");
+    pref.remove("appStudentNo");
+    pref.remove("appName");
+    pref.remove("department");
+    pref.remove("appMemberShip");
+    pref.remove("appCreatedAt");
+    pref.remove("appUpdatedAt");
+    pref.remove("appMemberStatus");
+    pref.remove("appPhoneNo");
+    print("유저 관련 모든 preference를 삭제했습니다.");
   }
 }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/common.dart';
 import '../home/home_screen.dart';
 import 'login_widgets.dart';
@@ -99,11 +100,15 @@ class LoginOptionScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
                                     Common.setNonLogin(true);
+
                                     Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                                            (route) => false);
+                                        MaterialPageRoute(
+                                            builder: (context) => HomeScreen()),
+                                        (route) => false);
+
+                                    await Common.clearStudentInfoPref();
                                   },
                                   child: Container(
                                     width: 114.w,

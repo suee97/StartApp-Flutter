@@ -1,16 +1,11 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:http/http.dart' as http;
-import '../../../models/status_code.dart';
+import 'package:start_app/utils/departmentST.dart';
 
 class StatusScreen extends StatefulWidget {
   const StatusScreen({Key? key}) : super(key: key);
@@ -22,10 +17,43 @@ class StatusScreen extends StatefulWidget {
 class _StatusScreenState extends State<StatusScreen> {
   List<String> studentInfo = [];
 
+  String _name = '';
+  String _studentNo = '';
+  String _studentGroup = '';
+  String _department = '';
+  bool _membership = false;
+  String membership = '';
+
   @override
   void initState() {
-    fetchStudentInfo();
     super.initState();
+    _loadStudentInfo();
+  }
+
+  _loadStudentInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() async {
+      _name = (prefs.getString('appName') ?? '로그인이 필요한 정보입니다.');
+      _studentNo = (prefs.getString('appStudentNo') ?? '');
+      _department = (prefs.getString('department') ?? '');
+      _studentGroup = DepartmentST.getDepartment(_department);
+      _membership = (prefs.getBool('appMemberShip') ?? false);
+      if (_membership) {
+            setState((){
+          membership = "학생회비 납부";
+        });
+      } else {
+        setState(() {
+          membership = "학생회비 미납부";
+        });
+      }
+
+      if(await Common.isNonLogin()){
+        setState(() {
+          membership = "";
+        });
+      }
+    });
   }
 
   @override
@@ -42,57 +70,8 @@ class _StatusScreenState extends State<StatusScreen> {
         elevation: 0,
       ),
       body: Center(
-          child: FutureBuilder(
-              future: fetchStudentInfo(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.data == StatusCode.SUCCESS) {
-                  return statusCard(studentInfo[4], studentInfo[0],
-                      studentInfo[1], studentInfo[2], studentInfo[3]);
-                }
-                if (snapshot.data == StatusCode.SERVER_ERROR) {
-                  return Column(
-                    children: [
-                      statusCard("정보를 불러오지 못했습니다.", "", "", "", ""),
-                    ],
-                  );
-                }
-                if (snapshot.data == StatusCode.UNCATCHED_ERROR) {
-                  return Column(
-                    children: [
-                      statusCard("정보를 불러오지 못했습니다.", "", "", "", ""),
-                    ],
-                  );
-                }
-                if (snapshot.data == StatusCode.TIMEOUT_ERROR) {
-                  return Column(
-                    children: [
-                      statusCard("정보를 불러오지 못했습니다.", "", "", "", ""),
-                    ],
-                  );
-                }
-                if (snapshot.data == StatusCode.CONNECTION_ERROR) {
-                  return Column(
-                    children: [
-                      statusCard("정보를 불러오지 못했습니다.", "", "", "", ""),
-                    ],
-                  );
-                } else {
-                  return Column(
-                    children: [
-                      Container(
-                          child: Platform.isIOS
-                              ? CupertinoActivityIndicator()
-                              : Center(
-                                  child: CircularProgressIndicator(
-                                    color: HexColor("#425c5a"),
-                                  ),
-                                )),
-                    ],
-                  );
-                }
-              })
-          //statusCard("학생회비 납부자","조인혁","16161616","공과대학","컴퓨터공학과"),
-          ),
+          child: statusCard(
+              _name, _studentNo, _studentGroup, _department, membership)),
       backgroundColor: HexColor("#f3f3f3"),
     );
   }
@@ -107,19 +86,24 @@ class _StatusScreenState extends State<StatusScreen> {
           children: [
             isPaid == "학생회비 납부자"
                 ? Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: Image(
-                image: AssetImage(
-                    "images/card_payer.png"), width: 320.w, height: 550.h, fit: BoxFit.fill),
-            alignment: Alignment(0.0, 0.0),)
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Image(
+                        image: AssetImage("images/card_payer.png"),
+                        width: 320.w,
+                        height: 550.h,
+                        fit: BoxFit.fill),
+                    alignment: Alignment(0.0, 0.0),
+                  )
                 : Container(
-                width: double.infinity,
-                height: double.infinity,
-                child: Image(
-                image: AssetImage(
-                    "images/card_unpaid.png"), width: 320.w, height: 550.h, fit: BoxFit.fill),
-                alignment: Alignment(0.0, 0.0)),
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Image(
+                        image: AssetImage("images/card_unpaid.png"),
+                        width: 320.w,
+                        height: 550.h,
+                        fit: BoxFit.fill),
+                    alignment: Alignment(0.0, 0.0)),
             Column(
               children: [
                 SizedBox(
@@ -172,61 +156,5 @@ class _StatusScreenState extends State<StatusScreen> {
             )
           ],
         ));
-  }
-
-  Future<StatusCode> fetchStudentInfo() async {
-    Map<String, dynamic> resData = {};
-
-    final secureStorage = FlutterSecureStorage();
-    var ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
-
-    try {
-      // 여기 refresh token 고려한 로직도 넣어야 함
-      var resString = await http
-          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/member"), headers: {
-        "Authorization": "Bearer $ACCESS_TOKEN"
-      }).timeout(const Duration(seconds: 10));
-      resData = jsonDecode(utf8.decode(resString.bodyBytes));
-
-      if (resData["status"] == 200) {
-        List<dynamic> data = resData["data"];
-
-        print(resData["data"]);
-
-        List<String> _studentInfo = [];
-
-        for (var e in data) {
-          _studentInfo.add(e["name"]);
-          _studentInfo.add(e["studentNo"]);
-          _studentInfo.add(e["studentStatus"]); //단과대
-          _studentInfo.add(e["department"]);
-          if (e["memberShip"]) {
-            _studentInfo.add("학생회비 납부");
-          } else {
-            _studentInfo.add("학생회비 미납부");
-          }
-        }
-
-        studentInfo = _studentInfo;
-
-        return StatusCode.SUCCESS;
-      }
-
-      if (resData["status"] == 500) {
-        return StatusCode.SERVER_ERROR;
-      }
-
-      if (resData["status"] != 200) {
-        return StatusCode.UNCATCHED_ERROR;
-      }
-
-      return StatusCode.UNCATCHED_ERROR;
-    } on TimeoutException catch (e) {
-      return StatusCode.TIMEOUT_ERROR;
-    } on SocketException catch (e) {
-      return StatusCode.CONNECTION_ERROR;
-    } catch (e) {
-      return StatusCode.UNCATCHED_ERROR;
-    }
   }
 }

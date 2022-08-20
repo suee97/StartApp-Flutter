@@ -6,11 +6,11 @@ import 'package:hexcolor/hexcolor.dart';
 class FestivalInfoWidget extends StatefulWidget {
   FestivalInfoWidget(
       {Key? key,
-      required this.contentTitle,
-      required this.contentImg,
-      this.contentCrowded = 1,
-      required this.openTime,
-      required this.contentFee})
+        required this.contentTitle,
+        required this.contentImg,
+        this.contentCrowded = 1,
+        required this.openTime,
+        required this.contentFee})
       : super(key: key);
 
   String contentTitle;
@@ -24,6 +24,11 @@ class FestivalInfoWidget extends StatefulWidget {
 }
 
 class _FestivalInfoWidgetState extends State<FestivalInfoWidget> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +59,7 @@ class _FestivalInfoWidgetState extends State<FestivalInfoWidget> {
                 Text(
                   widget.contentTitle,
                   style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                  TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
                   height: 5.h,
@@ -116,5 +121,4 @@ class _FestivalInfoWidgetState extends State<FestivalInfoWidget> {
       height: 10.h,
     );
   }
-
 }

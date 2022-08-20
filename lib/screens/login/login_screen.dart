@@ -236,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   return;
                 }
 
-                /// 토큰으로 유저 정보 가져오기
+                /// 토큰으로 유저 정보 가져와서 pref에 저장
                 final getStudentInfoAndSaveResult =
                     await getStudentInfoAndSave();
                 if (getStudentInfoAndSaveResult != StatusCode.SUCCESS) {
@@ -428,8 +428,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (resData["status"] == 200) {
         print("getStudentInfoAndSave() call success");
-        print(resData["data"]);
         final pref = await SharedPreferences.getInstance();
+        
+        print(resData["data"]);
         List<dynamic> data = resData["data"];
 
         await pref.setInt("appMemberId", data[0]["memberId"]);
