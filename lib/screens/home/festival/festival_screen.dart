@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,9 +12,11 @@ import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:start_app/screens/home/festival/stamp_button.dart';
+import '../../../models/status_code.dart';
 import '../../../utils/common.dart';
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, SocketException;
 import 'festival_info_widget.dart';
+import 'package:http/http.dart' as http;
 
 class FestivalScreen extends StatefulWidget {
   const FestivalScreen({Key? key}) : super(key: key);
@@ -27,6 +31,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
   final Location _location = Location();
   bool isGetGpsLoading = false;
 
+  List<String> crowdedInfo = [];
+
   bool isJeonSi = true;
   bool isMarket = true;
   bool isSangSang = true;
@@ -38,26 +44,96 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   bool isContents = true;
 
-  static List<FestivalInfoWidget> contentsList = <FestivalInfoWidget>[
-    FestivalInfoWidget(contentTitle: "과기대잡화점의기적", contentImg: "festival_postoffice_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "나만의 전시회", contentImg: "festival_exhibition_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "낙서 캔버스", contentImg: "festival_doodlewall_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "마당사업", contentImg: "festival_madangbiz_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "미니바이킹", contentImg: "festival_biking_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "씨씨는 사랑을 싣고", contentImg: "festival_cc_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "제1안내소", contentImg: "festival_info1_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "매표소", contentImg: "festival_ticketbooth_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "제3안내소", contentImg: "festival_info3_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "플리마켓", contentImg: "festival_fleamarket_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "포토존", contentImg: "festival_photozone_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "포토부스", contentImg: "festival_photoism_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "패션투표", contentImg: "festival_fashionvote_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "전당포", contentImg: "festival_pawnshop_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "인화부스", contentImg: "festival_photoprinting_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "믓쟁이 의상소", contentImg: "festival_costume_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "오락부스", contentImg: "festival_gameroom_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(contentTitle: "어의상회", contentImg: "festival_startshop_img", contentCrowded: 3, openTime: "11:00~12:00", contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-  ];
+  late List<FestivalInfoWidget> contentsList = [FestivalInfoWidget(
+      contentTitle: "과기대잡화점의기적",
+      contentImg: "festival_postoffice_img",
+      openTime: "11:00~12:00", // 이런식으로 crowdedInfo에서 int에 해당하는 string 값 찾아서 넣기
+      contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+  contentTitle: "나만의 전시회",
+  contentImg: "festival_exhibition_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "낙서 캔버스",
+  contentImg: "festival_doodlewall_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "마당사업",
+  contentImg: "festival_madangbiz_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "미니바이킹",
+  contentImg: "festival_biking_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "씨씨는 사랑을 싣고",
+  contentImg: "festival_cc_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "제1안내소",
+  contentImg: "festival_info1_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "매표소",
+  contentImg: "festival_ticketbooth_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "제3안내소",
+  contentImg: "festival_info3_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "플리마켓",
+  contentImg: "festival_fleamarket_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "포토존",
+  contentImg: "festival_photozone_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "포토부스",
+  contentImg: "festival_photoism_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "패션투표",
+  contentImg: "festival_fashionvote_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "전당포",
+  contentImg: "festival_pawnshop_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "인화부스",
+  contentImg: "festival_photoprinting_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "믓쟁이 의상소",
+  contentImg: "festival_costume_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "오락부스",
+  contentImg: "festival_gameroom_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+  FestivalInfoWidget(
+  contentTitle: "어의상회",
+  contentImg: "festival_startshop_img",
+  openTime: "11:00~12:00",
+  contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),];
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -86,11 +162,69 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   @override
   void initState() {
+    fetchCrowded();
     super.initState();
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> fetchCrowded() async {
+
+    Map<String, dynamic> resData = {};
+
+    try {
+      //헤더 추가
+      var resString = await http
+          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/festival"), ).timeout(const Duration(seconds: 10));
+      resData = jsonDecode(utf8.decode(resString.bodyBytes));
+
+      print("하이$resData");
+      if (resData["status"] == 200) {
+        List<dynamic> data = resData["data"];
+
+        print("엥${resData["data"]}");
+
+        List<String> _crowdedInfo = [];
+
+        for (int i = 0; i < contentsList.length; i++) {
+          for (var e in data) {
+            _crowdedInfo.add(e["name"]);
+            _crowdedInfo.add(e["crowded"]);
+          }
+        }
+
+        crowdedInfo = _crowdedInfo;
+        for (int i = 1; i < contentsList.length; i = i+2) {
+          contentsList[i-1].contentCrowded = int.parse(crowdedInfo[i].toString()); // 이런식으로 crowdedInfo에서 int에 해당하는 string 값 찾아서 넣기
+        }
+      }
+
+    } on TimeoutException catch (e) {
+      print("timeout_exception $e");
+    } on SocketException catch (e) {
+      "socker_error $e";
+    } catch (e) {
+      "error $e";
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    Widget _getContentsCrowded(ScrollController scrollController) {
+      return ListView.builder(
+        controller: scrollController,
+        itemCount: contentsList.length,
+        itemBuilder: (context, index)
+      {
+        return contentsList[index];
+      });
+    }
+
     Set<Marker> _markerList = {
       Marker(
         markerId: const MarkerId("jeon-si"),
@@ -649,7 +783,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                               setState((){
                                                   isContents = true;
                                               });
-                                          }, child: !isContents ?  Text("무대 라인업", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#50425C5A"))) : Text("컨텐츠" , style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#425C5A"))),
+                                          }, child: !isContents ?  Text("컨텐츠" , style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#425C5A"))) : Text("콘텐츠", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#50425C5A"))) ,
                                                 style: ButtonStyle(
                                     overlayColor : MaterialStateColor.resolveWith((states) => HexColor("#F8EAE1")),
                                               backgroundColor: isContents ? MaterialStateProperty.all<Color>(HexColor("#50FFFFFF")) : MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
@@ -687,12 +821,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         height: 14.h,
                                       ),
                                       Expanded(
-                                        child: isContents ? ListView.builder(
-                                            controller: scrollController,
-                                            itemCount: contentsList.length,
-                                            itemBuilder: (context, index) {
-                                              return contentsList[index];
-                                            }) : Container(
+                                        child: isContents ? FutureBuilder(
+                                              future: fetchCrowded(),
+                                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                                return _getContentsCrowded(scrollController);
+                                              })
+                                             : Container(
                                     width: 320.w,
                                     height: 450.h,
                                     decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),
