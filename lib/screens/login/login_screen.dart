@@ -250,8 +250,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
 
                 if (autoLoginCheckBoxState) {
-                  Common.setAutoLogin(true);
+                  await Common.setAutoLogin(true);
                 }
+                await Common.setNonLogin(false);
+                Common.setIsLogin(true);
 
                 setState(() {
                   isLoading = false;
@@ -429,7 +431,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (resData["status"] == 200) {
         print("getStudentInfoAndSave() call success");
         final pref = await SharedPreferences.getInstance();
-        
+
         print(resData["data"]);
         List<dynamic> data = resData["data"];
 

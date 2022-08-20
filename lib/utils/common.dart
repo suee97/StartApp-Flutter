@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Common {
+
+
   /// Data
   static double CIRCLE_RADIUS = 50;
   static String whatIsChongHak =
@@ -117,6 +119,15 @@ class Common {
     pref.remove("appMemberStatus");
     pref.remove("appPhoneNo");
     print("유저 관련 모든 preference를 삭제했습니다.");
+  }
+
+  // 로그인 여부
+  static bool _isLogin = false;
+  static void setIsLogin(bool value) {
+    _isLogin = value;
+  }
+  static bool getIsLogin() {
+    return _isLogin;
   }
 }
 
