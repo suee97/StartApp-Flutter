@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/rent/detail/category_rent_screen.dart';
 import 'package:start_app/screens/home/rent/my_rent/my_rent_screen.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
 import '../../../utils/common.dart';
+import '../../../utils/departmentST.dart';
 
 class RentScreen extends StatefulWidget {
   const RentScreen({Key? key}) : super(key: key);
@@ -16,11 +18,27 @@ class RentScreen extends StatefulWidget {
 
 class _RentScreenState extends State<RentScreen> {
 
+  String _name = '';
+  String _studentNo = '';
+  String _studentGroup = '';
+  String _department = '';
+
   String selectedItem = "";
 
   @override
   void initState() {
     super.initState();
+    _loadStudentInfo();
+  }
+
+  _loadStudentInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _name = (prefs.getString('appName') ?? '로그인이 필요한 정보입니다.');
+      _studentNo = (prefs.getString('appStudentNo') ?? '');
+      _department = (prefs.getString('department') ?? '');
+      _studentGroup = DepartmentST.getDepartment(_department);
+    });
   }
 
   @override
@@ -194,7 +212,7 @@ class _RentScreenState extends State<RentScreen> {
               Row(
                 children: [
                   Text(
-                    "오승언",
+                    _name,
                     style: TextStyle(
                         fontSize: 17.5.sp,
                         color: HexColor("#425C5A"),
@@ -230,9 +248,9 @@ class _RentScreenState extends State<RentScreen> {
               SizedBox(
                 height: 12.h,
               ),
-              userInfoText("19101686"),
-              userInfoText("에너지바이오대학"),
-              userInfoText("식품공학과"),
+              userInfoText(_studentNo),
+              userInfoText(_studentGroup),
+              userInfoText(_department),
             ],
           ),
         )
