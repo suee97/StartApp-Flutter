@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,9 +26,11 @@ class PostCertificateScreen extends StatefulWidget {
 class _PostCertificateScreenState extends State<PostCertificateScreen> {
   File? imageFile;
   final ImagePicker imagePicker = ImagePicker();
+  late bool isLoading;
 
   @override
   void initState() {
+    isLoading = false;
     super.initState();
   }
 
@@ -136,6 +139,9 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
               GestureDetector(
                 onTap: imageFile != null
                     ? () async {
+                        setState(() {
+                          isLoading = true;
+                        });
                         var studentNo = signUpNotifier.getStudentNo();
                         var appPassword = signUpNotifier.getAppPassword();
                         var name = signUpNotifier.getName();
@@ -149,8 +155,15 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                           if (mounted) {
                             Common.showSnackBar(context, "회원가입 요청 오류가 발생했습니다.");
                           }
+                          setState(() {
+                            isLoading = false;
+                          });
                           return;
                         }
+
+                        setState(() {
+                          isLoading = false;
+                        });
 
                         if (mounted) {
                           Navigator.pushAndRemoveUntil(
@@ -171,13 +184,23 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                             color: HexColor("#425C5A"),
                             borderRadius: BorderRadius.circular(10)),
                         alignment: Alignment.center,
-                        child: Text(
-                          "다음",
-                          style: TextStyle(
-                              fontSize: 19.5.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white),
-                        ))
+                        child: isLoading == true
+                            ? Center(
+                                child: Platform.isIOS
+                                    ? const CupertinoActivityIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : CircularProgressIndicator(
+                                        color: HexColor("#f3f3f3"),
+                                      ),
+                              )
+                            : Text(
+                                "다음",
+                                style: TextStyle(
+                                    fontSize: 19.5.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
+                              ))
                     : Container(
                         width: 304.w,
                         height: 54.h,

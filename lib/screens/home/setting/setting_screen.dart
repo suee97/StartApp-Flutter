@@ -27,8 +27,12 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  late String? name = "";
+  late String? studentNo = "";
+
   @override
   void initState() {
+    setStudentInfo();
     super.initState();
   }
 
@@ -39,7 +43,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          Common.getIsLogin() ? "로그인 됨" : "로그인 안됨", // 설정
+          "설정", // 설정
           style: Common.startAppBarTextStyle,
         ),
         foregroundColor: Colors.white,
@@ -76,38 +80,71 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 15.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "오승언",
-                        style: TextStyle(
-                            fontSize: 15.5.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      Text(
-                        "19101686",
-                        style: TextStyle(
-                            fontSize: 13.5.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text("에너지바이오대학",
-                          style: TextStyle(
-                              fontSize: 13.5.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500)),
-                      Text("식품공학과",
-                          style: TextStyle(
-                              fontSize: 13.5.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500)),
-                    ],
-                  ),
+                  child: Common.getIsLogin()
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              name!,
+                              style: TextStyle(
+                                  fontSize: 15.5.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Text(
+                              studentNo!,
+                              style: TextStyle(
+                                  fontSize: 13.5.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text("에너지바이오대학",
+                                style: TextStyle(
+                                    fontSize: 13.5.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)),
+                            Text("식품공학과",
+                                style: TextStyle(
+                                    fontSize: 13.5.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "오승언",
+                              style: TextStyle(
+                                  fontSize: 15.5.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Text(
+                              "19101686",
+                              style: TextStyle(
+                                  fontSize: 13.5.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text("에너지바이오대학",
+                                style: TextStyle(
+                                    fontSize: 13.5.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)),
+                            Text("식품공학과",
+                                style: TextStyle(
+                                    fontSize: 13.5.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)),
+                          ],
+                        ),
                 )
               ],
             ),
@@ -422,5 +459,22 @@ class _SettingScreenState extends State<SettingScreen> {
     navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const SplashScreen()),
         (route) => false);
+  }
+
+  Future<void> setStudentInfo() async {
+    if (!Common.getIsLogin()) {
+      return;
+    }
+    final pref = await SharedPreferences.getInstance();
+    if (pref.getString("appName") != null) {
+      setState(() {
+        name = pref.getString("appName")!;
+      });
+    }
+    if (pref.getString("appStudentNo") != null) {
+      setState(() {
+        studentNo = pref.getString("appStudentNo")!;
+      });
+    }
   }
 }
