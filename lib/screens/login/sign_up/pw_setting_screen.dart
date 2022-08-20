@@ -203,7 +203,7 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                           }
 
                           /// 유효성 검사 (특수문자, 대소문자, 숫자 포함 8자 이상 16자 이내)
-                          var validationResult = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$').hasMatch(pw1);
+                          final validationResult = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$').hasMatch(pw1);
                           if(!validationResult) {
                             Common.showSnackBar(
                                 context, "비밀번호를 다음과 같이 맞춰주세요.\n특수문자, 대소문자, 숫자 포함 8자 이상 16자 이내");

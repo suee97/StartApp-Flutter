@@ -350,7 +350,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Map<String, dynamic> resData = {};
 
     try {
-      var resString = await http
+      final resString = await http
           .get(
             Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/banner"),
           )

@@ -16,8 +16,8 @@ class DevInfoScreen extends StatelessWidget {
         ),
         elevation: 0,
         centerTitle: true,
-        backgroundColor: HexColor("#425C5A"),
-        foregroundColor: HexColor("#f3f3f3"),
+        backgroundColor: HexColor("#f3f3f3"),
+        foregroundColor: HexColor("#425C5A"),
       ),
       body: Stack(children: [
         Container(
@@ -25,10 +25,35 @@ class DevInfoScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("어플리케이션 버전", style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w500, color: HexColor("#f3f3f3")),),
-              Text("1.0.0", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400, color: HexColor("#f3f3f3")),),
-              Text("대표 관리자", style: TextStyle(fontSize: 15.sp, color: HexColor("#f3f3f3")),),
-              Text("dev.suee97@gmail.com", style: TextStyle(fontSize: 15.sp, color: HexColor("#f3f3f3")),),
+              const Image(image: AssetImage("images/logo_app.png")),
+              Text(
+                "어플리케이션 버전",
+                style: TextStyle(
+                    fontSize: 17.5.sp,
+                    fontWeight: FontWeight.w500,
+                    color: HexColor("#425C5A")),
+              ),
+              Text(
+                "1.0.0",
+                style: TextStyle(
+                    fontSize: 49.5.sp,
+                    fontWeight: FontWeight.w400,
+                    color: HexColor("#425C5A")),
+              ),
+              Text(
+                "개발 관련 문의",
+                style: TextStyle(
+                    fontSize: 13.5.sp,
+                    fontWeight: FontWeight.w500,
+                    color: HexColor("#425C5A")),
+              ),
+              Text(
+                "dev.suee97@gmail.com",
+                style: TextStyle(
+                    fontSize: 21.5.sp,
+                    fontWeight: FontWeight.w600,
+                    color: HexColor("#425C5A")),
+              ),
             ],
           ),
         ),
@@ -37,19 +62,31 @@ class DevInfoScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text("어플리케이션 버전"),
-              Text("1.0.0"),
-              Text("대표 관리자"),
-              Text("dev.suee97@gmail.com"),
-              Text("참여자"),
-              Text("오승언 양용수 강인영 위성률 조인혁 송민선 이유민"),
-              Text("김영산 황정연 이도원 이혜윤 권오훈"),
-              SizedBox(height: 28.h,)
+              Text(
+                "참여자",
+                style: TextStyle(
+                    fontSize: 13.5.sp,
+                    fontWeight: FontWeight.w300,
+                    color: HexColor("#425C5A")),
+              ),
+              Text("오승언 양용수 강인영 위성률 조인혁 송민선 이유민",
+                  style: TextStyle(
+                      fontSize: 15.5.sp,
+                      fontWeight: FontWeight.w300,
+                      color: HexColor("#425C5A"))),
+              Text("김영산 황정연 이도원 이혜윤 권오훈",
+                  style: TextStyle(
+                      fontSize: 15.5.sp,
+                      fontWeight: FontWeight.w300,
+                      color: HexColor("#425C5A"))),
+              SizedBox(
+                height: 28.h,
+              )
             ],
           ),
         ),
       ]),
-      backgroundColor: HexColor("#425c5a"),
+      backgroundColor: HexColor("#f3f3f3"),
     );
   }
 }

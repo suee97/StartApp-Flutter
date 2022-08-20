@@ -12,10 +12,12 @@ class PlanCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<PlanNotifier>(builder: (context, planNotifier, child) {
-      var _source = planNotifier.getMeetingList();
+      final _source = planNotifier.getMeetingList();
 
       return Container(
-        color: planNotifier.getIsLoading() ? HexColor("#929d9c") : HexColor("#425C5A"),
+        color: planNotifier.getIsLoading()
+            ? HexColor("#929d9c")
+            : HexColor("#425C5A"),
         padding: EdgeInsets.only(left: 10.w, right: 10.w),
         height: 330.h,
         child: SfCalendar(
@@ -23,9 +25,9 @@ class PlanCalendar extends StatelessWidget {
           onViewChanged: (ViewChangedDetails viewChangedDetails) {
             SchedulerBinding.instance
                 .addPostFrameCallback((Duration duration) async {
-              var _year = DateFormat('yyyy').format(viewChangedDetails
+              final _year = DateFormat('yyyy').format(viewChangedDetails
                   .visibleDates[viewChangedDetails.visibleDates.length ~/ 2]);
-              var _month = DateFormat('M').format(viewChangedDetails
+              final _month = DateFormat('M').format(viewChangedDetails
                   .visibleDates[viewChangedDetails.visibleDates.length ~/ 2]);
               await planNotifier.fetchMeetingList(
                   int.parse(_year), int.parse(_month));
@@ -34,8 +36,8 @@ class PlanCalendar extends StatelessWidget {
             });
           },
           onSelectionChanged: (_) {
-            var tmp1 = _.date?.day;
-            var tmp2 = _.date?.weekday;
+            final tmp1 = _.date?.day;
+            final tmp2 = _.date?.weekday;
             planNotifier.setCurDay(tmp1!);
             planNotifier.setCurWeekDay(tmp2!);
             planNotifier.setSelectedDayMeetingList(

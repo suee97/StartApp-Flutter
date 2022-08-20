@@ -53,7 +53,7 @@ class _EventScreenState extends State<EventScreen> {
 
   Future<List<Event>> fetchEventList() async {
     try {
-      var resString = await http
+      final resString = await http
           .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/event"))
           .timeout(const Duration(seconds: 10));
       Map<String, dynamic> resData =
