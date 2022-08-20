@@ -6,11 +6,11 @@ import 'package:hexcolor/hexcolor.dart';
 class FestivalInfoWidget extends StatefulWidget {
   FestivalInfoWidget(
       {Key? key,
-      required this.contentTitle,
-      required this.contentImg,
-      this.contentCrowded = 1,
-      required this.openTime,
-      required this.contentFee})
+        required this.contentTitle,
+        required this.contentImg,
+        this.contentCrowded = 1,
+        required this.openTime,
+        required this.contentFee})
       : super(key: key);
 
   String contentTitle;
@@ -96,6 +96,30 @@ class _FestivalInfoWidgetState extends State<FestivalInfoWidget> {
         height: 20.h,
       )
     ]);
+  }
+
+  Widget getCrowdedSvgFromList(int crowded) {
+    if (crowded == 2) {
+      return SvgPicture.asset(
+        "assets/mid_crowded.svg",
+        width: 80.w,
+        height: 10.h,
+      );
+    }
+
+    if (crowded == 3) {
+      return SvgPicture.asset(
+        "assets/high_crowded.svg",
+        width: 80.w,
+        height: 10.h,
+      );
+    }
+
+    return SvgPicture.asset(
+      "assets/low_crowded.svg",
+      width: 80.w,
+      height: 10.h,
+    );
   }
 
   Widget getCrowdedSvgFromList(int crowded) {

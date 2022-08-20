@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,9 +11,11 @@ import 'package:location/location.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:app_settings/app_settings.dart';
 import 'package:start_app/screens/home/festival/stamp_button.dart';
+import '../../../models/status_code.dart';
 import '../../../utils/common.dart';
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, SocketException;
 import 'festival_info_widget.dart';
+import 'package:http/http.dart' as http;
 
 class FestivalScreen extends StatefulWidget {
   const FestivalScreen({Key? key}) : super(key: key);
@@ -25,6 +29,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
   late GoogleMapController _controller;
   final Location _location = Location();
   bool isGetGpsLoading = false;
+
+  List<String> crowdedInfo = [];
 
   bool isJeonSi = true;
   bool isMarket = true;
@@ -210,12 +216,58 @@ class _FestivalScreenState extends State<FestivalScreen> {
   }
 
   Future<void> fetchCrowded() async {
-    // api 호출
-    // crowded 적용
+
+Map<String, dynamic> resData = {};
+
+    try {
+      //헤더 추가
+      var resString = await http
+          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/festival"), ).timeout(const Duration(seconds: 10));
+      resData = jsonDecode(utf8.decode(resString.bodyBytes));
+
+      print("하이$resData");
+      if (resData["status"] == 200) {
+        List<dynamic> data = resData["data"];
+
+        print("엥${resData["data"]}");
+
+        List<String> _crowdedInfo = [];
+
+        for (int i = 0; i < contentsList.length; i++) {
+          for (var e in data) {
+            _crowdedInfo.add(e["name"]);
+            _crowdedInfo.add(e["crowded"]);
+          }
+        }
+
+        crowdedInfo = _crowdedInfo;
+        for (int i = 1; i < contentsList.length; i = i+2) {
+          contentsList[i-1].contentCrowded = int.parse(crowdedInfo[i].toString()); // 이런식으로 crowdedInfo에서 int에 해당하는 string 값 찾아서 넣기
+        }
+      }
+
+    } on TimeoutException catch (e) {
+      print("timeout_exception $e");
+    } on SocketException catch (e) {
+      "socker_error $e";
+    } catch (e) {
+      "error $e";
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+
+    Widget _getContentsCrowded(ScrollController scrollController) {
+      return ListView.builder(
+        controller: scrollController,
+        itemCount: contentsList.length,
+        itemBuilder: (context, index)
+      {
+        return contentsList[index];
+      });
+    }
+
     Set<Marker> _markerList = {
       Marker(
         markerId: const MarkerId("jeon-si"),
