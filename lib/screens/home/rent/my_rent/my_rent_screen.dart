@@ -6,11 +6,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/rent/my_rent/rent_tile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform, SocketException;
 import '../../../../models/rent_list.dart';
 import '../../../../utils/common.dart';
+import '../../../../utils/departmentST.dart';
 
 class MyRentScreen extends StatefulWidget {
   const MyRentScreen({Key? key}) : super(key: key);
@@ -20,10 +22,27 @@ class MyRentScreen extends StatefulWidget {
 }
 
 class _MyRentScreenState extends State<MyRentScreen> {
+
+  String _name = '';
+  String _studentNo = '';
+  String _studentGroup = '';
+  String _department = '';
+
   @override
   void initState() {
     fetchRentList();
     super.initState();
+    _loadStudentInfo();
+  }
+
+  _loadStudentInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _name = (prefs.getString('appName') ?? '로그인이 필요한 정보입니다.');
+      _studentNo = (prefs.getString('appStudentNo') ?? '');
+      _department = (prefs.getString('department') ?? '');
+      _studentGroup = DepartmentST.getDepartment(_department);
+    });
   }
 
   Future<List<Rent>> fetchRentList() async {
@@ -230,7 +249,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
               Row(
                 children: [
                   Text(
-                    "오승언",
+                    _name,
                     style: TextStyle(
                         fontSize: 17.5.sp,
                         color: Colors.white,
@@ -244,9 +263,9 @@ class _MyRentScreenState extends State<MyRentScreen> {
               SizedBox(
                 height: 12.h,
               ),
-              myUserInfoText("19101686"),
-              myUserInfoText("에너지바이오대학"),
-              myUserInfoText("식품공학과"),
+              myUserInfoText(_studentNo),
+              myUserInfoText(_studentGroup),
+              myUserInfoText(_department),
             ],
           ),
         )

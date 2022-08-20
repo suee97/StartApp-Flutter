@@ -15,7 +15,6 @@ class StatusScreen extends StatefulWidget {
 }
 
 class _StatusScreenState extends State<StatusScreen> {
-  List<String> studentInfo = [];
 
   String _name = '';
   String _studentNo = '';
@@ -48,7 +47,7 @@ class _StatusScreenState extends State<StatusScreen> {
         });
       }
 
-      if(await Common.isNonLogin()){
+      if(!Common.getIsLogin()){
         setState(() {
           membership = "";
         });
