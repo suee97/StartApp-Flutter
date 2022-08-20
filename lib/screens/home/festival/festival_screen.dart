@@ -7,7 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:location/location.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:start_app/screens/home/festival/stamp_button.dart';
 import '../../../utils/common.dart';
@@ -146,11 +145,50 @@ class _FestivalScreenState extends State<FestivalScreen> {
   }
 
   Future<bool> checkLocationPermission() async {
-    var status = await Permission.location.status;
-    print("위치권한");
-    print(status);
-    print(status.isGranted);
-    return status.isGranted;
+    // var status = await Permission.location.status;
+    // print("위치권한");
+    // print(status);
+    // print(status.isGranted);
+    // print(status.isLimited);
+    // print(status.isRestricted);
+    //
+    // var loc = Location();
+    // bool _serviceEnabled;
+    // LocationData _locationData;
+    //
+    // _serviceEnabled = await loc.serviceEnabled();
+    // print(_serviceEnabled);
+    // print(await loc.hasPermission());
+    // return status.isGranted;
+
+    Location location = Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return false;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+//권한 상태를 확인합니다.
+    if (_permissionGranted == PermissionStatus.denied) {
+      // 권한이 없으면 권한을 요청합니다.
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        // 권한이 없으면 위치정보를 사용할 수 없어 위치정보를 사용하려는 코드에서 에러가 나기때문에 종료합니다.
+        return false;
+      }
+    }
+
+
+    // _locationData = await location.getLocation(); //_locationData에는 위도, 경도, 위치의 정확도, 고도, 속도, 방향 시간등의 정보가 담겨있습니다.
+    return true;
   }
 
   Future<LocationData> getCurrentLocationGps() async {
