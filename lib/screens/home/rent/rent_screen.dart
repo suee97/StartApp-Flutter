@@ -7,7 +7,7 @@ import 'package:start_app/screens/home/rent/detail/category_rent_screen.dart';
 import 'package:start_app/screens/home/rent/my_rent/my_rent_screen.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
 import '../../../utils/common.dart';
-import '../../../utils/departmentST.dart';
+import '../../../utils/departmentMatch.dart';
 import '../../login/login_screen.dart';
 
 class RentScreen extends StatefulWidget {
@@ -38,7 +38,7 @@ class _RentScreenState extends State<RentScreen> {
       _name = (prefs.getString('appName') ?? '로그인이 필요합니다.');
       _studentNo = (prefs.getString('appStudentNo') ?? '');
       _department = (prefs.getString('department') ?? '');
-      _studentGroup = DepartmentST.getDepartment(_department);
+      _studentGroup = DepartmentMatch.getDepartment(_department);
     });
   }
 

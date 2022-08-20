@@ -18,7 +18,7 @@ import 'package:http/http.dart' as http;
 import 'package:start_app/screens/login/login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../utils/common.dart';
-import '../../../utils/departmentST.dart';
+import '../../../utils/departmentMatch.dart';
 import '../../splash/splash_screen.dart.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -478,7 +478,7 @@ class _SettingScreenState extends State<SettingScreen> {
       _name = (prefs.getString('appName') ?? '로그인이 필요합니다.');
       _studentNo = (prefs.getString('appStudentNo') ?? '');
       _department = (prefs.getString('department') ?? '');
-      _studentGroup = DepartmentST.getDepartment(_department);
+      _studentGroup = DepartmentMatch.getDepartment(_department);
     });
 
   }
