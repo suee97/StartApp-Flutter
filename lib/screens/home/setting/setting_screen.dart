@@ -23,6 +23,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../utils/common.dart';
 import '../../../utils/department_match.dart';
+import '../../../widgets/start_android_dialog.dart';
 import '../../splash/splash_screen.dart.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -220,21 +221,30 @@ class _SettingScreenState extends State<SettingScreen> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return AlertDialog(
-                                content: const Text("로그아웃 하시겠습니까?"),
-                                actions: [
-                                  ElevatedButton(
-                                      onPressed: () async {
-                                        await _logout(navigator);
-                                      },
-                                      child: const Text("확인")),
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("취소")),
-                                ],
+                              return StartAndroidDialog(
+                                title: "로그아웃 하시겠습니까?",
+                                onOkPressed: () async {
+                                  await _logout(navigator);
+                                },
+                                onCancelPressed: () {
+                                  Navigator.pop(context);
+                                },
                               );
+                              // return AlertDialog(
+                              //   content: const Text("로그아웃 하시겠습니까?"),
+                              //   actions: [
+                              //     ElevatedButton(
+                              //         onPressed: () async {
+                              //           await _logout(navigator);
+                              //         },
+                              //         child: const Text("확인")),
+                              //     ElevatedButton(
+                              //         onPressed: () {
+                              //           Navigator.pop(context);
+                              //         },
+                              //         child: const Text("취소")),
+                              //   ],
+                              // );
                             });
                       }
                     },
