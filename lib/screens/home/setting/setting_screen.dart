@@ -137,11 +137,51 @@ class _SettingScreenState extends State<SettingScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen()),
-                                    (route) => false);
+                                if (Platform.isIOS) {
+                                  showCupertinoDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return CupertinoAlertDialog(
+                                          content: const Text("확인을 누르면 로그인 화면으로 이동합니다."),
+                                          actions: [
+                                            CupertinoDialogAction(
+                                                isDefaultAction: false,
+                                                child: const Text("확인"),
+                                                onPressed: () {
+                                                  Navigator.of(context).pushAndRemoveUntil(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                          const LoginScreen()),
+                                                          (route) => false);
+                                                }),
+                                            CupertinoDialogAction(
+                                                isDefaultAction: false,
+                                                child: const Text("취소"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                })
+                                          ],
+                                        );
+                                      });
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return StartAndroidDialog(
+                                          title: "확인을 누르면 로그인 화면으로 이동합니다.",
+                                          onOkPressed: () {
+                                            Navigator.of(context).pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                    const LoginScreen()),
+                                                    (route) => false);
+                                          },
+                                          onCancelPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        );
+                                      });
+                                }
                               },
                               child: Container(
                                 width: 100.w,
@@ -151,7 +191,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Center(
                                   child: Text(
-                                    "로그인하러 가기",
+                                    "로그인 하기",
                                     style: TextStyle(
                                         fontSize: 12.sp,
                                         color: HexColor("#425C5A"),
@@ -230,21 +270,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Navigator.pop(context);
                                 },
                               );
-                              // return AlertDialog(
-                              //   content: const Text("로그아웃 하시겠습니까?"),
-                              //   actions: [
-                              //     ElevatedButton(
-                              //         onPressed: () async {
-                              //           await _logout(navigator);
-                              //         },
-                              //         child: const Text("확인")),
-                              //     ElevatedButton(
-                              //         onPressed: () {
-                              //           Navigator.pop(context);
-                              //         },
-                              //         child: const Text("취소")),
-                              //   ],
-                              // );
                             });
                       }
                     },

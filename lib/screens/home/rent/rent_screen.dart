@@ -289,7 +289,7 @@ class _RentScreenState extends State<RentScreen> {
                       borderRadius: BorderRadius.circular(10)),
                   child: Center(
                     child: Text(
-                      "로그인하러 가기",
+                      "로그인 하기",
                       style: TextStyle(
                           fontSize: 12.sp,
                           color: HexColor("#425C5A"),
