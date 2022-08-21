@@ -8,10 +8,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:location/location.dart';
+import 'package:lottie/lottie.dart' as lottie;
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:app_settings/app_settings.dart';
 import 'package:start_app/screens/home/festival/stamp_button.dart';
-import '../../../models/status_code.dart';
 import '../../../utils/common.dart';
 import 'dart:io' show Platform, SocketException;
 import 'festival_info_widget.dart';
@@ -31,6 +31,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
   bool isGetGpsLoading = false;
 
   List<String> crowdedInfo = [];
+  int postofficeCrowded = 1, exhibitionCrowded = 1, bikingCrowded = 1, ccCrowded = 1, info1Crowded = 1, photozoneCrowded = 1, photoismCrowded = 1, pawnshopCrowded = 1, photoprintingCrowded = 1, costumeCrowded = 1, gameroomCrowded = 1, startshopCrowded = 1;
 
   bool isJeonSi = true;
   bool isMarket = true;
@@ -43,98 +44,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   bool isContents = true;
 
-  List<FestivalInfoWidget> contentsList = <FestivalInfoWidget>[
-    FestivalInfoWidget(
-        contentTitle: "과기대잡화점의기적",
-        contentImg: "festival_postoffice_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "나만의 전시회",
-        contentImg: "festival_exhibition_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "낙서 캔버스",
-        contentImg: "festival_doodlewall_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "마당사업",
-        contentImg: "festival_madangbiz_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "미니바이킹",
-        contentImg: "festival_biking_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "씨씨는 사랑을 싣고",
-        contentImg: "festival_cc_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "제1안내소",
-        contentImg: "festival_info1_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "매표소",
-        contentImg: "festival_ticketbooth_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "제3안내소",
-        contentImg: "festival_info3_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "플리마켓",
-        contentImg: "festival_fleamarket_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "포토존",
-        contentImg: "festival_photozone_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "포토부스",
-        contentImg: "festival_photoism_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "패션투표",
-        contentImg: "festival_fashionvote_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "전당포",
-        contentImg: "festival_pawnshop_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "인화부스",
-        contentImg: "festival_photoprinting_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "믓쟁이 의상소",
-        contentImg: "festival_costume_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "오락부스",
-        contentImg: "festival_gameroom_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-    FestivalInfoWidget(
-        contentTitle: "어의상회",
-        contentImg: "festival_startshop_img",
-        openTime: "11:00~12:00",
-        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-  ];
+  late List<FestivalInfoWidget> contentsList;
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -205,8 +115,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   @override
   void initState() {
-    fetchCrowded();
     super.initState();
+    setContentsInfo();
   }
 
   @override
@@ -220,30 +130,99 @@ class _FestivalScreenState extends State<FestivalScreen> {
     Map<String, dynamic> resData = {};
 
     try {
-      //헤더 추가
       var resString = await http
-          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/festival"), ).timeout(const Duration(seconds: 10));
+          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/booth")).timeout(const Duration(seconds: 10));
       resData = jsonDecode(utf8.decode(resString.bodyBytes));
 
-      print("하이$resData");
       if (resData["status"] == 200) {
         List<dynamic> data = resData["data"];
 
-        print("엥${resData["data"]}");
+        List<String> _boothInfo = [];
+        List<int> _crowdedInfo = [];
 
-        List<String> _crowdedInfo = [];
+        for (Map e in data) {
+          _boothInfo.add(e.values.toList()[1]);
+          _crowdedInfo.add(e.values.toList()[2]);
+        }
 
-        for (int i = 0; i < contentsList.length; i++) {
-          for (var e in data) {
-            _crowdedInfo.add(e["name"]);
-            _crowdedInfo.add(e["crowded"]);
+        int num, crowded;
+
+        for(String booth in _boothInfo){
+          if(booth == "과기대잡화점의기적"){
+            num = _boothInfo.indexOf(booth);
+            int crowded = _crowdedInfo[num];
+            setState(() {
+              postofficeCrowded = crowded;
+            });
+          }else if(booth == "나만의 전시회"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              exhibitionCrowded = crowded;
+            });
+          }else if(booth == "미니바이킹"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              bikingCrowded = crowded;
+            });
+          }else if(booth == "씨씨는 사랑을 싣고"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              ccCrowded = crowded;
+            });
+          }else if(booth == "제1안내소"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              info1Crowded = crowded;
+            });
+          }else if(booth == "포토존"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              photozoneCrowded = crowded;
+            });
+          }else if(booth == "포토부스"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              photoismCrowded = crowded;
+            });
+          }else if(booth == "전당포"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              pawnshopCrowded = crowded;
+            });
+          }else if(booth == "인화부스"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              photoprintingCrowded = crowded;
+            });
+          }else if(booth == "믓쟁이 의상소"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              costumeCrowded = crowded;
+            });
+          }else if(booth == "오락부스"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              gameroomCrowded = crowded;
+            });
+          }else if(booth == "어의상회"){
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState((){
+              startshopCrowded = crowded;
+            });
           }
         }
 
-        crowdedInfo = _crowdedInfo;
-        for (int i = 1; i < contentsList.length; i = i+2) {
-          contentsList[i-1].contentCrowded = int.parse(crowdedInfo[i].toString()); // 이런식으로 crowdedInfo에서 int에 해당하는 string 값 찾아서 넣기
-        }
       }
 
     } on TimeoutException catch (e) {
@@ -253,6 +232,120 @@ class _FestivalScreenState extends State<FestivalScreen> {
     } catch (e) {
       "error $e";
     }
+  }
+
+  Future<void> setContentsInfo() async{
+    await fetchCrowded();
+        contentsList = <FestivalInfoWidget>[
+        FestivalInfoWidget(
+        contentTitle: "과기대\n잡화점의 기적",
+        contentImg: "festival_postoffice_img",
+        openTime: "11:00~12:00",
+        contentCrowded: postofficeCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "나만의 전시회",
+        contentImg: "festival_exhibition_img",
+        openTime: "11:00~12:00",
+        contentCrowded: exhibitionCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "낙서 캔버스",
+        contentImg: "festival_doodlewall_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "마당사업",
+        contentImg: "festival_madangbiz_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "미니바이킹",
+        contentImg: "festival_biking_img",
+        openTime: "11:00~12:00",
+        contentCrowded: bikingCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "씨씨는 사랑을 싣고",
+        contentImg: "festival_cc_img",
+        openTime: "11:00~12:00",
+        contentCrowded: ccCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "제1안내소",
+        contentImg: "festival_info1_img",
+        openTime: "11:00~12:00",
+        contentCrowded: info1Crowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "매표소",
+        contentImg: "festival_ticketbooth_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "제3안내소",
+        contentImg: "festival_info3_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "플리마켓",
+        contentImg: "festival_fleamarket_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "포토존",
+        contentImg: "festival_photozone_img",
+        openTime: "11:00~12:00",
+        contentCrowded: photozoneCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "포토부스",
+        contentImg: "festival_photoism_img",
+        openTime: "11:00~12:00",
+        contentCrowded: photoismCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "패션투표",
+        contentImg: "festival_fashionvote_img",
+        openTime: "11:00~12:00",
+        contentCrowded: 0,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "전당포",
+        contentImg: "festival_pawnshop_img",
+        openTime: "11:00~12:00",
+        contentCrowded: pawnshopCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "인화부스",
+        contentImg: "festival_photoprinting_img",
+        openTime: "11:00~12:00",
+        contentCrowded: photoprintingCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "믓쟁이 의상소",
+        contentImg: "festival_costume_img",
+        openTime: "11:00~12:00",
+        contentCrowded: costumeCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "오락부스",
+        contentImg: "festival_gameroom_img",
+        openTime: "11:00~12:00",
+        contentCrowded: gameroomCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        FestivalInfoWidget(
+        contentTitle: "어의상회",
+        contentImg: "festival_startshop_img",
+        openTime: "11:00~12:00",
+        contentCrowded: startshopCrowded,
+        contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+        ];
   }
 
   @override
@@ -628,190 +721,358 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                             context: context,
                                             builder:
                                                 (BuildContext context) {
-                                              return Dialog(
-                                                  backgroundColor:
-                                                  HexColor("#F8EAE1"),
+                                              return Stack(
+                                                children: [
+                                              Dialog(
+                                              backgroundColor:
+                                              HexColor("#F8EAE1"),
                                                   shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius
-                                                          .circular(
-                                                          20)),
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(
+                                                  20)),
                                                   child: Container(
-                                                    width:
-                                                    double.infinity,
+                                                  width:
+                                                  double.infinity,
+                                                  height: 230.h,
+                                                    padding: EdgeInsets.only(
+                                                      top: 50.h
+                                                    ),
+                                                  child: Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                  Text(
+                                                  "미션 참여 완료",
+                                                  style: TextStyle(
+                                                  fontSize:
+                                                  33.5.sp,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600,
+                                                  color: HexColor(
+                                                  "#425C5A")),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.h,
+                                                  ),
+                                                  // GestureDetector(
+                                                  // child:
+                                                  // Container(
+                                                  // width: 200.w,
+                                                  // height: 40.h,
+                                                  // margin: EdgeInsets.only(
+                                                  // top: 11.h,
+                                                  // bottom:
+                                                  // 30.h),
+                                                  // alignment:
+                                                  // Alignment
+                                                  //     .center,
+                                                  // decoration: BoxDecoration(
+                                                  // color: HexColor(
+                                                  // "#EE795F"),
+                                                  // borderRadius:
+                                                  // BorderRadius.circular(
+                                                  // 25)),
+                                                  // child: Text(
+                                                  // "상품 수령",
+                                                  // style: TextStyle(
+                                                  // color: HexColor(
+                                                  // "#F3F3F3"),
+                                                  // fontSize:
+                                                  // 17.5
+                                                  //     .sp,
+                                                  // fontWeight:
+                                                  // FontWeight.w600),
+                                                  // ),
+                                                  // ),
+                                                  // onTap: () {
+                                                  // Navigator.pop(
+                                                  // context);
+                                                  // showDialog(
+                                                  // context:
+                                                  // context,
+                                                  // builder:
+                                                  // (BuildContext
+                                                  // context) {
+                                                  // return Dialog(
+                                                  // backgroundColor:
+                                                  // HexColor("#F8EAE1"),
+                                                  // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                                  // child: Container(
+                                                  // width: double.infinity,
+                                                  // height: 230.h,
+                                                  // child: Column(
+                                                  // crossAxisAlignment: CrossAxisAlignment.center,
+                                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                                  // children: [
+                                                  // Text(
+                                                  // "상품 수령",
+                                                  // style: TextStyle(fontSize: 33.5.sp, fontWeight: FontWeight.w600, color: HexColor("#425C5A")),
+                                                  // ),
+                                                  // SizedBox(
+                                                  // height: 10.h,
+                                                  // ),
+                                                  // Text("확인 버튼을 누르면\n더이상 상품수령이 불가합니다.\n담당자에게 확인 후 버튼을 클릭해주세요.", textAlign: TextAlign.center, style: TextStyle(fontSize: 12.5.sp, color: HexColor("#EE795F"))),
+                                                  // SizedBox(
+                                                  // height: 10.h,
+                                                  // ),
+                                                  // Row(
+                                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                                  // children: [
+                                                  // GestureDetector(
+                                                  // child: Container(
+                                                  // width: 100.w,
+                                                  // height: 40.h,
+                                                  // // margin: EdgeInsets.only(
+                                                  // //     top: 16.h, bottom: 30.h),
+                                                  // alignment: Alignment.center,
+                                                  // decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.circular(25)),
+                                                  // child: Text(
+                                                  // "확인",
+                                                  // style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600),
+                                                  // ),
+                                                  // ),
+                                                  // onTap: () {
+                                                  // setState(() {
+                                                  // setState(() {
+                                                  // getPrize = true;
+                                                  // });
+                                                  // Navigator.pop(context);
+                                                  // showDialog(
+                                                  // context: context,
+                                                  // builder: (BuildContext context) {
+                                                  // return Dialog(
+                                                  // backgroundColor: HexColor("#F8EAE1"),
+                                                  // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                                  // child: Container(
+                                                  // width: double.infinity,
+                                                  // height: 230.h,
+                                                  // child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                                  // Text(
+                                                  // "축하합니다!",
+                                                  // style: TextStyle(color: HexColor("#425C5A"), fontWeight: FontWeight.w600, fontSize: 37.5.sp),
+                                                  // ),
+                                                  // SizedBox(
+                                                  // height: 4.h,
+                                                  // ),
+                                                  // Text(
+                                                  // "상품 수령 완료",
+                                                  // style: TextStyle(color: HexColor("#EE795F"), fontWeight: FontWeight.w600, fontSize: 25.5.sp),
+                                                  // ),
+                                                  // SizedBox(
+                                                  // height: 50.h,
+                                                  // ),
+                                                  // Text(
+                                                  // "스템프 이벤트 참여가 더이상 불가능합니다.",
+                                                  // style: TextStyle(color: HexColor("#EE795F"), fontSize: 12.5.sp),
+                                                  // )
+                                                  // ])));
+                                                  // });
+                                                  // });
+                                                  // }),
+                                                  // SizedBox(
+                                                  // width: 10.w,
+                                                  // ),
+                                                  // GestureDetector(
+                                                  // child: Container(
+                                                  // width: 100.w,
+                                                  // height: 40.h,
+                                                  // alignment: Alignment.center,
+                                                  // decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.circular(25)),
+                                                  // child: Text(
+                                                  // "취소",
+                                                  // style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600),
+                                                  // ),
+                                                  // ),
+                                                  // onTap: () {
+                                                  // Navigator.of(context, rootNavigator: true).pop();
+                                                  // })
+                                                  // ],
+                                                  // )
+                                                  // ],
+                                                  // )));
+                                                  // });
+                                                  // },
+                                                  // ),
+                                                  Text(
+                                                  "전당포(상품수령장소)에 가서\n담당자에게 확인 후 상품을 수령하세요.",
+                                                  textAlign:
+                                                  TextAlign
+                                                      .center,
+                                                  style: TextStyle(
+                                                  fontSize:
+                                                  12.5.sp,
+                                                  color: HexColor(
+                                                  "#EE795F")),
+                                                  ),
+                                                  ],
+                                                  ),
+                                                  )
+                                                  ),
+                                                  Center(child: Container(
+                                                    width: double.infinity,
                                                     height: 230.h,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .center,
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .center,
-                                                      children: [
-                                                        Text(
-                                                          "미션 참여 완료",
-                                                          style: TextStyle(
-                                                              fontSize:
-                                                              33.5.sp,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w600,
-                                                              color: HexColor(
-                                                                  "#425C5A")),
-                                                        ),
-                                                        GestureDetector(
-                                                          child:
-                                                          Container(
-                                                            width: 200.w,
-                                                            height: 40.h,
-                                                            margin: EdgeInsets.only(
-                                                                top: 11.h,
-                                                                bottom:
-                                                                30.h),
-                                                            alignment:
-                                                            Alignment
-                                                                .center,
-                                                            decoration: BoxDecoration(
-                                                                color: HexColor(
-                                                                    "#EE795F"),
-                                                                borderRadius:
-                                                                BorderRadius.circular(
-                                                                    25)),
-                                                            child: Text(
-                                                              "상품 수령",
-                                                              style: TextStyle(
-                                                                  color: HexColor(
-                                                                      "#F3F3F3"),
-                                                                  fontSize:
-                                                                  17.5
-                                                                      .sp,
-                                                                  fontWeight:
-                                                                  FontWeight.w600),
+                                                    child: Stack(children:[
+                                                        Container(
+                                                        width: double.infinity,
+                                                        height: 230.h,
+                                                        alignment: Alignment.center,
+                                                        child:lottie.Lottie.asset(
+                                                      "assets/lottie_congratulations.json",
+                                                    )),
+                                                        Container(
+                                                          width: double.infinity,
+                                                            height: 230.h,
+                                                            padding: EdgeInsets.only(
+                                                              bottom: 45.h
                                                             ),
-                                                          ),
-                                                          onTap: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                            showDialog(
-                                                                context:
-                                                                context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                context) {
-                                                                  return Dialog(
-                                                                      backgroundColor:
-                                                                      HexColor("#F8EAE1"),
-                                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                                                      child: Container(
-                                                                          width: double.infinity,
-                                                                          height: 230.h,
-                                                                          child: Column(
-                                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            child:GestureDetector(
+                                                      child:
+                                                      Container(
+                                                        width: 200.w,
+                                                        height: 40.h,
+                                                        margin: EdgeInsets.only(
+                                                            top: 145.h,
+                                                        left: 76.w, right: 76.w
+                                                        ),
+                                                        alignment:
+                                                        Alignment
+                                                            .center,
+                                                        decoration: BoxDecoration(
+                                                            color: HexColor(
+                                                                "#EE795F"),
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                25)),
+                                                        child: Text(
+                                                          "상품 수령",
+                                                          style: TextStyle(
+                                                              color: HexColor(
+                                                                  "#F3F3F3"),
+                                                              fontSize:
+                                                              17.5.sp,
+                                                              fontWeight:
+                                                              FontWeight.w600, decoration: TextDecoration.none),
+                                                        ),
+                                                      ),
+                                                      onTap: () {
+                                                        Navigator.pop(
+                                                            context);
+                                                        showDialog(
+                                                            context:
+                                                            context,
+                                                            builder:
+                                                                (BuildContext
+                                                            context) {
+                                                              return Dialog(
+                                                                  backgroundColor:
+                                                                  HexColor("#F8EAE1"),
+                                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                                                  child: Container(
+                                                                      width: double.infinity,
+                                                                      height: 230.h,
+                                                                      child: Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Text(
+                                                                            "상품 수령",
+                                                                            style: TextStyle(fontSize: 33.5.sp, fontWeight: FontWeight.w600, color: HexColor("#425C5A")),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 10.h,
+                                                                          ),
+                                                                          Text("확인 버튼을 누르면\n더이상 상품수령이 불가합니다.\n담당자에게 확인 후 버튼을 클릭해주세요.", textAlign: TextAlign.center, style: TextStyle(fontSize: 12.5.sp, color: HexColor("#EE795F"))),
+                                                                          SizedBox(
+                                                                            height: 10.h,
+                                                                          ),
+                                                                          Row(
                                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                                             children: [
-                                                                              Text(
-                                                                                "상품 수령",
-                                                                                style: TextStyle(fontSize: 33.5.sp, fontWeight: FontWeight.w600, color: HexColor("#425C5A")),
-                                                                              ),
-                                                                              SizedBox(
-                                                                                height: 10.h,
-                                                                              ),
-                                                                              Text("확인 버튼을 누르면\n더이상 상품수령이 불가합니다.\n담당자에게 확인 후 버튼을 클릭해주세요.", textAlign: TextAlign.center, style: TextStyle(fontSize: 12.5.sp, color: HexColor("#EE795F"))),
-                                                                              SizedBox(
-                                                                                height: 10.h,
-                                                                              ),
-                                                                              Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                                children: [
-                                                                                  GestureDetector(
-                                                                                      child: Container(
-                                                                                        width: 100.w,
-                                                                                        height: 40.h,
-                                                                                        // margin: EdgeInsets.only(
-                                                                                        //     top: 16.h, bottom: 30.h),
-                                                                                        alignment: Alignment.center,
-                                                                                        decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.circular(25)),
-                                                                                        child: Text(
-                                                                                          "확인",
-                                                                                          style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600),
-                                                                                        ),
-                                                                                      ),
-                                                                                      onTap: () {
-                                                                                        setState(() {
-                                                                                          setState(() {
-                                                                                            getPrize = true;
-                                                                                          });
-                                                                                          Navigator.pop(context);
-                                                                                          showDialog(
-                                                                                              context: context,
-                                                                                              builder: (BuildContext context) {
-                                                                                                return Dialog(
-                                                                                                    backgroundColor: HexColor("#F8EAE1"),
-                                                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                                                                                    child: Container(
-                                                                                                        width: double.infinity,
-                                                                                                        height: 230.h,
-                                                                                                        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                                                                                          Text(
-                                                                                                            "축하합니다!",
-                                                                                                            style: TextStyle(color: HexColor("#425C5A"), fontWeight: FontWeight.w600, fontSize: 37.5.sp),
-                                                                                                          ),
-                                                                                                          SizedBox(
-                                                                                                            height: 4.h,
-                                                                                                          ),
-                                                                                                          Text(
-                                                                                                            "상품 수령 완료",
-                                                                                                            style: TextStyle(color: HexColor("#EE795F"), fontWeight: FontWeight.w600, fontSize: 25.5.sp),
-                                                                                                          ),
-                                                                                                          SizedBox(
-                                                                                                            height: 50.h,
-                                                                                                          ),
-                                                                                                          Text(
-                                                                                                            "스템프 이벤트 참여가 더이상 불가능합니다.",
-                                                                                                            style: TextStyle(color: HexColor("#EE795F"), fontSize: 12.5.sp),
-                                                                                                          )
-                                                                                                        ])));
-                                                                                              });
-                                                                                        });
-                                                                                      }),
-                                                                                  SizedBox(
-                                                                                    width: 10.w,
+                                                                              GestureDetector(
+                                                                                  child: Container(
+                                                                                    width: 100.w,
+                                                                                    height: 40.h,
+                                                                                    // margin: EdgeInsets.only(
+                                                                                    //     top: 16.h, bottom: 30.h),
+                                                                                    alignment: Alignment.center,
+                                                                                    decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.circular(25)),
+                                                                                    child: Text(
+                                                                                      "확인",
+                                                                                      style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600),
+                                                                                    ),
                                                                                   ),
-                                                                                  GestureDetector(
-                                                                                      child: Container(
-                                                                                        width: 100.w,
-                                                                                        height: 40.h,
-                                                                                        alignment: Alignment.center,
-                                                                                        decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.circular(25)),
-                                                                                        child: Text(
-                                                                                          "취소",
-                                                                                          style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600),
-                                                                                        ),
-                                                                                      ),
-                                                                                      onTap: () {
-                                                                                        Navigator.of(context, rootNavigator: true).pop();
-                                                                                      })
-                                                                                ],
-                                                                              )
+                                                                                  onTap: () {
+                                                                                    setState(() {
+                                                                                      setState(() {
+                                                                                        getPrize = true;
+                                                                                      });
+                                                                                      Navigator.pop(context);
+                                                                                      showDialog(
+                                                                                          context: context,
+                                                                                          builder: (BuildContext context) {
+                                                                                            return Dialog(
+                                                                                                backgroundColor: HexColor("#F8EAE1"),
+                                                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                                                                                child: Container(
+                                                                                                    width: double.infinity,
+                                                                                                    height: 230.h,
+                                                                                                    child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                                                                                      Text(
+                                                                                                        "축하합니다!",
+                                                                                                        style: TextStyle(color: HexColor("#425C5A"), fontWeight: FontWeight.w600, fontSize: 37.5.sp),
+                                                                                                      ),
+                                                                                                      SizedBox(
+                                                                                                        height: 4.h,
+                                                                                                      ),
+                                                                                                      Text(
+                                                                                                        "상품 수령 완료",
+                                                                                                        style: TextStyle(color: HexColor("#EE795F"), fontWeight: FontWeight.w600, fontSize: 25.5.sp),
+                                                                                                      ),
+                                                                                                      SizedBox(
+                                                                                                        height: 50.h,
+                                                                                                      ),
+                                                                                                      Text(
+                                                                                                        "스템프 이벤트 참여가 더이상 불가능합니다.",
+                                                                                                        style: TextStyle(color: HexColor("#EE795F"), fontSize: 12.5.sp),
+                                                                                                      )
+                                                                                                    ])));
+                                                                                          });
+                                                                                    });
+                                                                                  }),
+                                                                              SizedBox(
+                                                                                width: 10.w,
+                                                                              ),
+                                                                              GestureDetector(
+                                                                                  child: Container(
+                                                                                    width: 100.w,
+                                                                                    height: 40.h,
+                                                                                    alignment: Alignment.center,
+                                                                                    decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.circular(25)),
+                                                                                    child: Text(
+                                                                                      "취소",
+                                                                                      style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600),
+                                                                                    ),
+                                                                                  ),
+                                                                                  onTap: () {
+                                                                                    Navigator.of(context, rootNavigator: true).pop();
+                                                                                  })
                                                                             ],
-                                                                          )));
-                                                                });
-                                                          },
-                                                        ),
-                                                        Text(
-                                                          "전당포(상품수령장소)에 가서\n담당자에게 확인 후 상품을 수령하세요.",
-                                                          textAlign:
-                                                          TextAlign
-                                                              .center,
-                                                          style: TextStyle(
-                                                              fontSize:
-                                                              12.5.sp,
-                                                              color: HexColor(
-                                                                  "#EE795F")),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ));
+                                                                          )
+                                                                        ],
+                                                                      )));
+                                                            });
+                                                      },
+                                                    )
+                                                        )
+                                                    ]
+                                                    )
+                                                  )),
+
+                                                ],
+                                              );
                                             });
                                       },
                                     )
@@ -972,20 +1233,20 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                   });
                                                 },
                                                 child: !isContents
-                                                    ? Text("무대 라인업",
+                                                    ? Text("컨텐츠",
                                                     style: TextStyle(
                                                         fontWeight:
                                                         FontWeight.w600,
                                                         fontSize: 17.5.sp,
                                                         color: HexColor(
-                                                            "#50425C5A")))
+                                                            "#425C5A")))
                                                     : Text("컨텐츠",
                                                     style: TextStyle(
                                                         fontWeight:
                                                         FontWeight.w600,
                                                         fontSize: 17.5.sp,
                                                         color: HexColor(
-                                                            "#425C5A"))),
+                                                            "#50425C5A"))),
                                                 style: ButtonStyle(
                                                     overlayColor:
                                                     MaterialStateColor.resolveWith(
@@ -1062,12 +1323,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                     ),
                                     Expanded(
                                         child: isContents
-                                            ? ListView.builder(
-                                            controller: scrollController,
-                                            itemCount: contentsList.length,
-                                            itemBuilder: (context, index) {
-                                              return contentsList[index];
-                                            })
+                                            ? _getContentsCrowded(scrollController)
                                             : Container(
                                           width: 320.w,
                                           height: 450.h,

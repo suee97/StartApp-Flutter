@@ -64,6 +64,7 @@ class DepartmentMatch {
   static String getDepartment(String department) {
     String group = '';
     String temp = '';
+
     for (var x in DepartmentMatch.groups) {
       for (var y in x.values) {
         if (y.contains(department)) {
