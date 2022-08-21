@@ -11,7 +11,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/setting/app_info/dev_info_screen.dart';
 import 'package:start_app/screens/home/setting/app_info/update_info_screen.dart';
-import 'package:start_app/screens/home/setting/policy/location_policy_screen.dart';
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
 import 'package:start_app/screens/home/setting/setting_semi_title.dart';
 import 'package:http/http.dart' as http;
@@ -385,15 +384,6 @@ class _SettingScreenState extends State<SettingScreen> {
                   SettingSemiTitle(
                     title: "서비스 이용약관",
                     onPressed: () {},
-                  ),
-                  SettingSemiTitle(
-                    title: "위치기반서비스 이용약관",
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LocationPolicyScreen()));
-                    },
                   ),
                   SettingSemiTitle(
                     title: "개인정보 처리방침",
