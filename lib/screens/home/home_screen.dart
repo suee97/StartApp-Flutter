@@ -278,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const RentScreen()))
                               }),
                       MainWidget(
-                          title: "주 사업",
+                          title: "축제 이벤트",
                           svgPath: "assets/icon_festival.svg",
                           isUnderRow: true,
                           onPressed: () => {
