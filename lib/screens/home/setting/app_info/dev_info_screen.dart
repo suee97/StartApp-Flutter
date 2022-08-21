@@ -48,7 +48,7 @@ class DevInfoScreen extends StatelessWidget {
                     color: HexColor("#425C5A")),
               ),
               Text(
-                "dev.suee97@gmail.com",
+                "dev.seoultech@gmail.com",
                 style: TextStyle(
                     fontSize: 21.5.sp,
                     fontWeight: FontWeight.w600,
