@@ -15,6 +15,9 @@ import 'package:start_app/screens/home/setting/policy/location_policy_screen.dar
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
 import 'package:start_app/screens/home/setting/setting_semi_title.dart';
 import 'package:http/http.dart' as http;
+import 'package:start_app/screens/home/setting/suggest/suggest_error_screen.dart';
+import 'package:start_app/screens/home/setting/suggest/suggest_etc_screen.dart';
+import 'package:start_app/screens/home/setting/suggest/suggest_feature_screen.dart';
 import 'package:start_app/screens/login/login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -87,77 +90,77 @@ class _SettingScreenState extends State<SettingScreen> {
                   padding: EdgeInsets.only(left: 15.w),
                   child: Common.getIsLogin()
                       ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _name,
-                        style: TextStyle(
-                            fontSize: 15.5.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      Text(
-                        _studentNo,
-                        style: TextStyle(
-                            fontSize: 13.5.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text(_studentGroup,
-                          style: TextStyle(
-                              fontSize: 13.5.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500)),
-                      Text(_department,
-                          style: TextStyle(
-                              fontSize: 13.5.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500)),
-                    ],
-                  )
-                      : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "로그인이 필요합니다.",
-                        style: TextStyle(
-                            fontSize: 15.5.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                  const LoginScreen()),
-                                  (route) => false);
-                        },
-                        child: Container(
-                          width: 100.w,
-                          height: 20.h,
-                          decoration: BoxDecoration(
-                              color: HexColor("#FFCEA2"),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                            child: Text(
-                              "로그인하러 가기",
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _name,
                               style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: HexColor("#425C5A"),
+                                  fontSize: 15.5.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Text(
+                              _studentNo,
+                              style: TextStyle(
+                                  fontSize: 13.5.sp,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w500),
                             ),
-                          ),
+                            Text(_studentGroup,
+                                style: TextStyle(
+                                    fontSize: 13.5.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)),
+                            Text(_department,
+                                style: TextStyle(
+                                    fontSize: 13.5.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "로그인이 필요합니다.",
+                              style: TextStyle(
+                                  fontSize: 15.5.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginScreen()),
+                                    (route) => false);
+                              },
+                              child: Container(
+                                width: 100.w,
+                                height: 20.h,
+                                decoration: BoxDecoration(
+                                    color: HexColor("#FFCEA2"),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Text(
+                                    "로그인하러 가기",
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: HexColor("#425C5A"),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
                 )
               ],
             ),
@@ -401,15 +404,30 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   SettingSemiTitle(
                     title: "기능개선 제안",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SuggestFeatureScreen()));
+                    },
                   ),
                   SettingSemiTitle(
                     title: "오류 신고",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SuggestErrorScreen()));
+                    },
                   ),
                   SettingSemiTitle(
                     title: "기타 제안",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SuggestEtcScreen()));
+                    },
                   ),
                   SizedBox(
                     height: 8.h,
@@ -529,7 +547,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
     navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const SplashScreen()),
-            (route) => false);
+        (route) => false);
   }
 
   void _loadStudentInfo() async {
