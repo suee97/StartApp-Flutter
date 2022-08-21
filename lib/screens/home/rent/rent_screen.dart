@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +11,7 @@ import 'package:start_app/screens/home/rent/my_rent/my_rent_screen.dart';
 import 'package:start_app/screens/home/rent/rent_widget.dart';
 import '../../../utils/common.dart';
 import '../../../utils/department_match.dart';
+import '../../../widgets/start_android_dialog.dart';
 import '../../login/login_screen.dart';
 
 class RentScreen extends StatefulWidget {
@@ -18,7 +22,6 @@ class RentScreen extends StatefulWidget {
 }
 
 class _RentScreenState extends State<RentScreen> {
-
   String _name = '';
   String _studentNo = '';
   String _studentGroup = '';
@@ -46,8 +49,10 @@ class _RentScreenState extends State<RentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("상시사업 예약",
-          style: Common.startAppBarTextStyle,),
+        title: Text(
+          "상시사업 예약",
+          style: Common.startAppBarTextStyle,
+        ),
         backgroundColor: HexColor("#f3f3f3"),
         foregroundColor: Colors.black,
         elevation: 0,
@@ -74,8 +79,16 @@ class _RentScreenState extends State<RentScreen> {
                 children: [
                   RentWidget(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (
-                          context) => CategoryRentScreen(category: "캐노피", itemIcon: "assets/icon_canopy_green.svg", itemImg: "images/rent_canopy_img.jpg", itemPurpose: "기둥과 천막으로 부스를 만들 수 있습니다.", itemWarning: "천막이 찢어지지 않도록 주의해주세요.",)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CategoryRentScreen(
+                                    category: "캐노피",
+                                    itemIcon: "assets/icon_canopy_green.svg",
+                                    itemImg: "images/rent_canopy_img.jpg",
+                                    itemPurpose: "기둥과 천막으로 부스를 만들 수 있습니다.",
+                                    itemWarning: "천막이 찢어지지 않도록 주의해주세요.",
+                                  )));
                     },
                     title: "캐노피",
                     svgPath: "assets/icon_canopy.svg",
@@ -85,8 +98,16 @@ class _RentScreenState extends State<RentScreen> {
                   ),
                   RentWidget(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (
-                          context) => CategoryRentScreen(category: "듀라테이블", itemIcon: "assets/icon_table_green.svg", itemImg: "images/rent_table_img.jpg", itemPurpose: "간이 테이블로 사용할 수 있습니다.", itemWarning: "테이블을 깨끗하게 닦아주세요.",)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CategoryRentScreen(
+                                    category: "듀라테이블",
+                                    itemIcon: "assets/icon_table_green.svg",
+                                    itemImg: "images/rent_table_img.jpg",
+                                    itemPurpose: "간이 테이블로 사용할 수 있습니다.",
+                                    itemWarning: "테이블을 깨끗하게 닦아주세요.",
+                                  )));
                     },
                     title: "듀라테이블",
                     svgPath: "assets/icon_table.svg",
@@ -96,8 +117,17 @@ class _RentScreenState extends State<RentScreen> {
                   ),
                   RentWidget(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (
-                          context) => CategoryRentScreen(category: "앰프&마이크", itemIcon: "assets/icon_amp_green.svg", itemImg: "images/rent_amp_img.jpg", itemPurpose: "행사 시에 큰 음향을 낼 수 있습니다.", itemWarning: "비 또는 모레 등의 이물질이 들어가지 않도록 해주세요.",)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CategoryRentScreen(
+                                    category: "앰프&마이크",
+                                    itemIcon: "assets/icon_amp_green.svg",
+                                    itemImg: "images/rent_amp_img.jpg",
+                                    itemPurpose: "행사 시에 큰 음향을 낼 수 있습니다.",
+                                    itemWarning:
+                                        "비 또는 모레 등의 이물질이 들어가지 않도록 해주세요.",
+                                  )));
                     },
                     title: "앰프&마이크",
                     svgPath: "assets/icon_amp.svg",
@@ -112,8 +142,16 @@ class _RentScreenState extends State<RentScreen> {
                 children: [
                   RentWidget(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (
-                          context) => CategoryRentScreen(category: "리드선", itemIcon: "assets/icon_lead_green.svg", itemImg: "images/rent_wire_img.jpg", itemPurpose: "콘센트를 연장하여 사용할 수 있습니다.", itemWarning: "비에 젖지 않도록 해주세요.",)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CategoryRentScreen(
+                                    category: "리드선",
+                                    itemIcon: "assets/icon_lead_green.svg",
+                                    itemImg: "images/rent_wire_img.jpg",
+                                    itemPurpose: "콘센트를 연장하여 사용할 수 있습니다.",
+                                    itemWarning: "비에 젖지 않도록 해주세요.",
+                                  )));
                     },
                     title: "리드선",
                     svgPath: "assets/icon_wire.svg",
@@ -123,8 +161,15 @@ class _RentScreenState extends State<RentScreen> {
                   ),
                   RentWidget(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (
-                          context) => CategoryRentScreen(category: "엘카", itemIcon: "assets/icon_cart_green.svg", itemImg: "images/rent_cart_img.jpg", itemPurpose: "여러 짐을 한 번에 옮길 수 있습니다.", itemWarning: "바퀴가 고장나지 않도록 주의 해주세요.")));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CategoryRentScreen(
+                                  category: "엘카",
+                                  itemIcon: "assets/icon_cart_green.svg",
+                                  itemImg: "images/rent_cart_img.jpg",
+                                  itemPurpose: "여러 짐을 한 번에 옮길 수 있습니다.",
+                                  itemWarning: "바퀴가 고장나지 않도록 주의 해주세요.")));
                     },
                     title: "엘카",
                     svgPath: "assets/icon_cart.svg",
@@ -134,8 +179,15 @@ class _RentScreenState extends State<RentScreen> {
                   ),
                   RentWidget(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (
-                          context) => CategoryRentScreen(category: "의자", itemIcon: "assets/icon_chair_green.svg", itemImg: "images/rent_chair_img.jpg", itemPurpose: "외부 행사 시에 간이 의자로 활용할 수 있습니다.", itemWarning:"부서지지 않도록 주의 해주세요.")));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CategoryRentScreen(
+                                  category: "의자",
+                                  itemIcon: "assets/icon_chair_green.svg",
+                                  itemImg: "images/rent_chair_img.jpg",
+                                  itemPurpose: "외부 행사 시에 간이 의자로 활용할 수 있습니다.",
+                                  itemWarning: "부서지지 않도록 주의 해주세요.")));
                     },
                     title: "의자",
                     svgPath: "assets/icon_chair.svg",
@@ -205,103 +257,150 @@ class _RentScreenState extends State<RentScreen> {
         ),
         Common.getIsLogin()
             ? Container(
-          width: 170.w,
-          height: 90.h,
-          margin: EdgeInsets.only(left: 160.w, top: 30.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    _name,
-                    style: TextStyle(
-                        fontSize: 17.5.sp,
-                        color: HexColor("#425C5A"),
-                        fontWeight: FontWeight.w700),
-                  ),
-                  SizedBox(
-                    width: 12.w,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => MyRentScreen()));
-                    },
-                    child: Container(
-                      width: 100.w,
-                      height: 20.h,
-                      decoration: BoxDecoration(
-                          color: HexColor("#FFCEA2"),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                        child: Text(
-                          "내 예약 확인하기",
+                width: 170.w,
+                height: 90.h,
+                margin: EdgeInsets.only(left: 160.w, top: 30.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          _name,
                           style: TextStyle(
-                              fontSize: 12.sp,
+                              fontSize: 17.5.sp,
                               color: HexColor("#425C5A"),
-                              fontWeight: FontWeight.w500),
+                              fontWeight: FontWeight.w700),
                         ),
-                      ),
+                        SizedBox(
+                          width: 12.w,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyRentScreen()));
+                          },
+                          child: Container(
+                            width: 100.w,
+                            height: 20.h,
+                            decoration: BoxDecoration(
+                                color: HexColor("#FFCEA2"),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Center(
+                              child: Text(
+                                "내 예약 확인하기",
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: HexColor("#425C5A"),
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 12.h,
-              ),
-              userInfoText(_studentNo),
-              userInfoText(_studentGroup),
-              userInfoText(_department),
-            ],
-          ),
-        ) : Container(
-          width: 170.w,
-          height: 90.h,
-          margin: EdgeInsets.only(left: 160.w, top: 30.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    _name,
-                    style: TextStyle(
-                        fontSize: 17.5.sp,
-                        color: HexColor("#425C5A"),
-                        fontWeight: FontWeight.w700),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                  const LoginScreen()), (route) => false);
-                },
-                child: Container(
-                  width: 100.w,
-                  height: 20.h,
-                  decoration: BoxDecoration(
-                      color: HexColor("#FFCEA2"),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Center(
-                    child: Text(
-                      "로그인 하기",
-                      style: TextStyle(
-                          fontSize: 12.sp,
-                          color: HexColor("#425C5A"),
-                          fontWeight: FontWeight.w500),
+                    SizedBox(
+                      height: 12.h,
                     ),
-                  ),
+                    userInfoText(_studentNo),
+                    userInfoText(_studentGroup),
+                    userInfoText(_department),
+                  ],
                 ),
               )
-            ],
-          ),
-        )
-
+            : Container(
+                width: 170.w,
+                height: 90.h,
+                margin: EdgeInsets.only(left: 160.w, top: 30.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          _name,
+                          style: TextStyle(
+                              fontSize: 17.5.sp,
+                              color: HexColor("#425C5A"),
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (Platform.isIOS) {
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  content:
+                                      const Text("확인을 누르면 로그인 화면으로 이동합니다."),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                        isDefaultAction: false,
+                                        child: const Text("확인"),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const LoginScreen()),
+                                                  (route) => false);
+                                        }),
+                                    CupertinoDialogAction(
+                                        isDefaultAction: false,
+                                        child: const Text("취소"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        })
+                                  ],
+                                );
+                              });
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return StartAndroidDialog(
+                                  title: "확인을 누르면 로그인 화면으로 이동합니다.",
+                                  onOkPressed: () {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen()),
+                                        (route) => false);
+                                  },
+                                  onCancelPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                );
+                              });
+                        }
+                      },
+                      child: Container(
+                        width: 100.w,
+                        height: 20.h,
+                        decoration: BoxDecoration(
+                            color: HexColor("#FFCEA2"),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Center(
+                          child: Text(
+                            "로그인 하기",
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                color: HexColor("#425C5A"),
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )
       ]),
       backgroundColor: HexColor("#f3f3f3"),
     );

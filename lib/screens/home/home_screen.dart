@@ -20,7 +20,6 @@ import 'package:start_app/widgets/main_widget.dart';
 import '../../utils/common.dart';
 import '../../widgets/yellow_line.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io' show Platform;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
