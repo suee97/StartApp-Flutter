@@ -18,6 +18,12 @@ class SuggestFeatureScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
       ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+
+        ],
+      ),
       backgroundColor: HexColor("f3f3f3"),
     );
   }
