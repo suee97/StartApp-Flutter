@@ -134,7 +134,7 @@ class CategoryRentScreen extends StatelessWidget {
                     ),
                   ) : GestureDetector(
                     onTap: () => {
-                    Common.showSnackBar(context, "로그인이 필요합니다.")
+                    Common.showSnackBar(context, "로그인이 필요한 기능입니다.")
                     },
                     child: Container(
                       width: 320.w,
