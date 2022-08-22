@@ -240,6 +240,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 final getStudentInfoAndSaveResult =
                     await getStudentInfoAndSave();
                 if (getStudentInfoAndSaveResult != StatusCode.SUCCESS) {
+                  if (getStudentInfoAndSaveResult == StatusCode.REQUEST_ERROR) {
+                    setState(() {
+                      isLoading = false;
+                    });
+                    if (mounted) {
+                      Common.showSnackBar(context, "승인 대기중입니다.");
+                    }
+                    return;
+                  }
                   setState(() {
                     isLoading = false;
                   });
@@ -435,6 +444,10 @@ class _LoginScreenState extends State<LoginScreen> {
         print(resData["data"]);
         List<dynamic> data = resData["data"];
 
+        if (data[0]["memberStatus"] == "PRE_CARD_AUTH") {
+          return StatusCode.REQUEST_ERROR;
+        }
+
         await pref.setInt("appMemberId", data[0]["memberId"]);
         await pref.setString("appStudentNo", data[0]["studentNo"]);
         await pref.setString("appName", data[0]["name"]);
@@ -443,6 +456,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await pref.setString("appCreatedAt", data[0]["createdAt"]);
         await pref.setString("appUpdatedAt", data[0]["updatedAt"]);
         await pref.setString("appMemberStatus", data[0]["memberStatus"]);
+        await pref.setString("appPhoneNo", data[0]["phoneNo"]);
 
         return StatusCode.SUCCESS;
       }
