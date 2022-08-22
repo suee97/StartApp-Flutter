@@ -250,6 +250,25 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                       return;
                     }
 
+                    String itemCategory = '';
+
+                    if(widget.category == "캐노피"){
+                      itemCategory = "CANOPY";
+                    }else if(widget.category == "듀라테이블"){
+                      itemCategory = "TABLE";
+                    }else if(widget.category == "앰프&마이크"){
+                      itemCategory = "AMP";
+                    }else if(widget.category == "리드선"){
+                      itemCategory = "WIRE";
+                    }else if(widget.category == "엘카"){
+                      itemCategory = "CART";
+                    }else if(widget.category == "의자"){
+                      itemCategory = "CHAIR";
+                    }else{
+                      Common.showSnackBar(context, "오류가 발생했습니다.");
+                      return;
+                    }
+
                     setState((){
                       isLoading = true;
                     });
@@ -266,11 +285,6 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                               (route) => false);
                       Common.showSnackBar(context, "다시 로그인해주세요.");
                       return;
-                    }
-
-                    String itemCategory = '';
-                    if(widget.category == "앰프&마이크"){
-                      itemCategory = "AMP";
                     }
 
                     Map bodyData = {
