@@ -391,7 +391,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ServicePolicyScreen()));
+                              builder: (context) =>
+                                  const ServicePolicyScreen()));
                     },
                   ),
                   SettingSemiTitle(
@@ -400,7 +401,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const PrivacyPolicyScreen()));
+                              builder: (context) =>
+                                  const PrivacyPolicyScreen()));
                     },
                   ),
                   SizedBox(
@@ -442,7 +444,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SuggestFeatureScreen()));
+                              builder: (context) =>
+                                  const SuggestFeatureScreen()));
                     },
                   ),
                   SettingSemiTitle(
@@ -451,7 +454,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SuggestErrorScreen()));
+                              builder: (context) =>
+                                  const SuggestErrorScreen()));
                     },
                   ),
                   SettingSemiTitle(
@@ -523,18 +527,31 @@ class _SettingScreenState extends State<SettingScreen> {
             SizedBox(
               height: 16.h,
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 8.w, right: 8.w),
-              child: Text(
-                "서울 노원구 공릉로 232 제1학생회관(37호관) 226호 Tel : 02-970-7012",
-                style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w300,
-                    color: HexColor("#f3f3f3")),
-              ),
+            Text(
+              "Tel : 02-970-7012",
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w300,
+                  color: HexColor("#f3f3f3")),
             ),
             Text(
-                "COPYRIGHT © SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY. All Rights Reserved."),
+              "서울시 노원구 공릉로 232 제 1학생회관(37호관) 226호",
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w300,
+                  color: HexColor("#f3f3f3")),
+            ),
+            SizedBox(height: 4.h,),
+            Padding(
+              padding: EdgeInsets.only(left: 16.w),
+              child: Text(
+                  "COPYRIGHT © SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY. All Rights Reserved.",
+                  style: TextStyle(
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w300,
+                      color: HexColor("#f3f3f3"))),
+            ),
+            SizedBox(height: 16.h,),
           ],
         ),
       ),
