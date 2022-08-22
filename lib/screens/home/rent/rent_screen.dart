@@ -147,7 +147,7 @@ class _RentScreenState extends State<RentScreen> {
                           MaterialPageRoute(
                               builder: (context) => CategoryRentScreen(
                                     category: "리드선",
-                                    itemIcon: "assets/icon_lead_green.svg",
+                                    itemIcon: "assets/icon_wire_green.svg",
                                     itemImg: "images/rent_wire_img.jpg",
                                     itemPurpose: "콘센트를 연장하여 사용할 수 있습니다.",
                                     itemWarning: "비에 젖지 않도록 해주세요.",
