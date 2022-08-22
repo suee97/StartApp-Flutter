@@ -12,6 +12,7 @@ class Auth {
   /// ######################################################
   static Future<StatusCode> authAccessToken() async {
     final AT = await secureStorage.read(key: "ACCESS_TOKEN");
+    final RT = await secureStorage.read(key: "REFRESH_TOKEN");
 
     if (AT == null || AT.isEmpty) {
       print("authAccessToken() call error : 잘못된 access token");
@@ -32,9 +33,9 @@ class Auth {
       }
 
       if (resData["status"] == 401) {
-        print("Common.authAccessToken() call : Fail");
         print("Common.authAccessToken() call : access token이 만료되었습니다.");
         print("Common.authAccessToken() call : access token : $AT");
+        print("Common.authAccessToken() call : refresh token : $RT");
         return StatusCode.EXPIRED;
       }
 
@@ -78,6 +79,7 @@ class Auth {
         return StatusCode.SUCCESS;
       }
 
+      print(resData);
       print("reIssueAccessToken() call : Error 토큰 재발급 실패");
       return StatusCode.UNCATCHED_ERROR;
     } catch (e) {

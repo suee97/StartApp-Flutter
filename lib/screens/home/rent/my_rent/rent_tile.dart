@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/utils/common.dart';
-import '../../../../models/rent_list.dart';
-
-/// 단일 내 예약 타일 위젯
+import '../../../../models/rent.dart';
 
 class RentTile extends StatelessWidget {
   RentTile({Key? key, required this.rent, required this.onPressed})
@@ -20,6 +17,7 @@ class RentTile extends StatelessWidget {
       Container(
         width: double.infinity,
         height: 60.h,
+        margin: EdgeInsets.only(bottom: 8.h),
         decoration: BoxDecoration(
             color: HexColor("ffcea2"),
             borderRadius: BorderRadius.circular(10),
@@ -47,7 +45,7 @@ class RentTile extends StatelessWidget {
                               fontSize: 14.sp, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          rent.itemCategory,
+                          getKrStringFromCategory(rent.itemCategory),
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.w400),
                         )
@@ -117,6 +115,25 @@ class RentTile extends StatelessWidget {
     } else {
       return const Color.fromRGBO(70, 70, 70, 0.8);
     }
+  }
+
+  String getKrStringFromCategory(String _itemCategory) {
+    if (_itemCategory == "CANOPY") {
+      return "캐노피";
+    }
+    if (_itemCategory == "TABLE") {
+      return "듀라테이블";
+    }
+    if (_itemCategory == "AMP") {
+      return "앰프&마이크";
+    }
+    if (_itemCategory == "WIRE") {
+      return "리드선";
+    }
+    if (_itemCategory == "CART") {
+      return "엘카";
+    }
+    return "의자";
   }
 
   String getKrStringFromStatus(String _rentStatus) {

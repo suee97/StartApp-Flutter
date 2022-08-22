@@ -180,14 +180,14 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                         width: 2,
                         color: Colors.black,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                      borderRadius: const BorderRadius.all(Radius.circular(5))),
                   child: Stack(children: [
                     Padding(
                         padding: EdgeInsets.only(top: 8.h, left: 8.w),
                         child: Text(
                           "1. 물 묻히지 마세요\n2. 조심히 다뤄주세요\n3. TF팀 화이팅",
                         )),
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       height: double.infinity,
                       child: Row(
@@ -199,7 +199,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                               alignment: Alignment.center,
                               child: Text("동의합니다",
                                   style: TextStyle(fontSize: 10.sp))),
-                          Container(
+                          SizedBox(
                             width: 32.w,
                             height: 32.h,
                             child: Checkbox(
@@ -264,12 +264,11 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
       firstDate: DateTime(2022, 1, 1),
       lastDate: DateTime(2030, 12, 31),
       currentDate: DateTime.now(),
-      saveText: 'Done',
+      saveText: '확인',
     );
 
     if (result != null) {
-      // Rebuild the UI
-      print(result.start.toString());
+      print("${result.start.toString()} ~ ${result.end.toString()}");
       setState(() {
         _selectedDateRange = result;
       });

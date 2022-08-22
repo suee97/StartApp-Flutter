@@ -1,11 +1,3 @@
-class RentList {
-  RentList(this.status, this.message, this.data);
-
-  int status;
-  String message;
-  List<Rent> data;
-}
-
 class Rent {
   Rent(
       this.rentId,
