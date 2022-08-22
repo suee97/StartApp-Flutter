@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../../../models/status_code.dart';
+import '../../../../../utils/auth.dart';
 import '../../../../../utils/common.dart';
 import '../../../../../widgets/rent_custom_text_field.dart';
+import '../../../../login/login_screen.dart';
 import 'dotted_line_widget.dart';
+import 'package:http/http.dart' as http;
 
 class RentApplyScreen extends StatefulWidget {
   RentApplyScreen({Key? key, required this.category, required this.itemIcon})
@@ -22,6 +29,8 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
   bool agreementCheckBoxState = false;
   final rentPurposeController = TextEditingController();
   final rentAmountController = TextEditingController();
+
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -229,7 +238,96 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                   ],
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+
+                    if(!agreementCheckBoxState){
+                      Common.showSnackBar(context, "이용약관에 동의해주세요.");
+                      return;
+                    }
+
+                    if(rentPurposeController.text.isEmpty || rentAmountController.text.isEmpty || widget.category.isEmpty || _selectedDateRange == null ){
+                      Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
+                      return;
+                    }
+
+                    setState((){
+                      isLoading = true;
+                    });
+
+                    final authTokenAndReIssueResult = await Auth.authTokenAndReIssue();
+                    if (authTokenAndReIssueResult != StatusCode.SUCCESS) {
+                      Common.setIsLogin(false);
+                      await Common.setNonLogin(false);
+                      await Common.setAutoLogin(false);
+                      await Common.clearStudentInfoPref();
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                              (route) => false);
+                      Common.showSnackBar(context, "다시 로그인해주세요.");
+                      return;
+                    }
+
+                    String itemCategory = '';
+                    if(widget.category == "앰프&마이크"){
+                      itemCategory = "AMP";
+                    }
+
+                    Map bodyData = {
+                      "purpose": rentPurposeController.text,
+                      "account": int.parse(rentAmountController.text),
+                      "itemCategory": itemCategory,
+                      "startTime":"${_selectedDateRange?.start.toString().split(' ')[0]}",
+                      "endTime":"${_selectedDateRange?.end.toString().split(' ')[0]}"
+                    };
+
+                    final AT = await Auth.secureStorage.read(key: "ACCESS_TOKEN");
+
+                    try {
+                      final resString = await http
+                          .post(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/rent"),
+                          headers: {
+                            "Authorization": "Bearer $AT",
+                            "Content-Type": "application/json"
+                      },
+                      body: json.encode(bodyData)).timeout(const Duration(seconds: 30));
+                      Map<String, dynamic> resData = jsonDecode(utf8.decode(resString.bodyBytes));
+                      var data = resData["status"];
+
+                      if(data == 200){
+                        setState((){
+                          isLoading = false;
+                        });
+                        int count = 0;
+                        Navigator.of(context).popUntil((_) => count++ >= 2);
+                        Common.showSnackBar(context, "신청이 완료되었습니다.");
+                        return;
+                      }
+
+                      if(data == 409){
+                        setState((){
+                          isLoading = false;
+                        });
+                        Common.showSnackBar(context, "신청 정보를 확인해주세요.");
+                        return;
+                      }
+
+                      setState((){
+                        isLoading = false;
+                      });
+                      Common.showSnackBar(context, "오류가 발생했습니다.");
+                      return;
+
+                    } catch (e) {
+                      setState((){
+                        isLoading = false;
+                      });
+                      print("rent오류:$e");
+                      Common.showSnackBar(context, "오류가 발생했습니다.");
+                      return;
+                    }
+
+                  },
                   child: Container(
                     width: 290.w,
                     height: 44.h,
@@ -239,7 +337,13 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     decoration: BoxDecoration(
                         color: HexColor("#EE795F"),
                         borderRadius: BorderRadius.circular(25)),
-                    child: Text(
+                    child: isLoading ? Text(
+                      "신청중입니다...",
+                      style: TextStyle(
+                          color: HexColor("#F3F3F3"),
+                          fontSize: 21.5.sp,
+                          fontWeight: FontWeight.w600),
+                    ): Text(
                       "신청하기",
                       style: TextStyle(
                           color: HexColor("#F3F3F3"),
