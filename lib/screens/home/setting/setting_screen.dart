@@ -38,6 +38,7 @@ class _SettingScreenState extends State<SettingScreen> {
   String _studentNo = '';
   String _studentGroup = '';
   String _department = '';
+  final secureStorage = const FlutterSecureStorage();
 
   @override
   void initState() {
@@ -522,43 +523,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 16.h,
-            ),
-            Text(
-              "Tel : 02-970-7012",
-              style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w300,
-                  color: HexColor("#f3f3f3")),
-            ),
-            Text(
-              "서울시 노원구 공릉로 232 제 1학생회관(37호관) 226호",
-              style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w300,
-                  color: HexColor("#f3f3f3")),
-            ),
-            SizedBox(height: 4.h,),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w),
-              child: Text(
-                  "COPYRIGHT © SEOUL NATIONAL UNIVERSITY OF SCIENCE",
-                  style: TextStyle(
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w300,
-                      color: HexColor("#f3f3f3"))),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w),
-              child: Text(
-                  "AND TECHNOLOGY. All Rights Reserved.",
-                  style: TextStyle(
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w300,
-                      color: HexColor("#f3f3f3"))),
-            ),
-            SizedBox(height: 16.h,),
+            FooterWidgets()
           ],
         ),
       ),
@@ -576,14 +541,11 @@ class _SettingScreenState extends State<SettingScreen> {
   /// #################### 로그아웃 ####################
   /// ################################################
   Future<void> _logout(NavigatorState navigator) async {
-    final secureStorage = FlutterSecureStorage();
     var ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
     var REFRESH_TOKEN = await secureStorage.read(key: "REFRESH_TOKEN");
 
-    Common.setIsLogin(false);
-
-    Map<String, dynamic> resData91 = {};
-    resData91["status"] = 400;
+    Map<String, dynamic> resData = {};
+    resData["status"] = 400;
 
     try {
       var resString = await http.get(
@@ -592,12 +554,9 @@ class _SettingScreenState extends State<SettingScreen> {
             "Authorization": "Bearer $ACCESS_TOKEN",
             "Refresh": "Bearer $REFRESH_TOKEN"
           }).timeout(const Duration(seconds: 10));
-      resData91 = jsonDecode(utf8.decode(resString.bodyBytes));
-    } on TimeoutException catch (e) {
-      print(e);
-    } on SocketException catch (e) {
-      print(e);
+      resData = jsonDecode(utf8.decode(resString.bodyBytes));
     } catch (e) {
+      print("_logout() call : Error");
       print(e);
     }
 
@@ -608,6 +567,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
     await Common.setNonLogin(false);
     await Common.setAutoLogin(false);
+    Common.setIsLogin(false);
     await Common.clearStudentInfoPref();
 
     print("#################### 로그아웃 ####################");
@@ -635,12 +595,66 @@ class _SettingScreenState extends State<SettingScreen> {
   void _launchInstagram() async {
     const nativeUrl = "instagram://user?username=seoultech_38";
     const webUrl = "https://www.instagram.com/seoultech_38/";
-    if (await canLaunchUrl(Uri.parse(nativeUrl))) {
-      await launchUrl(Uri.parse(nativeUrl));
-    } else if (await canLaunchUrlString(webUrl)) {
+
+    if (Platform.isIOS) {
+      if (await canLaunchUrl(Uri.parse(nativeUrl))) {
+        await launchUrl(Uri.parse(nativeUrl));
+      } else if (await canLaunchUrlString(webUrl)) {
+        await launchUrlString(webUrl);
+      } else {
+        print("can't open Instagram");
+      }
+      return;
+    }
+
+    if (await canLaunchUrlString(webUrl)) {
       await launchUrlString(webUrl);
     } else {
-      print("can't open Instagram");
+      throw 'Could not launch $webUrl';
     }
+  }
+
+  Widget FooterWidgets() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 16.h,
+        ),
+        Text(
+          "Tel : 02-970-7012",
+          style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w300,
+              color: HexColor("#f3f3f3")),
+        ),
+        Text(
+          "서울시 노원구 공릉로 232 제 1학생회관(37호관) 226호",
+          style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w300,
+              color: HexColor("#f3f3f3")),
+        ),
+        SizedBox(height: 4.h,),
+        Padding(
+          padding: EdgeInsets.only(left: 16.w),
+          child: Text(
+              "COPYRIGHT © SEOUL NATIONAL UNIVERSITY OF SCIENCE",
+              style: TextStyle(
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w300,
+                  color: HexColor("#f3f3f3"))),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 16.w),
+          child: Text(
+              "AND TECHNOLOGY. All Rights Reserved.",
+              style: TextStyle(
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w300,
+                  color: HexColor("#f3f3f3"))),
+        ),
+        SizedBox(height: 16.h,),
+      ],
+    );
   }
 }

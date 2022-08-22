@@ -1322,28 +1322,29 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                   );
                                 });
                           } else {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text("위치 서비스 사용"),
-                                    content: const Text(
-                                        "위치서비스를 사용할 수 없습니다.\n기기의 설정에서 위치서비스를 켜주세요."),
-                                    actions: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("확인")),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            AppSettings.openAppSettings();
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("설정으로 이동")),
-                                    ],
-                                  );
-                                });
+                            return;
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (context) {
+                            //       return AlertDialog(
+                            //         title: const Text("위치 서비스 사용"),
+                            //         content: const Text(
+                            //             "위치서비스를 사용할 수 없습니다.\n기기의 설정에서 위치서비스를 켜주세요."),
+                            //         actions: [
+                            //           ElevatedButton(
+                            //               onPressed: () {
+                            //                 Navigator.pop(context);
+                            //               },
+                            //               child: const Text("확인")),
+                            //           ElevatedButton(
+                            //               onPressed: () {
+                            //                 AppSettings.openAppSettings();
+                            //                 Navigator.pop(context);
+                            //               },
+                            //               child: const Text("설정으로 이동")),
+                            //         ],
+                            //       );
+                            //     });
                           }
                         }
                       },
