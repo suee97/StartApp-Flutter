@@ -1607,82 +1607,41 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                                                                         Navigator.pop(context);
                                                                                                         showDialog(
                                                                                                             context: context,
-                                                                                                            builder:
-                                                                                                                (BuildContext context) {
+                                                                                                            builder: (BuildContext context) {
                                                                                                               return Dialog(
-                                                                                                                  backgroundColor:
-                                                                                                                  Colors.transparent,
-                                                                                                                  insetPadding:
-                                                                                                                  EdgeInsets.all(10),
-                                                                                                                  shape:
-                                                                                                                  RoundedRectangleBorder(
-                                                                                                                    borderRadius:
-                                                                                                                    BorderRadius
-                                                                                                                        .circular(20.0),
+                                                                                                                  backgroundColor: Colors.transparent,
+                                                                                                                  insetPadding: EdgeInsets.all(10),
+                                                                                                                  shape: RoundedRectangleBorder(
+                                                                                                                    borderRadius: BorderRadius.circular(20.0),
                                                                                                                   ),
-                                                                                                                  child: Stack(
-                                                                                                                      clipBehavior:
-                                                                                                                      Clip.none,
-                                                                                                                      alignment:
-                                                                                                                      Alignment.center,
-                                                                                                                      children: <Widget>[
-                                                                                                                        Container(
-                                                                                                                            width: 340.w,
-                                                                                                                            height: 230.h,
-                                                                                                                            decoration: BoxDecoration(
-                                                                                                                                borderRadius:
-                                                                                                                                BorderRadius.circular(
-                                                                                                                                    20),
-                                                                                                                                color: HexColor(
-                                                                                                                                    "#F8EAE1")),
-                                                                                                                            alignment:
-                                                                                                                            Alignment
-                                                                                                                                .center,
-                                                                                                                            padding: EdgeInsets
-                                                                                                                                .fromLTRB(
-                                                                                                                                50.w,
-                                                                                                                                77.h,
-                                                                                                                                50.w,
-                                                                                                                                13
-                                                                                                                                    .h),
-                                                                                                                            child: Column(
-                                                                                                                                mainAxisAlignment:
-                                                                                                                                MainAxisAlignment
-                                                                                                                                    .spaceBetween,
-                                                                                                                                children: [
-                                                                                                                                  Text(
-                                                                                                                                    "축하합니다!",
-                                                                                                                                    style: TextStyle(
-                                                                                                                                        color:
-                                                                                                                                        HexColor("#425C5A"),
-                                                                                                                                        fontWeight: FontWeight.w600,
-                                                                                                                                        fontSize: 37.5.sp),
-                                                                                                                                  ),
-                                                                                                                                  SizedBox(
-                                                                                                                                    height:
-                                                                                                                                    4.h,
-                                                                                                                                  ),
-                                                                                                                                  Text(
-                                                                                                                                    "상품 수령 완료",
-                                                                                                                                    style: TextStyle(
-                                                                                                                                        color:
-                                                                                                                                        HexColor("#EE795F"),
-                                                                                                                                        fontWeight: FontWeight.w600,
-                                                                                                                                        fontSize: 25.5.sp),
-                                                                                                                                  ),
-                                                                                                                                  SizedBox(
-                                                                                                                                    height:
-                                                                                                                                    50.h,
-                                                                                                                                  ),
-                                                                                                                                  Text(
-                                                                                                                                    "스템프 이벤트 참여가 더이상 불가능합니다.",
-                                                                                                                                    style: TextStyle(
-                                                                                                                                        color:
-                                                                                                                                        HexColor("#EE795F"),
-                                                                                                                                        fontSize: 12.5.sp),
-                                                                                                                                  )
-                                                                                                                                ]))
-                                                                                                                      ]));
+                                                                                                                  child: Stack(clipBehavior: Clip.none, alignment: Alignment.center, children: <Widget>[
+                                                                                                                    Container(
+                                                                                                                        width: 340.w,
+                                                                                                                        height: 230.h,
+                                                                                                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: HexColor("#F8EAE1")),
+                                                                                                                        alignment: Alignment.center,
+                                                                                                                        padding: EdgeInsets.fromLTRB(50.w, 77.h, 50.w, 13.h),
+                                                                                                                        child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                                                                                                          Text(
+                                                                                                                            "축하합니다!",
+                                                                                                                            style: TextStyle(color: HexColor("#425C5A"), fontWeight: FontWeight.w600, fontSize: 37.5.sp),
+                                                                                                                          ),
+                                                                                                                          SizedBox(
+                                                                                                                            height: 4.h,
+                                                                                                                          ),
+                                                                                                                          Text(
+                                                                                                                            "상품 수령 완료",
+                                                                                                                            style: TextStyle(color: HexColor("#EE795F"), fontWeight: FontWeight.w600, fontSize: 25.5.sp),
+                                                                                                                          ),
+                                                                                                                          SizedBox(
+                                                                                                                            height: 50.h,
+                                                                                                                          ),
+                                                                                                                          Text(
+                                                                                                                            "스템프 이벤트 참여가 더이상 불가능합니다.",
+                                                                                                                            style: TextStyle(color: HexColor("#EE795F"), fontSize: 12.5.sp),
+                                                                                                                          )
+                                                                                                                        ]))
+                                                                                                                  ]));
                                                                                                             });
                                                                                                       });
                                                                                                     }),
