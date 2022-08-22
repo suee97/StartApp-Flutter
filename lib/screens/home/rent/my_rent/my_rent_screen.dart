@@ -10,6 +10,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/rent/my_rent/rent_tile.dart';
 import 'package:http/http.dart' as http;
+import 'package:start_app/screens/login/login_screen.dart';
 import 'dart:io' show Platform;
 import '../../../../models/rent.dart';
 import '../../../../models/status_code.dart';
@@ -140,12 +141,26 @@ class _MyRentScreenState extends State<MyRentScreen> {
       isLoading = true;
     });
     final authTokenAndReIssueResult = await Auth.authTokenAndReIssue();
-    if (authTokenAndReIssueResult != StatusCode.SUCCESS) {
+    if (authTokenAndReIssueResult == StatusCode.UNCATCHED_ERROR) {
       setState(() {
         isLoading = false;
       });
       return Future.error("fetchRentList() call : Error");
     }
+
+    if (authTokenAndReIssueResult == StatusCode.REFRESH_EXPIRED) {
+      setState(() {
+        isLoading = false;
+      });
+      if(mounted) {
+        Navigator.pushAndRemoveUntil(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()), (
+            route) => false);
+      }
+
+      return Future.error("fetchRentList() call : refresh token expired");
+    }
+
     final AT = await Auth.secureStorage.read(key: "ACCESS_TOKEN");
 
     try {
@@ -154,7 +169,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
         "Authorization": "Bearer $AT"
       }).timeout(const Duration(seconds: 30));
       Map<String, dynamic> resData =
-          jsonDecode(utf8.decode(resString.bodyBytes));
+      jsonDecode(utf8.decode(resString.bodyBytes));
       List<dynamic> data = resData["data"];
       print(data);
 

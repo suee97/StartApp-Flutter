@@ -36,7 +36,7 @@ class Auth {
         print("Common.authAccessToken() call : access token이 만료되었습니다.");
         print("Common.authAccessToken() call : access token : $AT");
         print("Common.authAccessToken() call : refresh token : $RT");
-        return StatusCode.EXPIRED;
+        return StatusCode.ACCESS_EXPIRED;
       }
 
       print("Common.authAccessToken() call : Error");
@@ -79,6 +79,13 @@ class Auth {
         return StatusCode.SUCCESS;
       }
 
+      if (resData["status"] == 401) {
+        print("Common.authAccessToken() call : refresh token이 만료되었습니다.");
+        print("Common.authAccessToken() call : access token : $AT");
+        print("Common.authAccessToken() call : refresh token : $RT");
+        return StatusCode.REFRESH_EXPIRED;
+      }
+
       print(resData);
       print("reIssueAccessToken() call : Error 토큰 재발급 실패");
       return StatusCode.UNCATCHED_ERROR;
@@ -94,12 +101,17 @@ class Auth {
     if (authAccessTokenResult == StatusCode.SUCCESS) {
       return StatusCode.SUCCESS;
     }
-    if (authAccessTokenResult == StatusCode.EXPIRED) {
+    if (authAccessTokenResult == StatusCode.ACCESS_EXPIRED) {
       final reIssueAccessTokenResult = await reIssueAccessToken();
-      if (reIssueAccessTokenResult != StatusCode.SUCCESS) {
-        return StatusCode.UNCATCHED_ERROR;
+
+      if (reIssueAccessTokenResult == StatusCode.REFRESH_EXPIRED) {
+        return StatusCode.REFRESH_EXPIRED;
       }
-      return StatusCode.SUCCESS;
+
+      if (reIssueAccessTokenResult == StatusCode.SUCCESS) {
+        return StatusCode.SUCCESS;
+      }
+      return StatusCode.UNCATCHED_ERROR;
     }
     return StatusCode.UNCATCHED_ERROR;
   }
