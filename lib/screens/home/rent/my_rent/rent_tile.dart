@@ -44,12 +44,12 @@ class RentTile extends StatelessWidget {
                         Text(
                           "이름 : ",
                           style: TextStyle(
-                              fontSize: 15.5.sp, fontWeight: FontWeight.w500),
+                              fontSize: 14.sp, fontWeight: FontWeight.w500),
                         ),
                         Text(
                           rent.itemCategory,
                           style: TextStyle(
-                              fontSize: 13.5.sp, fontWeight: FontWeight.w400),
+                              fontSize: 14.sp, fontWeight: FontWeight.w400),
                         )
                       ],
                     ),
@@ -61,12 +61,12 @@ class RentTile extends StatelessWidget {
                         Text(
                           "수량 : ",
                           style: TextStyle(
-                              fontSize: 15.5.sp, fontWeight: FontWeight.w500),
+                              fontSize: 14.sp, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          rent.amount.toString(),
+                          rent.account.toString(),
                           style: TextStyle(
-                              fontSize: 13.5.sp, fontWeight: FontWeight.w400),
+                              fontSize: 14.sp, fontWeight: FontWeight.w400),
                         )
                       ],
                     ),
@@ -75,7 +75,7 @@ class RentTile extends StatelessWidget {
                 Text(
                   "대여기간 :${Common.dateRange(rent.startTime, rent.endTime)}",
                   style:
-                      TextStyle(fontSize: 15.5.sp, fontWeight: FontWeight.w500),
+                      TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
                 ),
               ],
             ),
@@ -96,7 +96,7 @@ class RentTile extends StatelessWidget {
           Text(
             getKrStringFromStatus(rent.rentStatus),
             style: TextStyle(
-                fontSize: 15.5.sp,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
                 color: getRentColorFromStatus(rent.rentStatus)),
           )
