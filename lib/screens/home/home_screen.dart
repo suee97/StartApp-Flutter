@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,7 +31,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   double pageIndex = 0.0;
-
   List<String> bannerLinkList = [];
 
   @override
@@ -64,248 +64,268 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Container(
-        color: HexColor("#425C5A"),
-        height: double.infinity,
-        width: double.infinity,
+      body: DoubleBackToCloseApp(
+        snackBar: SnackBar(
+          content: const Text(
+            "한번 더 누르면 앱이 종료됩니다.",
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Colors.black,
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              width: 0,
+            ),
+          ),
+        ),
         child: Container(
+          color: HexColor("#425C5A"),
+          height: double.infinity,
           width: double.infinity,
-          decoration: BoxDecoration(
-              color: HexColor("#f3f3f3"),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              )),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 25.h,
-              ),
-              FutureBuilder(
-                future: fetchBannerLinkList(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.data == StatusCode.SUCCESS) {
-                    return Column(
-                      children: [
-                        SizedBox(
-                            width: 280.w,
-                            height: 280.h,
-                            child: PageView.builder(
-                              controller: PageController(
-                                initialPage: 0,
-                              ),
-                              onPageChanged: (page) {
-                                setState(() {
-                                  pageIndex = page.toDouble();
-                                });
-                              },
-                              itemCount: bannerLinkList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return AspectRatio(
-                                  aspectRatio: 1 / 1,
-                                  child: CachedNetworkImage(
-                                    imageUrl: bannerLinkList[index],
-                                    placeholder: (context, url) => Platform
-                                            .isIOS
-                                        ? const CupertinoActivityIndicator()
-                                        : Center(
-                                            child: CircularProgressIndicator(
-                                            color: HexColor("#425c5a"),
-                                          )),
-                                    errorWidget: (context, url, error) =>
-                                        Center(
-                                      child: AspectRatio(
-                                        aspectRatio: 1 / 1,
-                                        child: Container(
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                              color: HexColor("#c4c4c4"),
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              const Image(
-                                                  image: AssetImage(
-                                                      "images/logo_crying_ready.png")),
-                                              Text(
-                                                "이미지를 불러오지 못했습니다.",
-                                                style: TextStyle(
-                                                    fontSize: 16.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: HexColor("#6c6c6c")),
-                                              )
-                                            ],
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: HexColor("#f3f3f3"),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                )),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 25.h,
+                ),
+                FutureBuilder(
+                  future: fetchBannerLinkList(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.data == StatusCode.SUCCESS) {
+                      return Column(
+                        children: [
+                          SizedBox(
+                              width: 280.w,
+                              height: 280.h,
+                              child: PageView.builder(
+                                controller: PageController(
+                                  initialPage: 0,
+                                ),
+                                onPageChanged: (page) {
+                                  setState(() {
+                                    pageIndex = page.toDouble();
+                                  });
+                                },
+                                itemCount: bannerLinkList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return AspectRatio(
+                                    aspectRatio: 1 / 1,
+                                    child: CachedNetworkImage(
+                                      imageUrl: bannerLinkList[index],
+                                      placeholder: (context, url) => Platform
+                                              .isIOS
+                                          ? const CupertinoActivityIndicator()
+                                          : Center(
+                                              child: CircularProgressIndicator(
+                                              color: HexColor("#425c5a"),
+                                            )),
+                                      errorWidget: (context, url, error) =>
+                                          Center(
+                                        child: AspectRatio(
+                                          aspectRatio: 1 / 1,
+                                          child: Container(
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                                color: HexColor("#c4c4c4"),
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const Image(
+                                                    image: AssetImage(
+                                                        "images/logo_crying_ready.png")),
+                                                Text(
+                                                  "이미지를 불러오지 못했습니다.",
+                                                  style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color:
+                                                          HexColor("#6c6c6c")),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            )),
-                        SizedBox(
-                          height: 4.h,
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                          child: DotsIndicator(
-                            dotsCount: bannerLinkList.length,
-                            position: pageIndex.toDouble(),
-                            decorator: DotsDecorator(
-                              activeColor: HexColor("#EE795F"),
+                                  );
+                                },
+                              )),
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                            child: DotsIndicator(
+                              dotsCount: bannerLinkList.length,
+                              position: pageIndex.toDouble(),
+                              decorator: DotsDecorator(
+                                activeColor: HexColor("#EE795F"),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  } else if (snapshot.data == StatusCode.SERVER_ERROR) {
-                    return Column(
-                      children: [
-                        BannerContainer("이미지를 불러오지 못했습니다."),
-                        SizedBox(
-                          height: 24.h,
-                        )
-                      ],
-                    );
-                  } else if (snapshot.data == StatusCode.UNCATCHED_ERROR) {
-                    return Column(
-                      children: [
-                        BannerContainer("이미지를 불러오지 못했습니다."),
-                        SizedBox(
-                          height: 24.h,
-                        )
-                      ],
-                    );
-                  } else if (snapshot.data == StatusCode.TIMEOUT_ERROR) {
-                    return Column(
-                      children: [
-                        BannerContainer("이미지를 불러오지 못했습니다."),
-                        SizedBox(
-                          height: 24.h,
-                        )
-                      ],
-                    );
-                  } else if (snapshot.data == StatusCode.CONNECTION_ERROR) {
-                    return Column(
-                      children: [
-                        BannerContainer("오류가 발생했습니다."),
-                        SizedBox(
-                          height: 24.h,
-                        )
-                      ],
-                    );
-                  } else {
-                    return Column(
-                      children: [
-                        Container(
-                            width: 280.w,
-                            height: 280.h,
-                            child: Platform.isIOS
-                                ? CupertinoActivityIndicator()
-                                : Center(
-                                    child: CircularProgressIndicator(
-                                      color: HexColor("#425c5a"),
-                                    ),
-                                  )),
-                        SizedBox(
-                          height: 24.h,
-                        )
-                      ],
-                    );
-                  }
-                },
-              ),
-              Column(children: [
-                const YellowLine(),
-                SizedBox(
-                  height: 12.h,
+                        ],
+                      );
+                    } else if (snapshot.data == StatusCode.SERVER_ERROR) {
+                      return Column(
+                        children: [
+                          BannerContainer("이미지를 불러오지 못했습니다."),
+                          SizedBox(
+                            height: 24.h,
+                          )
+                        ],
+                      );
+                    } else if (snapshot.data == StatusCode.UNCATCHED_ERROR) {
+                      return Column(
+                        children: [
+                          BannerContainer("이미지를 불러오지 못했습니다."),
+                          SizedBox(
+                            height: 24.h,
+                          )
+                        ],
+                      );
+                    } else if (snapshot.data == StatusCode.TIMEOUT_ERROR) {
+                      return Column(
+                        children: [
+                          BannerContainer("이미지를 불러오지 못했습니다."),
+                          SizedBox(
+                            height: 24.h,
+                          )
+                        ],
+                      );
+                    } else if (snapshot.data == StatusCode.CONNECTION_ERROR) {
+                      return Column(
+                        children: [
+                          BannerContainer("오류가 발생했습니다."),
+                          SizedBox(
+                            height: 24.h,
+                          )
+                        ],
+                      );
+                    } else {
+                      return Column(
+                        children: [
+                          Container(
+                              width: 280.w,
+                              height: 280.h,
+                              child: Platform.isIOS
+                                  ? CupertinoActivityIndicator()
+                                  : Center(
+                                      child: CircularProgressIndicator(
+                                        color: HexColor("#425c5a"),
+                                      ),
+                                    )),
+                          SizedBox(
+                            height: 24.h,
+                          )
+                        ],
+                      );
+                    }
+                  },
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      MainWidget(
-                          title: "총학생회 설명",
-                          svgPath: "assets/icon_info.svg",
-                          isUnderRow: false,
-                          onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const InfoScreen()))
-                              }),
-                      MainWidget(
-                          title: "학사일정",
-                          svgPath: "assets/icon_plan.svg",
-                          isUnderRow: false,
-                          onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const PlanScreen()))
-                              }),
-                      MainWidget(
-                          title: "재학생 확인 및\n자치회비 납부 확인",
-                          svgPath: "assets/icon_status.svg",
-                          isUnderRow: false,
-                          onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const StatusScreen()))
-                              }),
-                    ]),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      MainWidget(
-                          title: "상시사업",
-                          svgPath: "assets/icon_rent.svg",
-                          isUnderRow: true,
-                          onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RentScreen()))
-                              }),
-                      MainWidget(
-                          title: "축제 이벤트",
-                          svgPath: "assets/icon_festival.svg",
-                          isUnderRow: true,
-                          onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const FestivalScreen()))
-                              }),
-                      MainWidget(
-                          title: "이벤트 참여",
-                          svgPath: "assets/icon_event.svg",
-                          isUnderRow: true,
-                          onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const EventScreen()))
-                              }),
-                    ]),
-                SizedBox(
-                  height: 8.h,
-                ),
-                const YellowLine(),
-              ]),
-            ],
+                Column(children: [
+                  const YellowLine(),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        MainWidget(
+                            title: "총학생회 설명",
+                            svgPath: "assets/icon_info.svg",
+                            isUnderRow: false,
+                            onPressed: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const InfoScreen()))
+                                }),
+                        MainWidget(
+                            title: "학사일정",
+                            svgPath: "assets/icon_plan.svg",
+                            isUnderRow: false,
+                            onPressed: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PlanScreen()))
+                                }),
+                        MainWidget(
+                            title: "재학생 확인 및\n자치회비 납부 확인",
+                            svgPath: "assets/icon_status.svg",
+                            isUnderRow: false,
+                            onPressed: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const StatusScreen()))
+                                }),
+                      ]),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        MainWidget(
+                            title: "상시사업",
+                            svgPath: "assets/icon_rent.svg",
+                            isUnderRow: true,
+                            onPressed: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RentScreen()))
+                                }),
+                        MainWidget(
+                            title: "축제 이벤트",
+                            svgPath: "assets/icon_festival.svg",
+                            isUnderRow: true,
+                            onPressed: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const FestivalScreen()))
+                                }),
+                        MainWidget(
+                            title: "이벤트 참여",
+                            svgPath: "assets/icon_event.svg",
+                            isUnderRow: true,
+                            onPressed: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EventScreen()))
+                                }),
+                      ]),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  const YellowLine(),
+                ]),
+              ],
+            ),
           ),
         ),
       ),
