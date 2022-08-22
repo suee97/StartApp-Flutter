@@ -478,6 +478,17 @@ class _FestivalScreenState extends State<FestivalScreen> {
   }
 
   Future<void> checkStamps() async {
+    if(!Common.getIsLogin()){
+      setState((){
+        isExhibition = false;
+        isFleamarket = false;
+        isSangSang = false;
+        isBungEoBang = false;
+        isGround = false;
+        allCollectedCheck = false;
+      });
+      return;
+    }
     final getStampStatusResult = await getStampStatus();
     if (getStampStatusResult == StatusCode.SUCCESS) {
       //5개를 모두 모았다면,
