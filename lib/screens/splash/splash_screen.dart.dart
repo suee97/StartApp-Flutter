@@ -290,6 +290,7 @@ class _SplashScreenState extends State<SplashScreen> {
         await pref.setString("appCreatedAt", data[0]["createdAt"]);
         await pref.setString("appUpdatedAt", data[0]["updatedAt"]);
         await pref.setString("appMemberStatus", data[0]["memberStatus"]);
+        await pref.setString("appPhoneNo", data[0]["phoneNo"]);
 
         return StatusCode.SUCCESS;
       }
