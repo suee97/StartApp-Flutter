@@ -487,7 +487,30 @@ class _FestivalScreenState extends State<FestivalScreen> {
             return StatusCode.UNCATCHED_ERROR;
           }
         }
+      if (resData["status"] == 401) {
+        final getNewAccessTokenResult = await getNewAccessToken();
+        if (getNewAccessTokenResult == StatusCode.SUCCESS) {
+          final AT = await secureStorage.read(key: "ACCESS_TOKEN");
 
+          try {
+            final resString = await http.get(
+                Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/stamp"),
+                headers: {
+                  "Authorization": "Bearer $AT"
+                }).timeout(const Duration(seconds: 30));
+            resData = jsonDecode(utf8.decode(resString.bodyBytes));
+
+            if (resData["status"] == 200) {
+              print("새로운 access 토큰으로 수집 api 성공");
+              return StatusCode.SUCCESS;
+            }
+
+            return StatusCode.UNCATCHED_ERROR;
+          } catch (e) {
+            print("새로운 access 토큰 발급 후 수집 api 시도했으나 실패");
+            return StatusCode.UNCATCHED_ERROR;
+          }
+        }
         if (getNewAccessTokenResult == StatusCode.UNCATCHED_ERROR) {
           return StatusCode.UNCATCHED_ERROR;
         }
@@ -846,6 +869,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                 }
                               },
                             ),
+
                           ],
                         ),
                       );
@@ -946,6 +970,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                 }
                               },
                             ),
+
                           ],
                         ),
                       );
@@ -1050,6 +1075,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                   await finishSetStamp("bungeobang");
                                 }
                               },
+
                             ),
                           ],
                         ),
@@ -1164,6 +1190,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                               //거리가 멀어서 도장을 찍을 수 없음.
                                               Common.showSnackBar(context,
                                                   "거리가 멀어 도장을 찍을 수 없어요.");
+
                                               return;
                                             }
                                             setState(() {
@@ -1579,6 +1606,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                                                             height: 240.h,
                                                                                             padding: EdgeInsets.fromLTRB(20.w, 49.h, 20.w, 27.h),
                                                                                             child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+
                                                                                               Text(
                                                                                                 "상품 수령",
                                                                                                 style: TextStyle(fontSize: 33.5.sp, fontWeight: FontWeight.w600, color: HexColor("#425C5A")),

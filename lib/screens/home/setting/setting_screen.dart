@@ -543,7 +543,16 @@ class _SettingScreenState extends State<SettingScreen> {
             Padding(
               padding: EdgeInsets.only(left: 16.w),
               child: Text(
-                  "COPYRIGHT © SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY. All Rights Reserved.",
+                  "COPYRIGHT © SEOUL NATIONAL UNIVERSITY OF SCIENCE",
+                  style: TextStyle(
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w300,
+                      color: HexColor("#f3f3f3"))),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.w),
+              child: Text(
+                  "AND TECHNOLOGY. All Rights Reserved.",
                   style: TextStyle(
                       fontSize: 11.sp,
                       fontWeight: FontWeight.w300,

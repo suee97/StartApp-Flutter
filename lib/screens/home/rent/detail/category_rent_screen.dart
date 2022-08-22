@@ -9,14 +9,16 @@ import '../../../../utils/common.dart';
 class CategoryRentScreen extends StatelessWidget {
   CategoryRentScreen(
       {Key? key,
-      required this.category,
+      required this.categoryKr,
+      required this.categoryEng,
       required this.itemIcon,
       required this.itemImg,
       required this.itemPurpose,
       required this.itemWarning})
       : super(key: key);
 
-  String category;
+  String categoryKr;
+  String categoryEng;
   String itemIcon;
   String itemImg;
   String itemPurpose;
@@ -59,7 +61,7 @@ class CategoryRentScreen extends StatelessWidget {
                   width: 12.w,
                 ),
                 RentDetailText(
-                    category: category,
+                    category: categoryKr,
                     itemPurpose: itemPurpose,
                     itemWarning: itemWarning)
               ],
@@ -110,46 +112,48 @@ class CategoryRentScreen extends StatelessWidget {
                   ),
                   Common.getIsLogin()
                       ? GestureDetector(
-                    onTap: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RentApplyScreen(
-                                    category: category,
-                                    itemIcon: itemIcon,
-                                  )))
-                    },
-                    child: Container(
-                      width: 320.w,
-                      height: 50.h,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: HexColor("#ffcea2"),
-                          borderRadius: BorderRadius.circular(25)),
-                      child: Text(
-                        "대여하러 가기",
-                        style: TextStyle(
-                            fontSize: 21.5.sp, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ) : GestureDetector(
-                    onTap: () => {
-                    Common.showSnackBar(context, "로그인이 필요한 기능입니다.")
-                    },
-                    child: Container(
-                      width: 320.w,
-                      height: 50.h,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: HexColor("#ffcea2"),
-                          borderRadius: BorderRadius.circular(25)),
-                      child: Text(
-                        "대여하러 가기",
-                        style: TextStyle(
-                            fontSize: 21.5.sp, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ),
+                          onTap: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RentApplyScreen(
+                                          category: categoryKr,
+                                          itemIcon: itemIcon,
+                                        )))
+                          },
+                          child: Container(
+                            width: 320.w,
+                            height: 50.h,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: HexColor("#ffcea2"),
+                                borderRadius: BorderRadius.circular(25)),
+                            child: Text(
+                              "대여하러 가기",
+                              style: TextStyle(
+                                  fontSize: 21.5.sp,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () =>
+                              {Common.showSnackBar(context, "로그인이 필요한 기능입니다.")},
+                          child: Container(
+                            width: 320.w,
+                            height: 50.h,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: HexColor("#ffcea2"),
+                                borderRadius: BorderRadius.circular(25)),
+                            child: Text(
+                              "대여하러 가기",
+                              style: TextStyle(
+                                  fontSize: 21.5.sp,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
                   SizedBox(
                     height: 20.h,
                   )
