@@ -11,15 +11,19 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/setting/app_info/dev_info_screen.dart';
 import 'package:start_app/screens/home/setting/app_info/update_info_screen.dart';
-import 'package:start_app/screens/home/setting/policy/location_policy_screen.dart';
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
+import 'package:start_app/screens/home/setting/policy/service_policy_screen.dart';
 import 'package:start_app/screens/home/setting/setting_semi_title.dart';
 import 'package:http/http.dart' as http;
+import 'package:start_app/screens/home/setting/suggest/suggest_error_screen.dart';
+import 'package:start_app/screens/home/setting/suggest/suggest_etc_screen.dart';
+import 'package:start_app/screens/home/setting/suggest/suggest_feature_screen.dart';
 import 'package:start_app/screens/login/login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../utils/common.dart';
 import '../../../utils/department_match.dart';
+import '../../../widgets/start_android_dialog.dart';
 import '../../splash/splash_screen.dart.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -87,77 +91,120 @@ class _SettingScreenState extends State<SettingScreen> {
                   padding: EdgeInsets.only(left: 15.w),
                   child: Common.getIsLogin()
                       ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _name,
-                        style: TextStyle(
-                            fontSize: 15.5.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      Text(
-                        _studentNo,
-                        style: TextStyle(
-                            fontSize: 13.5.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text(_studentGroup,
-                          style: TextStyle(
-                              fontSize: 13.5.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500)),
-                      Text(_department,
-                          style: TextStyle(
-                              fontSize: 13.5.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500)),
-                    ],
-                  )
-                      : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "로그인이 필요합니다.",
-                        style: TextStyle(
-                            fontSize: 15.5.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                  const LoginScreen()),
-                                  (route) => false);
-                        },
-                        child: Container(
-                          width: 100.w,
-                          height: 20.h,
-                          decoration: BoxDecoration(
-                              color: HexColor("#FFCEA2"),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                            child: Text(
-                              "로그인하러 가기",
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _name,
                               style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: HexColor("#425C5A"),
+                                  fontSize: 15.5.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Text(
+                              _studentNo,
+                              style: TextStyle(
+                                  fontSize: 13.5.sp,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w500),
                             ),
-                          ),
+                            Text(_studentGroup,
+                                style: TextStyle(
+                                    fontSize: 13.5.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)),
+                            Text(_department,
+                                style: TextStyle(
+                                    fontSize: 13.5.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "로그인이 필요합니다.",
+                              style: TextStyle(
+                                  fontSize: 15.5.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (Platform.isIOS) {
+                                  showCupertinoDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return CupertinoAlertDialog(
+                                          content: const Text(
+                                              "확인을 누르면 로그인 화면으로 이동합니다."),
+                                          actions: [
+                                            CupertinoDialogAction(
+                                                isDefaultAction: false,
+                                                child: const Text("확인"),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pushAndRemoveUntil(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const LoginScreen()),
+                                                          (route) => false);
+                                                }),
+                                            CupertinoDialogAction(
+                                                isDefaultAction: false,
+                                                child: const Text("취소"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                })
+                                          ],
+                                        );
+                                      });
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return StartAndroidDialog(
+                                          title: "확인을 누르면 로그인 화면으로 이동합니다.",
+                                          onOkPressed: () {
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const LoginScreen()),
+                                                    (route) => false);
+                                          },
+                                          onCancelPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        );
+                                      });
+                                }
+                              },
+                              child: Container(
+                                width: 100.w,
+                                height: 20.h,
+                                decoration: BoxDecoration(
+                                    color: HexColor("#FFCEA2"),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Text(
+                                    "로그인 하기",
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: HexColor("#425C5A"),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
                 )
               ],
             ),
@@ -217,20 +264,14 @@ class _SettingScreenState extends State<SettingScreen> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return AlertDialog(
-                                content: const Text("로그아웃 하시겠습니까?"),
-                                actions: [
-                                  ElevatedButton(
-                                      onPressed: () async {
-                                        await _logout(navigator);
-                                      },
-                                      child: const Text("확인")),
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("취소")),
-                                ],
+                              return StartAndroidDialog(
+                                title: "로그아웃 하시겠습니까?",
+                                onOkPressed: () async {
+                                  await _logout(navigator);
+                                },
+                                onCancelPressed: () {
+                                  Navigator.pop(context);
+                                },
                               );
                             });
                       }
@@ -335,7 +376,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   Container(
                       margin: EdgeInsets.only(left: 20.w),
                       child: Text(
-                        "약관 및 정책",
+                        "제안사항",
                         style: TextStyle(
                             fontSize: 17.sp,
                             fontWeight: FontWeight.w500,
@@ -345,25 +386,32 @@ class _SettingScreenState extends State<SettingScreen> {
                     height: 8.h,
                   ),
                   SettingSemiTitle(
-                    title: "서비스 이용약관",
-                    onPressed: () {},
-                  ),
-                  SettingSemiTitle(
-                    title: "위치기반서비스 이용약관",
+                    title: "기능개선 제안",
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LocationPolicyScreen()));
+                              builder: (context) =>
+                                  const SuggestFeatureScreen()));
                     },
                   ),
                   SettingSemiTitle(
-                    title: "개인정보 처리방침",
+                    title: "오류 신고",
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PrivacyPolicyScreen()));
+                              builder: (context) =>
+                                  const SuggestErrorScreen()));
+                    },
+                  ),
+                  SettingSemiTitle(
+                    title: "기타 제안",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SuggestEtcScreen()));
                     },
                   ),
                   SizedBox(
@@ -372,9 +420,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 8.h,
-            ),
+            SizedBox(height: 8.h,),
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(left: 10.w, right: 10.w),
@@ -390,7 +436,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   Container(
                       margin: EdgeInsets.only(left: 20.w),
                       child: Text(
-                        "제안사항",
+                        "약관 및 정책",
                         style: TextStyle(
                             fontSize: 17.sp,
                             fontWeight: FontWeight.w500,
@@ -400,16 +446,24 @@ class _SettingScreenState extends State<SettingScreen> {
                     height: 8.h,
                   ),
                   SettingSemiTitle(
-                    title: "기능개선 제안",
-                    onPressed: () {},
+                    title: "서비스 이용약관",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              const ServicePolicyScreen()));
+                    },
                   ),
                   SettingSemiTitle(
-                    title: "오류 신고",
-                    onPressed: () {},
-                  ),
-                  SettingSemiTitle(
-                    title: "기타 제안",
-                    onPressed: () {},
+                    title: "개인정보 처리방침",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              const PrivacyPolicyScreen()));
+                    },
                   ),
                   SizedBox(
                     height: 8.h,
@@ -450,7 +504,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => UpdateInfoScreen()));
+                              builder: (context) => const UpdateInfoScreen()));
                     },
                   ),
                   SettingSemiTitle(
@@ -459,7 +513,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DevInfoScreen()));
+                              builder: (context) => const DevInfoScreen()));
                     },
                   ),
                   SizedBox(
@@ -470,7 +524,32 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
             SizedBox(
               height: 16.h,
-            )
+            ),
+            Text(
+              "Tel : 02-970-7012",
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w300,
+                  color: HexColor("#f3f3f3")),
+            ),
+            Text(
+              "서울시 노원구 공릉로 232 제 1학생회관(37호관) 226호",
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w300,
+                  color: HexColor("#f3f3f3")),
+            ),
+            SizedBox(height: 4.h,),
+            Padding(
+              padding: EdgeInsets.only(left: 16.w),
+              child: Text(
+                  "COPYRIGHT © SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY. All Rights Reserved.",
+                  style: TextStyle(
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w300,
+                      color: HexColor("#f3f3f3"))),
+            ),
+            SizedBox(height: 16.h,),
           ],
         ),
       ),
@@ -529,7 +608,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
     navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const SplashScreen()),
-            (route) => false);
+        (route) => false);
   }
 
   void _loadStudentInfo() async {

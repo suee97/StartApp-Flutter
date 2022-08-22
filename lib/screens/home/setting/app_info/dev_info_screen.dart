@@ -25,7 +25,7 @@ class DevInfoScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Image(image: AssetImage("images/logo_app.png")),
+              const Image(image: AssetImage("images/logo_app_mini.png")),
               Text(
                 "어플리케이션 버전",
                 style: TextStyle(
@@ -37,7 +37,7 @@ class DevInfoScreen extends StatelessWidget {
                 "1.0.0",
                 style: TextStyle(
                     fontSize: 49.5.sp,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w500,
                     color: HexColor("#425C5A")),
               ),
               Text(
@@ -48,9 +48,9 @@ class DevInfoScreen extends StatelessWidget {
                     color: HexColor("#425C5A")),
               ),
               Text(
-                "dev.suee97@gmail.com",
+                "dev.seoultech@gmail.com",
                 style: TextStyle(
-                    fontSize: 21.5.sp,
+                    fontSize: 19.5.sp,
                     fontWeight: FontWeight.w600,
                     color: HexColor("#425C5A")),
               ),
@@ -80,7 +80,7 @@ class DevInfoScreen extends StatelessWidget {
                       fontWeight: FontWeight.w300,
                       color: HexColor("#425C5A"))),
               SizedBox(
-                height: 28.h,
+                height: 16.h,
               )
             ],
           ),

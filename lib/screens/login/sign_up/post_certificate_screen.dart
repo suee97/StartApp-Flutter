@@ -107,7 +107,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                       source: ImageSource.camera,
                       maxWidth: 640,
                       maxHeight: 280,
-                      imageQuality: 50 //0-100
+                      imageQuality: 100 //0-100
                       );
 
                   if (file?.path != null) {

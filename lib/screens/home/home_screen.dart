@@ -20,7 +20,6 @@ import 'package:start_app/widgets/main_widget.dart';
 import '../../utils/common.dart';
 import '../../widgets/yellow_line.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io' show Platform;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -279,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const RentScreen()))
                               }),
                       MainWidget(
-                          title: "주 사업",
+                          title: "축제 이벤트",
                           svgPath: "assets/icon_festival.svg",
                           isUnderRow: true,
                           onPressed: () => {
