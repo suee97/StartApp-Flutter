@@ -487,7 +487,30 @@ class _FestivalScreenState extends State<FestivalScreen> {
             return StatusCode.UNCATCHED_ERROR;
           }
         }
+      if (resData["status"] == 401) {
+        final getNewAccessTokenResult = await getNewAccessToken();
+        if (getNewAccessTokenResult == StatusCode.SUCCESS) {
+          final AT = await secureStorage.read(key: "ACCESS_TOKEN");
 
+          try {
+            final resString = await http.get(
+                Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/stamp"),
+                headers: {
+                  "Authorization": "Bearer $AT"
+                }).timeout(const Duration(seconds: 30));
+            resData = jsonDecode(utf8.decode(resString.bodyBytes));
+
+            if (resData["status"] == 200) {
+              print("새로운 access 토큰으로 수집 api 성공");
+              return StatusCode.SUCCESS;
+            }
+
+            return StatusCode.UNCATCHED_ERROR;
+          } catch (e) {
+            print("새로운 access 토큰 발급 후 수집 api 시도했으나 실패");
+            return StatusCode.UNCATCHED_ERROR;
+          }
+        }
         if (getNewAccessTokenResult == StatusCode.UNCATCHED_ERROR) {
           return StatusCode.UNCATCHED_ERROR;
         }
@@ -709,50 +732,43 @@ class _FestivalScreenState extends State<FestivalScreen> {
                             height: 23.h,
                           ),
                           OutlinedButton(
-                              style: ButtonStyle(
-                                  overlayColor:
-                                  MaterialStateProperty.resolveWith(
-                                          (state) => HexColor("#5C7775")),
-                                  backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                          (state) => HexColor("#425c5a")),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15.0),
-                                        side: BorderSide(
-                                            color: HexColor("#425c5a")),
-                                      )
-                                  )
-                              ),
-                              child: StampButton(
-                                  title: isExhibition ? "도장찍기완료!" : "도장찍기"),
-                                  onPressed: () async {
-                                    if (!Common.getIsLogin()) {
-                                      Common.showSnackBar(
-                                          context, "로그인이 필요한 기능입니다.");
-                                      return;
-                                    }
-                                    if (isExhibition) {
-                                      //도장을 이미 찍은 상태
-                                      Common.showSnackBar(
-                                          context, "이미 도장을 찍었습니다.");
-                                      return;
-                                    } else {
-                                      //도장을 안 찍은 상태
-                                      await getDistance(
-                                          37.6313962, 127.0767797);
-                                      print("거리확인2: $mydistance");
-                                      if (mydistance < 50) {
-                                        //거리가 멀어서 도장을 찍을 수 없음.
-                                        Common.showSnackBar(
-                                            context, "거리가 멀어 도장을 찍을 수 없어요.");
-                                        return;
-                                      }
-                                      finishSetStamp("exhibition");
-                                    }
-                                  },),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateProperty.resolveWith(
+                                    (state) => HexColor("#5C7775")),
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith(
+                                        (state) => HexColor("#425c5a")),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  side: BorderSide(color: HexColor("#425c5a")),
+                                ))),
+                            child: StampButton(
+                                title: isExhibition ? "도장찍기완료!" : "도장찍기"),
+                            onPressed: () async {
+                              if (!Common.getIsLogin()) {
+                                Common.showSnackBar(context, "로그인이 필요한 기능입니다.");
+                                return;
+                              }
+                              if (isExhibition) {
+                                //도장을 이미 찍은 상태
+                                Common.showSnackBar(context, "이미 도장을 찍었습니다.");
+                                return;
+                              } else {
+                                //도장을 안 찍은 상태
+                                await getDistance(37.6313962, 127.0767797);
+                                print("거리확인2: $mydistance");
+                                if (mydistance < 50) {
+                                  //거리가 멀어서 도장을 찍을 수 없음.
+                                  Common.showSnackBar(
+                                      context, "거리가 멀어 도장을 찍을 수 없어요.");
+                                  return;
+                                }
+                                finishSetStamp("exhibition");
+                              }
+                            },
+                          ),
                         ],
                       ),
                     );
@@ -812,52 +828,48 @@ class _FestivalScreenState extends State<FestivalScreen> {
                             SizedBox(
                               height: 23.h,
                             ),
-                          OutlinedButton(
+                            OutlinedButton(
                               style: ButtonStyle(
                                   overlayColor:
-                                  MaterialStateProperty.resolveWith(
+                                      MaterialStateProperty.resolveWith(
                                           (state) => HexColor("#5C7775")),
                                   backgroundColor:
-                                  MaterialStateProperty.resolveWith(
+                                      MaterialStateProperty.resolveWith(
                                           (state) => HexColor("#425c5a")),
                                   shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                          RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15.0),
-                                        side: BorderSide(
-                                            color: HexColor("#425c5a")),
-                                      )
-                                  )
-                              ),
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    side:
+                                        BorderSide(color: HexColor("#425c5a")),
+                                  ))),
                               child: StampButton(
                                   title: isFleamarket ? "도장찍기완료!" : "도장찍기"),
-                                    onPressed: () async {
-                                      if (!Common.getIsLogin()) {
-                                        Common.showSnackBar(
-                                            context, "로그인이 필요한 기능입니다.");
-                                        return;
-                                      }
-                                      if (isFleamarket) {
-                                        //도장을 이미 찍은 상태
-                                        Common.showSnackBar(
-                                            context, "이미 도장을 찍었습니다.");
-                                        return;
-                                      } else {
-                                        //도장을 안 찍은 상태
-                                        await getDistance(
-                                            37.6327762, 127.077273);
-                                        print("거리확인2: $mydistance");
-                                        if (mydistance < 50) {
-                                          //거리가 멀어서 도장을 찍을 수 없음.
-                                          Common.showSnackBar(
-                                              context, "거리가 멀어 도장을 찍을 수 없어요.");
-                                          return;
-                                        }
-                                        finishSetStamp("fleamarket");
-                                      }
-                                    },
-                          ),
+                              onPressed: () async {
+                                if (!Common.getIsLogin()) {
+                                  Common.showSnackBar(
+                                      context, "로그인이 필요한 기능입니다.");
+                                  return;
+                                }
+                                if (isFleamarket) {
+                                  //도장을 이미 찍은 상태
+                                  Common.showSnackBar(context, "이미 도장을 찍었습니다.");
+                                  return;
+                                } else {
+                                  //도장을 안 찍은 상태
+                                  await getDistance(37.6327762, 127.077273);
+                                  print("거리확인2: $mydistance");
+                                  if (mydistance < 50) {
+                                    //거리가 멀어서 도장을 찍을 수 없음.
+                                    Common.showSnackBar(
+                                        context, "거리가 멀어 도장을 찍을 수 없어요.");
+                                    return;
+                                  }
+                                  finishSetStamp("fleamarket");
+                                }
+                              },
+                            ),
+
                           ],
                         ),
                       );
@@ -914,55 +926,51 @@ class _FestivalScreenState extends State<FestivalScreen> {
                             SizedBox(
                               height: 23.h,
                             ),
-                          OutlinedButton(
+                            OutlinedButton(
                               style: ButtonStyle(
                                   overlayColor:
-                                  MaterialStateProperty.resolveWith(
+                                      MaterialStateProperty.resolveWith(
                                           (state) => HexColor("#5C7775")),
                                   backgroundColor:
-                                  MaterialStateProperty.resolveWith(
+                                      MaterialStateProperty.resolveWith(
                                           (state) => HexColor("#425c5a")),
                                   shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                          RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15.0),
-                                        side: BorderSide(
-                                            color: HexColor("#425c5a")),
-                                      )
-                                  )
-                              ),
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    side:
+                                        BorderSide(color: HexColor("#425c5a")),
+                                  ))),
                               child: StampButton(
                                   title: isSangSang ? "도장찍기완료!" : "도장찍기"),
-                                    onPressed: () async {
-                                      if (!Common.getIsLogin()) {
-                                        Common.showSnackBar(
-                                            context, "로그인이 필요한 기능입니다.");
-                                        return;
-                                      }
-                                      if (isSangSang) {
-                                        //도장을 이미 찍은 상태
-                                        Common.showSnackBar(
-                                            context, "이미 도장을 찍었습니다.");
-                                        return;
-                                      } else {
-                                        //도장을 안 찍은 상태
-                                        await getDistance(
-                                            37.63089, 127.0796858);
-                                        print("거리확인2: $mydistance");
-                                        if (mydistance < 50) {
-                                          //거리가 멀어서 도장을 찍을 수 없음.
-                                          Common.showSnackBar(
-                                              context, "거리가 멀어 도장을 찍을 수 없어요.");
-                                          return;
-                                        }
-                                        setState(() {
-                                          isSangSang = true;
-                                        });
-                                        await finishSetStamp("sangsang");
-                                      }
-                                    },
-                                    ),
+                              onPressed: () async {
+                                if (!Common.getIsLogin()) {
+                                  Common.showSnackBar(
+                                      context, "로그인이 필요한 기능입니다.");
+                                  return;
+                                }
+                                if (isSangSang) {
+                                  //도장을 이미 찍은 상태
+                                  Common.showSnackBar(context, "이미 도장을 찍었습니다.");
+                                  return;
+                                } else {
+                                  //도장을 안 찍은 상태
+                                  await getDistance(37.63089, 127.0796858);
+                                  print("거리확인2: $mydistance");
+                                  if (mydistance < 50) {
+                                    //거리가 멀어서 도장을 찍을 수 없음.
+                                    Common.showSnackBar(
+                                        context, "거리가 멀어 도장을 찍을 수 없어요.");
+                                    return;
+                                  }
+                                  setState(() {
+                                    isSangSang = true;
+                                  });
+                                  await finishSetStamp("sangsang");
+                                }
+                              },
+                            ),
+
                           ],
                         ),
                       );
@@ -1022,55 +1030,52 @@ class _FestivalScreenState extends State<FestivalScreen> {
                               height: 23.h,
                             ),
                             OutlinedButton(
-                                style: ButtonStyle(
-                                    overlayColor:
-                                    MaterialStateProperty.resolveWith(
-                                            (state) => HexColor("#5C7775")),
-                                    backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                            (state) => HexColor("#425c5a")),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(15.0),
-                                          side: BorderSide(
-                                              color: HexColor("#425c5a")),
-                                        )
-                                    )
-                                ),
-                                child: StampButton(
-                                    title: isBungEoBang ? "도장찍기완료!" : "도장찍기"),
-                                onPressed: () async {
-                                  if (!Common.getIsLogin()) {
+                              style: ButtonStyle(
+                                  overlayColor:
+                                      MaterialStateProperty.resolveWith(
+                                          (state) => HexColor("#5C7775")),
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith(
+                                          (state) => HexColor("#425c5a")),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    side:
+                                        BorderSide(color: HexColor("#425c5a")),
+                                  ))),
+                              child: StampButton(
+                                  title: isBungEoBang ? "도장찍기완료!" : "도장찍기"),
+                              onPressed: () async {
+                                if (!Common.getIsLogin()) {
+                                  Common.showSnackBar(
+                                      context, "로그인이 필요한 기능입니다.");
+                                  return;
+                                }
+
+                                if (isBungEoBang) {
+                                  //도장을 이미 찍은 상태
+                                  Common.showSnackBar(context, "이미 도장을 찍었습니다.");
+                                  return;
+                                } else {
+                                  //도장을 안 찍은 상태
+                                  await getDistance(37.6331603, 127.0785649);
+                                  print("거리확인2: $mydistance");
+                                  if (mydistance < 50) {
+                                    //거리가 멀어서 도장을 찍을 수 없음.
                                     Common.showSnackBar(
-                                        context, "로그인이 필요한 기능입니다.");
+                                        context, "거리가 멀어 도장을 찍을 수 없어요.");
                                     return;
                                   }
 
-                                  if (isBungEoBang) {
-                                    //도장을 이미 찍은 상태
-                                    Common.showSnackBar(
-                                        context, "이미 도장을 찍었습니다.");
-                                    return;
-                                  } else {
-                                    //도장을 안 찍은 상태
-                                    await getDistance(37.6331603, 127.0785649);
-                                    print("거리확인2: $mydistance");
-                                    if (mydistance < 50) {
-                                      //거리가 멀어서 도장을 찍을 수 없음.
-                                      Common.showSnackBar(
-                                          context, "거리가 멀어 도장을 찍을 수 없어요.");
-                                      return;
-                                    }
+                                  setState(() {
+                                    isBungEoBang = true;
+                                  });
 
-                                    setState(() {
-                                      isBungEoBang = true;
-                                    });
+                                  await finishSetStamp("bungeobang");
+                                }
+                              },
 
-                                    await finishSetStamp("bungeobang");
-                                  }
-                                },
                             ),
                           ],
                         ),
@@ -1091,12 +1096,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
                       return Dialog(
                           backgroundColor: Colors.transparent,
                           insetPadding: EdgeInsets.all(10),
-                          shape:
-                      RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(20.0),
-                      ),
-                      child: Stack(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Stack(
                             clipBehavior: Clip.none,
                             alignment: Alignment.center,
                             children: <Widget>[
@@ -1105,10 +1108,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                 height: 330.h,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: HexColor("#F8EAE1")
-                                ),
+                                    color: HexColor("#F8EAE1")),
                                 // padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
-                                padding: EdgeInsets.fromLTRB(34.w, 21.h, 34.w, 21.h),
+                                padding:
+                                    EdgeInsets.fromLTRB(34.w, 21.h, 34.w, 21.h),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -1135,33 +1138,37 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                       height: 22.h,
                                     ),
                                     isGround
-                                        ? SvgPicture.asset("assets/stamp_ground.svg",
-                                        width: 130.w, height: 130.h)
+                                        ? SvgPicture.asset(
+                                            "assets/stamp_ground.svg",
+                                            width: 130.w,
+                                            height: 130.h)
                                         : SvgPicture.asset(
-                                        "assets/gray_stamp_ground.svg",
-                                        width: 130.w,
-                                        height: 130.h),
+                                            "assets/gray_stamp_ground.svg",
+                                            width: 130.w,
+                                            height: 130.h),
                                     SizedBox(
                                       height: 23.h,
                                     ),
                                     OutlinedButton(
                                         style: ButtonStyle(
-                                            overlayColor:
-                                            MaterialStateProperty.resolveWith(
-                                                    (state) => HexColor("#5C7775")),
+                                            overlayColor: MaterialStateProperty
+                                                .resolveWith((state) =>
+                                                    HexColor("#5C7775")),
                                             backgroundColor:
-                                            MaterialStateProperty.resolveWith(
-                                                    (state) => HexColor("#425c5a")),
+                                                MaterialStateProperty
+                                                    .resolveWith((state) =>
+                                                        HexColor("#425c5a")),
                                             shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
-                                                  borderRadius:
+                                              borderRadius:
                                                   BorderRadius.circular(15.0),
-                                                  side: BorderSide(
-                                                      color: HexColor("#425c5a")),
-                                                ))),
+                                              side: BorderSide(
+                                                  color: HexColor("#425c5a")),
+                                            ))),
                                         child: StampButton(
-                                            title: isGround ? "도장찍기완료!" : "도장찍기"),
+                                            title:
+                                                isGround ? "도장찍기완료!" : "도장찍기"),
                                         onPressed: () async {
                                           if (!Common.getIsLogin()) {
                                             Common.showSnackBar(
@@ -1181,8 +1188,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                             print("거리확인2: $mydistance");
                                             if (mydistance < 50) {
                                               //거리가 멀어서 도장을 찍을 수 없음.
-                                              Common.showSnackBar(
-                                                  context, "거리가 멀어 도장을 찍을 수 없어요.");
+                                              Common.showSnackBar(context,
+                                                  "거리가 멀어 도장을 찍을 수 없어요.");
+
                                               return;
                                             }
                                             setState(() {
@@ -1195,8 +1203,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                 ),
                               ),
                             ],
-                          )
-                      );
+                          ));
                     },
                   );
                 });
@@ -1405,173 +1412,178 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                 isBungEoBang &&
                                 isSangSang &&
                                 isFleamarket
-                            ? Dialog(
-                            backgroundColor: Colors.transparent,
-                            insetPadding: EdgeInsets.all(10),
-                            shape:
-                            RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.circular(20.0),
-                            ),
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              alignment: Alignment.center,
-                              children: <Widget>[
-                                Container(
-                                  width: 340.w,
-                                  height: 240.h,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: HexColor("#F8EAE1")
-                                  ),
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.fromLTRB(24.w, 58.h, 16.77.h, 58.51.w),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/stamp_allcollected.svg",
-                                          width: 80.w,
-                                          height: 93.49.h,
+                            ? Stack(children: [
+                                Dialog(
+                                    backgroundColor: Colors.transparent,
+                                    insetPadding: EdgeInsets.all(10),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: Stack(
+                                      clipBehavior: Clip.none,
+                                      alignment: Alignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          width: 340.w,
+                                          height: 230.h,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: HexColor("#F8EAE1")),
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.fromLTRB(
+                                              24.w, 58.h, 21.77.w, 58.51.h),
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SvgPicture.asset(
+                                                  "assets/stamp_allcollected.svg",
+                                                  width: 80.w,
+                                                  height: 93.49.h,
+                                                ),
+                                                SizedBox(
+                                                  width: 19.w,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      "도장 이벤트",
+                                                      style: TextStyle(
+                                                          fontSize: 25.5.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: HexColor(
+                                                              "#425C5A")),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 3.h,
+                                                    ),
+                                                    Text("성공",
+                                                        style: TextStyle(
+                                                            fontSize: 33.5.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: HexColor(
+                                                                "#425C5A"))),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  width: 20.w,
+                                                ),
+                                                Container(
+                                                    width: 24.w, height: 60.h)
+                                              ]),
                                         ),
-                                        SizedBox(
-                                          width: 19.w,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "도장 이벤트",
-                                              style: TextStyle(
-                                                  fontSize: 25.5.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: HexColor("#425C5A")),
-                                            ),
-                                            SizedBox(
-                                              height: 3.h,
-                                            ),
-                                            Text("성공",
-                                                style: TextStyle(
-                                                    fontSize: 33.5.sp,
-                                                    fontWeight:
-                                                    FontWeight.w600,
-                                                    color:
-                                                    HexColor("#425C5A"))),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          width: 20.w,
-                                        ),
-                                        GestureDetector(
-                                          child: SvgPicture.asset(
-                                            "assets/icon_stamp_next.svg",
-                                            width: 24.w,
-                                            height: 60.h,
-                                          ),
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                            setState(() {
-                                              allCollectedCheck = true;
-                                            });
-                                            //스탬프를 모두 모았다는 값을 하나 두고 api 업데이트??
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return Stack(
-                                                    children: [
-                                                      Dialog(
-                                                          backgroundColor:
-                                                          HexColor(
-                                                              "#F8EAE1"),
-                                                          shape: RoundedRectangleBorder(
+                                      ],
+                                    )),
+                                Center(
+                                    child: Container(
+                                        width: double.infinity,
+                                        height: 230.h,
+                                        child: Stack(children: [
+                                          Container(
+                                              width: double.infinity,
+                                              height: 230.h,
+                                              alignment: Alignment.center,
+                                              child: lottie.Lottie.asset(
+                                                "assets/lottie_congratulations.json",
+                                              )),
+                                          Container(
+                                              width: double.infinity,
+                                              height: 230.h,
+                                              child: GestureDetector(
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  height: double.infinity,
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      24.w,
+                                                      58.h,
+                                                      21.7.w,
+                                                      58.51.h),
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icon_stamp_next.svg",
+                                                    width: 24.w,
+                                                    height: 60.h,
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return Dialog(
+                                                            backgroundColor:
+                                                                HexColor(
+                                                                    "#F8EAE1"),
+                                                            insetPadding:
+                                                                EdgeInsets.all(
+                                                                    10),
+                                                            shape:
+                                                                RoundedRectangleBorder(
                                                               borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  20)),
-                                                          child: Container(
-                                                            width: double
-                                                                .infinity,
-                                                            height: 230.h,
-                                                            padding: EdgeInsets
-                                                                .only(
-                                                                top:
-                                                                50.h),
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                              children: [
-                                                                Text(
-                                                                  "미션 참여 완료",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                      33.5
-                                                                          .sp,
-                                                                      fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                      color: HexColor(
-                                                                          "#425C5A")),
-                                                                ),
-                                                                SizedBox(
-                                                                  height:
-                                                                  10.h,
-                                                                ),
-                                                                Text(
-                                                                  "전당포(상품수령장소)에 가서\n담당자에게 확인 후 상품을 수령하세요.",
-                                                                  textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                      12.5
-                                                                          .sp,
-                                                                      color: HexColor(
-                                                                          "#EE795F")),
-                                                                ),
-                                                              ],
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20.0),
                                                             ),
-                                                          )),
-                                                      Center(
-                                                          child: Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              height: 230.h,
-                                                              child: Stack(
-                                                                  children: [
-                                                                    Container(
-                                                                        width: double
-                                                                            .infinity,
-                                                                        height: 230
-                                                                            .h,
-                                                                        alignment: Alignment
-                                                                            .center,
-                                                                        child:
-                                                                        lottie.Lottie.asset(
-                                                                          "assets/lottie_congratulations.json",
-                                                                        )),
-                                                                    Container(
-                                                                        width: double
-                                                                            .infinity,
-                                                                        height: 230
-                                                                            .h,
-                                                                        padding:
-                                                                        EdgeInsets.only(bottom: 45.h),
-                                                                        child: GestureDetector(
+                                                            child: Stack(
+                                                                clipBehavior:
+                                                                    Clip.none,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Container(
+                                                                    width:
+                                                                        340.w,
+                                                                    height:
+                                                                        230.h,
+                                                                    padding: EdgeInsets
+                                                                        .fromLTRB(
+                                                                            20.w,
+                                                                            73.h,
+                                                                            20.w,
+                                                                            13.h),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                          "미션 참여 완료",
+                                                                          style: TextStyle(
+                                                                              fontSize: 33.5.sp,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              color: HexColor("#425C5A")),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              11.h,
+                                                                        ),
+                                                                        GestureDetector(
                                                                           child:
-                                                                          Container(
-                                                                            width: 200.w,
-                                                                            height: 40.h,
-                                                                            margin: EdgeInsets.only(top: 145.h, left: 76.w, right: 76.w),
-                                                                            alignment: Alignment.center,
-                                                                            decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.circular(25)),
-                                                                            child: Text(
+                                                                              Container(
+                                                                            width:
+                                                                                200.w,
+                                                                            height:
+                                                                                40.h,
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            decoration:
+                                                                                BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.circular(20)),
+                                                                            child:
+                                                                                Text(
                                                                               "상품 수령",
                                                                               style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600, decoration: TextDecoration.none),
                                                                             ),
@@ -1584,121 +1596,173 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                                                 builder: (BuildContext context) {
                                                                                   return Dialog(
                                                                                       backgroundColor: HexColor("#F8EAE1"),
-                                                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                                                                      child: Container(
-                                                                                          width: double.infinity,
-                                                                                          height: 230.h,
-                                                                                          child: Column(
-                                                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                                                            children: [
+                                                                                      insetPadding: EdgeInsets.all(10),
+                                                                                      shape: RoundedRectangleBorder(
+                                                                                        borderRadius: BorderRadius.circular(30.0),
+                                                                                      ),
+                                                                                      child: Stack(clipBehavior: Clip.none, alignment: Alignment.center, children: <Widget>[
+                                                                                        Container(
+                                                                                            width: 320.w,
+                                                                                            height: 240.h,
+                                                                                            padding: EdgeInsets.fromLTRB(20.w, 49.h, 20.w, 27.h),
+                                                                                            child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+
                                                                                               Text(
                                                                                                 "상품 수령",
                                                                                                 style: TextStyle(fontSize: 33.5.sp, fontWeight: FontWeight.w600, color: HexColor("#425C5A")),
                                                                                               ),
                                                                                               SizedBox(
-                                                                                                height: 10.h,
+                                                                                                height: 8.h,
                                                                                               ),
                                                                                               Text("확인 버튼을 누르면\n더이상 상품수령이 불가합니다.\n담당자에게 확인 후 버튼을 클릭해주세요.", textAlign: TextAlign.center, style: TextStyle(fontSize: 12.5.sp, color: HexColor("#EE795F"))),
                                                                                               SizedBox(
-                                                                                                height: 10.h,
+                                                                                                height: 23.h,
                                                                                               ),
-                                                                                              Row(
-                                                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                                                children: [
-                                                                                                  GestureDetector(
-                                                                                                      child: Container(
-                                                                                                        width: 100.w,
-                                                                                                        height: 40.h,
-                                                                                                        // margin: EdgeInsets.only(
-                                                                                                        //     top: 16.h, bottom: 30.h),
-                                                                                                        alignment: Alignment.center,
-                                                                                                        decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.circular(25)),
-                                                                                                        child: Text(
-                                                                                                          "확인",
-                                                                                                          style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                      onTap: () {
+                                                                                              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                                                                                GestureDetector(
+                                                                                                    child: Container(
+                                                                                                      width: 130.w,
+                                                                                                      height: 40.h,
+                                                                                                      alignment: Alignment.center,
+                                                                                                      decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
+                                                                                                      child: Text("확인", style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600)),
+                                                                                                    ),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
                                                                                                         setState(() {
-                                                                                                          setState(() {
-                                                                                                            getPrize = true;
-                                                                                                          });
-                                                                                                          Navigator.pop(context);
-                                                                                                          showDialog(
-                                                                                                              context: context,
-                                                                                                              builder: (BuildContext context) {
-                                                                                                                return Dialog(
-                                                                                                                    backgroundColor: HexColor("#F8EAE1"),
-                                                                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                                                                                                    child: Container(
-                                                                                                                        width: double.infinity,
-                                                                                                                        height: 230.h,
-                                                                                                                        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                                                                                                          Text(
-                                                                                                                            "축하합니다!",
-                                                                                                                            style: TextStyle(color: HexColor("#425C5A"), fontWeight: FontWeight.w600, fontSize: 37.5.sp),
-                                                                                                                          ),
-                                                                                                                          SizedBox(
-                                                                                                                            height: 4.h,
-                                                                                                                          ),
-                                                                                                                          Text(
-                                                                                                                            "상품 수령 완료",
-                                                                                                                            style: TextStyle(color: HexColor("#EE795F"), fontWeight: FontWeight.w600, fontSize: 25.5.sp),
-                                                                                                                          ),
-                                                                                                                          SizedBox(
-                                                                                                                            height: 50.h,
-                                                                                                                          ),
-                                                                                                                          Text(
-                                                                                                                            "스템프 이벤트 참여가 더이상 불가능합니다.",
-                                                                                                                            style: TextStyle(color: HexColor("#EE795F"), fontSize: 12.5.sp),
-                                                                                                                          )
-                                                                                                                        ])));
-                                                                                                              });
+                                                                                                          getPrize = true;
                                                                                                         });
-                                                                                                      }),
-                                                                                                  SizedBox(
-                                                                                                    width: 10.w,
-                                                                                                  ),
-                                                                                                  GestureDetector(
-                                                                                                      child: Container(
-                                                                                                        width: 100.w,
-                                                                                                        height: 40.h,
-                                                                                                        alignment: Alignment.center,
-                                                                                                        decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.circular(25)),
-                                                                                                        child: Text(
-                                                                                                          "취소",
-                                                                                                          style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                      onTap: () {
-                                                                                                        Navigator.of(context, rootNavigator: true).pop();
-                                                                                                      })
-                                                                                                ],
-                                                                                              )
-                                                                                            ],
-                                                                                          )));
+                                                                                                        Navigator.pop(context);
+                                                                                                        showDialog(
+                                                                                                            context: context,
+                                                                                                            builder:
+                                                                                                                (BuildContext context) {
+                                                                                                              return Dialog(
+                                                                                                                  backgroundColor:
+                                                                                                                  Colors.transparent,
+                                                                                                                  insetPadding:
+                                                                                                                  EdgeInsets.all(10),
+                                                                                                                  shape:
+                                                                                                                  RoundedRectangleBorder(
+                                                                                                                    borderRadius:
+                                                                                                                    BorderRadius
+                                                                                                                        .circular(20.0),
+                                                                                                                  ),
+                                                                                                                  child: Stack(
+                                                                                                                      clipBehavior:
+                                                                                                                      Clip.none,
+                                                                                                                      alignment:
+                                                                                                                      Alignment.center,
+                                                                                                                      children: <Widget>[
+                                                                                                                        Container(
+                                                                                                                            width: 340.w,
+                                                                                                                            height: 230.h,
+                                                                                                                            decoration: BoxDecoration(
+                                                                                                                                borderRadius:
+                                                                                                                                BorderRadius.circular(
+                                                                                                                                    20),
+                                                                                                                                color: HexColor(
+                                                                                                                                    "#F8EAE1")),
+                                                                                                                            alignment:
+                                                                                                                            Alignment
+                                                                                                                                .center,
+                                                                                                                            padding: EdgeInsets
+                                                                                                                                .fromLTRB(
+                                                                                                                                50.w,
+                                                                                                                                77.h,
+                                                                                                                                50.w,
+                                                                                                                                13
+                                                                                                                                    .h),
+                                                                                                                            child: Column(
+                                                                                                                                mainAxisAlignment:
+                                                                                                                                MainAxisAlignment
+                                                                                                                                    .spaceBetween,
+                                                                                                                                children: [
+                                                                                                                                  Text(
+                                                                                                                                    "축하합니다!",
+                                                                                                                                    style: TextStyle(
+                                                                                                                                        color:
+                                                                                                                                        HexColor("#425C5A"),
+                                                                                                                                        fontWeight: FontWeight.w600,
+                                                                                                                                        fontSize: 37.5.sp),
+                                                                                                                                  ),
+                                                                                                                                  SizedBox(
+                                                                                                                                    height:
+                                                                                                                                    4.h,
+                                                                                                                                  ),
+                                                                                                                                  Text(
+                                                                                                                                    "상품 수령 완료",
+                                                                                                                                    style: TextStyle(
+                                                                                                                                        color:
+                                                                                                                                        HexColor("#EE795F"),
+                                                                                                                                        fontWeight: FontWeight.w600,
+                                                                                                                                        fontSize: 25.5.sp),
+                                                                                                                                  ),
+                                                                                                                                  SizedBox(
+                                                                                                                                    height:
+                                                                                                                                    50.h,
+                                                                                                                                  ),
+                                                                                                                                  Text(
+                                                                                                                                    "스템프 이벤트 참여가 더이상 불가능합니다.",
+                                                                                                                                    style: TextStyle(
+                                                                                                                                        color:
+                                                                                                                                        HexColor("#EE795F"),
+                                                                                                                                        fontSize: 12.5.sp),
+                                                                                                                                  )
+                                                                                                                                ]))
+                                                                                                                      ]));
+                                                                                                            });
+                                                                                                      });
+                                                                                                    }),
+                                                                                                SizedBox(
+                                                                                                  width: 6.w,
+                                                                                                ),
+                                                                                                GestureDetector(
+                                                                                                    child: Container(
+                                                                                                      width: 130.w,
+                                                                                                      height: 40.h,
+                                                                                                      alignment: Alignment.center,
+                                                                                                      decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))),
+                                                                                                      child: Text("취소", style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600)),
+                                                                                                    ),
+                                                                                                    onTap: () {
+                                                                                                      // Navigator.of(context, rootNavigator: true).pop();
+                                                                                                      Navigator.pop(context);
+                                                                                                    }),
+                                                                                              ])
+                                                                                            ]))
+                                                                                      ]));
                                                                                 });
                                                                           },
-                                                                        ))
-                                                                  ]))),
-                                                    ],
-                                                  );
-                                                });
-                                          },
-                                        )
-                                      ]),
-                                ),
-                              ],
-                            )
-                        )
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              30.h,
+                                                                        ),
+                                                                        Text(
+                                                                          "전당포(상품수령장소)에 가서\n담당자에게 확인 후 버튼을 클릭해 주세요.",
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style: TextStyle(
+                                                                              fontSize: 12.5.sp,
+                                                                              color: HexColor("#EE795F")),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  )
+                                                                ]));
+                                                      });
+                                                },
+                                              ))
+                                        ])))
+                              ])
                             : Dialog(
                                 backgroundColor: HexColor("#F8EAE1"),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Container(
                                     width: 340.w,
-                                    height: 240.h,
+                                    height: 230.h,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20)),
