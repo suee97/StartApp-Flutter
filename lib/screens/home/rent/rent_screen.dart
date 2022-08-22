@@ -48,7 +48,7 @@ class _RentScreenState extends State<RentScreen> {
     final List<Widget> rentScreenList = [
       CategoryRentScreen(
         categoryKr: "캐노피",
-        categoryEng: "canopy",
+        categoryEng: "CANOPY",
         itemIcon: "assets/icon_canopy_green.svg",
         itemImg: "images/rent_canopy_img.jpg",
         itemPurpose: "기둥과 천막으로 부스를 만들 수 있습니다.",
@@ -56,7 +56,7 @@ class _RentScreenState extends State<RentScreen> {
       ),
       CategoryRentScreen(
         categoryKr: "듀라테이블",
-        categoryEng: "table",
+        categoryEng: "TABLE",
         itemIcon: "assets/icon_table_green.svg",
         itemImg: "images/rent_table_img.jpg",
         itemPurpose: "간이 테이블로 사용할 수 있습니다.",
@@ -64,7 +64,7 @@ class _RentScreenState extends State<RentScreen> {
       ),
       CategoryRentScreen(
         categoryKr: "앰프&마이크",
-        categoryEng: "amp",
+        categoryEng: "AMP",
         itemIcon: "assets/icon_amp_green.svg",
         itemImg: "images/rent_amp_img.jpg",
         itemPurpose: "행사 시에 큰 음향을 낼 수 있습니다.",
@@ -72,7 +72,7 @@ class _RentScreenState extends State<RentScreen> {
       ),
       CategoryRentScreen(
         categoryKr: "리드선",
-        categoryEng: "wire",
+        categoryEng: "WIRE",
         itemIcon: "assets/icon_wire_green.svg",
         itemImg: "images/rent_wire_img.jpg",
         itemPurpose: "콘센트를 연장하여 사용할 수 있습니다.",
@@ -80,14 +80,14 @@ class _RentScreenState extends State<RentScreen> {
       ),
       CategoryRentScreen(
           categoryKr: "엘카",
-          categoryEng: "cart",
+          categoryEng: "CART",
           itemIcon: "assets/icon_cart_green.svg",
           itemImg: "images/rent_cart_img.jpg",
           itemPurpose: "여러 짐을 한 번에 옮길 수 있습니다.",
           itemWarning: "바퀴가 고장나지 않도록 주의 해주세요."),
       CategoryRentScreen(
           categoryKr: "의자",
-          categoryEng: "chair",
+          categoryEng: "CHAIR",
           itemIcon: "assets/icon_chair_green.svg",
           itemImg: "images/rent_chair_img.jpg",
           itemPurpose: "외부 행사 시에 간이 의자로 활용할 수 있습니다.",

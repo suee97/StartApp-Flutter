@@ -134,30 +134,3 @@ class Common {
     return _isLogin;
   }
 }
-
-// class NotificationBadge extends StatelessWidget {
-//   const NotificationBadge({Key? key, required this.totalNotifications}) : super(key: key);
-//
-//   final int totalNotifications;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 40,
-//         height: 40,
-//       decoration: const BoxDecoration(
-//         color: Colors.red,
-//         shape: BoxShape.circle
-//       ),
-//       child: Center(
-//         child: Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: Text(
-//             "$totalNotifications",
-//             style: TextStyle(color: Colors.white, fontSize: 20),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
