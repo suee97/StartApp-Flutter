@@ -133,6 +133,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
   void initState() {
     super.initState();
     setContentsInfo();
+    checkStamps();
     print("거리확인0: $mydistance");
     getDistance(
         initialCameraPosition.latitude, initialCameraPosition.longitude);
@@ -337,37 +338,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
   Future<void> finishSetStamp(String place) async {
     final setStampResult = await setStamp(place);
     if (setStampResult == StatusCode.SUCCESS) {
-      // if(place == "exhibition"){
-      //   setState(() {
-      //     isExhibition = true;
-      //   });
-      //   return;
-      // }
-      // if(place == "fleamarket"){
-      //   setState(() {
-      //     isFleamarket = true;
-      //   });
-      //   return;
-      // }
-      // if(place == "sangsang"){
-      //   setState(() {
-      //     isSangSang = true;
-      //   });
-      //   return;
-      // }
-      // if(place == "bungeobang"){
-      //   setState((){
-      //     isBungEoBang = true;
-      //   });
-      //   return;
-      // }
-      // if(place == "ground"){
-      //   setState((){
-      //     isGround = true;
-      //   });
-      //   return;
-      // }
-      Common.showSnackBar(context, "잠시 후 다시 시도해주세요.");
       return;
     }
     if (setStampResult == StatusCode.UNCATCHED_ERROR) {
@@ -505,6 +475,54 @@ class _FestivalScreenState extends State<FestivalScreen> {
     }
 
     return StatusCode.UNCATCHED_ERROR;
+  }
+
+  Future<void> checkStamps() async {
+    if(!Common.getIsLogin()){
+      setState((){
+        isExhibition = false;
+        isFleamarket = false;
+        isSangSang = false;
+        isBungEoBang = false;
+        isGround = false;
+        allCollectedCheck = false;
+      });
+      return;
+    }
+    final getStampStatusResult = await getStampStatus();
+    if (getStampStatusResult == StatusCode.SUCCESS) {
+      //5개를 모두 모았다면,
+      if (isExhibition &&
+          isGround &&
+          isBungEoBang &&
+          isSangSang &&
+          isFleamarket) {
+        setState((){
+          allCollectedCheck = true;
+        });
+        return;
+      }
+    }
+    if (getStampStatusResult == StatusCode.UNCATCHED_ERROR) {
+      Common.setIsLogin(false);
+      await Common.setNonLogin(false);
+      await Common.setAutoLogin(false);
+      await Common.clearStudentInfoPref();
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (context) => const LoginScreen()),
+          (route) => false);
+      Common.showSnackBar(context, "10. 다시 로그인해주세요.");
+      return;
+    }
+    if (getStampStatusResult == StatusCode.TIMEOUT_ERROR) {
+      Common.showSnackBar(context, "잠시 후 다시 시도해주세요.");
+      return;
+    }
+    if (getStampStatusResult == StatusCode.CONNECTION_ERROR) {
+      Common.showSnackBar(context, "네트워크 문제가 발생했습니다.");
+      return;
+    }
   }
 
   //refresh 토큰으로 access 토큰 발급하기
@@ -742,7 +760,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                       context, "거리가 멀어 도장을 찍을 수 없어요.");
                                   return;
                                 }
-                                finishSetStamp("exhibition");
+                                setState(() {
+                                  isExhibition = true;
+                                });
+                                await finishSetStamp("exhibition");
                               }
                             },
                           ),
@@ -842,7 +863,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         context, "거리가 멀어 도장을 찍을 수 없어요.");
                                     return;
                                   }
-                                  finishSetStamp("fleamarket");
+                                  setState(() {
+                                    isFleamarket = true;
+                                  });
+                                  await finishSetStamp("fleamarket");
                                 }
                               },
                             ),
@@ -1353,7 +1377,11 @@ class _FestivalScreenState extends State<FestivalScreen> {
                         isGround &&
                         isBungEoBang &&
                         isSangSang &&
-                        isFleamarket) {}
+                        isFleamarket) {
+                      setState((){
+                        allCollectedCheck = true;
+                      });
+                    }
                   }
                   if (getStampStatusResult == StatusCode.UNCATCHED_ERROR) {
                     Common.setIsLogin(false);
@@ -1381,10 +1409,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
                       builder: (BuildContext context) {
                         print("결정$isExhibition");
                         return isExhibition &&
-                                isGround &&
-                                isBungEoBang &&
-                                isSangSang &&
-                                isFleamarket
+                            isGround &&
+                            isBungEoBang &&
+                            isSangSang &&
+                            isFleamarket
                             ? Stack(children: [
                                 Dialog(
                                     backgroundColor: Colors.transparent,
@@ -1600,7 +1628,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                                                                       child: Text("확인", style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600)),
                                                                                                     ),
                                                                                                     onTap: () {
-                                                                                                      setState(() {
                                                                                                         setState(() {
                                                                                                           getPrize = true;
                                                                                                         });
@@ -1643,7 +1670,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                                                                                         ]))
                                                                                                                   ]));
                                                                                                             });
-                                                                                                      });
                                                                                                     }),
                                                                                                 SizedBox(
                                                                                                   width: 6.w,
@@ -1792,20 +1818,13 @@ class _FestivalScreenState extends State<FestivalScreen> {
                       });
                 },
               ),
+
+              //축제 컨텐츠 정보 조회
               GestureDetector(
                   child: Padding(
                     padding: EdgeInsets.only(right: 8.w),
                     child: Container(
                       child: SvgPicture.asset("assets/icon_festival_info.svg"),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 4,
-                            offset: Offset(4, 8), // Shadow position
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                   onTap: () {
