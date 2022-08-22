@@ -633,14 +633,25 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   void _launchInstagram() async {
-    const nativeUrl = "instagram://user?username=seoultech_38";
-    const webUrl = "https://www.instagram.com/seoultech_38/";
-    if (await canLaunchUrl(Uri.parse(nativeUrl))) {
-      await launchUrl(Uri.parse(nativeUrl));
-    } else if (await canLaunchUrlString(webUrl)) {
-      await launchUrlString(webUrl);
+
+    if (Platform.isIOS) {
+      const nativeUrl = "instagram://user?username=seoultech_38";
+      const webUrl = "https://www.instagram.com/seoultech_38/";
+      if (await canLaunchUrl(Uri.parse(nativeUrl))) {
+        await launchUrl(Uri.parse(nativeUrl));
+      } else if (await canLaunchUrlString(webUrl)) {
+        await launchUrlString(webUrl);
+      } else {
+        print("can't open Instagram");
+      }
+      return;
+    }
+
+    const url = 'https://www.instagram.com/seoultech_38/';
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
     } else {
-      print("can't open Instagram");
+      throw 'Could not launch $url';
     }
   }
 }
