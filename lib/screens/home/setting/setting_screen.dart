@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/setting/app_info/dev_info_screen.dart';
 import 'package:start_app/screens/home/setting/app_info/update_info_screen.dart';
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
+import 'package:start_app/screens/home/setting/policy/service_policy_screen.dart';
 import 'package:start_app/screens/home/setting/setting_semi_title.dart';
 import 'package:http/http.dart' as http;
 import 'package:start_app/screens/home/setting/suggest/suggest_error_screen.dart';
@@ -141,16 +142,18 @@ class _SettingScreenState extends State<SettingScreen> {
                                       context: context,
                                       builder: (context) {
                                         return CupertinoAlertDialog(
-                                          content: const Text("확인을 누르면 로그인 화면으로 이동합니다."),
+                                          content: const Text(
+                                              "확인을 누르면 로그인 화면으로 이동합니다."),
                                           actions: [
                                             CupertinoDialogAction(
                                                 isDefaultAction: false,
                                                 child: const Text("확인"),
                                                 onPressed: () {
-                                                  Navigator.of(context).pushAndRemoveUntil(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                          const LoginScreen()),
+                                                  Navigator.of(context)
+                                                      .pushAndRemoveUntil(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const LoginScreen()),
                                                           (route) => false);
                                                 }),
                                             CupertinoDialogAction(
@@ -169,10 +172,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                         return StartAndroidDialog(
                                           title: "확인을 누르면 로그인 화면으로 이동합니다.",
                                           onOkPressed: () {
-                                            Navigator.of(context).pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                    const LoginScreen()),
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const LoginScreen()),
                                                     (route) => false);
                                           },
                                           onCancelPressed: () {
@@ -383,7 +387,12 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   SettingSemiTitle(
                     title: "서비스 이용약관",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ServicePolicyScreen()));
+                    },
                   ),
                   SettingSemiTitle(
                     title: "개인정보 처리방침",
@@ -391,7 +400,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PrivacyPolicyScreen()));
+                              builder: (context) => const PrivacyPolicyScreen()));
                     },
                   ),
                   SizedBox(
@@ -433,7 +442,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SuggestFeatureScreen()));
+                              builder: (context) => const SuggestFeatureScreen()));
                     },
                   ),
                   SettingSemiTitle(
@@ -442,7 +451,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SuggestErrorScreen()));
+                              builder: (context) => const SuggestErrorScreen()));
                     },
                   ),
                   SettingSemiTitle(
@@ -451,7 +460,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SuggestEtcScreen()));
+                              builder: (context) => const SuggestEtcScreen()));
                     },
                   ),
                   SizedBox(
@@ -493,7 +502,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => UpdateInfoScreen()));
+                              builder: (context) => const UpdateInfoScreen()));
                     },
                   ),
                   SettingSemiTitle(
@@ -502,7 +511,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DevInfoScreen()));
+                              builder: (context) => const DevInfoScreen()));
                     },
                   ),
                   SizedBox(
@@ -513,7 +522,19 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
             SizedBox(
               height: 16.h,
-            )
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 8.w, right: 8.w),
+              child: Text(
+                "서울 노원구 공릉로 232 제1학생회관(37호관) 226호 Tel : 02-970-7012",
+                style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w300,
+                    color: HexColor("#f3f3f3")),
+              ),
+            ),
+            Text(
+                "COPYRIGHT © SEOUL NATIONAL UNIVERSITY OF SCIENCE AND TECHNOLOGY. All Rights Reserved."),
           ],
         ),
       ),
