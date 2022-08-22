@@ -188,9 +188,6 @@ class _MyRentScreenState extends State<MyRentScreen> {
       print(e);
       return;
     }
-
-    print(isLoading);
-
     setState(() {
       isLoading = false;
     });
@@ -242,7 +239,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
         return Column(
           children: [
             SizedBox(
-              height: 120.h,
+              height: 160.h,
             ),
             const CupertinoActivityIndicator(
               radius: 12,
@@ -253,7 +250,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
         return Column(
           children: [
             SizedBox(
-              height: 120.h,
+              height: 160.h,
             ),
             Center(
               child: CircularProgressIndicator(
