@@ -69,9 +69,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
             child: Container(
               padding: EdgeInsets.only(top: 72.h, left: 20.w, right: 20.w),
               child: Column(
-                children: [
-                  rentListWidget()
-                ],
+                children: [rentListWidget()],
               ),
             )),
         Container(
@@ -243,7 +241,9 @@ class _MyRentScreenState extends State<MyRentScreen> {
       if (Platform.isIOS) {
         return Column(
           children: [
-            SizedBox(height: 120.h,),
+            SizedBox(
+              height: 120.h,
+            ),
             const CupertinoActivityIndicator(
               radius: 12,
             ),
@@ -252,7 +252,9 @@ class _MyRentScreenState extends State<MyRentScreen> {
       } else {
         return Column(
           children: [
-            SizedBox(height: 120.h,),
+            SizedBox(
+              height: 120.h,
+            ),
             Center(
               child: CircularProgressIndicator(
                 color: HexColor("#425C5A"),

@@ -269,7 +269,7 @@ class _RentScreenState extends State<RentScreen> {
         ),
         Common.getIsLogin()
             ? Container(
-                width: 170.w,
+                width: 190.w,
                 height: 90.h,
                 margin: EdgeInsets.only(left: 160.w, top: 30.h),
                 child: Column(
@@ -277,12 +277,15 @@ class _RentScreenState extends State<RentScreen> {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          _name,
-                          style: TextStyle(
-                              fontSize: 17.5.sp,
-                              color: HexColor("#425C5A"),
-                              fontWeight: FontWeight.w700),
+                        Container(
+                          width: 72.w,
+                          child: Text(
+                            _name,
+                            style: TextStyle(
+                                fontSize: 17.5.sp,
+                                color: HexColor("#425C5A"),
+                                fontWeight: FontWeight.w700),
+                          ),
                         ),
                         SizedBox(
                           width: 12.w,
