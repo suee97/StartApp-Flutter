@@ -4,13 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/rent/my_rent/rent_tile.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io' show Platform, SocketException;
-import '../../../../models/rent_list.dart';
+import 'dart:io' show Platform;
+import '../../../../models/rent.dart';
+import '../../../../models/status_code.dart';
+import '../../../../utils/auth.dart';
 import '../../../../utils/common.dart';
 import '../../../../utils/department_match.dart';
 
@@ -22,73 +25,21 @@ class MyRentScreen extends StatefulWidget {
 }
 
 class _MyRentScreenState extends State<MyRentScreen> {
+  final secureStorage = const FlutterSecureStorage();
 
   String _name = '';
   String _studentNo = '';
   String _studentGroup = '';
   String _department = '';
 
+  List<Rent> rentList = [];
+  bool isLoading = true;
+
   @override
   void initState() {
-    fetchRentList();
-    super.initState();
+    fetchMyRentList();
     _loadStudentInfo();
-  }
-
-  _loadStudentInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _name = (prefs.getString('appName') ?? '로그인이 필요한 정보입니다.');
-      _studentNo = (prefs.getString('appStudentNo') ?? '');
-      _department = (prefs.getString('department') ?? '');
-      _studentGroup = DepartmentMatch.getDepartment(_department);
-    });
-  }
-
-  Future<List<Rent>> fetchRentList() async {
-    try {
-      final resString = await http
-          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/member/rent"))
-          .timeout(const Duration(seconds: 10));
-      Map<String, dynamic> resData =
-          jsonDecode(utf8.decode(resString.bodyBytes));
-
-      List<Rent> _rentList = [];
-      List<Rent> _tempList = [];
-      if (resData["data"] != null) {
-        /// not null
-        List<dynamic> data = resData["data"];
-        for (var e in data) {
-          if (e["rentStatus"] == "DENY") _rentList.add(Rent.fromJson(e));
-        }
-        for (var e in data) {
-          if (e["rentStatus"] == "DONE") _tempList.add(Rent.fromJson(e));
-        }
-        for (var e in data) {
-          if (e["rentStatus"] == "WAIT") _tempList.add(Rent.fromJson(e));
-        }
-        for (var e in data) {
-          if (e["rentStatus"] == "CONFIRM") _tempList.add(Rent.fromJson(e));
-        }
-
-        _rentList = _rentList + _tempList.reversed.toList();
-
-        for (var e in data) {
-          if (e["rentStatus"] == "RENT") _rentList.add(Rent.fromJson(e));
-        }
-      } else {
-        /// null
-        return Future.error("");
-      }
-
-      return _rentList.reversed.toList();
-    } on TimeoutException catch (e) {
-      return Future.error("TimeoutException : $e");
-    } on SocketException catch (e) {
-      return Future.error("SocketException : $e");
-    } catch (e) {
-      return Future.error(e);
-    }
+    super.initState();
   }
 
   @override
@@ -118,107 +69,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
             child: Container(
               padding: EdgeInsets.only(top: 72.h, left: 20.w, right: 20.w),
               child: Column(
-                children: [
-                  /// RENT TILE UI TEST
-                  RentTile(
-                      rent: Rent(1, "TABLE", "2022-08-05T22:23:21.159220",
-                          "2022-08-07T22:23:21.159220", 5, "CONFIRM"),
-                      onPressed: () {}),
-
-                  /// RENT TILE UI TEST
-
-                  FutureBuilder(
-                    future: fetchRentList(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData && snapshot.data.length != 0) {
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              return RentTile(
-                                  rent: snapshot.data[index],
-                                  onPressed: () => {});
-                            },
-                          ),
-                        );
-                      } else if (snapshot.hasData &&
-                          snapshot.data.length == 0) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: 120.h,
-                            ),
-                            Container(
-                              width: 132.w,
-                              child: const Image(
-                                  fit: BoxFit.fitWidth,
-                                  image:
-                                      AssetImage("images/logo_wink_ready.png")),
-                            ),
-                            SizedBox(
-                              height: 16.h,
-                            ),
-                            Text(
-                              "예약된 물품이 없습니다.",
-                              style: TextStyle(
-                                  fontSize: 20.sp,
-                                  color:
-                                      const Color.fromARGB(128, 216, 232, 231),
-                                  fontWeight: FontWeight.w700),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        );
-                      } else if (snapshot.hasError) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: 120.h,
-                            ),
-                            Container(
-                              width: 132.w,
-                              child: Image(
-                                fit: BoxFit.fitWidth,
-                                image:
-                                    AssetImage("images/logo_crying_ready.png"),
-                                color: Colors.white.withOpacity(0.5),
-                                colorBlendMode: BlendMode.modulate,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4.h,
-                            ),
-                            Text(
-                              "예약 정보를 불러오지 못했습니다.",
-                              style: TextStyle(
-                                  fontSize: 20.sp,
-                                  color:
-                                      const Color.fromARGB(128, 216, 232, 231),
-                                  fontWeight: FontWeight.w700),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        );
-                      } else {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: 200.h,
-                            ),
-                            Platform.isIOS
-                                ? CupertinoActivityIndicator(
-                                    color: HexColor("#f3f3f3"),
-                                    radius: 12,
-                                  )
-                                : CircularProgressIndicator(
-                                    color: HexColor("#f3f3f3"),
-                                  ),
-                          ],
-                        );
-                      }
-                    },
-                  ),
-                ],
+                children: [rentListWidget()],
               ),
             )),
         Container(
@@ -274,6 +125,74 @@ class _MyRentScreenState extends State<MyRentScreen> {
     );
   }
 
+  _loadStudentInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _name = (prefs.getString('appName') ?? '로그인이 필요한 정보입니다.');
+      _studentNo = (prefs.getString('appStudentNo') ?? '');
+      _department = (prefs.getString('department') ?? '');
+      _studentGroup = DepartmentMatch.getDepartment(_department);
+    });
+  }
+
+  Future<void> fetchMyRentList() async {
+    setState(() {
+      isLoading = true;
+    });
+    final authTokenAndReIssueResult = await Auth.authTokenAndReIssue();
+    if (authTokenAndReIssueResult != StatusCode.SUCCESS) {
+      setState(() {
+        isLoading = false;
+      });
+      return Future.error("fetchRentList() call : Error");
+    }
+    final AT = await Auth.secureStorage.read(key: "ACCESS_TOKEN");
+
+    try {
+      final resString = await http
+          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/rent"), headers: {
+        "Authorization": "Bearer $AT"
+      }).timeout(const Duration(seconds: 30));
+      Map<String, dynamic> resData =
+          jsonDecode(utf8.decode(resString.bodyBytes));
+      List<dynamic> data = resData["data"];
+      print(data);
+
+      List<Rent> _rentList = [];
+      List<Rent> _tempList = [];
+      for (var e in data) {
+        if (e["rentStatus"] == "DENY") _rentList.add(Rent.fromJson(e));
+      }
+      for (var e in data) {
+        if (e["rentStatus"] == "DONE") _tempList.add(Rent.fromJson(e));
+      }
+      for (var e in data) {
+        if (e["rentStatus"] == "WAIT") _tempList.add(Rent.fromJson(e));
+      }
+      for (var e in data) {
+        if (e["rentStatus"] == "CONFIRM") _tempList.add(Rent.fromJson(e));
+      }
+
+      setState(() {
+        rentList = _rentList + _tempList.reversed.toList();
+      });
+
+      for (var e in data) {
+        if (e["rentStatus"] == "RENT") _rentList.add(Rent.fromJson(e));
+      }
+
+      for (var e in _rentList) {
+        print(e.itemCategory);
+      }
+    } catch (e) {
+      print(e);
+      return;
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   Widget myUserInfoText(String title) {
     return Text(
       title,
@@ -281,6 +200,104 @@ class _MyRentScreenState extends State<MyRentScreen> {
           color: HexColor("#5C7775"),
           fontSize: 13.5.sp,
           fontWeight: FontWeight.w500),
+    );
+  }
+
+  Widget ErrorWidget() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 120.h,
+        ),
+        Container(
+          width: 132.w,
+          child: Image(
+            fit: BoxFit.fitWidth,
+            image: const AssetImage("images/logo_crying_ready.png"),
+            color: Colors.white.withOpacity(0.5),
+            colorBlendMode: BlendMode.modulate,
+          ),
+        ),
+        SizedBox(
+          height: 4.h,
+        ),
+        Text(
+          "예약 정보를 불러오지 못했습니다.",
+          style: TextStyle(
+              fontSize: 20.sp,
+              color: const Color.fromARGB(128, 216, 232, 231),
+              fontWeight: FontWeight.w700),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget rentListWidget() {
+    if (isLoading) {
+      if (Platform.isIOS) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 160.h,
+            ),
+            const CupertinoActivityIndicator(
+              radius: 12,
+            ),
+          ],
+        );
+      } else {
+        return Column(
+          children: [
+            SizedBox(
+              height: 160.h,
+            ),
+            Center(
+              child: CircularProgressIndicator(
+                color: HexColor("#425C5A"),
+              ),
+            ),
+          ],
+        );
+      }
+    }
+    if (rentList.isEmpty) {
+      return Column(
+        children: [
+          SizedBox(
+            height: 120.h,
+          ),
+          Container(
+            width: 150.w,
+            child: Image(
+              fit: BoxFit.fitWidth,
+              image: const AssetImage("images/logo_crying_ready.png"),
+              color: Colors.white.withOpacity(0.8),
+              colorBlendMode: BlendMode.modulate,
+            ),
+          ),
+          SizedBox(
+            height: 4.h,
+          ),
+          Text(
+            "예약 정보가 없거나\n불러오지 못했습니다.",
+            style: TextStyle(
+                fontSize: 20.sp,
+                color: Colors.black.withOpacity(0.2),
+                fontWeight: FontWeight.w700),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    }
+
+    return Expanded(
+      child: ListView.builder(
+        itemCount: rentList.length,
+        itemBuilder: (context, index) {
+          return RentTile(rent: rentList[index], onPressed: () => {});
+        },
+      ),
     );
   }
 }
