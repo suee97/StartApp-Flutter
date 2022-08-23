@@ -280,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const StatusScreen()));
                                 return;
                               }
-                              Common.showSnackBar(context, "로그인이 필요한 기능입니다.");
+                              Common.showSnackBar(context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                             }),
                       ]),
                   SizedBox(
