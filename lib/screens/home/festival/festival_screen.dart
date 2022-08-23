@@ -773,7 +773,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                 title: isExhibition ? "도장찍기완료!" : "도장찍기"),
                             onPressed: () async {
                               if (!Common.getIsLogin()) {
-                                Common.showSnackBar(context, "로그인이 필요한 기능입니다.");
+                                Common.showSnackBar(context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                 return;
                               }
                               if (isExhibition) {
@@ -876,7 +876,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                               onPressed: () async {
                                 if (!Common.getIsLogin()) {
                                   Common.showSnackBar(
-                                      context, "로그인이 필요한 기능입니다.");
+                                      context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                   return;
                                 }
                                 if (isFleamarket) {
@@ -976,7 +976,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                               onPressed: () async {
                                 if (!Common.getIsLogin()) {
                                   Common.showSnackBar(
-                                      context, "로그인이 필요한 기능입니다.");
+                                      context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                   return;
                                 }
                                 if (isSangSang) {
@@ -1078,7 +1078,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                               onPressed: () async {
                                 if (!Common.getIsLogin()) {
                                   Common.showSnackBar(
-                                      context, "로그인이 필요한 기능입니다.");
+                                      context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                   return;
                                 }
 
@@ -1200,7 +1200,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         onPressed: () async {
                                           if (!Common.getIsLogin()) {
                                             Common.showSnackBar(
-                                                context, "로그인이 필요한 기능입니다.");
+                                                context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                             return;
                                           }
 
@@ -1397,7 +1397,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                 ),
                 onTap: () async {
                   if (!Common.getIsLogin()) {
-                    Common.showSnackBar(context, "로그인이 필요한 기능입니다.");
+                    Common.showSnackBar(context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                     return;
                   }
 

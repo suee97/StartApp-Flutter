@@ -1,10 +1,14 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:start_app/screens/home/setting/suggest/suggest_widgets.dart';
 import 'package:start_app/utils/common.dart';
+import 'package:http_parser/http_parser.dart';
+import '../../../../models/status_code.dart';
 
 class SuggestFeatureScreen extends StatefulWidget {
   const SuggestFeatureScreen({Key? key}) : super(key: key);
@@ -125,7 +129,7 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
                 ],
               ),
               SizedBox(
-                height: 112.h,
+                height: 120.h,
               ),
               Container(
                 width: double.infinity,
@@ -135,7 +139,7 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "안내사항\n\n1. 모든 사항은 익명으로 전달됩니다.\n2. 답변을 받으려면 연락처를 남겨주세요.",
+                      "- 안내사항\n모든 사항은 익명으로 전달됩니다.\n답변이 필요한 경우 연락처를 남겨주세요.",
                       style: TextStyle(
                           fontSize: 15.5.sp,
                           fontWeight: FontWeight.w300,
@@ -150,41 +154,58 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 155.w,
-                    height: 40.h,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: HexColor("#425C5A"),
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10))),
-                    child: Text(
-                      "취소",
-                      style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      width: 155.w,
+                      height: 40.h,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: HexColor("#425C5A"),
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              bottomLeft: Radius.circular(10))),
+                      child: Text(
+                        "취소",
+                        style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white),
+                      ),
                     ),
                   ),
                   SizedBox(
                     width: 8.w,
                   ),
-                  Container(
-                    width: 155.w,
-                    height: 40.h,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: HexColor("#425C5A"),
-                        borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(10),
-                            bottomRight: Radius.circular(10))),
-                    child: Text(
-                      "등록",
-                      style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white),
+                  GestureDetector(
+                    onTap: () async {
+                      if (titleTextController.text.isEmpty ||
+                          contentTextController.text.isEmpty) {
+                        Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요");
+                        return;
+                      }
+                      final postSuggestResult = await postSuggest();
+
+                      /// TODO
+                    },
+                    child: Container(
+                      width: 155.w,
+                      height: 40.h,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: HexColor("#425C5A"),
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10))),
+                      child: Text(
+                        "등록",
+                        style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white),
+                      ),
                     ),
                   ),
                 ],
@@ -195,5 +216,34 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
       ),
       backgroundColor: HexColor("f3f3f3"),
     );
+  }
+
+  Future<StatusCode> postSuggest() async {
+    final String title = titleTextController.text;
+    final String content = contentTextController.text;
+
+    Dio dio = Dio();
+    dio.options.contentType = 'multipart/form-data';
+
+    final _file = await MultipartFile.fromFile(imageFile!.path,
+        filename: "file_name", contentType: MediaType("image", "jpg"));
+
+    FormData _formData =
+        FormData.fromMap({"title": title, "content": content, "file": _file});
+
+    try {
+      final resString =
+          await dio.post("${dotenv.get("DEV_API_BASE_URL")}/dd", data: _formData);
+
+      if (resString.data["status"] == 201) {
+        print("postSuggest() call : Success");
+        return StatusCode.SUCCESS;
+      }
+
+      return StatusCode.UNCATCHED_ERROR;
+    } catch (e) {
+      print("postSuggest() call : Error\n$e");
+      return StatusCode.UNCATCHED_ERROR;
+    }
   }
 }
