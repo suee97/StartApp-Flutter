@@ -18,6 +18,7 @@ class PolicyAgreeScreen extends StatefulWidget {
 class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
   bool servicePolicyAgreeState = false;
   bool privacyPolicyAgreeState = false;
+  bool isAllAgree = false;
   Color orangeColor = HexColor("EE795F");
 
   @override
@@ -103,6 +104,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                           setState(() {
                             servicePolicyAgreeState = value!;
                           });
+                          checkIsAllAgree();
                         }),
                   ),
                 ),
@@ -164,6 +166,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                           setState(() {
                             privacyPolicyAgreeState = value!;
                           });
+                          checkIsAllAgree();
                         }),
                   ),
                 ),
@@ -204,23 +207,37 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
           height: double.infinity,
           alignment: Alignment.bottomCenter,
           margin: EdgeInsets.only(bottom: 16.h),
-          child: LoginNavButton(
-              onPressed: () {
-                if(!servicePolicyAgreeState || !privacyPolicyAgreeState) {
-                  Common.showSnackBar(context, "약관을 동의해주세요.");
-                  return;
-                }
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CheckInfoScreen()));
-              },
-              title: "다음",
-              colorHex: "#425C5A",
-              width: 304.w),
+          child: isAllAgree == true
+              ? LoginNavButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CheckInfoScreen()));
+                  },
+                  title: "다음",
+                  colorHex: "#425C5A",
+                  width: 304.w)
+              : LoginNavButton(
+                  onPressed: () {},
+                  title: "다음",
+                  colorHex: "#929d9c",
+                  width: 304.w),
         )
       ]),
       backgroundColor: HexColor("#f3f3f3"),
     );
+  }
+
+  void checkIsAllAgree() {
+    if (servicePolicyAgreeState == true && privacyPolicyAgreeState == true) {
+      setState(() {
+        isAllAgree = true;
+      });
+    } else {
+      setState(() {
+        isAllAgree = false;
+      });
+    }
   }
 }
