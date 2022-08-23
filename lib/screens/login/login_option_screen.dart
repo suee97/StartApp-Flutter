@@ -102,6 +102,7 @@ class LoginOptionScreen extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () async {
                                     Common.setNonLogin(true);
+                                    Common.setIsLogin(false);
 
                                     Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
