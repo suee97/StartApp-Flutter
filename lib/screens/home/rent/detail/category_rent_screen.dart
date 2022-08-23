@@ -358,7 +358,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => RentApplyScreen(
-                                          category: widget.categoryKr,
+                                          categoryKr: widget.categoryKr,
+                                          categoryEng: widget.categoryEng,
                                           itemIcon: widget.itemIcon,
                                         )))
                           },

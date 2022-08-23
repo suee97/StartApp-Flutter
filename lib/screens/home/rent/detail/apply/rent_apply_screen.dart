@@ -14,10 +14,15 @@ import 'dotted_line_widget.dart';
 import 'package:http/http.dart' as http;
 
 class RentApplyScreen extends StatefulWidget {
-  RentApplyScreen({Key? key, required this.category, required this.itemIcon})
+  RentApplyScreen(
+      {Key? key,
+      required this.categoryKr,
+      required this.itemIcon,
+      required this.categoryEng})
       : super(key: key);
 
-  String category;
+  String categoryKr;
+  String categoryEng;
   String itemIcon;
 
   @override
@@ -91,7 +96,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                         ),
                         SizedBox(width: 11.w),
                         Text(
-                          widget.category.toString(),
+                          widget.categoryKr.toString(),
                           style: TextStyle(
                               fontSize: 21.sp, fontWeight: FontWeight.w600),
                         )
@@ -219,7 +224,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     Padding(
                         padding: EdgeInsets.only(top: 8.h, left: 8.w),
                         child: Text(
-                          getPolicyTextFromCaterory(widget.category),
+                          getPolicyTextFromCategory(widget.categoryEng),
                         )),
                     SizedBox(
                       width: double.infinity,
@@ -270,28 +275,9 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
 
                     if (rentPurposeController.text.isEmpty ||
                         rentAmountController.text.isEmpty ||
-                        widget.category.isEmpty ||
+                        widget.categoryKr.isEmpty ||
                         _selectedDateRange == null) {
                       Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
-                      return;
-                    }
-
-                    String itemCategory = '';
-
-                    if (widget.category == "캐노피") {
-                      itemCategory = "CANOPY";
-                    } else if (widget.category == "듀라테이블") {
-                      itemCategory = "TABLE";
-                    } else if (widget.category == "앰프&마이크") {
-                      itemCategory = "AMP";
-                    } else if (widget.category == "리드선") {
-                      itemCategory = "WIRE";
-                    } else if (widget.category == "엘카") {
-                      itemCategory = "CART";
-                    } else if (widget.category == "의자") {
-                      itemCategory = "CHAIR";
-                    } else {
-                      Common.showSnackBar(context, "오류가 발생했습니다.");
                       return;
                     }
 
@@ -327,7 +313,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     Map bodyData = {
                       "purpose": rentPurposeController.text,
                       "account": int.parse(rentAmountController.text),
-                      "itemCategory": itemCategory,
+                      "itemCategory": widget.categoryEng,
                       "startTime":
                           "${_selectedDateRange?.start.toString().split(' ')[0]}",
                       "endTime":
@@ -442,18 +428,18 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
     );
   }
 
-  String getPolicyTextFromCaterory(String category) {
+  String getPolicyTextFromCategory(String category) {
     switch (category) {
       case "CANOPY":
         return "1. 캐노피";
       case "TABLE":
-        return "1. 캐노피";
+        return "1. 듀라";
       case "AMP":
-        return "1. 캐노피";
+        return "1. 앰프";
       case "WIRE":
-        return "1. 캐노피";
+        return "1. 리드선";
       case "CART":
-        return "1. 캐노피";
+        return "1. 엘카";
       default:
         return "1. 의자";
     }
