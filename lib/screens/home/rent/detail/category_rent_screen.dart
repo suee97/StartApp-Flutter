@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -245,7 +246,6 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                               .inHours;
                           if (tmp0 != null) {
                             if (tmp0 < 0) {
-                              print("$selectedDayAvailableCount 개 대여 가능");
                               setState(() {
                                 selectedDayAvailableCount = 0;
                               });
@@ -273,29 +273,28 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           setState(() {
                             selectedDayAvailableCount = ac;
                           });
-                          print("$selectedDayAvailableCount 개 사용 가능");
                         },
-                        monthViewSettings: const MonthViewSettings(
+                        monthViewSettings: MonthViewSettings(
                           appointmentDisplayCount: 4,
                           appointmentDisplayMode:
                               MonthAppointmentDisplayMode.appointment,
                           monthCellStyle: MonthCellStyle(
                             textStyle: TextStyle(
-                                fontStyle: FontStyle.normal,
-                                fontSize: 12,
-                                color: Colors.black),
-                            trailingDatesTextStyle: TextStyle(
-                                fontStyle: FontStyle.normal,
-                                fontSize: 15,
-                                color: Colors.transparent),
-                            leadingDatesTextStyle: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.sp,
+                                color: HexColor("#425C5A")),
+                            trailingDatesTextStyle: const TextStyle(
                                 fontStyle: FontStyle.normal,
                                 fontSize: 15,
                                 color: Colors.transparent),
-                            backgroundColor: Colors.transparent,
-                            todayBackgroundColor: Colors.transparent,
-                            leadingDatesBackgroundColor: Colors.red,
-                            trailingDatesBackgroundColor: Colors.red,
+                            leadingDatesTextStyle: const TextStyle(
+                                fontStyle: FontStyle.normal,
+                                fontSize: 15,
+                                color: Colors.transparent),
+                            backgroundColor: HexColor("#f3f3f3"),
+                            todayBackgroundColor: HexColor("#f3f3f3"),
+                            leadingDatesBackgroundColor: HexColor("#92AEAC").withOpacity(0.5),
+                            trailingDatesBackgroundColor: HexColor("#92AEAC").withOpacity(0.5),
                           ),
                         ),
                         dataSource: MeetingDataSource(meetingList),
@@ -304,8 +303,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                             color: Colors.black, fontWeight: FontWeight.w700),
                         selectionDecoration: BoxDecoration(
                           color: Colors.transparent,
-                          border:
-                              Border.all(color: Colors.redAccent, width: 1.5),
+                          border: Border.all(
+                              color: HexColor("#EE795F"), width: 1.5),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(4)),
                           shape: BoxShape.rectangle,
@@ -423,7 +422,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                 int.parse(e["endTime"].substring(0, 4)),
                 int.parse(e["endTime"].substring(5, 7)),
                 int.parse(e["endTime"].substring(8, 10))),
-            Colors.purpleAccent,
+            getRandomColor(),
             true));
       }
 
@@ -467,5 +466,24 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
       print(e);
       return StatusCode.UNCATCHED_ERROR;
     }
+  }
+
+  Color getRandomColor() {
+    int ranNum = Random().nextInt(4);
+    print(ranNum);
+
+    if (ranNum == 0) {
+      return HexColor("#F9A9A9");
+    }
+    if (ranNum == 1) {
+      return HexColor("#A9D3F9");
+
+    }
+    if (ranNum == 2) {
+      return HexColor("#F9E3A9");
+
+    }
+    return HexColor("#D1A9F9");
+
   }
 }
