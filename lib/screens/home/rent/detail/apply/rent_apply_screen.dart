@@ -125,8 +125,34 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                             width: 12.w,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              _showDateRangePicker();
+                            onTap: () async {
+                              final DateTimeRange? result =
+                                  await showDateRangePicker(
+                                context: context,
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime(2030, 12, 31),
+                                currentDate: DateTime.now(),
+                                saveText: '확인',
+                                builder: (context, child) {
+                                  return Theme(
+                                    data: Theme.of(context).copyWith(
+                                      colorScheme: ColorScheme.light(
+                                        primary: HexColor("#425C5A"),
+                                        onPrimary: HexColor("#f3f3f3"),
+                                      ),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                              );
+
+                              if (result != null) {
+                                print(
+                                    "${result.start.toString()} ~ ${result.end.toString()}");
+                                setState(() {
+                                  _selectedDateRange = result;
+                                });
+                              }
                             },
                             child: Icon(
                               Icons.date_range,
@@ -176,8 +202,8 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                   child: Text(
                     "이용약관",
                     textAlign: TextAlign.left,
-                    style:
-                        TextStyle(fontSize: 17.5.sp, fontWeight: FontWeight.w400),
+                    style: TextStyle(
+                        fontSize: 17.5.sp, fontWeight: FontWeight.w400),
                   ),
                 ),
                 Container(
@@ -239,41 +265,44 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                 ),
                 GestureDetector(
                   onTap: () async {
-
-                    if(!agreementCheckBoxState){
+                    if (!agreementCheckBoxState) {
                       Common.showSnackBar(context, "이용약관에 동의해주세요.");
                       return;
                     }
 
-                    if(rentPurposeController.text.isEmpty || rentAmountController.text.isEmpty || widget.category.isEmpty || _selectedDateRange == null ){
+                    if (rentPurposeController.text.isEmpty ||
+                        rentAmountController.text.isEmpty ||
+                        widget.category.isEmpty ||
+                        _selectedDateRange == null) {
                       Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
                       return;
                     }
 
                     String itemCategory = '';
 
-                    if(widget.category == "캐노피"){
+                    if (widget.category == "캐노피") {
                       itemCategory = "CANOPY";
-                    }else if(widget.category == "듀라테이블"){
+                    } else if (widget.category == "듀라테이블") {
                       itemCategory = "TABLE";
-                    }else if(widget.category == "앰프&마이크"){
+                    } else if (widget.category == "앰프&마이크") {
                       itemCategory = "AMP";
-                    }else if(widget.category == "리드선"){
+                    } else if (widget.category == "리드선") {
                       itemCategory = "WIRE";
-                    }else if(widget.category == "엘카"){
+                    } else if (widget.category == "엘카") {
                       itemCategory = "CART";
-                    }else if(widget.category == "의자"){
+                    } else if (widget.category == "의자") {
                       itemCategory = "CHAIR";
-                    }else{
+                    } else {
                       Common.showSnackBar(context, "오류가 발생했습니다.");
                       return;
                     }
 
-                    setState((){
+                    setState(() {
                       isLoading = true;
                     });
 
-                    final authTokenAndReIssueResult = await Auth.authTokenAndReIssue();
+                    final authTokenAndReIssueResult =
+                        await Auth.authTokenAndReIssue();
                     if (authTokenAndReIssueResult != StatusCode.SUCCESS) {
                       Common.setIsLogin(false);
                       await Common.setNonLogin(false);
@@ -282,7 +311,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                               builder: (context) => const LoginScreen()),
-                              (route) => false);
+                          (route) => false);
                       Common.showSnackBar(context, "다시 로그인해주세요.");
                       return;
                     }
@@ -291,25 +320,32 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                       "purpose": rentPurposeController.text,
                       "account": int.parse(rentAmountController.text),
                       "itemCategory": itemCategory,
-                      "startTime":"${_selectedDateRange?.start.toString().split(' ')[0]}",
-                      "endTime":"${_selectedDateRange?.end.toString().split(' ')[0]}"
+                      "startTime":
+                          "${_selectedDateRange?.start.toString().split(' ')[0]}",
+                      "endTime":
+                          "${_selectedDateRange?.end.toString().split(' ')[0]}"
                     };
 
-                    final AT = await Auth.secureStorage.read(key: "ACCESS_TOKEN");
+                    final AT =
+                        await Auth.secureStorage.read(key: "ACCESS_TOKEN");
 
                     try {
                       final resString = await http
-                          .post(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/rent"),
-                          headers: {
-                            "Authorization": "Bearer $AT",
-                            "Content-Type": "application/json"
-                      },
-                      body: json.encode(bodyData)).timeout(const Duration(seconds: 30));
-                      Map<String, dynamic> resData = jsonDecode(utf8.decode(resString.bodyBytes));
+                          .post(
+                              Uri.parse(
+                                  "${dotenv.get("DEV_API_BASE_URL")}/rent"),
+                              headers: {
+                                "Authorization": "Bearer $AT",
+                                "Content-Type": "application/json"
+                              },
+                              body: json.encode(bodyData))
+                          .timeout(const Duration(seconds: 30));
+                      Map<String, dynamic> resData =
+                          jsonDecode(utf8.decode(resString.bodyBytes));
                       var data = resData["status"];
 
-                      if(data == 200){
-                        setState((){
+                      if (data == 200) {
+                        setState(() {
                           isLoading = false;
                         });
                         int count = 0;
@@ -318,29 +354,27 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                         return;
                       }
 
-                      if(data == 409){
-                        setState((){
+                      if (data == 409) {
+                        setState(() {
                           isLoading = false;
                         });
                         Common.showSnackBar(context, "신청 정보를 확인해주세요.");
                         return;
                       }
 
-                      setState((){
+                      setState(() {
                         isLoading = false;
                       });
                       Common.showSnackBar(context, "오류가 발생했습니다.");
                       return;
-
                     } catch (e) {
-                      setState((){
+                      setState(() {
                         isLoading = false;
                       });
                       print("rent오류:$e");
                       Common.showSnackBar(context, "오류가 발생했습니다.");
                       return;
                     }
-
                   },
                   child: Container(
                     width: 290.w,
@@ -351,19 +385,21 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     decoration: BoxDecoration(
                         color: HexColor("#EE795F"),
                         borderRadius: BorderRadius.circular(25)),
-                    child: isLoading ? Text(
-                      "신청중입니다...",
-                      style: TextStyle(
-                          color: HexColor("#F3F3F3"),
-                          fontSize: 21.5.sp,
-                          fontWeight: FontWeight.w600),
-                    ): Text(
-                      "신청하기",
-                      style: TextStyle(
-                          color: HexColor("#F3F3F3"),
-                          fontSize: 21.5.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
+                    child: isLoading
+                        ? Text(
+                            "신청중입니다...",
+                            style: TextStyle(
+                                color: HexColor("#F3F3F3"),
+                                fontSize: 21.5.sp,
+                                fontWeight: FontWeight.w600),
+                          )
+                        : Text(
+                            "신청하기",
+                            style: TextStyle(
+                                color: HexColor("#F3F3F3"),
+                                fontSize: 21.5.sp,
+                                fontWeight: FontWeight.w600),
+                          ),
                   ),
                 ),
               ],
@@ -371,25 +407,8 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
           ],
         ),
       ),
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: HexColor("#425c5a"),
     );
-  }
-
-  void _showDateRangePicker() async {
-    final DateTimeRange? result = await showDateRangePicker(
-      context: context,
-      firstDate: DateTime(2022, 1, 1),
-      lastDate: DateTime(2030, 12, 31),
-      currentDate: DateTime.now(),
-      saveText: '확인',
-    );
-
-    if (result != null) {
-      print("${result.start.toString()} ~ ${result.end.toString()}");
-      setState(() {
-        _selectedDateRange = result;
-      });
-    }
   }
 }
