@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -6,13 +7,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:start_app/models/status_code.dart';
 import 'package:start_app/screens/home/rent/detail/apply/rent_apply_screen.dart';
 import 'package:start_app/screens/home/rent/detail/rent_detail_text.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../../models/meeting.dart';
 import '../../../../utils/common.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io' show Platform;
 
 class CategoryRentScreen extends StatefulWidget {
   CategoryRentScreen(
@@ -41,6 +42,20 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
   final _calendarController = CalendarController();
   final DateTime today = DateTime.now();
   late String _headerText = today.month.toString();
+  int totalAvailableCount = 0;
+  int selectedDayAvailableCount = 0;
+  List<Color> colorList = [
+    HexColor("#F9A9A9"),
+    HexColor("#A9D3F9"),
+    HexColor("#F9E3A9"),
+    HexColor("#D1A9F9"),
+    HexColor("#55D6C2"),
+    HexColor("#9BEAEF"),
+    HexColor("#D4989A"),
+    HexColor("#5E879D"),
+    HexColor("#E6C8E0"),
+    HexColor("#FFC4A6"),
+  ];
 
   @override
   void dispose() {
@@ -50,7 +65,9 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
 
   @override
   void initState() {
-    fetchSelectedItemRentState(widget.categoryEng, "2022", "8");
+    fetchSelectedItemRentState(
+        widget.categoryEng, today.year.toString(), today.month.toString());
+    fetchTotalAvailableCount(widget.categoryEng);
     super.initState();
   }
 
@@ -147,7 +164,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                             onTap: () {
                               _calendarController.forward!();
                             },
-                            child: Container(
+                            child: SizedBox(
                                 width: 20.w,
                                 height: 18.h,
                                 child: Padding(
@@ -217,30 +234,81 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           final _month = DateFormat('M').format(
                               viewChangedDetails.visibleDates[
                                   viewChangedDetails.visibleDates.length ~/ 2]);
-                          fetchSelectedItemRentState(
+                          await fetchSelectedItemRentState(
                               widget.categoryEng, _year, _month);
                         },
-                        monthViewSettings: const MonthViewSettings(
+                        onSelectionChanged: (CalendarSelectionDetails
+                            calendarSelectionDetails) {
+                          final nowDate =
+                              DateTime(today.year, today.month, today.day);
+                          int selectedDayBookCount = 0;
+                          if (totalAvailableCount == 0) {
+                            return;
+                          }
+                          if (meetingList.isEmpty) {
+                            return;
+                          }
+
+                          if (calendarSelectionDetails.date == null) {
+                            return;
+                          }
+
+                          int? tmp0 = calendarSelectionDetails.date
+                              ?.difference(nowDate)
+                              .inHours;
+                          if (tmp0 != null) {
+                            if (tmp0 < 0) {
+                              setState(() {
+                                selectedDayAvailableCount = 0;
+                              });
+                              return;
+                            }
+                          }
+
+                          int ac = totalAvailableCount;
+
+                          for (var e in meetingList) {
+                            int? tmp1 = calendarSelectionDetails.date
+                                ?.difference(e.from)
+                                .inHours;
+                            int? tmp2 = calendarSelectionDetails.date
+                                ?.difference(e.to)
+                                .inHours;
+                            if (tmp1 == null || tmp2 == null) {
+                              return;
+                            }
+                            if (tmp1 >= 0 && tmp2 <= 0) {
+                              selectedDayBookCount++;
+                            }
+                          }
+                          ac = totalAvailableCount - selectedDayBookCount;
+                          setState(() {
+                            selectedDayAvailableCount = ac;
+                          });
+                        },
+                        monthViewSettings: MonthViewSettings(
                           appointmentDisplayCount: 4,
                           appointmentDisplayMode:
                               MonthAppointmentDisplayMode.appointment,
                           monthCellStyle: MonthCellStyle(
                             textStyle: TextStyle(
-                                fontStyle: FontStyle.normal,
-                                fontSize: 12,
-                                color: Colors.black),
-                            trailingDatesTextStyle: TextStyle(
-                                fontStyle: FontStyle.normal,
-                                fontSize: 15,
-                                color: Colors.transparent),
-                            leadingDatesTextStyle: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.sp,
+                                color: HexColor("#425C5A")),
+                            trailingDatesTextStyle: const TextStyle(
                                 fontStyle: FontStyle.normal,
                                 fontSize: 15,
                                 color: Colors.transparent),
-                            backgroundColor: Colors.transparent,
-                            todayBackgroundColor: Colors.transparent,
-                            leadingDatesBackgroundColor: Colors.transparent,
-                            trailingDatesBackgroundColor: Colors.transparent,
+                            leadingDatesTextStyle: const TextStyle(
+                                fontStyle: FontStyle.normal,
+                                fontSize: 15,
+                                color: Colors.transparent),
+                            backgroundColor: HexColor("#f3f3f3"),
+                            todayBackgroundColor: HexColor("#f3f3f3"),
+                            leadingDatesBackgroundColor:
+                                HexColor("#92AEAC").withOpacity(0.5),
+                            trailingDatesBackgroundColor:
+                                HexColor("#92AEAC").withOpacity(0.5),
                           ),
                         ),
                         dataSource: MeetingDataSource(meetingList),
@@ -249,8 +317,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                             color: Colors.black, fontWeight: FontWeight.w700),
                         selectionDecoration: BoxDecoration(
                           color: Colors.transparent,
-                          border:
-                              Border.all(color: Colors.redAccent, width: 1.5),
+                          border: Border.all(
+                              color: HexColor("#EE795F"), width: 1.5),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(4)),
                           shape: BoxShape.rectangle,
@@ -268,24 +336,17 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 6.h, bottom: 14.h),
+                    margin: EdgeInsets.only(top: 8.h, bottom: 14.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
                           margin: EdgeInsets.only(left: 16.w),
                           child: Text(
-                            "1개 사용가능",
+                            "$selectedDayAvailableCount개 대여가능",
                             style: TextStyle(
                                 fontSize: 11.5.sp, fontWeight: FontWeight.w400),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 16.w),
-                          child: Text("1개 대여중",
-                              style: TextStyle(
-                                  fontSize: 11.5.sp,
-                                  fontWeight: FontWeight.w400)),
                         ),
                       ],
                     ),
@@ -297,7 +358,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => RentApplyScreen(
-                                          category: widget.categoryKr,
+                                          categoryKr: widget.categoryKr,
+                                          categoryEng: widget.categoryEng,
                                           itemIcon: widget.itemIcon,
                                         )))
                           },
@@ -375,16 +437,54 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                 int.parse(e["endTime"].substring(0, 4)),
                 int.parse(e["endTime"].substring(5, 7)),
                 int.parse(e["endTime"].substring(8, 10))),
-            Colors.purpleAccent,
+            getRandomColor(),
             true));
       }
 
       setState(() {
         meetingList = tempMeetingList;
       });
+
+      return;
     } catch (e) {
+      setState(() {
+        meetingList = tempMeetingList;
+      });
       print("fetchSelectedItemRentState() call : Error");
       print(e);
     }
+  }
+
+  Future<StatusCode> fetchTotalAvailableCount(String itemCategory) async {
+    try {
+      final resString = await http
+          .get(Uri.parse(
+              "${dotenv.get("DEV_API_BASE_URL")}/rent/item/calendar?category=${itemCategory}"))
+          .timeout(const Duration(seconds: 30));
+      Map<String, dynamic> resData =
+          jsonDecode(utf8.decode(resString.bodyBytes));
+      print(resData);
+
+      if (resData["status"] != 200) {
+        print("fetchTotalAvailableCount() call : Error. not 200");
+        return StatusCode.UNCATCHED_ERROR;
+      }
+
+      print("fetchTotalAvailableCount() call : Success");
+
+      setState(() {
+        totalAvailableCount = resData["data"][0]["count"];
+      });
+      print("totalAvailableCount : $totalAvailableCount");
+      return StatusCode.SUCCESS;
+    } catch (e) {
+      print(e);
+      return StatusCode.UNCATCHED_ERROR;
+    }
+  }
+
+  Color getRandomColor() {
+    int ranNum = Random().nextInt(10);
+    return colorList[ranNum];
   }
 }

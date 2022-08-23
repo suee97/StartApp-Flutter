@@ -437,6 +437,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }).timeout(const Duration(seconds: 10));
       final resData = jsonDecode(utf8.decode(resString.bodyBytes));
 
+      print(resData);
       if (resData["status"] == 200) {
         print("getStudentInfoAndSave() call success");
         final pref = await SharedPreferences.getInstance();

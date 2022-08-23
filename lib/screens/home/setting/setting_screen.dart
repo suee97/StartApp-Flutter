@@ -590,7 +590,7 @@ class _SettingScreenState extends State<SettingScreen> {
           headers: {
             "Authorization": "Bearer $ACCESS_TOKEN",
             "Refresh": "Bearer $REFRESH_TOKEN"
-          }).timeout(const Duration(seconds: 10));
+          }).timeout(const Duration(seconds: 5));
       resData = jsonDecode(utf8.decode(resString.bodyBytes));
     } catch (e) {
       print("_logout() call : Error");
