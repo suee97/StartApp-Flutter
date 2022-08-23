@@ -377,6 +377,57 @@ class _SettingScreenState extends State<SettingScreen> {
                   Container(
                       margin: EdgeInsets.only(left: 20.w),
                       child: Text(
+                        "정보",
+                        style: TextStyle(
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.w500,
+                            color: HexColor("#425c5a")),
+                      )),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  SettingSemiTitle(
+                    title: "업데이트 내역",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const UpdateInfoScreen()));
+                    },
+                  ),
+                  SettingSemiTitle(
+                    title: "개발 관련 정보 및 문의",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const DevInfoScreen()));
+                    },
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 8.h,
+            ),
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(left: 10.w, right: 10.w),
+              decoration: BoxDecoration(
+                  color: HexColor("#f3f3f3"),
+                  borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 14.h,
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(left: 20.w),
+                      child: Text(
                         "제안사항",
                         style: TextStyle(
                             fontSize: 17.sp,
@@ -472,57 +523,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 8.h,
-            ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w),
-              decoration: BoxDecoration(
-                  color: HexColor("#f3f3f3"),
-                  borderRadius: BorderRadius.circular(20)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 14.h,
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(left: 20.w),
-                      child: Text(
-                        "정보",
-                        style: TextStyle(
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w500,
-                            color: HexColor("#425c5a")),
-                      )),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  SettingSemiTitle(
-                    title: "업데이트 로그",
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const UpdateInfoScreen()));
-                    },
-                  ),
-                  SettingSemiTitle(
-                    title: "개발 관련 정보 및 문의",
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DevInfoScreen()));
-                    },
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                ],
-              ),
-            ),
+
             FooterWidgets()
           ],
         ),
