@@ -162,8 +162,7 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
                                     height: 40.h,
                                     decoration: BoxDecoration(
                                       color: HexColor("#f5efea"),
-                                      borderRadius:
-                                      BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(10),
                                       border: Border.all(
                                         width: 1.w,
                                         color: HexColor("#f9b7a9")
@@ -173,8 +172,7 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
                                     child: Text("사진 추가하기",
                                         style: TextStyle(
                                             fontSize: 13.sp,
-                                            fontWeight: FontWeight.w400))
-                                ),
+                                            fontWeight: FontWeight.w400))),
                               )),
                   ),
                 ],
@@ -238,13 +236,13 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
                         return;
                       }
                       final postSuggestResult = await postSuggest();
-                      if(postSuggestResult == StatusCode.SUCCESS) {
-                        if(!mounted) return;
+                      if (postSuggestResult == StatusCode.SUCCESS) {
+                        if (!mounted) return;
                         Common.showSnackBar(context, "전달이 완료되었습니다!");
                         Navigator.pop(context);
                         return;
                       }
-                      if(!mounted) return;
+                      if (!mounted) return;
                       Common.showSnackBar(context, "오류가 발생했습니다.");
                     },
                     child: Container(
@@ -267,7 +265,9 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 16.h,)
+              SizedBox(
+                height: 16.h,
+              )
             ],
           ),
         ),
@@ -285,15 +285,19 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
 
     var _file;
 
-    if(imageFile != null) {
+    if (imageFile != null) {
       _file = await MultipartFile.fromFile(imageFile!.path,
           filename: "file_name", contentType: MediaType("image", "jpg"));
     } else {
       _file = null;
     }
 
-    FormData _formData =
-        FormData.fromMap({"title": title, "content": content, "category": "FEATURE", "file": _file});
+    FormData _formData = FormData.fromMap({
+      "title": title,
+      "content": content,
+      "category": "FEATURE",
+      "file": _file
+    });
 
     try {
       final resString = await dio.post(
