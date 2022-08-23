@@ -1,13 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/utils/common.dart';
-import 'package:http/http.dart' as http;
 import 'package:start_app/utils/department_match.dart';
-
-import '../../login/login_screen.dart';
 
 class StatusScreen extends StatefulWidget {
   const StatusScreen({Key? key}) : super(key: key);
@@ -17,44 +13,16 @@ class StatusScreen extends StatefulWidget {
 }
 
 class _StatusScreenState extends State<StatusScreen> {
-
-  String _name = '';
-  String _studentNo = '';
-  String _studentGroup = '';
-  String _department = '';
-  bool _membership = false;
-  String membership = '';
+  String name = '';
+  String studentNo = '';
+  String studentGroup = '';
+  String department = '';
+  bool membership = false;
 
   @override
   void initState() {
-    super.initState();
     _loadStudentInfo();
-  }
-
-  _loadStudentInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() async {
-      _name = (prefs.getString('appName') ?? '로그인이 필요한 정보입니다.');
-      _studentNo = (prefs.getString('appStudentNo') ?? '');
-      _department = (prefs.getString('department') ?? '');
-      _studentGroup = DepartmentMatch.getDepartment(_department);
-      _membership = (prefs.getBool('appMemberShip') ?? false);
-      if (_membership) {
-            setState((){
-          membership = "학생회비 납부";
-        });
-      } else {
-        setState(() {
-          membership = "학생회비 미납부";
-        });
-      }
-
-      if(!Common.getIsLogin()){
-        setState(() {
-          membership = "";
-        });
-      }
-    });
+    super.initState();
   }
 
   @override
@@ -70,45 +38,120 @@ class _StatusScreenState extends State<StatusScreen> {
         foregroundColor: Colors.black,
         elevation: 0,
       ),
-      body: Common.getIsLogin()
+      body: Common.getIsLogin() == true
           ? Center(
-          child: statusCard(
-              _name, _studentNo, _studentGroup, _department, membership))
-          : Center(
-          child: statusCard(
-          "로그인이 필요한 정보입니다.", "", "", "", "")),
+              child: statusCard(
+                  true, name, studentNo, studentGroup, department, membership))
+          : Center(child: statusCard(false, "", "", "", "", false)),
       backgroundColor: HexColor("#f3f3f3"),
     );
   }
 
-  Widget statusCard(String isPaid, String name, String studentNo, String group,
-      String department) {
-    return Container(
+  Widget statusCard(bool isLogin, String name, String studentNo, String group,
+      String department, bool membership) {
+    return isLogin == true
+        ? Container(
+            width: 320.w,
+            height: 550.h,
+            child: Stack(
+              children: [
+                membership == true
+                    ? Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        alignment: const Alignment(0.0, 0.0),
+                        child: Image(
+                            image: const AssetImage("images/card_paid.png"),
+                            width: 320.w,
+                            height: 550.h,
+                            fit: BoxFit.fill),
+                      )
+                    : Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        alignment: const Alignment(0.0, 0.0),
+                        child: Image(
+                            image: const AssetImage("images/card_unpaid.png"),
+                            width: 320.w,
+                            height: 550.h,
+                            fit: BoxFit.fill)),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 366.h,
+                    ),
+                    Container(
+                      width: 320.w,
+                      height: 184.h,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30)),
+                      ),
+                      padding: EdgeInsets.only(top: 27.h, left: 24.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            membership == true ? "자치회비 납부자" : "자치회비 미납부자",
+                            style: TextStyle(
+                                fontSize: 21.5.sp, fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          Text(
+                            name,
+                            style: TextStyle(
+                                fontSize: 15.5.sp, fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            studentNo,
+                            style: TextStyle(fontSize: 13.5.sp),
+                          ),
+                          Text(
+                            group,
+                            style: TextStyle(fontSize: 13.5.sp),
+                          ),
+                          Text(
+                            department,
+                            style: TextStyle(fontSize: 13.5.sp),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ))
+        : Container(
         width: 320.w,
         height: 550.h,
-        color: Colors.transparent,
         child: Stack(
           children: [
-            isPaid == "학생회비 납부자"
+            membership == true
                 ? Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: Image(
-                        image: AssetImage("images/card_payer.png"),
-                        width: 320.w,
-                        height: 550.h,
-                        fit: BoxFit.fill),
-                    alignment: Alignment(0.0, 0.0),
-                  )
+              width: double.infinity,
+              height: double.infinity,
+              alignment: const Alignment(0.0, 0.0),
+              child: Image(
+                  image: const AssetImage("images/card_paid.png"),
+                  width: 320.w,
+                  height: 550.h,
+                  fit: BoxFit.fill),
+            )
                 : Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: Image(
-                        image: AssetImage("images/card_unpaid.png"),
-                        width: 320.w,
-                        height: 550.h,
-                        fit: BoxFit.fill),
-                    alignment: Alignment(0.0, 0.0)),
+                width: double.infinity,
+                height: double.infinity,
+                alignment: const Alignment(0.0, 0.0),
+                child: Image(
+                    image: const AssetImage("images/card_unpaid.png"),
+                    width: 320.w,
+                    height: 550.h,
+                    fit: BoxFit.fill)),
             Column(
               children: [
                 SizedBox(
@@ -117,49 +160,45 @@ class _StatusScreenState extends State<StatusScreen> {
                 Container(
                   width: 320.w,
                   height: 184.h,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30)),
                   ),
                   padding: EdgeInsets.only(top: 27.h, left: 24.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        isPaid,
-                        style: TextStyle(
-                            fontSize: 21.5.sp, fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      Text(
-                        name,
-                        style: TextStyle(
-                            fontSize: 15.5.sp, fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      Text(
-                        studentNo,
-                        style: TextStyle(fontSize: 13.5.sp),
-                      ),
-                      Text(
-                        group,
-                        style: TextStyle(fontSize: 13.5.sp),
-                      ),
-                      Text(
-                        department,
-                        style: TextStyle(fontSize: 13.5.sp),
-                      ),
-                    ],
+                  child: Text(
+                    "로그인이 필요합니다",
+                    style: TextStyle(
+                        fontSize: 21.5.sp, fontWeight: FontWeight.w600),
                   ),
                 )
               ],
             )
           ],
         ));
+  }
+
+  Future<void> _loadStudentInfo() async {
+    await _loadPrefs();
+    final String _studentGroup = DepartmentMatch.getGroup(department);
+    setState(() {
+      studentGroup = _studentGroup;
+    });
+  }
+
+  Future<void> _loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final String _name = (prefs.getString('appName') ?? '');
+    final String _studentNo = (prefs.getString('appStudentNo') ?? '');
+    final String _department = (prefs.getString('department') ?? '');
+    final bool _membership = (prefs.getBool('appMemberShip') ?? false);
+
+    setState(() {
+      name = _name;
+      studentNo = _studentNo;
+      department = _department;
+      membership = _membership;
+    });
   }
 }

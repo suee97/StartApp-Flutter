@@ -61,7 +61,7 @@ class DepartmentMatch {
     {'교양대학': cultureDepartments}
   };
 
-  static String getDepartment(String department) {
+  static String getGroup(String department) {
     String group = '';
     String temp = '';
 

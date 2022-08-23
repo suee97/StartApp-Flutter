@@ -132,7 +132,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
       _name = (prefs.getString('appName') ?? '로그인이 필요한 정보입니다.');
       _studentNo = (prefs.getString('appStudentNo') ?? '');
       _department = (prefs.getString('department') ?? '');
-      _studentGroup = DepartmentMatch.getDepartment(_department);
+      _studentGroup = DepartmentMatch.getGroup(_department);
     });
   }
 
