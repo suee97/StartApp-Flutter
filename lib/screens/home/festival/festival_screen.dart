@@ -20,6 +20,8 @@ import '../../login/login_screen.dart';
 import 'festival_info_widget.dart';
 import 'package:http/http.dart' as http;
 
+import 'festival_lineup_widget.dart';
+
 class FestivalScreen extends StatefulWidget {
   const FestivalScreen({Key? key}) : super(key: key);
 
@@ -55,13 +57,25 @@ class _FestivalScreenState extends State<FestivalScreen> {
   bool isGround = false;
 
   bool allCollectedCheck = false;
-  bool getPrize = false;
+  bool isPrized = false;
 
   bool isContents = true;
 
   var mydistance;
 
   late List<FestivalInfoWidget> contentsList;
+
+  List<FestivalLineupWidget> lineupList =  <FestivalLineupWidget>[
+    FestivalLineupWidget(
+        lineupDay: "9월 21일",
+        lineups: [["09 : 30" , "X맨 - 니가왜거기서나와"], ["10 : 30" , "컨텐츠 이름1"], ["12 : 30" , "3컨텐츠 이름1"]]),
+    FestivalLineupWidget(
+        lineupDay: "9월 22일",
+        lineups: [["09 : 30" , "X맨 - 니가왜거기서나와"], ["10 : 30" , "컨텐츠 이름1"], ["12 : 30" , "3컨텐츠 이름1"]]),
+    FestivalLineupWidget(
+        lineupDay: "9월 23일",
+        lineups: [["09 : 30" , "X맨 - 니가왜거기서나와"], ["10 : 30" , "컨텐츠 이름1"], ["12 : 30" , "3컨텐츠 이름1"]]),
+  ];
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -257,10 +271,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
     } on TimeoutException catch (e) {
       print("timeout_exception $e");
     } on SocketException catch (e) {
-      "socker_error $e";
+      "socket_error $e";
     } catch (e) {
       "error $e";
     }
+
+
   }
 
   //5개 장소 중 스탬프 찍기 함수
@@ -325,7 +341,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
       print("timeout_exception $e");
       return StatusCode.TIMEOUT_ERROR;
     } on SocketException catch (e) {
-      "socker_error $e";
+      "socket_error $e";
       return StatusCode.CONNECTION_ERROR;
     } catch (e) {
       "error $e";
@@ -368,6 +384,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
       if (place == "ground") {
         setState(() {
           isGround = false;
+        });
+        return;
+      }
+      if (place == "prized") {
+        setState(() {
+          isPrized = false;
         });
         return;
       }
@@ -486,6 +508,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
         isBungEoBang = false;
         isGround = false;
         allCollectedCheck = false;
+        isPrized = false;
       });
       return;
     }
@@ -497,9 +520,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
           isBungEoBang &&
           isSangSang &&
           isFleamarket) {
-        setState((){
-          allCollectedCheck = true;
-        });
+        //?
         return;
       }
     }
@@ -673,6 +694,15 @@ class _FestivalScreenState extends State<FestivalScreen> {
           itemCount: contentsList.length,
           itemBuilder: (context, index) {
             return contentsList[index];
+          });
+    }
+
+    Widget _getLineupInfo(ScrollController scrollController) {
+      return ListView.builder(
+          controller: scrollController,
+          itemCount: lineupList.length,
+          itemBuilder: (context, index) {
+            return lineupList[index];
           });
     }
 
@@ -1379,9 +1409,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                         isBungEoBang &&
                         isSangSang &&
                         isFleamarket) {
-                      setState((){
-                        allCollectedCheck = true;
-                      });
+                      //?
                     }
                   }
                   if (getStampStatusResult == StatusCode.UNCATCHED_ERROR) {
@@ -1628,10 +1656,11 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                                                                       decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
                                                                                                       child: Text("확인", style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600)),
                                                                                                     ),
-                                                                                                    onTap: () {
+                                                                                                    onTap: () async {
                                                                                                         setState(() {
-                                                                                                          getPrize = true;
+                                                                                                          isPrized = true;
                                                                                                         });
+                                                                                                        await finishSetStamp("prized");
                                                                                                         Navigator.pop(context);
                                                                                                         showDialog(
                                                                                                             context: context,
@@ -1954,16 +1983,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         child: isContents
                                             ? _getContentsCrowded(
                                                 scrollController)
-                                            : Container(
-                                                width: 320.w,
-                                                height: 450.h,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                20)),
-                                                    color: HexColor("#FFFFFF")),
-                                              ))
+                                            : _getLineupInfo(scrollController))
                                   ]);
                                 });
                           });
