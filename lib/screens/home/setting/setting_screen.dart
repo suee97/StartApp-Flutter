@@ -216,81 +216,116 @@ class _SettingScreenState extends State<SettingScreen> {
               width: double.infinity,
               margin: EdgeInsets.only(left: 10.w, right: 10.w),
               decoration: BoxDecoration(
-                  color: HexColor("#f3f3f3"),
+                  color: Common.getIsLogin() == true
+                      ? HexColor("#f3f3f3")
+                      : HexColor("f3f3f3").withOpacity(0.7),
                   borderRadius: BorderRadius.circular(20)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 14.h,
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(left: 20.w),
-                      child: Text(
-                        "계정관리",
-                        style: TextStyle(
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w500,
-                            color: HexColor("#425c5a")),
-                      )),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  SettingSemiTitle(
-                    title: "로그아웃",
-                    onPressed: () {
-                      if (Platform.isIOS) {
-                        showCupertinoDialog(
-                            context: context,
-                            builder: (context) {
-                              return CupertinoAlertDialog(
-                                content: const Text("로그아웃 하시겠습니까?"),
-                                actions: [
-                                  CupertinoDialogAction(
-                                      isDefaultAction: false,
-                                      child: const Text("확인"),
-                                      onPressed: () async {
+              child: Common.getIsLogin() == true
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 14.h,
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(left: 20.w),
+                            child: Text(
+                              "계정관리",
+                              style: TextStyle(
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: HexColor("#425c5a")),
+                            )),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                        SettingSemiTitle(
+                          title: "로그아웃",
+                          onPressed: () {
+                            if (Platform.isIOS) {
+                              showCupertinoDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return CupertinoAlertDialog(
+                                      content: const Text("로그아웃 하시겠습니까?"),
+                                      actions: [
+                                        CupertinoDialogAction(
+                                            isDefaultAction: false,
+                                            child: const Text("확인"),
+                                            onPressed: () async {
+                                              await _logout(navigator);
+                                            }),
+                                        CupertinoDialogAction(
+                                            isDefaultAction: false,
+                                            child: const Text("취소"),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            })
+                                      ],
+                                    );
+                                  });
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return StartAndroidDialog(
+                                      title: "로그아웃 하시겠습니까?",
+                                      onOkPressed: () async {
                                         await _logout(navigator);
-                                      }),
-                                  CupertinoDialogAction(
-                                      isDefaultAction: false,
-                                      child: const Text("취소"),
-                                      onPressed: () {
+                                      },
+                                      onCancelPressed: () {
                                         Navigator.pop(context);
-                                      })
-                                ],
-                              );
-                            });
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return StartAndroidDialog(
-                                title: "로그아웃 하시겠습니까?",
-                                onOkPressed: () async {
-                                  await _logout(navigator);
-                                },
-                                onCancelPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              );
-                            });
-                      }
-                    },
-                  ),
-                  SettingSemiTitle(
-                    title: "비밀번호 재설정",
-                    onPressed: () {},
-                  ),
-                  SettingSemiTitle(
-                    title: "회원탈퇴",
-                    onPressed: () {},
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                ],
-              ),
+                                      },
+                                    );
+                                  });
+                            }
+                          },
+                        ),
+                        SettingSemiTitle(
+                          title: "비밀번호 재설정",
+                          onPressed: () {},
+                        ),
+                        SettingSemiTitle(
+                          title: "회원탈퇴",
+                          onPressed: () {},
+                        ),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 14.h,
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(left: 20.w),
+                            child: Text(
+                              "계정관리",
+                              style: TextStyle(
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: HexColor("#425c5a")),
+                            )),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                        SettingSemiTitleLoginFalse(
+                          title: "로그아웃",
+                        ),
+                        SettingSemiTitleLoginFalse(
+                          title: "비밀번호 재설정",
+                        ),
+                        SettingSemiTitleLoginFalse(
+                          title: "회원탈퇴",
+                        ),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                      ],
+                    ),
             ),
             SizedBox(
               height: 8.h,
@@ -472,7 +507,9 @@ class _SettingScreenState extends State<SettingScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 8.h,),
+            SizedBox(
+              height: 8.h,
+            ),
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(left: 10.w, right: 10.w),
@@ -504,7 +541,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                              const ServicePolicyScreen()));
+                                  const ServicePolicyScreen()));
                     },
                   ),
                   SettingSemiTitle(
@@ -514,7 +551,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                              const PrivacyPolicyScreen()));
+                                  const PrivacyPolicyScreen()));
                     },
                   ),
                   SizedBox(
@@ -523,7 +560,6 @@ class _SettingScreenState extends State<SettingScreen> {
                 ],
               ),
             ),
-
             FooterWidgets()
           ],
         ),
@@ -635,11 +671,12 @@ class _SettingScreenState extends State<SettingScreen> {
               fontWeight: FontWeight.w300,
               color: HexColor("#f3f3f3")),
         ),
-        SizedBox(height: 4.h,),
+        SizedBox(
+          height: 4.h,
+        ),
         Padding(
           padding: EdgeInsets.only(left: 16.w),
-          child: Text(
-              "COPYRIGHT © SEOUL NATIONAL UNIVERSITY OF SCIENCE",
+          child: Text("COPYRIGHT © SEOUL NATIONAL UNIVERSITY OF SCIENCE",
               style: TextStyle(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w300,
@@ -647,14 +684,15 @@ class _SettingScreenState extends State<SettingScreen> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 16.w),
-          child: Text(
-              "AND TECHNOLOGY. All Rights Reserved.",
+          child: Text("AND TECHNOLOGY. All Rights Reserved.",
               style: TextStyle(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w300,
                   color: HexColor("#f3f3f3"))),
         ),
-        SizedBox(height: 16.h,),
+        SizedBox(
+          height: 16.h,
+        ),
       ],
     );
   }

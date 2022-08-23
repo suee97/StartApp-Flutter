@@ -27,3 +27,26 @@ class SettingSemiTitle extends StatelessWidget {
     );
   }
 }
+
+class SettingSemiTitleLoginFalse extends StatelessWidget {
+  SettingSemiTitleLoginFalse({Key? key, required this.title})
+      : super(key: key);
+
+  String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(left: 12.w),
+        child: Padding(
+          padding: EdgeInsets.only(left: 8.w, right: 8.w, top: 4.h, bottom: 4.h),
+          child: Text(
+            title,
+            style: TextStyle(
+                fontSize: 13.5.sp,
+                fontWeight: FontWeight.w300,
+                color: Colors.black.withOpacity(0.5)),
+          ),
+        ));
+  }
+}
