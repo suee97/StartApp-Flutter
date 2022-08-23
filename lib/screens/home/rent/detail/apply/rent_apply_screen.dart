@@ -29,7 +29,6 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
   bool agreementCheckBoxState = false;
   final rentPurposeController = TextEditingController();
   final rentAmountController = TextEditingController();
-
   bool isLoading = false;
 
   @override
@@ -308,11 +307,21 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                       await Common.setNonLogin(false);
                       await Common.setAutoLogin(false);
                       await Common.clearStudentInfoPref();
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => const LoginScreen()),
-                          (route) => false);
+                      if (mounted) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const LoginScreen()),
+                            (route) => false);
+                        Common.showSnackBar(context, "다시 로그인해주세요.");
+                        setState(() {
+                          isLoading = false;
+                        });
+                        return;
+                      }
                       Common.showSnackBar(context, "다시 로그인해주세요.");
+                      setState(() {
+                        isLoading = false;
+                      });
                       return;
                     }
 
@@ -349,6 +358,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                           isLoading = false;
                         });
                         int count = 0;
+                        if (!mounted) return;
                         Navigator.of(context).popUntil((_) => count++ >= 2);
                         Common.showSnackBar(context, "신청이 완료되었습니다.");
                         return;
@@ -358,6 +368,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                         setState(() {
                           isLoading = false;
                         });
+                        if (!mounted) return;
                         Common.showSnackBar(context, "신청 정보를 확인해주세요.");
                         return;
                       }
@@ -365,12 +376,14 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                       setState(() {
                         isLoading = false;
                       });
+                      if (!mounted) return;
                       Common.showSnackBar(context, "오류가 발생했습니다.");
                       return;
                     } catch (e) {
                       setState(() {
                         isLoading = false;
                       });
+                      if (!mounted) return;
                       print("rent오류:$e");
                       Common.showSnackBar(context, "오류가 발생했습니다.");
                       return;
