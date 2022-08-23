@@ -91,12 +91,16 @@ class RentTile extends StatelessWidget {
           SizedBox(
             width: 12.w,
           ),
-          Text(
-            getKrStringFromStatus(rent.rentStatus),
-            style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: getRentColorFromStatus(rent.rentStatus)),
+          Container(
+            width: 58.w,
+            alignment: Alignment.center,
+            child: Text(
+              getKrStringFromStatus(rent.rentStatus),
+              style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: getRentColorFromStatus(rent.rentStatus)),
+            ),
           )
         ],
       ),
