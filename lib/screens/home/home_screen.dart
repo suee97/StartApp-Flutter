@@ -271,13 +271,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: "재학생 확인 및\n자치회비 납부 확인",
                             svgPath: "assets/icon_status.svg",
                             isUnderRow: false,
-                            onPressed: () => {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const StatusScreen()))
-                                }),
+                            onPressed: () {
+                              if (Common.getIsLogin()) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const StatusScreen()));
+                                return;
+                              }
+                              Common.showSnackBar(context, "로그인이 필요한 기능입니다.");
+                            }),
                       ]),
                   SizedBox(
                     height: 10.h,
