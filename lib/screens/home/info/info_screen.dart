@@ -208,6 +208,9 @@ class AboutChongHak extends StatelessWidget {
             Common.stArt,
             style: TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w400),
           ),
+          SizedBox(
+            height: 12.5.h,
+          ),
         ],
       ),
     );
@@ -234,35 +237,34 @@ class FAQ extends StatelessWidget {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(Common.faq_q1,
-                    style: TextStyle(
-                        fontSize: 12.5.sp, fontWeight: FontWeight.w600)),
-                SizedBox(height: 7.h),
-                Text(Common.faq_a1,
-                    style: TextStyle(
-                        fontSize: 12.5.sp, fontWeight: FontWeight.w400)),
-                SizedBox(height: 7.h),
-              ],
-            )),
-            Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(Common.faq_q2,
-                    style: TextStyle(
-                        fontSize: 12.5.sp, fontWeight: FontWeight.w600)),
-                SizedBox(height: 7.h),
-                Text(Common.faq_a2,
-                    style: TextStyle(
-                        fontSize: 12.5.sp, fontWeight: FontWeight.w400)),
-                SizedBox(height: 10.h),
-              ],
+              children: [faqContents(Common.faq_q1, Common.faq_a1),
+                faqContents(Common.faq_q2, Common.faq_a2),
+                faqContents(Common.faq_q3, Common.faq_a3),
+                faqContents(Common.faq_q4, Common.faq_a4),
+                faqContents(Common.faq_q5, Common.faq_a5),
+                faqContents(Common.faq_q6, Common.faq_a6),
+                faqContents(Common.faq_q7, Common.faq_a7),
+                faqContents(Common.faq_q8, Common.faq_a8),]
             )),
           ],
         ));
   }
+
+  Widget faqContents(String que, String ans){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+        children :[
+      Text(que,
+          style: TextStyle(
+              fontSize: 12.5.sp, fontWeight: FontWeight.w600)),
+      SizedBox(height: 7.h),
+      Text(ans,
+          style: TextStyle(
+              fontSize: 12.5.sp, fontWeight: FontWeight.w400)),
+      SizedBox(height: 12.5.h),
+    ]);
+  }
+
 }
 
 class ChongHakFunction extends StatelessWidget {
@@ -397,6 +399,9 @@ class ChongHakFunction extends StatelessWidget {
                 "총졸업준비위원회는 졸업과 사회진출에 관한 업무를 관할하는 상설특별기구이며 회원이 될 자격은 본회의 각과 졸업준비위원장과 졸업이 가능한 본회의 회원으로 구성한다.",
                 style:
                     TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w400)),
+            SizedBox(
+              height: 12.5.h,
+            ),
           ]),
     );
   }
