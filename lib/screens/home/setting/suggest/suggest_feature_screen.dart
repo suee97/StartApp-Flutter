@@ -233,7 +233,7 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
 
     try {
       final resString =
-          await dio.post("${dotenv.get("DEV_API_BASE_URL")}/dd", data: _formData);
+          await dio.post("${dotenv.get("DEV_API_BASE_URL")}/suggestion", data: _formData);
 
       if (resString.data["status"] == 201) {
         print("postSuggest() call : Success");

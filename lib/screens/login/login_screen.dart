@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/home_screen.dart';
-import 'package:start_app/screens/login/sign_up/check_info_screen.dart';
 import 'package:start_app/screens/login/sign_up/policy_agree_screen.dart';
 import 'package:start_app/screens/login/sign_up/pw_resetting_screen.dart';
 import 'package:start_app/utils/common.dart';
@@ -213,6 +212,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 /// ID/PW 인증하고 토큰 받기
                 final loginAuthAndGetTokenResult = await loginAuthAndGetToken();
                 if (loginAuthAndGetTokenResult != StatusCode.SUCCESS) {
+                  if (loginAuthAndGetTokenResult == StatusCode.REQUEST_ERROR) {
+                    setState(() {
+                      isLoading = false;
+                    });
+                    if (mounted) {
+                      Common.showSnackBar(context, "인증 대기중인 계정입니다.");
+                    }
+                    return;
+                  }
+
                   print("loginAuthAndGetToken() call error");
                   setState(() {
                     isLoading = false;
@@ -392,6 +401,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
         return StatusCode.SUCCESS;
       }
+
+      if (resData["status"] == 409 && resData["errorCode"] == "ST057") {
+        print("loginAuthAndGetToken() call error : 409 : ST057 : 인증 대기중인 상태");
+        return StatusCode.REQUEST_ERROR;
+      }
+
       return StatusCode.UNCATCHED_ERROR;
     } catch (e) {
       print(e);
