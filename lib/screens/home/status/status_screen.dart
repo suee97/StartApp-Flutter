@@ -78,17 +78,17 @@ class _StatusScreenState extends State<StatusScreen> {
                 Column(
                   children: [
                     SizedBox(
-                      height: 366.h,
+                      height: 356.h,
                     ),
                     Container(
                       width: 320.w,
-                      height: 184.h,
+                      height: 194.h,
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(30),
                             bottomRight: Radius.circular(30)),
                       ),
-                      padding: EdgeInsets.only(top: 27.h, left: 24.w),
+                      padding: EdgeInsets.only(top: 30.h, left: 24.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -128,54 +128,54 @@ class _StatusScreenState extends State<StatusScreen> {
               ],
             ))
         : Container(
-        width: 320.w,
-        height: 550.h,
-        child: Stack(
-          children: [
-            membership == true
-                ? Container(
-              width: double.infinity,
-              height: double.infinity,
-              alignment: const Alignment(0.0, 0.0),
-              child: Image(
-                  image: const AssetImage("images/card_paid.png"),
-                  width: 320.w,
-                  height: 550.h,
-                  fit: BoxFit.fill),
-            )
-                : Container(
-                width: double.infinity,
-                height: double.infinity,
-                alignment: const Alignment(0.0, 0.0),
-                child: Image(
-                    image: const AssetImage("images/card_unpaid.png"),
-                    width: 320.w,
-                    height: 550.h,
-                    fit: BoxFit.fill)),
-            Column(
+            width: 320.w,
+            height: 550.h,
+            child: Stack(
               children: [
-                SizedBox(
-                  height: 366.h,
-                ),
-                Container(
-                  width: 320.w,
-                  height: 184.h,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30)),
-                  ),
-                  padding: EdgeInsets.only(top: 27.h, left: 24.w),
-                  child: Text(
-                    "로그인이 필요합니다",
-                    style: TextStyle(
-                        fontSize: 21.5.sp, fontWeight: FontWeight.w600),
-                  ),
+                membership == true
+                    ? Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        alignment: const Alignment(0.0, 0.0),
+                        child: Image(
+                            image: const AssetImage("images/card_paid.png"),
+                            width: 320.w,
+                            height: 550.h,
+                            fit: BoxFit.fill),
+                      )
+                    : Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        alignment: const Alignment(0.0, 0.0),
+                        child: Image(
+                            image: const AssetImage("images/card_unpaid.png"),
+                            width: 320.w,
+                            height: 550.h,
+                            fit: BoxFit.fill)),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 356.h,
+                    ),
+                    Container(
+                      width: 320.w,
+                      height: 194.h,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30)),
+                      ),
+                      padding: EdgeInsets.only(top: 30.h, left: 24.w),
+                      child: Text(
+                        "로그인이 필요합니다",
+                        style: TextStyle(
+                            fontSize: 21.5.sp, fontWeight: FontWeight.w600),
+                      ),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        ));
+            ));
   }
 
   Future<void> _loadStudentInfo() async {
