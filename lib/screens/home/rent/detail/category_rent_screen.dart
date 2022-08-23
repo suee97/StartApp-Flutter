@@ -6,13 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:start_app/models/status_code.dart';
 import 'package:start_app/screens/home/rent/detail/apply/rent_apply_screen.dart';
 import 'package:start_app/screens/home/rent/detail/rent_detail_text.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../../models/meeting.dart';
 import '../../../../utils/common.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io' show Platform;
 
 class CategoryRentScreen extends StatefulWidget {
   CategoryRentScreen(
@@ -41,6 +41,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
   final _calendarController = CalendarController();
   final DateTime today = DateTime.now();
   late String _headerText = today.month.toString();
+  int totalAvailableCount = 0;
+  int selectedDayAvailableCount = 0;
 
   @override
   void dispose() {
@@ -50,7 +52,9 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
 
   @override
   void initState() {
-    fetchSelectedItemRentState(widget.categoryEng, "2022", "8");
+    fetchSelectedItemRentState(
+        widget.categoryEng, today.year.toString(), today.month.toString());
+    fetchTotalAvailableCount(widget.categoryEng);
     super.initState();
   }
 
@@ -147,7 +151,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                             onTap: () {
                               _calendarController.forward!();
                             },
-                            child: Container(
+                            child: SizedBox(
                                 width: 20.w,
                                 height: 18.h,
                                 child: Padding(
@@ -217,8 +221,59 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           final _month = DateFormat('M').format(
                               viewChangedDetails.visibleDates[
                                   viewChangedDetails.visibleDates.length ~/ 2]);
-                          fetchSelectedItemRentState(
+                          await fetchSelectedItemRentState(
                               widget.categoryEng, _year, _month);
+                        },
+                        onSelectionChanged: (CalendarSelectionDetails
+                            calendarSelectionDetails) {
+                          final nowDate =
+                              DateTime(today.year, today.month, today.day);
+                          int selectedDayBookCount = 0;
+                          if (totalAvailableCount == 0) {
+                            return;
+                          }
+                          if (meetingList.isEmpty) {
+                            return;
+                          }
+
+                          if (calendarSelectionDetails.date == null) {
+                            return;
+                          }
+
+                          int? tmp0 = calendarSelectionDetails.date
+                              ?.difference(nowDate)
+                              .inHours;
+                          if (tmp0 != null) {
+                            if (tmp0 < 0) {
+                              print("$selectedDayAvailableCount 개 대여 가능");
+                              setState(() {
+                                selectedDayAvailableCount = 0;
+                              });
+                              return;
+                            }
+                          }
+
+                          int ac = totalAvailableCount;
+
+                          for (var e in meetingList) {
+                            int? tmp1 = calendarSelectionDetails.date
+                                ?.difference(e.from)
+                                .inHours;
+                            int? tmp2 = calendarSelectionDetails.date
+                                ?.difference(e.to)
+                                .inHours;
+                            if (tmp1 == null || tmp2 == null) {
+                              return;
+                            }
+                            if (tmp1 >= 0 && tmp2 <= 0) {
+                              selectedDayBookCount++;
+                            }
+                          }
+                          ac = totalAvailableCount - selectedDayBookCount;
+                          setState(() {
+                            selectedDayAvailableCount = ac;
+                          });
+                          print("$selectedDayAvailableCount 개 사용 가능");
                         },
                         monthViewSettings: const MonthViewSettings(
                           appointmentDisplayCount: 4,
@@ -239,8 +294,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                                 color: Colors.transparent),
                             backgroundColor: Colors.transparent,
                             todayBackgroundColor: Colors.transparent,
-                            leadingDatesBackgroundColor: Colors.transparent,
-                            trailingDatesBackgroundColor: Colors.transparent,
+                            leadingDatesBackgroundColor: Colors.red,
+                            trailingDatesBackgroundColor: Colors.red,
                           ),
                         ),
                         dataSource: MeetingDataSource(meetingList),
@@ -268,24 +323,17 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 6.h, bottom: 14.h),
+                    margin: EdgeInsets.only(top: 8.h, bottom: 14.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
                           margin: EdgeInsets.only(left: 16.w),
                           child: Text(
-                            "1개 사용가능",
+                            "$selectedDayAvailableCount개 대여가능",
                             style: TextStyle(
                                 fontSize: 11.5.sp, fontWeight: FontWeight.w400),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 16.w),
-                          child: Text("1개 대여중",
-                              style: TextStyle(
-                                  fontSize: 11.5.sp,
-                                  fontWeight: FontWeight.w400)),
                         ),
                       ],
                     ),
@@ -382,9 +430,42 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
       setState(() {
         meetingList = tempMeetingList;
       });
+
+      return;
     } catch (e) {
+      setState(() {
+        meetingList = tempMeetingList;
+      });
       print("fetchSelectedItemRentState() call : Error");
       print(e);
+    }
+  }
+
+  Future<StatusCode> fetchTotalAvailableCount(String itemCategory) async {
+    try {
+      final resString = await http
+          .get(Uri.parse(
+              "${dotenv.get("DEV_API_BASE_URL")}/rent/item/calendar?category=${itemCategory}"))
+          .timeout(const Duration(seconds: 30));
+      Map<String, dynamic> resData =
+          jsonDecode(utf8.decode(resString.bodyBytes));
+      print(resData);
+
+      if (resData["status"] != 200) {
+        print("fetchTotalAvailableCount() call : Error. not 200");
+        return StatusCode.UNCATCHED_ERROR;
+      }
+
+      print("fetchTotalAvailableCount() call : Success");
+
+      setState(() {
+        totalAvailableCount = resData["data"][0]["count"];
+      });
+      print("totalAvailableCount : $totalAvailableCount");
+      return StatusCode.SUCCESS;
+    } catch (e) {
+      print(e);
+      return StatusCode.UNCATCHED_ERROR;
     }
   }
 }
