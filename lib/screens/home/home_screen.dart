@@ -53,8 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SettingScreen()))
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SettingScreen()))
             },
             icon: const Icon(Icons.settings_outlined),
             iconSize: 24.w,
@@ -219,11 +221,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     } else {
                       return Column(
                         children: [
-                          Container(
+                          SizedBox(
                               width: 280.w,
                               height: 280.h,
                               child: Platform.isIOS
-                                  ? CupertinoActivityIndicator()
+                                  ? const CupertinoActivityIndicator(
+                                      radius: 12,
+                                    )
                                   : Center(
                                       child: CircularProgressIndicator(
                                         color: HexColor("#425c5a"),
@@ -280,7 +284,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const StatusScreen()));
                                 return;
                               }
-                              Common.showSnackBar(context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
+                              Common.showSnackBar(context,
+                                  "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                             }),
                       ]),
                   SizedBox(
