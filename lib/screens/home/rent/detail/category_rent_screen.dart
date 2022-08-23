@@ -44,6 +44,18 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
   late String _headerText = today.month.toString();
   int totalAvailableCount = 0;
   int selectedDayAvailableCount = 0;
+  List<Color> colorList = [
+    HexColor("#F9A9A9"),
+    HexColor("#A9D3F9"),
+    HexColor("#F9E3A9"),
+    HexColor("#D1A9F9"),
+    HexColor("#55D6C2"),
+    HexColor("#9BEAEF"),
+    HexColor("#D4989A"),
+    HexColor("#5E879D"),
+    HexColor("#E6C8E0"),
+    HexColor("#FFC4A6"),
+  ];
 
   @override
   void dispose() {
@@ -293,8 +305,10 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                                 color: Colors.transparent),
                             backgroundColor: HexColor("#f3f3f3"),
                             todayBackgroundColor: HexColor("#f3f3f3"),
-                            leadingDatesBackgroundColor: HexColor("#92AEAC").withOpacity(0.5),
-                            trailingDatesBackgroundColor: HexColor("#92AEAC").withOpacity(0.5),
+                            leadingDatesBackgroundColor:
+                                HexColor("#92AEAC").withOpacity(0.5),
+                            trailingDatesBackgroundColor:
+                                HexColor("#92AEAC").withOpacity(0.5),
                           ),
                         ),
                         dataSource: MeetingDataSource(meetingList),
@@ -469,21 +483,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
   }
 
   Color getRandomColor() {
-    int ranNum = Random().nextInt(4);
-    print(ranNum);
-
-    if (ranNum == 0) {
-      return HexColor("#F9A9A9");
-    }
-    if (ranNum == 1) {
-      return HexColor("#A9D3F9");
-
-    }
-    if (ranNum == 2) {
-      return HexColor("#F9E3A9");
-
-    }
-    return HexColor("#D1A9F9");
-
+    int ranNum = Random().nextInt(10);
+    return colorList[ranNum];
   }
 }
