@@ -44,7 +44,7 @@ class PlanCalendar extends StatelessWidget {
                 _.date?.year, _.date?.month, _.date?.day);
           },
           cellEndPadding: 5,
-          headerStyle: CalendarHeaderStyle(
+          headerStyle: const CalendarHeaderStyle(
               textStyle: TextStyle(
                   fontSize: 23,
                   fontStyle: FontStyle.normal,
@@ -71,29 +71,25 @@ class PlanCalendar extends StatelessWidget {
           ),
           dataSource: MeetingDataSource(_source),
           todayHighlightColor: HexColor("#EE795F"),
-          monthViewSettings: const MonthViewSettings(
+          monthViewSettings: MonthViewSettings(
+            appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
             showAgenda: false,
             numberOfWeeksInView: 6,
             appointmentDisplayCount: 4,
             dayFormat: 'EEE',
             navigationDirection: MonthNavigationDirection.horizontal,
+            showTrailingAndLeadingDates: false,
             monthCellStyle: MonthCellStyle(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     fontStyle: FontStyle.normal,
                     fontSize: 12,
                     color: Colors.white),
-                trailingDatesTextStyle: TextStyle(
-                    fontStyle: FontStyle.normal,
-                    fontSize: 15,
-                    color: Colors.transparent),
-                leadingDatesTextStyle: TextStyle(
-                    fontStyle: FontStyle.normal,
-                    fontSize: 15,
-                    color: Colors.transparent),
-                backgroundColor: Colors.transparent,
+                backgroundColor: HexColor("#425C5A"),
                 todayBackgroundColor: Colors.transparent,
-                leadingDatesBackgroundColor: Colors.transparent,
-                trailingDatesBackgroundColor: Colors.transparent),
+                leadingDatesBackgroundColor:
+                    HexColor("92AEAC").withOpacity(0.5),
+                trailingDatesBackgroundColor:
+                    HexColor("92AEAC").withOpacity(0.5)),
           ),
         ),
       );
