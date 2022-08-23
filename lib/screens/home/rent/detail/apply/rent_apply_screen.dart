@@ -219,7 +219,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     Padding(
                         padding: EdgeInsets.only(top: 8.h, left: 8.w),
                         child: Text(
-                          "1. 물 묻히지 마세요\n2. 조심히 다뤄주세요\n3. TF팀 화이팅",
+                          getPolicyTextFromCaterory(widget.category),
                         )),
                     SizedBox(
                       width: double.infinity,
@@ -265,7 +265,6 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                 GestureDetector(
                   onTap: () async {
                     if (!agreementCheckBoxState) {
-                      Common.showSnackBar(context, "이용약관에 동의해주세요.");
                       return;
                     }
 
@@ -389,31 +388,49 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                       return;
                     }
                   },
-                  child: Container(
-                    width: 290.w,
-                    height: 44.h,
-                    margin:
-                        EdgeInsets.only(left: 35.w, right: 35.w, bottom: 20.h),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: HexColor("#EE795F"),
-                        borderRadius: BorderRadius.circular(25)),
-                    child: isLoading
-                        ? Text(
-                            "신청중입니다...",
-                            style: TextStyle(
-                                color: HexColor("#F3F3F3"),
-                                fontSize: 21.5.sp,
-                                fontWeight: FontWeight.w600),
-                          )
-                        : Text(
+                  child: agreementCheckBoxState == true
+                      ? Container(
+                          width: 290.w,
+                          height: 44.h,
+                          margin: EdgeInsets.only(
+                              left: 35.w, right: 35.w, bottom: 20.h),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: HexColor("#EE795F"),
+                              borderRadius: BorderRadius.circular(25)),
+                          child: isLoading
+                              ? Text(
+                                  "신청중입니다...",
+                                  style: TextStyle(
+                                      color: HexColor("#F3F3F3"),
+                                      fontSize: 21.5.sp,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              : Text(
+                                  "신청하기",
+                                  style: TextStyle(
+                                      color: HexColor("#F3F3F3"),
+                                      fontSize: 21.5.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                        )
+                      : Container(
+                          width: 290.w,
+                          height: 44.h,
+                          margin: EdgeInsets.only(
+                              left: 35.w, right: 35.w, bottom: 20.h),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: HexColor("#EE795F").withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(25)),
+                          child: Text(
                             "신청하기",
                             style: TextStyle(
                                 color: HexColor("#F3F3F3"),
                                 fontSize: 21.5.sp,
                                 fontWeight: FontWeight.w600),
                           ),
-                  ),
+                        ),
                 ),
               ],
             )
@@ -423,5 +440,22 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: HexColor("#425c5a"),
     );
+  }
+
+  String getPolicyTextFromCaterory(String category) {
+    switch (category) {
+      case "CANOPY":
+        return "1. 캐노피";
+      case "TABLE":
+        return "1. 캐노피";
+      case "AMP":
+        return "1. 캐노피";
+      case "WIRE":
+        return "1. 캐노피";
+      case "CART":
+        return "1. 캐노피";
+      default:
+        return "1. 의자";
+    }
   }
 }
