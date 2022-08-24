@@ -152,10 +152,11 @@ class _MyRentScreenState extends State<MyRentScreen> {
       setState(() {
         isLoading = false;
       });
-      if(mounted) {
+      if (mounted) {
         Navigator.pushAndRemoveUntil(
-            context, MaterialPageRoute(builder: (context) => LoginScreen()), (
-            route) => false);
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+            (route) => false);
       }
 
       return Future.error("fetchRentList() call : refresh token expired");
@@ -169,36 +170,27 @@ class _MyRentScreenState extends State<MyRentScreen> {
         "Authorization": "Bearer $AT"
       }).timeout(const Duration(seconds: 30));
       Map<String, dynamic> resData =
-      jsonDecode(utf8.decode(resString.bodyBytes));
+          jsonDecode(utf8.decode(resString.bodyBytes));
       List<dynamic> data = resData["data"];
       print(data);
 
+      List<Rent> _denyList = [];
+      List<Rent> _doneList = [];
+      List<Rent> _waitList = [];
+      List<Rent> _confirmList = [];
       List<Rent> _rentList = [];
-      List<Rent> _tempList = [];
-      for (var e in data) {
-        if (e["rentStatus"] == "DENY") _rentList.add(Rent.fromJson(e));
-      }
-      for (var e in data) {
-        if (e["rentStatus"] == "DONE") _tempList.add(Rent.fromJson(e));
-      }
-      for (var e in data) {
-        if (e["rentStatus"] == "WAIT") _tempList.add(Rent.fromJson(e));
-      }
-      for (var e in data) {
-        if (e["rentStatus"] == "CONFIRM") _tempList.add(Rent.fromJson(e));
-      }
-
-      setState(() {
-        rentList = _rentList + _tempList.reversed.toList();
-      });
 
       for (var e in data) {
+        if (e["rentStatus"] == "DENY") _denyList.add(Rent.fromJson(e));
+        if (e["rentStatus"] == "DONE") _doneList.add(Rent.fromJson(e));
+        if (e["rentStatus"] == "WAIT") _waitList.add(Rent.fromJson(e));
+        if (e["rentStatus"] == "CONFIRM") _confirmList.add(Rent.fromJson(e));
         if (e["rentStatus"] == "RENT") _rentList.add(Rent.fromJson(e));
+        print(e);
       }
-
-      for (var e in _rentList) {
-        print(e.itemCategory);
-      }
+      setState(() {
+        rentList = _rentList + _confirmList + _denyList + _waitList + _doneList;
+      });
     } catch (e) {
       print(e);
       return;

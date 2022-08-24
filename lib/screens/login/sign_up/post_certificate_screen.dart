@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,8 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:start_app/models/status_code.dart';
 import 'package:start_app/notifiers/sign_up_notifier.dart';
-import 'package:start_app/screens/home/home_screen.dart';
-import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/sign_up/sign_up_end_screen.dart';
 import 'package:start_app/utils/common.dart';
 
@@ -105,9 +102,9 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                 onTap: () async {
                   final file = await ImagePicker().pickImage(
                       source: ImageSource.camera,
-                      maxWidth: 640,
-                      maxHeight: 280,
-                      imageQuality: 100 //0-100
+                      maxWidth: 1920,
+                      maxHeight: 1080,
+                      imageQuality: 100
                       );
 
                   if (file?.path != null) {
@@ -131,10 +128,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                     : noCertificateContainer(),
               ),
               SizedBox(
-                height: 8.h,
-              ),
-              SizedBox(
-                height: 56.h,
+                height: 64.h,
               ),
               GestureDetector(
                 onTap: imageFile != null
@@ -146,7 +140,8 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                         final appPassword = signUpNotifier.getAppPassword();
                         final name = signUpNotifier.getName();
                         final department = signUpNotifier.getDepartment();
-                        final fcmToken = signUpNotifier.getFcmToken(); // 미구현, 미사용
+                        final fcmToken =
+                            signUpNotifier.getFcmToken(); // 미구현, 미사용
 
                         final postCertificateResult = await postCertificate(
                             studentNo, appPassword, name, department, fcmToken);
@@ -233,7 +228,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
     dio.options.contentType = 'multipart/form-data';
 
     final _file = await MultipartFile.fromFile(imageFile!.path,
-        filename: "file_name", contentType: MediaType("image", "jpg"));
+        filename: "file_name", contentType: MediaType("image", "jpg")).timeout(const Duration(seconds: 30));
 
     FormData _formData = FormData.fromMap({
       "studentNo": studentNo,
@@ -254,6 +249,9 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
       }
 
       return StatusCode.UNCATCHED_ERROR;
+    } on SocketException catch (e) {
+      print("socket error : $e");
+      return StatusCode.UNCATCHED_ERROR;
     } catch (e) {
       print("error $e");
       return StatusCode.UNCATCHED_ERROR;
@@ -270,7 +268,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
       ),
       child: Center(
         child: Text(
-          "이곳을 누르면 카메라가 열립니다.",
+          "이곳을 누르면 카메라가 실행됩니다.",
           style: TextStyle(
               fontSize: 13.sp,
               fontWeight: FontWeight.w400,

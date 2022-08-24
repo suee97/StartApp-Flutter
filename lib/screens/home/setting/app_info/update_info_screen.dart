@@ -69,7 +69,7 @@ class UpdateInfoScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: historyList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Text("- ${historyList[index]}");
+                  return Text("    - ${historyList[index]}");
                 }),
             SizedBox(
               height: 16.h,

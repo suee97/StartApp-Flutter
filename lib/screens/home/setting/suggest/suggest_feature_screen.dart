@@ -22,7 +22,7 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
   final contentTextController = TextEditingController();
   File? imageFile;
   final ImagePicker imagePicker = ImagePicker();
-  late bool isLoading;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -95,8 +95,8 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
 
                       final file = await ImagePicker().pickImage(
                           source: ImageSource.gallery,
-                          maxWidth: 640,
-                          maxHeight: 280,
+                          maxWidth: 1920,
+                          maxHeight: 1080,
                           imageQuality: 100 //0-100
                           );
 
@@ -108,28 +108,77 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
                     },
                     child: Container(
                         child: imageFile != null
-                            ? Padding(
-                                padding: EdgeInsets.only(left: 12.w),
-                                child: Container(
-                                  width: 300.w,
-                                  child: Text(imageFile!.path,
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w400)),
-                                ),
+                            ? Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 12.w),
+                                    child: Container(
+                                      width: 300.w,
+                                      child: Text(imageFile!.path,
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w400)),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 8.h,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 12.w),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          imageFile = null;
+                                        });
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: 312.w,
+                                        height: 40.h,
+                                        decoration: BoxDecoration(
+                                          color: HexColor("#f5efea"),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border: Border.all(
+                                            width: 1.w,
+                                            color: HexColor("#f9b7a9")
+                                                .withOpacity(0.5),
+                                          ),
+                                        ),
+                                        child: Text("업로드 취소하기",
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w400)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               )
                             : Padding(
                                 padding: EdgeInsets.all(12.w),
-                                child: Text("사진 추가하기 >",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w400)),
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    width: 312.w,
+                                    height: 40.h,
+                                    decoration: BoxDecoration(
+                                      color: HexColor("#f5efea"),
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        width: 1.w,
+                                        color: HexColor("#f9b7a9")
+                                            .withOpacity(0.5),
+                                      ),
+                                    ),
+                                    child: Text("사진 추가하기",
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.w400))),
                               )),
                   ),
                 ],
               ),
               SizedBox(
-                height: 120.h,
+                height: 104.h,
               ),
               Container(
                 width: double.infinity,
@@ -187,8 +236,14 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
                         return;
                       }
                       final postSuggestResult = await postSuggest();
-
-                      /// TODO
+                      if (postSuggestResult == StatusCode.SUCCESS) {
+                        if (!mounted) return;
+                        Common.showSnackBar(context, "전달이 완료되었습니다!");
+                        Navigator.pop(context);
+                        return;
+                      }
+                      if (!mounted) return;
+                      Common.showSnackBar(context, "오류가 발생했습니다.");
                     },
                     child: Container(
                       width: 155.w,
@@ -209,6 +264,9 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 16.h,
               )
             ],
           ),
@@ -225,15 +283,26 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
     Dio dio = Dio();
     dio.options.contentType = 'multipart/form-data';
 
-    final _file = await MultipartFile.fromFile(imageFile!.path,
-        filename: "file_name", contentType: MediaType("image", "jpg"));
+    var _file;
 
-    FormData _formData =
-        FormData.fromMap({"title": title, "content": content, "file": _file});
+    if (imageFile != null) {
+      _file = await MultipartFile.fromFile(imageFile!.path,
+          filename: "file_name", contentType: MediaType("image", "jpg"));
+    } else {
+      _file = null;
+    }
+
+    FormData _formData = FormData.fromMap({
+      "title": title,
+      "content": content,
+      "category": "FEATURE",
+      "file": _file
+    });
 
     try {
-      final resString =
-          await dio.post("${dotenv.get("DEV_API_BASE_URL")}/dd", data: _formData);
+      final resString = await dio.post(
+          "${dotenv.get("DEV_API_BASE_URL")}/suggestion",
+          data: _formData);
 
       if (resString.data["status"] == 201) {
         print("postSuggest() call : Success");
