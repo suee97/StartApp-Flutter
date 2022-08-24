@@ -20,7 +20,6 @@ import 'dart:io' show Platform, SocketException;
 import '../../login/login_screen.dart';
 import 'festival_info_widget.dart';
 import 'package:http/http.dart' as http;
-
 import 'festival_lineup_widget.dart';
 
 class FestivalScreen extends StatefulWidget {
@@ -69,7 +68,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   late List<FestivalInfoWidget> contentsList;
 
-  late List <FestivalLineupWidget> lineupList;
+  late List<FestivalLineupWidget> lineupList;
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -183,12 +182,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
         List<String> _lineupDay = [];
         List<String> _lineupTime = [];
 
-        for(Map e in data[0]["boothList"]){
-            _boothInfo.add(e.values.toList()[1]);
-            _crowdedInfo.add(e.values.toList()[2]);
-          }
+        for (Map e in data[0]["boothList"]) {
+          _boothInfo.add(e.values.toList()[1]);
+          _crowdedInfo.add(e.values.toList()[2]);
+        }
 
-        for(Map e in data[0]["lineUpList"]){
+        for (Map e in data[0]["lineUpList"]) {
           _lineupInfo.add(e.values.toList()[1]);
           _lineupDay.add(e.values.toList()[2]);
           _lineupTime.add(e.values.toList()[3]);
@@ -274,22 +273,22 @@ class _FestivalScreenState extends State<FestivalScreen> {
         }
 
         int check22 = 1, check23 = 1;
-        for(String day in _lineupDay){
-          if(day == "2022-09-22"){
+        for (String day in _lineupDay) {
+          if (day == "2022-09-22") {
             check22 = _lineupDay.indexOf(day);
           }
-          if(day == "2022-09-23"){
+          if (day == "2022-09-23") {
             check23 = _lineupDay.indexOf(day);
           }
         }
         String title, _time, time;
 
-        if(check22 == 0){
+        if (check22 == 0) {
           setState(() {
-            lineup0921.add(["",""]);//?
+            lineup0921.add(["", ""]); //?
           });
-        }else{
-          for(int i = 0; i <check22; i++){
+        } else {
+          for (int i = 0; i < check22; i++) {
             title = _lineupInfo[i];
             _time = _lineupTime[i];
             _time = _time.split('T')[1];
@@ -300,7 +299,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
           }
         }
 
-        for(int i = check22; i <check23; i++){
+        for (int i = check22; i < check23; i++) {
           title = _lineupInfo[i];
           _time = _lineupTime[i];
           _time = _time.split('T')[1];
@@ -310,7 +309,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
           });
         }
 
-        for(int i = check23; i < _lineupInfo.length; i++){
+        for (int i = check23; i < _lineupInfo.length; i++) {
           title = _lineupInfo[i];
           _time = _lineupTime[i];
           _time = _time.split('T')[1];
@@ -331,15 +330,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
     } catch (e) {
       "error $e";
     }
-
-
   }
 
   //5개 장소 중 스탬프 찍기 함수
   Future<StatusCode> setStamp(String stampPlace) async {
-
     final authTokenAndReIssueResult = await Auth.authTokenAndReIssue();
-    if(authTokenAndReIssueResult == StatusCode.UNCATCHED_ERROR) {
+    if (authTokenAndReIssueResult == StatusCode.UNCATCHED_ERROR) {
       return StatusCode.UNCATCHED_ERROR;
     }
 
@@ -348,7 +344,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => LoginScreen()),
-                (route) => false);
+            (route) => false);
       }
 
       return StatusCode.UNCATCHED_ERROR;
@@ -374,7 +370,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
         print("access토큰이 바로 사용되어 스탬프 api 성공");
         return StatusCode.SUCCESS;
       }
-
     } on TimeoutException catch (e) {
       print("timeout_exception $e");
       return StatusCode.TIMEOUT_ERROR;
@@ -420,19 +415,17 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   //전체 5개 스탬프 찍기 상태 조회
   Future<StatusCode> getStampStatus() async {
-
     final authTokenAndReIssueResult = await Auth.authTokenAndReIssue();
     if (authTokenAndReIssueResult == StatusCode.UNCATCHED_ERROR) {
       return StatusCode.UNCATCHED_ERROR;
     }
 
     if (authTokenAndReIssueResult == StatusCode.REFRESH_EXPIRED) {
-
       if (mounted) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => LoginScreen()),
-                (route) => false);
+            (route) => false);
       }
 
       return StatusCode.UNCATCHED_ERROR;
@@ -465,9 +458,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
         });
 
         print("후상태$isExhibition");
-        return StatusCode.SUCCESS;
       }
 
+      return StatusCode.SUCCESS;
     } on TimeoutException catch (e) {
       print("timeout_exception $e");
       return StatusCode.TIMEOUT_ERROR;
@@ -483,7 +476,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
   }
 
   Future<void> checkStamps() async {
-    if(!Common.getIsLogin()){
+    if (!Common.getIsLogin()) {
       return;
     }
 
@@ -498,8 +491,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
       await Common.setAutoLogin(false);
       await Common.clearStudentInfoPref();
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (context) => const LoginScreen()),
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
           (route) => false);
       Common.showSnackBar(context, "10. 다시 로그인해주세요.");
       return;
@@ -628,11 +620,11 @@ class _FestivalScreenState extends State<FestivalScreen> {
           contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
     ];
 
-    lineupList =  <FestivalLineupWidget>[
+    lineupList = <FestivalLineupWidget>[
       // lineup0921 == [] ?:
-      FestivalLineupWidget(lineupDay: "9월 21일",lineups: lineup0921),
-      FestivalLineupWidget(lineupDay: "9월 22일",lineups: lineup0922),
-      FestivalLineupWidget(lineupDay: "9월 23일",lineups: lineup0923),
+      FestivalLineupWidget(lineupDay: "9월 21일", lineups: lineup0921),
+      FestivalLineupWidget(lineupDay: "9월 22일", lineups: lineup0922),
+      FestivalLineupWidget(lineupDay: "9월 23일", lineups: lineup0923),
     ];
     print("확인:$lineup0921 , $lineup0922 , $lineup0923");
   }
@@ -701,7 +693,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                               ? SvgPicture.asset("assets/stamp_exhibition.svg",
                                   width: 130.w, height: 130.h)
                               : SvgPicture.asset(
-                                  "assets/gray_stamp_exhibition.svg",
+                                  "assets/stamp_exhibition_grey.svg",
                                   width: 130.w,
                                   height: 130.h),
                           SizedBox(
@@ -721,11 +713,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                   side: BorderSide(color: HexColor("#425c5a")),
                                 ))),
                             child: StampButton(
-                                title: isExhibition ? "도장찍기완료!" : "도장찍기", loading: isLoading),
+                                title: isExhibition ? "도장찍기완료!" : "도장찍기",
+                                loading: isLoading),
                             onPressed: () async {
-
                               if (!Common.getIsLogin()) {
-                                Common.showSnackBar(context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
+                                Common.showSnackBar(context,
+                                    "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                 return;
                               }
 
@@ -752,11 +745,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                 }
 
                                 await finishSetStamp("exhibition");
-                                setState((){
+                                setState(() {
                                   isExhibition = true;
                                   isLoading = false;
                                 });
-
                               }
                             },
                           ),
@@ -813,7 +805,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                     width: 130.w,
                                     height: 130.h)
                                 : SvgPicture.asset(
-                                    "assets/gray_stamp_fleamarket.svg",
+                                    "assets/stamp_fleamarket_grey.svg",
                                     width: 130.w,
                                     height: 130.h),
                             SizedBox(
@@ -835,10 +827,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         BorderSide(color: HexColor("#425c5a")),
                                   ))),
                               child: StampButton(
-                                  title: isFleamarket ? "도장찍기완료!" : "도장찍기", loading: isLoading),
+                                  title: isFleamarket ? "도장찍기완료!" : "도장찍기",
+                                  loading: isLoading),
                               onPressed: () async {
                                 if (!Common.getIsLogin()) {
-                                  Common.showSnackBar(context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
+                                  Common.showSnackBar(context,
+                                      "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                   return;
                                 }
                                 if (isFleamarket) {
@@ -921,7 +915,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                 ? SvgPicture.asset("assets/stamp_sangsang.svg",
                                     width: 130.w, height: 130.h)
                                 : SvgPicture.asset(
-                                    "assets/gray_stamp_sangsang.svg",
+                                    "assets/stamp_sangsang_grey.svg",
                                     width: 130.w,
                                     height: 130.h),
                             SizedBox(
@@ -943,11 +937,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         BorderSide(color: HexColor("#425c5a")),
                                   ))),
                               child: StampButton(
-                                  title: isSangSang ? "도장찍기완료!" : "도장찍기", loading: isLoading),
+                                  title: isSangSang ? "도장찍기완료!" : "도장찍기",
+                                  loading: isLoading),
                               onPressed: () async {
                                 if (!Common.getIsLogin()) {
-                                  Common.showSnackBar(
-                                      context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
+                                  Common.showSnackBar(context,
+                                      "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                   return;
                                 }
                                 if (isSangSang) {
@@ -1032,7 +1027,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                     width: 130.w,
                                     height: 130.h)
                                 : SvgPicture.asset(
-                                    "assets/gray_stamp_bungeobang.svg",
+                                    "assets/stamp_bungeobang_grey.svg",
                                     width: 130.w,
                                     height: 130.h),
                             SizedBox(
@@ -1054,11 +1049,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         BorderSide(color: HexColor("#425c5a")),
                                   ))),
                               child: StampButton(
-                                  title: isBungEoBang ? "도장찍기완료!" : "도장찍기", loading: isLoading),
+                                  title: isBungEoBang ? "도장찍기완료!" : "도장찍기",
+                                  loading: isLoading),
                               onPressed: () async {
                                 if (!Common.getIsLogin()) {
-                                  Common.showSnackBar(
-                                      context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
+                                  Common.showSnackBar(context,
+                                      "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                   return;
                                 }
 
@@ -1089,7 +1085,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                     isBungEoBang = true;
                                     isLoading = false;
                                   });
-
                                 }
                               },
                             ),
@@ -1159,7 +1154,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                             width: 130.w,
                                             height: 130.h)
                                         : SvgPicture.asset(
-                                            "assets/gray_stamp_ground.svg",
+                                            "assets/stamp_ground_grey.svg",
                                             width: 130.w,
                                             height: 130.h),
                                     SizedBox(
@@ -1184,11 +1179,12 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                             ))),
                                         child: StampButton(
                                             title:
-                                                isGround ? "도장찍기완료!" : "도장찍기", loading: isLoading),
+                                                isGround ? "도장찍기완료!" : "도장찍기",
+                                            loading: isLoading),
                                         onPressed: () async {
                                           if (!Common.getIsLogin()) {
-                                            Common.showSnackBar(
-                                                context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
+                                            Common.showSnackBar(context,
+                                                "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                             return;
                                           }
 
@@ -1203,7 +1199,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                               isLoading = true;
                                             });
 
-                                            await getDistance(37.6297553, 127.0770174);
+                                            await getDistance(
+                                                37.6297553, 127.0770174);
 
                                             if (mydistance < 50) {
                                               //거리가 멀어서 도장을 찍을 수 없음.
@@ -1393,7 +1390,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
                 ),
                 onTap: () async {
                   if (!Common.getIsLogin()) {
-                    Common.showSnackBar(context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
+                    Common.showSnackBar(
+                        context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                     return;
                   }
 
@@ -1435,12 +1433,11 @@ class _FestivalScreenState extends State<FestivalScreen> {
                       builder: (BuildContext context) {
                         print("결정$isExhibition");
                         return isExhibition &&
-                            isGround &&
-                            isBungEoBang &&
-                            isSangSang &&
-                            isFleamarket
-                            ? Stack(
-                            children: [
+                                isGround &&
+                                isBungEoBang &&
+                                isSangSang &&
+                                isFleamarket
+                            ? Stack(children: [
                                 Dialog(
                                     backgroundColor: Colors.transparent,
                                     insetPadding: EdgeInsets.all(10),
@@ -1544,7 +1541,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                   ),
                                                 ),
                                                 onTap: () {
-                                                  setState((){
+                                                  setState(() {
                                                     allCollectedCheck = true;
                                                   });
                                                   Navigator.pop(context);
@@ -1655,64 +1652,68 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                                                                       height: 40.h,
                                                                                                       alignment: Alignment.center,
                                                                                                       decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
-                                                                                                      child: isLoading ? Center(
-                                                                                                        child: Platform.isIOS
-                                                                                                            ? const CupertinoActivityIndicator(
-                                                                                                          color: Colors.white,
-                                                                                                        )
-                                                                                                            : CircularProgressIndicator(
-                                                                                                          color: HexColor("#f3f3f3"),
-                                                                                                        ),
-                                                                                                      ) : Text("확인", style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600)),
+                                                                                                      child: isLoading
+                                                                                                          ? Center(
+                                                                                                              child: Platform.isIOS
+                                                                                                                  ? const CupertinoActivityIndicator(
+                                                                                                                      color: Colors.white,
+                                                                                                                    )
+                                                                                                                  : CircularProgressIndicator(
+                                                                                                                      color: HexColor("#f3f3f3"),
+                                                                                                                    ),
+                                                                                                            )
+                                                                                                          : Text("확인", style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600)),
                                                                                                     ),
                                                                                                     onTap: () async {
-                                                                                                      setState((){isLoading = true;});
-                                                                                                        setState(() {
-                                                                                                          isPrized = true;
-                                                                                                        });
+                                                                                                      setState(() {
+                                                                                                        isLoading = true;
+                                                                                                      });
+                                                                                                      setState(() {
+                                                                                                        isPrized = true;
+                                                                                                      });
 
-                                                                                                        await finishSetStamp("prized");
-                                                                                                      setState((){isLoading = false;});
-
-                                                                                                        Navigator.pop(context);
-                                                                                                        showDialog(
-                                                                                                            context: context,
-                                                                                                            builder: (BuildContext context) {
-                                                                                                              return Dialog(
-                                                                                                                  backgroundColor: Colors.transparent,
-                                                                                                                  insetPadding: EdgeInsets.all(10),
-                                                                                                                  shape: RoundedRectangleBorder(
-                                                                                                                    borderRadius: BorderRadius.circular(20.0),
-                                                                                                                  ),
-                                                                                                                  child: Stack(clipBehavior: Clip.none, alignment: Alignment.center, children: <Widget>[
-                                                                                                                    Container(
-                                                                                                                        width: 340.w,
-                                                                                                                        height: 230.h,
-                                                                                                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: HexColor("#F8EAE1")),
-                                                                                                                        alignment: Alignment.center,
-                                                                                                                        padding: EdgeInsets.fromLTRB(50.w, 77.h, 50.w, 13.h),
-                                                                                                                        child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                                                                                                          Text(
-                                                                                                                            "축하합니다!",
-                                                                                                                            style: TextStyle(color: HexColor("#425C5A"), fontWeight: FontWeight.w600, fontSize: 37.5.sp),
-                                                                                                                          ),
-                                                                                                                          SizedBox(
-                                                                                                                            height: 4.h,
-                                                                                                                          ),
-                                                                                                                          Text(
-                                                                                                                            "상품 수령 완료",
-                                                                                                                            style: TextStyle(color: HexColor("#EE795F"), fontWeight: FontWeight.w600, fontSize: 25.5.sp),
-                                                                                                                          ),
-                                                                                                                          SizedBox(
-                                                                                                                            height: 50.h,
-                                                                                                                          ),
-                                                                                                                          Text(
-                                                                                                                            "스템프 이벤트 참여가 더이상 불가능합니다.",
-                                                                                                                            style: TextStyle(color: HexColor("#EE795F"), fontSize: 12.5.sp),
-                                                                                                                          )
-                                                                                                                        ]))
-                                                                                                                  ]));
-                                                                                                            });
+                                                                                                      await finishSetStamp("prized");
+                                                                                                      setState(() {
+                                                                                                        isLoading = false;
+                                                                                                      });
+                                                                                                      showDialog(
+                                                                                                          context: context,
+                                                                                                          builder: (BuildContext context) {
+                                                                                                            return Dialog(
+                                                                                                                backgroundColor: Colors.transparent,
+                                                                                                                insetPadding: EdgeInsets.all(10),
+                                                                                                                shape: RoundedRectangleBorder(
+                                                                                                                  borderRadius: BorderRadius.circular(20.0),
+                                                                                                                ),
+                                                                                                                child: Stack(clipBehavior: Clip.none, alignment: Alignment.center, children: <Widget>[
+                                                                                                                  Container(
+                                                                                                                      width: 340.w,
+                                                                                                                      height: 230.h,
+                                                                                                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: HexColor("#F8EAE1")),
+                                                                                                                      alignment: Alignment.center,
+                                                                                                                      padding: EdgeInsets.fromLTRB(50.w, 77.h, 50.w, 13.h),
+                                                                                                                      child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                                                                                                        Text(
+                                                                                                                          "축하합니다!",
+                                                                                                                          style: TextStyle(color: HexColor("#425C5A"), fontWeight: FontWeight.w600, fontSize: 37.5.sp),
+                                                                                                                        ),
+                                                                                                                        SizedBox(
+                                                                                                                          height: 4.h,
+                                                                                                                        ),
+                                                                                                                        Text(
+                                                                                                                          "상품 수령 완료",
+                                                                                                                          style: TextStyle(color: HexColor("#EE795F"), fontWeight: FontWeight.w600, fontSize: 25.5.sp),
+                                                                                                                        ),
+                                                                                                                        SizedBox(
+                                                                                                                          height: 50.h,
+                                                                                                                        ),
+                                                                                                                        Text(
+                                                                                                                          "스탬프 이벤트 참여가 더이상 불가능합니다.",
+                                                                                                                          style: TextStyle(color: HexColor("#EE795F"), fontSize: 12.5.sp),
+                                                                                                                        )
+                                                                                                                      ]))
+                                                                                                                ]));
+                                                                                                          });
                                                                                                     }),
                                                                                                 SizedBox(
                                                                                                   width: 6.w,
@@ -1795,7 +1796,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                             height: 67.h,
                                                           )
                                                         : SvgPicture.asset(
-                                                            "assets/gray_stamp_ground.svg",
+                                                            "assets/stamp_ground_grey.svg",
                                                             width: 67.w,
                                                             height: 67.h),
                                                     SizedBox(
@@ -1807,7 +1808,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                             width: 67.w,
                                                             height: 67.h)
                                                         : SvgPicture.asset(
-                                                            "assets/gray_stamp_exhibition.svg",
+                                                            "assets/stamp_exhibition_grey.svg",
                                                             width: 67.w,
                                                             height: 67.h),
                                                   ],
@@ -1825,7 +1826,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                             width: 67.w,
                                                             height: 67.h)
                                                         : SvgPicture.asset(
-                                                            "assets/gray_stamp_fleamarket.svg",
+                                                            "assets/stamp_fleamarket_grey.svg",
                                                             width: 67.w,
                                                             height: 67.h),
                                                     SizedBox(
@@ -1837,7 +1838,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                             width: 67.w,
                                                             height: 67.h)
                                                         : SvgPicture.asset(
-                                                            "assets/gray_stamp_bungeobang.svg",
+                                                            "assets/stamp_bungeobang_grey.svg",
                                                             width: 67.w,
                                                             height: 67.h),
                                                     SizedBox(
@@ -1849,7 +1850,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                             width: 67.w,
                                                             height: 67.h)
                                                         : SvgPicture.asset(
-                                                            "assets/gray_stamp_sangsang.svg",
+                                                            "assets/stamp_sangsang_grey.svg",
                                                             width: 67.w,
                                                             height: 67.h),
                                                   ],

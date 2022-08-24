@@ -22,6 +22,8 @@ import '../../utils/common.dart';
 import '../../widgets/yellow_line.dart';
 import 'package:http/http.dart' as http;
 
+import 'festival/new_festival/new_festival_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -314,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const FestivalScreen()))
+                                              const NewFestivalScreen()))
                                 }),
                         MainWidget(
                             title: "이벤트 참여",
