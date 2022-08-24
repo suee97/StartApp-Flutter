@@ -69,7 +69,9 @@ class _FestivalLineupWidgetState extends State<FestivalLineupWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("  ${widget.lineupDay}", style: TextStyle(fontSize: 17.5.sp, fontWeight: FontWeight.w500, color: HexColor("#425C5A"), )),
+        FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text("  ${widget.lineupDay}", style: TextStyle(fontSize: 17.5.sp, fontWeight: FontWeight.w500, color: HexColor("#425C5A")))),
           SizedBox(
             height: 8.h,
           ),
