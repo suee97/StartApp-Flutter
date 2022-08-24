@@ -107,8 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Column(
                         children: [
                           SizedBox(
-                              width: 280.w,
-                              height: 280.h,
+                              width: 260.w,
+                              height: 260.h,
                               child: PageView.builder(
                                 controller: PageController(
                                   initialPage: 0,

@@ -18,7 +18,7 @@ class EventTile extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        height: 80.w, // h 대신 w
+        height: 70.w, // h 대신 w
         margin: EdgeInsets.fromLTRB(18.w, 0.h, 18.w, 7.h),
         child: Stack(alignment: Alignment.centerLeft, children: [
           SvgPicture.asset(
@@ -37,7 +37,7 @@ class EventTile extends StatelessWidget {
                   child: Text(
                     event.title,
                     style: TextStyle(
-                        fontSize: 19.5.sp, fontWeight: FontWeight.w400),
+                        fontSize: 17.sp, fontWeight: FontWeight.w400),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -55,13 +55,16 @@ class EventTile extends StatelessWidget {
                               color: Colors.white),
                         ),
                       )
-                    : Text(
-                        Common.parseTime(event.startTime, event.endTime),
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white),
-                      )
+                    : Padding(
+                      padding: EdgeInsets.only(right: 4.w),
+                      child: Text(
+                          Common.parseTime(event.startTime, event.endTime),
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        ),
+                    )
               ],
             ),
           ),
