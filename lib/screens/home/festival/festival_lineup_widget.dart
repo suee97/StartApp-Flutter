@@ -44,7 +44,25 @@ class _FestivalLineupWidgetState extends State<FestivalLineupWidget> {
       lineupTitle.add(e[1]);
     }
 
-    return Container(
+    return lineupTitle=="" && lineupTime=="" ? Container(
+      width: 300.w,
+      height: 250.h,
+      margin: EdgeInsets.only(bottom: 16.h, left: 30.w, right: 30.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("  ${widget.lineupDay}", style: TextStyle(fontSize: 17.5.sp, fontWeight: FontWeight.w500, color: HexColor("#425C5A"), )),
+          SizedBox(
+            height: 8.h,
+          ),
+          Container(
+            width: 300.w,
+            height: 40.h,
+            child: Text("라인업 없음.", style: TextStyle(color: Colors.transparent, fontSize: 15.5.sp, fontWeight: FontWeight.w500),),
+          )
+        ],
+      ),
+    ) : Container(
       width: 300.w,
       height: 250.h,
       margin: EdgeInsets.only(bottom: 16.h, left: 30.w, right: 30.w),

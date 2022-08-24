@@ -36,7 +36,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
   bool isGetGpsLoading = false;
   final secureStorage = const FlutterSecureStorage();
 
-  List<String> crowdedInfo = [];
+  bool isLoading = false;
+
   int postofficeCrowded = 1,
       exhibitionCrowded = 1,
       bikingCrowded = 1,
@@ -49,6 +50,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
       costumeCrowded = 1,
       gameroomCrowded = 1,
       startshopCrowded = 1;
+
+  List<List> lineup0921 = [], lineup0922 = [], lineup0923 = [];
 
   bool isExhibition = false;
   bool isFleamarket = false;
@@ -65,17 +68,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   late List<FestivalInfoWidget> contentsList;
 
-  List<FestivalLineupWidget> lineupList =  <FestivalLineupWidget>[
-    FestivalLineupWidget(
-        lineupDay: "9월 21일",
-        lineups: [["09 : 30" , "X맨 - 니가왜거기서나와"], ["10 : 30" , "컨텐츠 이름1"], ["12 : 30" , "3컨텐츠 이름1"]]),
-    FestivalLineupWidget(
-        lineupDay: "9월 22일",
-        lineups: [["09 : 30" , "X맨 - 니가왜거기서나와"], ["10 : 30" , "컨텐츠 이름1"], ["12 : 30" , "3컨텐츠 이름1"]]),
-    FestivalLineupWidget(
-        lineupDay: "9월 23일",
-        lineups: [["09 : 30" , "X맨 - 니가왜거기서나와"], ["10 : 30" , "컨텐츠 이름1"], ["12 : 30" , "3컨텐츠 이름1"]]),
-  ];
+  late List <FestivalLineupWidget> lineupList;
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -185,9 +178,19 @@ class _FestivalScreenState extends State<FestivalScreen> {
         List<String> _boothInfo = [];
         List<int> _crowdedInfo = [];
 
-        for (Map e in data) {
-          _boothInfo.add(e.values.toList()[1]);
-          _crowdedInfo.add(e.values.toList()[2]);
+        List<String> _lineupInfo = [];
+        List<String> _lineupDay = [];
+        List<String> _lineupTime = [];
+
+        for(Map e in data[0]["boothList"]){
+            _boothInfo.add(e.values.toList()[1]);
+            _crowdedInfo.add(e.values.toList()[2]);
+          }
+
+        for(Map e in data[0]["lineUpList"]){
+          _lineupInfo.add(e.values.toList()[1]);
+          _lineupDay.add(e.values.toList()[2]);
+          _lineupTime.add(e.values.toList()[3]);
         }
 
         int num, crowded;
@@ -195,7 +198,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
         for (String booth in _boothInfo) {
           if (booth == "과기대잡화점의기적") {
             num = _boothInfo.indexOf(booth);
-            int crowded = _crowdedInfo[num];
+            crowded = _crowdedInfo[num];
             setState(() {
               postofficeCrowded = crowded;
             });
@@ -267,7 +270,58 @@ class _FestivalScreenState extends State<FestivalScreen> {
             });
           }
         }
+
+        int check22 = 1, check23 = 1;
+        for(String day in _lineupDay){
+          if(day == "2022-09-22"){
+            check22 = _lineupDay.indexOf(day);
+          }
+          if(day == "2022-09-23"){
+            check23 = _lineupDay.indexOf(day);
+          }
+        }
+        String title, _time, time;
+
+        if(check22 == 0){
+          setState(() {
+            lineup0921.add(["",""]);//?
+          });
+        }else{
+          for(int i = 0; i <check22; i++){
+            title = _lineupInfo[i];
+            _time = _lineupTime[i];
+            _time = _time.split('T')[1];
+            time = "${_time.split(':')[0]}:${_time.split(':')[1]}";
+            setState(() {
+              lineup0921.add([time, title]);
+            });
+          }
+        }
+
+        for(int i = check22; i <check23; i++){
+          title = _lineupInfo[i];
+          _time = _lineupTime[i];
+          _time = _time.split('T')[1];
+          time = "${_time.split(':')[0]}:${_time.split(':')[1]}";
+          setState(() {
+            lineup0922.add([time, title]);
+          });
+        }
+
+        for(int i = check23; i < _lineupInfo.length; i++){
+          title = _lineupInfo[i];
+          _time = _lineupTime[i];
+          _time = _time.split('T')[1];
+          time = "${_time.split(':')[0]}:${_time.split(':')[1]}";
+          setState(() {
+            lineup0923.add([time, title]);
+          });
+        }
+
+        return;
       }
+
+      print("정보를 불러오지 못했습니다.");
     } on TimeoutException catch (e) {
       print("timeout_exception $e");
     } on SocketException catch (e) {
@@ -357,42 +411,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
       return;
     }
     if (setStampResult == StatusCode.UNCATCHED_ERROR) {
-      if (place == "exhibition") {
-        setState(() {
-          isExhibition = false;
-        });
-        return;
-      }
-      if (place == "fleamarket") {
-        setState(() {
-          isFleamarket = false;
-        });
-        return;
-      }
-      if (place == "sangsang") {
-        setState(() {
-          isSangSang = false;
-        });
-        return;
-      }
-      if (place == "bungeobang") {
-        setState(() {
-          isBungEoBang = false;
-        });
-        return;
-      }
-      if (place == "ground") {
-        setState(() {
-          isGround = false;
-        });
-        return;
-      }
-      if (place == "prized") {
-        setState(() {
-          isPrized = false;
-        });
-        return;
-      }
       Common.setIsLogin(false);
       await Common.setNonLogin(false);
       await Common.setAutoLogin(false);
@@ -411,6 +429,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
       Common.showSnackBar(context, "네트워크 문제가 발생했습니다.");
       return;
     }
+    Common.showSnackBar(context, "네트워크 문제가 발생했습니다.");
+    return;
   }
 
   //전체 5개 스탬프 찍기 상태 조회
@@ -438,6 +458,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
       resData = jsonDecode(utf8.decode(resString.bodyBytes));
 
       print("전상태$isExhibition");
+      print("$resData");
       if (resData["status"] == 200) {
         //스탬프 수집 정보 조회됨.
         Map data = resData["data"][0];
@@ -449,6 +470,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
           isFleamarket = data['fleamarket'];
           isBungEoBang = data['bungeobang'];
           isSangSang = data['sangsang'];
+          isPrized = data['prized'];
         });
 
         print("후상태$isExhibition");
@@ -481,8 +503,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
         }
 
         if (getNewAccessTokenResult == StatusCode.UNCATCHED_ERROR) {
+
           return StatusCode.UNCATCHED_ERROR;
         }
+
         return StatusCode.UNCATCHED_ERROR;
       }
     } on TimeoutException catch (e) {
@@ -501,15 +525,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   Future<void> checkStamps() async {
     if(!Common.getIsLogin()){
-      setState((){
-        isExhibition = false;
-        isFleamarket = false;
-        isSangSang = false;
-        isBungEoBang = false;
-        isGround = false;
-        allCollectedCheck = false;
-        isPrized = false;
-      });
       return;
     }
     final getStampStatusResult = await getStampStatus();
@@ -520,9 +535,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
           isBungEoBang &&
           isSangSang &&
           isFleamarket) {
+
         //?
-        return;
       }
+      return;
     }
     if (getStampStatusResult == StatusCode.UNCATCHED_ERROR) {
       Common.setIsLogin(false);
@@ -544,6 +560,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
       Common.showSnackBar(context, "네트워크 문제가 발생했습니다.");
       return;
     }
+    return;
   }
 
   //refresh 토큰으로 access 토큰 발급하기
@@ -684,6 +701,13 @@ class _FestivalScreenState extends State<FestivalScreen> {
           contentCrowded: startshopCrowded,
           contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
     ];
+
+    lineupList =  <FestivalLineupWidget>[
+      // lineup0921 == [] ?:
+      FestivalLineupWidget(lineupDay: "9월 21일",lineups: lineup0921),
+      FestivalLineupWidget(lineupDay: "9월 22일",lineups: lineup0922),
+      FestivalLineupWidget(lineupDay: "9월 23일",lineups: lineup0923),
+    ];
   }
 
   @override
@@ -770,30 +794,42 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                   side: BorderSide(color: HexColor("#425c5a")),
                                 ))),
                             child: StampButton(
-                                title: isExhibition ? "도장찍기완료!" : "도장찍기"),
+                                title: isExhibition ? "도장찍기완료!" : "도장찍기", loading: isLoading),
                             onPressed: () async {
+
                               if (!Common.getIsLogin()) {
                                 Common.showSnackBar(context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                 return;
                               }
+
                               if (isExhibition) {
                                 //도장을 이미 찍은 상태
                                 Common.showSnackBar(context, "이미 도장을 찍었습니다.");
                                 return;
                               } else {
                                 //도장을 안 찍은 상태
+                                setState(() {
+                                  isLoading = true;
+                                });
+
                                 await getDistance(37.6313962, 127.0767797);
-                                print("거리확인2: $mydistance");
+
                                 if (mydistance < 50) {
                                   //거리가 멀어서 도장을 찍을 수 없음.
+                                  setState(() {
+                                    isLoading = false;
+                                  });
                                   Common.showSnackBar(
                                       context, "거리가 멀어 도장을 찍을 수 없어요.");
                                   return;
                                 }
-                                setState(() {
-                                  isExhibition = true;
-                                });
+
                                 await finishSetStamp("exhibition");
+                                setState((){
+                                  isExhibition = true;
+                                  isLoading = false;
+                                });
+
                               }
                             },
                           ),
@@ -872,11 +908,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         BorderSide(color: HexColor("#425c5a")),
                                   ))),
                               child: StampButton(
-                                  title: isFleamarket ? "도장찍기완료!" : "도장찍기"),
+                                  title: isFleamarket ? "도장찍기완료!" : "도장찍기", loading: isLoading),
                               onPressed: () async {
                                 if (!Common.getIsLogin()) {
-                                  Common.showSnackBar(
-                                      context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
+                                  Common.showSnackBar(context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.");
                                   return;
                                 }
                                 if (isFleamarket) {
@@ -885,18 +920,27 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                   return;
                                 } else {
                                   //도장을 안 찍은 상태
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+
                                   await getDistance(37.6327762, 127.077273);
                                   print("거리확인2: $mydistance");
                                   if (mydistance < 50) {
                                     //거리가 멀어서 도장을 찍을 수 없음.
+                                    setState(() {
+                                      isLoading = false;
+                                    });
                                     Common.showSnackBar(
                                         context, "거리가 멀어 도장을 찍을 수 없어요.");
                                     return;
                                   }
+
+                                  await finishSetStamp("fleamarket");
                                   setState(() {
                                     isFleamarket = true;
+                                    isLoading = false;
                                   });
-                                  await finishSetStamp("fleamarket");
                                 }
                               },
                             ),
@@ -972,7 +1016,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         BorderSide(color: HexColor("#425c5a")),
                                   ))),
                               child: StampButton(
-                                  title: isSangSang ? "도장찍기완료!" : "도장찍기"),
+                                  title: isSangSang ? "도장찍기완료!" : "도장찍기", loading: isLoading),
                               onPressed: () async {
                                 if (!Common.getIsLogin()) {
                                   Common.showSnackBar(
@@ -985,18 +1029,27 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                   return;
                                 } else {
                                   //도장을 안 찍은 상태
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+
                                   await getDistance(37.63089, 127.0796858);
-                                  print("거리확인2: $mydistance");
+
                                   if (mydistance < 50) {
                                     //거리가 멀어서 도장을 찍을 수 없음.
+                                    setState(() {
+                                      isLoading = false;
+                                    });
                                     Common.showSnackBar(
                                         context, "거리가 멀어 도장을 찍을 수 없어요.");
                                     return;
                                   }
+
+                                  await finishSetStamp("sangsang");
                                   setState(() {
                                     isSangSang = true;
+                                    isLoading = false;
                                   });
-                                  await finishSetStamp("sangsang");
                                 }
                               },
                             ),
@@ -1074,7 +1127,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                         BorderSide(color: HexColor("#425c5a")),
                                   ))),
                               child: StampButton(
-                                  title: isBungEoBang ? "도장찍기완료!" : "도장찍기"),
+                                  title: isBungEoBang ? "도장찍기완료!" : "도장찍기", loading: isLoading),
                               onPressed: () async {
                                 if (!Common.getIsLogin()) {
                                   Common.showSnackBar(
@@ -1088,20 +1141,28 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                   return;
                                 } else {
                                   //도장을 안 찍은 상태
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+
                                   await getDistance(37.6331603, 127.0785649);
-                                  print("거리확인2: $mydistance");
+
                                   if (mydistance < 50) {
                                     //거리가 멀어서 도장을 찍을 수 없음.
+                                    setState(() {
+                                      isLoading = false;
+                                    });
                                     Common.showSnackBar(
                                         context, "거리가 멀어 도장을 찍을 수 없어요.");
                                     return;
                                   }
 
+                                  await finishSetStamp("bungeobang");
                                   setState(() {
                                     isBungEoBang = true;
+                                    isLoading = false;
                                   });
 
-                                  await finishSetStamp("bungeobang");
                                 }
                               },
                             ),
@@ -1196,7 +1257,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                             ))),
                                         child: StampButton(
                                             title:
-                                                isGround ? "도장찍기완료!" : "도장찍기"),
+                                                isGround ? "도장찍기완료!" : "도장찍기", loading: isLoading),
                                         onPressed: () async {
                                           if (!Common.getIsLogin()) {
                                             Common.showSnackBar(
@@ -1211,19 +1272,27 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                             return;
                                           } else {
                                             //도장을 안 찍은 상태
-                                            await getDistance(
-                                                37.6297553, 127.0770174);
-                                            print("거리확인2: $mydistance");
+                                            setState(() {
+                                              isLoading = true;
+                                            });
+
+                                            await getDistance(37.6297553, 127.0770174);
+
                                             if (mydistance < 50) {
                                               //거리가 멀어서 도장을 찍을 수 없음.
+                                              setState(() {
+                                                isLoading = false;
+                                              });
                                               Common.showSnackBar(context,
                                                   "거리가 멀어 도장을 찍을 수 없어요.");
                                               return;
                                             }
+
+                                            await finishSetStamp("ground");
                                             setState(() {
                                               isGround = true;
+                                              isLoading = false;
                                             });
-                                            await finishSetStamp("ground");
                                           }
                                         }),
                                   ],
@@ -1411,6 +1480,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                         isFleamarket) {
                       //?
                     }
+                    return;
                   }
                   if (getStampStatusResult == StatusCode.UNCATCHED_ERROR) {
                     Common.setIsLogin(false);
@@ -1546,6 +1616,9 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                   ),
                                                 ),
                                                 onTap: () {
+                                                  setState((){
+                                                    allCollectedCheck = true;
+                                                  });
                                                   Navigator.pop(context);
                                                   showDialog(
                                                       context: context,
@@ -1654,13 +1727,25 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                                                                       height: 40.h,
                                                                                                       alignment: Alignment.center,
                                                                                                       decoration: BoxDecoration(color: HexColor("#EE795F"), borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
-                                                                                                      child: Text("확인", style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600)),
+                                                                                                      child: isLoading ? Center(
+                                                                                                        child: Platform.isIOS
+                                                                                                            ? const CupertinoActivityIndicator(
+                                                                                                          color: Colors.white,
+                                                                                                        )
+                                                                                                            : CircularProgressIndicator(
+                                                                                                          color: HexColor("#f3f3f3"),
+                                                                                                        ),
+                                                                                                      ) : Text("확인", style: TextStyle(color: HexColor("#F3F3F3"), fontSize: 17.5.sp, fontWeight: FontWeight.w600)),
                                                                                                     ),
                                                                                                     onTap: () async {
+                                                                                                      setState((){isLoading = true;});
                                                                                                         setState(() {
                                                                                                           isPrized = true;
                                                                                                         });
+
                                                                                                         await finishSetStamp("prized");
+                                                                                                      setState((){isLoading = false;});
+
                                                                                                         Navigator.pop(context);
                                                                                                         showDialog(
                                                                                                             context: context,
