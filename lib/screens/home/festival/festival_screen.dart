@@ -179,21 +179,31 @@ class _FestivalScreenState extends State<FestivalScreen> {
         List<String> _boothInfo = [];
         List<int> _crowdedInfo = [];
 
-        List<String> _lineupInfo = [];
-        List<String> _lineupDay = [];
-        List<String> _lineupTime = [];
 
         for(Map e in data[0]["boothList"]){
             _boothInfo.add(e.values.toList()[1]);
             _crowdedInfo.add(e.values.toList()[2]);
           }
 
+        String time, lineupTime = '';
+
         for(Map e in data[0]["lineUpList"]){
-          _lineupInfo.add(e.values.toList()[1]);
-          _lineupDay.add(e.values.toList()[2]);
-          _lineupTime.add(e.values.toList()[3]);
+          if(e["lineUpDay"] == "2022-09-21"){
+            time = e["lineUpTime"].split('T')[1];
+            lineupTime = "${time.split(':')[0]}:${time.split(':')[1]}";
+            lineup0921.add([lineupTime,e["lineUpTitle"]]);
+          }
+          if(e["lineUpDay"] == "2022-09-22"){
+            time = e["lineUpTime"].split('T')[1];
+            lineupTime = "${time.split(':')[0]}:${time.split(':')[1]}";
+            lineup0922.add([e["lineUpTime"],e["lineUpTitle"]]);
+          }
+          if(e["lineUpDay"] == "2022-09-23"){
+            time = e["lineUpTime"].split('T')[1];
+            lineupTime = "${time.split(':')[0]}:${time.split(':')[1]}";
+            lineup0923.add([e["lineUpTime"],e["lineUpTitle"]]);
+          }
         }
-        print("확인lineu : ${data[0]}");
 
         int num, crowded;
 
@@ -271,53 +281,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
               startshopCrowded = crowded;
             });
           }
-        }
-
-        int check22 = 1, check23 = 1;
-        for(String day in _lineupDay){
-          if(day == "2022-09-22"){
-            check22 = _lineupDay.indexOf(day);
-          }
-          if(day == "2022-09-23"){
-            check23 = _lineupDay.indexOf(day);
-          }
-        }
-        String title, _time, time;
-
-        if(check22 == 0){
-          setState(() {
-            lineup0921.add(["",""]);//?
-          });
-        }else{
-          for(int i = 0; i <check22; i++){
-            title = _lineupInfo[i];
-            _time = _lineupTime[i];
-            _time = _time.split('T')[1];
-            time = "${_time.split(':')[0]}:${_time.split(':')[1]}";
-            setState(() {
-              lineup0921.add([time, title]);
-            });
-          }
-        }
-
-        for(int i = check22; i <check23; i++){
-          title = _lineupInfo[i];
-          _time = _lineupTime[i];
-          _time = _time.split('T')[1];
-          time = "${_time.split(':')[0]}:${_time.split(':')[1]}";
-          setState(() {
-            lineup0922.add([time, title]);
-          });
-        }
-
-        for(int i = check23; i < _lineupInfo.length; i++){
-          title = _lineupInfo[i];
-          _time = _lineupTime[i];
-          _time = _time.split('T')[1];
-          time = "${_time.split(':')[0]}:${_time.split(':')[1]}";
-          setState(() {
-            lineup0923.add([time, title]);
-          });
         }
 
         return;
