@@ -14,6 +14,7 @@ import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:app_settings/app_settings.dart';
 import 'package:start_app/screens/home/festival/stamp_button.dart';
 import '../../../models/status_code.dart';
+import '../../../utils/auth.dart';
 import '../../../utils/common.dart';
 import 'dart:io' show Platform, SocketException;
 import '../../login/login_screen.dart';
@@ -141,7 +142,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
     super.initState();
     setContentsInfo();
     checkStamps();
-    print("거리확인0: $mydistance");
     getDistance(
         initialCameraPosition.latitude, initialCameraPosition.longitude);
     print("거리확인1: $mydistance");
@@ -160,6 +160,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
       mydistance = mp.SphericalUtil.computeDistanceBetween(
           mp.LatLng(curLoc.latitude!, curLoc.longitude!), mp.LatLng(lat, long));
     });
+    print("거리확인:: $curLoc 내위치 $mydistance");
   }
 
   //혼잡도 호출
@@ -192,6 +193,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
           _lineupDay.add(e.values.toList()[2]);
           _lineupTime.add(e.values.toList()[3]);
         }
+        print("확인lineu : ${data[0]}");
 
         int num, crowded;
 
@@ -335,11 +337,24 @@ class _FestivalScreenState extends State<FestivalScreen> {
 
   //5개 장소 중 스탬프 찍기 함수
   Future<StatusCode> setStamp(String stampPlace) async {
-    final ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
 
-    if (ACCESS_TOKEN == null || ACCESS_TOKEN.isEmpty) {
+    final authTokenAndReIssueResult = await Auth.authTokenAndReIssue();
+    if(authTokenAndReIssueResult == StatusCode.UNCATCHED_ERROR) {
       return StatusCode.UNCATCHED_ERROR;
     }
+
+    if (authTokenAndReIssueResult == StatusCode.REFRESH_EXPIRED) {
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+                (route) => false);
+      }
+
+      return StatusCode.UNCATCHED_ERROR;
+    }
+
+    final ACCESS_TOKEN = await Auth.secureStorage.read(key: "ACCESS_TOKEN");
 
     Map bodyData = {"target": stampPlace};
 
@@ -360,37 +375,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
         return StatusCode.SUCCESS;
       }
 
-      if (resData["status"] == 401) {
-        final getNewAccessTokenResult = await getNewAccessToken();
-        if (getNewAccessTokenResult == StatusCode.SUCCESS) {
-          final AT = await secureStorage.read(key: "ACCESS_TOKEN");
-
-          try {
-            final resString = await http
-                .post(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/stamp"),
-                    headers: {
-                      "Authorization": "Bearer $AT",
-                      "Content-Type": "application/json"
-                    },
-                    body: json.encode(bodyData))
-                .timeout(const Duration(seconds: 30));
-            final resData = jsonDecode(utf8.decode(resString.bodyBytes));
-
-            if (resData["status"] == 200) {
-              print("새로운 access 토큰으로 스탬프 api 성공");
-              return StatusCode.SUCCESS;
-            }
-            return StatusCode.UNCATCHED_ERROR;
-          } catch (e) {
-            print("새로운 access 토큰 발급 후 스탬프 api 시도했으나 실패");
-            return StatusCode.UNCATCHED_ERROR;
-          }
-        }
-        if (getNewAccessTokenResult == StatusCode.UNCATCHED_ERROR) {
-          return StatusCode.UNCATCHED_ERROR;
-        }
-        return StatusCode.UNCATCHED_ERROR;
-      }
     } on TimeoutException catch (e) {
       print("timeout_exception $e");
       return StatusCode.TIMEOUT_ERROR;
@@ -429,24 +413,32 @@ class _FestivalScreenState extends State<FestivalScreen> {
       Common.showSnackBar(context, "네트워크 문제가 발생했습니다.");
       return;
     }
-    Common.showSnackBar(context, "네트워크 문제가 발생했습니다.");
+
+    Common.showSnackBar(context, "오류가 발생했습니다.");
     return;
   }
 
   //전체 5개 스탬프 찍기 상태 조회
   Future<StatusCode> getStampStatus() async {
-    final ACCESS_TOKEN = await secureStorage.read(key: "ACCESS_TOKEN");
 
-    if (ACCESS_TOKEN == null || ACCESS_TOKEN.isEmpty) {
-      Common.setIsLogin(false);
-      await Common.setNonLogin(false);
-      await Common.setAutoLogin(false);
-      await Common.clearStudentInfoPref();
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-          (route) => false);
+    final authTokenAndReIssueResult = await Auth.authTokenAndReIssue();
+    if (authTokenAndReIssueResult == StatusCode.UNCATCHED_ERROR) {
       return StatusCode.UNCATCHED_ERROR;
     }
+
+    if (authTokenAndReIssueResult == StatusCode.REFRESH_EXPIRED) {
+
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+                (route) => false);
+      }
+
+      return StatusCode.UNCATCHED_ERROR;
+    }
+
+    final ACCESS_TOKEN = await Auth.secureStorage.read(key: "ACCESS_TOKEN");
 
     Map<String, dynamic> resData = {};
 
@@ -458,57 +450,24 @@ class _FestivalScreenState extends State<FestivalScreen> {
       resData = jsonDecode(utf8.decode(resString.bodyBytes));
 
       print("전상태$isExhibition");
-      print("$resData");
+      print("데이터: $resData");
       if (resData["status"] == 200) {
         //스탬프 수집 정보 조회됨.
         Map data = resData["data"][0];
 
         setState(() {
-          // int stampid = data['stampId'];
           isExhibition = data['exhibition'];
           isGround = data['ground'];
           isFleamarket = data['fleamarket'];
           isBungEoBang = data['bungeobang'];
           isSangSang = data['sangsang'];
-          isPrized = data['prized'];
+          isPrized = data['isPrized'];
         });
 
         print("후상태$isExhibition");
         return StatusCode.SUCCESS;
       }
 
-      if (resData["status"] == 401) {
-        final getNewAccessTokenResult = await getNewAccessToken();
-        if (getNewAccessTokenResult == StatusCode.SUCCESS) {
-          final AT = await secureStorage.read(key: "ACCESS_TOKEN");
-
-          try {
-            final resString = await http.get(
-                Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/stamp"),
-                headers: {
-                  "Authorization": "Bearer $AT"
-                }).timeout(const Duration(seconds: 30));
-            resData = jsonDecode(utf8.decode(resString.bodyBytes));
-
-            if (resData["status"] == 200) {
-              print("새로운 access 토큰으로 수집 api 성공");
-              return StatusCode.SUCCESS;
-            }
-
-            return StatusCode.UNCATCHED_ERROR;
-          } catch (e) {
-            print("새로운 access 토큰 발급 후 수집 api 시도했으나 실패");
-            return StatusCode.UNCATCHED_ERROR;
-          }
-        }
-
-        if (getNewAccessTokenResult == StatusCode.UNCATCHED_ERROR) {
-
-          return StatusCode.UNCATCHED_ERROR;
-        }
-
-        return StatusCode.UNCATCHED_ERROR;
-      }
     } on TimeoutException catch (e) {
       print("timeout_exception $e");
       return StatusCode.TIMEOUT_ERROR;
@@ -527,17 +486,10 @@ class _FestivalScreenState extends State<FestivalScreen> {
     if(!Common.getIsLogin()){
       return;
     }
+
     final getStampStatusResult = await getStampStatus();
     if (getStampStatusResult == StatusCode.SUCCESS) {
       //5개를 모두 모았다면,
-      if (isExhibition &&
-          isGround &&
-          isBungEoBang &&
-          isSangSang &&
-          isFleamarket) {
-
-        //?
-      }
       return;
     }
     if (getStampStatusResult == StatusCode.UNCATCHED_ERROR) {
@@ -561,32 +513,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
       return;
     }
     return;
-  }
-
-  //refresh 토큰으로 access 토큰 발급하기
-  Future<StatusCode> getNewAccessToken() async {
-    try {
-      final resString = await http.get(
-          Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/auth/refresh"),
-          headers: {
-            "Authorization":
-                "Bearer ${await secureStorage.read(key: "ACCESS_TOKEN")}",
-            "Refresh":
-                "Bearer ${await secureStorage.read(key: "REFRESH_TOKEN")}"
-          }).timeout(const Duration(seconds: 30));
-      final resData = jsonDecode(utf8.decode(resString.bodyBytes));
-
-      if (resData["status"] == 200) {
-        List<dynamic> data = resData["data"];
-        await secureStorage.write(
-            key: "ACCESS_TOKEN", value: data[0]["accessToken"]);
-        return StatusCode.SUCCESS;
-      }
-      return StatusCode.UNCATCHED_ERROR;
-    } catch (e) {
-      print("access 토큰 재발급 실패");
-      return StatusCode.UNCATCHED_ERROR;
-    }
   }
 
   Future<void> setContentsInfo() async {
@@ -708,6 +634,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
       FestivalLineupWidget(lineupDay: "9월 22일",lineups: lineup0922),
       FestivalLineupWidget(lineupDay: "9월 23일",lineups: lineup0923),
     ];
+    print("확인:$lineup0921 , $lineup0922 , $lineup0923");
   }
 
   @override
@@ -1473,14 +1400,14 @@ class _FestivalScreenState extends State<FestivalScreen> {
                   final getStampStatusResult = await getStampStatus();
                   if (getStampStatusResult == StatusCode.SUCCESS) {
                     //5개를 모두 모았다면,
-                    if (isExhibition &&
-                        isGround &&
-                        isBungEoBang &&
-                        isSangSang &&
-                        isFleamarket) {
-                      //?
-                    }
-                    return;
+                    // if (isExhibition &&
+                    //     isGround &&
+                    //     isBungEoBang &&
+                    //     isSangSang &&
+                    //     isFleamarket) {
+                    //   //?
+                    // }
+                    // return;
                   }
                   if (getStampStatusResult == StatusCode.UNCATCHED_ERROR) {
                     Common.setIsLogin(false);
@@ -1512,7 +1439,8 @@ class _FestivalScreenState extends State<FestivalScreen> {
                             isBungEoBang &&
                             isSangSang &&
                             isFleamarket
-                            ? Stack(children: [
+                            ? Stack(
+                            children: [
                                 Dialog(
                                     backgroundColor: Colors.transparent,
                                     insetPadding: EdgeInsets.all(10),
