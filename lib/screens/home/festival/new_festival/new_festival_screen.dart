@@ -13,6 +13,7 @@ import 'package:start_app/models/status_code.dart';
 import 'package:start_app/screens/home/festival/new_festival/stamp_status_dialog.dart';
 import 'package:start_app/screens/login/login_screen.dart';
 import '../../../../utils/auth.dart';
+import 'package:lottie/lottie.dart' as lottie;
 import '../../../../utils/common.dart';
 import 'dart:io' show Platform;
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
@@ -33,6 +34,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
   bool isGetGpsLoading = false;
   bool isLoading = false;
   int boundaryDistance = 2000;
+  int alertLevel = 1;
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -254,21 +256,74 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                     return;
                   }
 
-                  /// 여기서부터 다시
                   if (isAllClear(stampStatusWithErrorResult) == true &&
                       stampStatusWithErrorResult.isPrized == false) {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AlertDialog(
-                            backgroundColor: HexColor("#F8EAE1"),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20.0))),
+                          return StatefulBuilder(
+                            builder:
+                                (BuildContext context, StateSetter setState) {
+                              return AlertDialog(
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    showDialogContentFromLevel(alertLevel, () {
+                                      setState(() {
+                                        alertLevel = 2;
+                                      });
+                                    }, () {
+                                      setState(() {
+                                        alertLevel = 3;
+                                      });
+                                    }, () {
+                                      setState(() {
+                                        alertLevel = 4;
+                                      });
+                                    }, () {
+                                      Navigator.pop(context);
+                                    }),
+                                  ],
+                                ),
+                                backgroundColor: HexColor("#F8EAE1"),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(20.0))),
+                              );
+                            },
                           );
                         });
-
                     return;
+                  }
+
+                  if (isAllClear(stampStatusWithErrorResult) == true &&
+                      stampStatusWithErrorResult.isPrized == true) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return StatefulBuilder(
+                            builder:
+                                (BuildContext context, StateSetter setState) {
+                              return AlertDialog(
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    showDialogContentFromLevel(
+                                        4, () {}, () {}, () {}, () {
+                                      Navigator.pop(context);
+                                    }),
+                                  ],
+                                ),
+                                backgroundColor: HexColor("#F8EAE1"),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(20.0))),
+                              );
+                            },
+                          );
+                        });
                   }
                 },
               ),
@@ -590,6 +645,224 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
             },
           );
         });
+  }
+
+  Widget showDialogContentFromLevel(int level, VoidCallback next1,
+      VoidCallback next2, VoidCallback next3, VoidCallback cancel1) {
+    if (level == 1) {
+      return Stack(children: [
+        Container(
+          width: 340.w,
+          height: 160.h,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: HexColor("#F8EAE1")),
+          alignment: Alignment.center,
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  "assets/stamp_allcollected.svg",
+                  width: 80.w,
+                  height: 80.h,
+                ),
+                SizedBox(
+                  width: 12.w,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "도장 이벤트",
+                      style: TextStyle(
+                          fontSize: 21.sp,
+                          fontWeight: FontWeight.w600,
+                          color: HexColor("#425C5A")),
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    Text("성공",
+                        style: TextStyle(
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.w600,
+                            color: HexColor("#425C5A"))),
+                  ],
+                ),
+                SizedBox(
+                  width: 16.w,
+                )
+              ]),
+        ),
+        Container(
+            height: 160.h,
+            width: 340.w,
+            child: lottie.Lottie.asset(
+              "assets/lottie_congratulations.json",
+            )),
+        GestureDetector(
+          onTap: next1,
+          child: Container(
+            height: 160.h,
+            alignment: Alignment.centerRight,
+            child: SvgPicture.asset(
+              "assets/icon_stamp_next.svg",
+              width: 24.w,
+              height: 60.h,
+            ),
+          ),
+        )
+      ]);
+    }
+    if (level == 2) {
+      return Container(
+        width: 340.w,
+        height: 160.h,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: HexColor("#F8EAE1")),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              "미션 참여 완료",
+              style: TextStyle(fontSize: 30.sp, color: HexColor("425C5A")),
+            ),
+            Text(
+              "전당포(상품수장소)에 가서\n담당자에게 확인 후 상품을 수령하세요.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w300,
+                  color: HexColor("#EE795F")),
+            ),
+            GestureDetector(
+              onTap: next2,
+              child: Container(
+                width: 200.w,
+                height: 40.h,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: HexColor("#EE795F")),
+                alignment: Alignment.center,
+                child: Text(
+                  "상품수령",
+                  style:
+                      TextStyle(fontSize: 17.5.sp, color: HexColor("#f3f3f3")),
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    if (level == 3) {
+      return Container(
+        width: 340.w,
+        height: 160.h,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: HexColor("#F8EAE1")),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              "상품 수령",
+              style: TextStyle(fontSize: 30.sp, color: HexColor("425C5A")),
+            ),
+            Text(
+              "확인버튼을 누르시면\n더이상 상품수령이 불가합니다.\n담당자에게 확인 후 눌러주세요.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w300,
+                  color: HexColor("#EE795F")),
+            ),
+            GestureDetector(
+              onTap: next2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: next3,
+                    child: Container(
+                      width: 110.w,
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                          ),
+                          color: HexColor("#EE795F")),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "상품수령",
+                        style: TextStyle(
+                            fontSize: 17.5.sp, color: HexColor("#f3f3f3")),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 6.w,
+                  ),
+                  GestureDetector(
+                    onTap: cancel1,
+                    child: Container(
+                      width: 110.w,
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          color: HexColor("#EE795F")),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "취소",
+                        style: TextStyle(
+                            fontSize: 17.5.sp, color: HexColor("#f3f3f3")),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      width: 340.w,
+      height: 160.h,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20), color: HexColor("#F8EAE1")),
+      alignment: Alignment.center,
+      child: Stack(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "축하합니다",
+              style: TextStyle(fontSize: 30.sp, color: HexColor("425C5A")),
+            ),
+            Text(
+              "상품 수령 완료",
+              style: TextStyle(
+                  fontSize: 24.sp,
+                  color: HexColor("#EE795F"),
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      ]),
+    );
   }
 }
 
