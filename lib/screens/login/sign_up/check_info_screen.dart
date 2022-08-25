@@ -12,6 +12,7 @@ import 'package:start_app/models/status_code.dart';
 import 'package:start_app/notifiers/sign_up_notifier.dart';
 import 'package:start_app/screens/login/sign_up/pw_setting_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:start_app/utils/department_match.dart';
 import 'dart:io' show Platform;
 import '../../../utils/common.dart';
 
@@ -26,7 +27,17 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
   bool isLoading = false;
   final studentIdController = TextEditingController();
   final studentNameController = TextEditingController();
-  final studentDepartmentController = TextEditingController();
+  final List<String> departmentList =
+      DepartmentMatch.engineerDepartments.toList() +
+          DepartmentMatch.iceDepartments.toList() +
+          DepartmentMatch.natureDepartments.toList() +
+          DepartmentMatch.andDepartments.toList() +
+          DepartmentMatch.humanDepartments.toList() +
+          DepartmentMatch.sgcDepartments.toList() +
+          DepartmentMatch.disciplinaryDepartments.toList() +
+          DepartmentMatch.cccsDepartments.toList() +
+          DepartmentMatch.cultureDepartments.toList();
+  String selectedDepartment = "기계시스템디자인공학과기계";
 
   @override
   void initState() {
@@ -37,7 +48,6 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
   void dispose() {
     studentIdController.dispose();
     studentNameController.dispose();
-    studentDepartmentController.dispose();
     super.dispose();
   }
 
@@ -162,30 +172,31 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
                         height: 16.h,
                       ),
                       textFiledTitleRowWidget("학과"),
-                      Padding(
-                          padding: EdgeInsets.only(left: 28.w, right: 28.w),
-                          child: SizedBox(
-                            height: 30.h,
-                            child: TextField(
-                              controller: studentDepartmentController,
-                              cursorColor: HexColor("#425C5A"),
-                              maxLines: 1,
-                              enableSuggestions: false,
-                              style: TextStyle(
-                                  fontSize: 17.5.sp,
-                                  fontWeight: FontWeight.w300),
-                              decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: HexColor("#425c5a")),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: HexColor("#425c5a")),
-                                ),
-                              ),
-                            ),
-                          )),
+                      Row(
+                        children: [
+                          SizedBox(width: 28.w),
+                          DropdownButton(
+                            value: selectedDepartment,
+                            items: departmentList.map((e) {
+                              return DropdownMenuItem(
+                                  value: e,
+                                  child: Text(
+                                    e,
+                                    style: TextStyle(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.w300,
+                                        color: HexColor("#425c5a")),
+                                  ));
+                            }).toList(),
+                            onChanged: (e) {
+                              setState(() {
+                                selectedDepartment = e.toString();
+                              });
+                            },
+                            focusColor: HexColor("#f3f3f3"),
+                          ),
+                        ],
+                      ),
                       SizedBox(
                         height: 28.h,
                       ),
@@ -228,7 +239,8 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
 
                           if (statusCode == StatusCode.UNCATCHED_ERROR) {
                             if (mounted) {
-                              Common.showSnackBar(context, "같은 학번으로 가입된 계정이 존재합니다.");
+                              Common.showSnackBar(
+                                  context, "같은 학번으로 가입된 계정이 존재합니다.");
                             }
                             setState(() {
                               isLoading = false;
@@ -247,22 +259,11 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
                             return;
                           }
 
-                          /// 학과 유효성 검사
-                          if (studentDepartmentController.text.isEmpty) {
-                            if (mounted) {
-                              Common.showSnackBar(context, "학과를 입력해주세요.");
-                            }
-                            setState(() {
-                              isLoading = false;
-                            });
-                            return;
-                          }
-
                           if (statusCode == StatusCode.SUCCESS) {
-
-                            signUpNotifier.setStudentNo(studentIdController.text);
+                            signUpNotifier
+                                .setStudentNo(studentIdController.text);
                             signUpNotifier.setName(studentNameController.text);
-                            signUpNotifier.setDepartment(studentDepartmentController.text);
+                            signUpNotifier.setDepartment(selectedDepartment);
 
                             if (mounted) {
                               Navigator.push(

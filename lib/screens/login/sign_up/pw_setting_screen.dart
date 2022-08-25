@@ -184,16 +184,6 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                         height: 28.h,
                       ),
                       GestureDetector(
-                          onTap: () {
-                            appPwController_1.text = "aaaa1111@@@@";
-                            appPwController_2.text = "aaaa1111@@@@";
-                          },
-                          child: Container(
-                            width: 100.w,
-                            height: 20.h,
-                            color: Colors.purple,
-                          )),
-                      GestureDetector(
                         onTap: () {
                           String pw1 = appPwController_1.text;
                           String pw2 = appPwController_2.text;

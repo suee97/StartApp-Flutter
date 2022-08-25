@@ -248,6 +248,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
         return StatusCode.SUCCESS;
       }
 
+
       return StatusCode.UNCATCHED_ERROR;
     } on SocketException catch (e) {
       print("socket error : $e");
