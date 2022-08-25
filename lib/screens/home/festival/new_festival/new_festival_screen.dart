@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,12 @@ import 'package:start_app/screens/login/login_screen.dart';
 import '../../../../utils/auth.dart';
 import 'package:lottie/lottie.dart' as lottie;
 import '../../../../utils/common.dart';
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, SocketException;
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:http/http.dart' as http;
+
+import '../festival_info_widget.dart';
+import '../festival_lineup_widget.dart';
 
 class NewFestivalScreen extends StatefulWidget {
   const NewFestivalScreen({Key? key}) : super(key: key);
@@ -36,6 +40,32 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
   int boundaryDistance = 2000;
   int alertLevel = 1;
 
+  bool isContents = true;
+  late List<FestivalInfoWidget> contentsList;
+  late List <FestivalLineupWidget> lineupList;
+
+  int postofficeCrowded = 1,
+      exhibitionCrowded = 1,
+      bikingCrowded = 1,
+      ccCrowded = 1,
+      info1Crowded = 1,
+      photozoneCrowded = 1,
+      photoismCrowded = 1,
+      pawnshopCrowded = 1,
+      photoprintingCrowded = 1,
+      costumeCrowded = 1,
+      gameroomCrowded = 1,
+      startshopCrowded = 1;
+
+  List<List> lineup0921 = [], lineup0922 = [], lineup0923 = [];
+
+  bool isExhibition = false;
+  bool isFleamarket = false;
+  bool isSangSang = false;
+  bool isBungEoBang = false;
+  bool isGround = false;
+
+
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
     // _location.onLocationChanged.listen((location) {});
@@ -44,6 +74,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
   @override
   void initState() {
     super.initState();
+    setContentsInfo();
   }
 
   @override
@@ -332,12 +363,416 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                     padding: EdgeInsets.all(8.w),
                     child: SvgPicture.asset("assets/icon_festival_info.svg"),
                   ),
-                  onTap: () {})
+                  onTap: () {
+
+                    showModalBottomSheet(
+                        backgroundColor: HexColor("#F8EAE1"),
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(30.0)),
+                        ),
+                        context: context,
+                        builder: (context) {
+                          return StatefulBuilder(builder:
+                              (BuildContext context, StateSetter setState) {
+                            return DraggableScrollableSheet(
+                                expand: false,
+                                builder: (BuildContext context,
+                                    ScrollController scrollController) {
+                                  return Column(children: <Widget>[
+                                    SizedBox(
+                                      height: 12.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                            height: 40.h,
+                                            width: 160.w,
+                                            child: TextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    isContents = true;
+                                                  });
+                                                },
+                                                child: !isContents
+                                                    ? Text("컨텐츠",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                        FontWeight.w600,
+                                                        fontSize: 17.5.sp,
+                                                        color: HexColor(
+                                                            "#425C5A")))
+                                                    : Text("컨텐츠",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                        FontWeight.w600,
+                                                        fontSize: 17.5.sp,
+                                                        color: HexColor(
+                                                            "#50425C5A"))),
+                                                style: ButtonStyle(
+                                                    overlayColor:
+                                                    MaterialStateColor.resolveWith(
+                                                            (states) => HexColor(
+                                                            "#F8EAE1")),
+                                                    backgroundColor: isContents
+                                                        ? MaterialStateProperty.all<
+                                                        Color>(
+                                                        HexColor("#50FFFFFF"))
+                                                        : MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
+                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft: Radius
+                                                              .circular(20),
+                                                          bottomLeft: Radius
+                                                              .circular(
+                                                              20)),
+                                                      // side: BorderSide(color: Colors.red)
+                                                    ))))),
+                                        SizedBox(
+                                            height: 40.h,
+                                            width: 160.w,
+                                            child: TextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    isContents = false;
+                                                  });
+                                                },
+                                                child: !isContents
+                                                    ? Text("무대 라인업",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                        FontWeight.w600,
+                                                        fontSize: 17.5.sp,
+                                                        color: HexColor(
+                                                            "#50425C5A")))
+                                                    : Text(
+                                                  "무대 라인업",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                      FontWeight.w600,
+                                                      fontSize: 17.5.sp,
+                                                      color: HexColor(
+                                                          "#425C5A")),
+                                                ),
+                                                style: ButtonStyle(
+                                                    overlayColor:
+                                                    MaterialStateColor.resolveWith(
+                                                            (states) => HexColor(
+                                                            "#F8EAE1")),
+                                                    backgroundColor: !isContents
+                                                        ? MaterialStateProperty
+                                                        .all<Color>(HexColor(
+                                                        "#50FFFFFF"))
+                                                        : MaterialStateProperty.all<
+                                                        Color>(
+                                                        HexColor("#FFFFFF")),
+                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.only(
+                                                          topRight: Radius
+                                                              .circular(20),
+                                                          bottomRight:
+                                                          Radius
+                                                              .circular(
+                                                              20)),
+                                                      // side: BorderSide(color: Colors.red)
+                                                    )))))
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 14.h,
+                                    ),
+                                    Expanded(
+                                        child: isContents
+                                            ? _getContentsCrowded(
+                                            scrollController)
+                                            : _getLineupInfo(scrollController))
+                                  ]);
+                                });
+                          });
+                        });
+
+                  })
             ],
           ),
         )
       ]),
     );
+  }
+
+  Widget _getContentsCrowded(ScrollController scrollController) {
+    return ListView.builder(
+        controller: scrollController,
+        itemCount: contentsList.length,
+        itemBuilder: (context, index) {
+          return contentsList[index];
+        });
+  }
+
+  Widget _getLineupInfo(ScrollController scrollController) {
+    return ListView.builder(
+        controller: scrollController,
+        itemCount: lineupList.length,
+        itemBuilder: (context, index) {
+          return lineupList[index];
+        });
+  }
+
+  //혼잡도 호출
+  Future<void> fetchCrowded() async {
+    Map<String, dynamic> resData = {};
+
+    try {
+      var resString = await http
+          .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/booth"))
+          .timeout(const Duration(seconds: 30));
+      resData = jsonDecode(utf8.decode(resString.bodyBytes));
+
+      if (resData["status"] == 200) {
+        List<dynamic> data = resData["data"];
+
+        List<String> _boothInfo = [];
+        List<int> _crowdedInfo = [];
+
+
+        for(Map e in data[0]["boothList"]){
+          _boothInfo.add(e.values.toList()[1]);
+          _crowdedInfo.add(e.values.toList()[2]);
+        }
+
+        String time, lineupTime = '';
+
+        for(Map e in data[0]["lineUpList"]){
+          if(e["lineUpDay"] == "2022-09-21"){
+            time = e["lineUpTime"].split('T')[1];
+            lineupTime = "${time.split(':')[0]}:${time.split(':')[1]}";
+            lineup0921.add([lineupTime,e["lineUpTitle"]]);
+          }else if(e["lineUpDay"] == "2022-09-22"){
+            time = e["lineUpTime"].split('T')[1];
+            lineupTime = "${time.split(':')[0]}:${time.split(':')[1]}";
+            lineup0922.add([lineupTime,e["lineUpTitle"]]);
+          }else if(e["lineUpDay"] == "2022-09-23"){
+            time = e["lineUpTime"].split('T')[1];
+            lineupTime = "${time.split(':')[0]}:${time.split(':')[1]}";
+            lineup0923.add([lineupTime,e["lineUpTitle"]]);
+          }
+        }
+
+        int num, crowded;
+
+        for (String booth in _boothInfo) {
+          if (booth == "과기대잡화점의기적") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              postofficeCrowded = crowded;
+            });
+          } else if (booth == "나만의 전시회") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              exhibitionCrowded = crowded;
+            });
+          } else if (booth == "미니바이킹") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              bikingCrowded = crowded;
+            });
+          } else if (booth == "씨씨는 사랑을 싣고") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              ccCrowded = crowded;
+            });
+          } else if (booth == "제1안내소") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              info1Crowded = crowded;
+            });
+          } else if (booth == "포토존") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              photozoneCrowded = crowded;
+            });
+          } else if (booth == "포토부스") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              photoismCrowded = crowded;
+            });
+          } else if (booth == "전당포") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              pawnshopCrowded = crowded;
+            });
+          } else if (booth == "인화부스") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              photoprintingCrowded = crowded;
+            });
+          } else if (booth == "믓쟁이 의상소") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              costumeCrowded = crowded;
+            });
+          } else if (booth == "오락부스") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              gameroomCrowded = crowded;
+            });
+          } else if (booth == "어의상회") {
+            num = _boothInfo.indexOf(booth);
+            crowded = _crowdedInfo[num];
+            setState(() {
+              startshopCrowded = crowded;
+            });
+          }
+        }
+
+        return;
+      }
+
+      print("정보를 불러오지 못했습니다.");
+    } on TimeoutException catch (e) {
+      print("timeout_exception $e");
+    } on SocketException catch (e) {
+      "socket_error $e";
+    } catch (e) {
+      "error $e";
+    }
+  }
+
+  Future<void> setContentsInfo() async {
+    await fetchCrowded();
+    contentsList = <FestivalInfoWidget>[
+      FestivalInfoWidget(
+          contentTitle: "과기대\n잡화점의 기적",
+          contentImg: "festival_postoffice_img",
+          openTime: "11:00~12:00",
+          contentCrowded: postofficeCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "나만의 전시회",
+          contentImg: "festival_exhibition_img",
+          openTime: "11:00~12:00",
+          contentCrowded: exhibitionCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "낙서 캔버스",
+          contentImg: "festival_doodlewall_img",
+          openTime: "11:00~12:00",
+          contentCrowded: 0,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "마당사업",
+          contentImg: "festival_madangbiz_img",
+          openTime: "11:00~12:00",
+          contentCrowded: 0,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "미니바이킹",
+          contentImg: "festival_biking_img",
+          openTime: "11:00~12:00",
+          contentCrowded: bikingCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "씨씨는 사랑을 싣고",
+          contentImg: "festival_cc_img",
+          openTime: "11:00~12:00",
+          contentCrowded: ccCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "제1안내소",
+          contentImg: "festival_info1_img",
+          openTime: "11:00~12:00",
+          contentCrowded: info1Crowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "매표소",
+          contentImg: "festival_ticketbooth_img",
+          openTime: "11:00~12:00",
+          contentCrowded: 0,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "제3안내소",
+          contentImg: "festival_info3_img",
+          openTime: "11:00~12:00",
+          contentCrowded: 0,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "플리마켓",
+          contentImg: "festival_fleamarket_img",
+          openTime: "11:00~12:00",
+          contentCrowded: 0,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "포토존",
+          contentImg: "festival_photozone_img",
+          openTime: "11:00~12:00",
+          contentCrowded: photozoneCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "포토부스",
+          contentImg: "festival_photoism_img",
+          openTime: "11:00~12:00",
+          contentCrowded: photoismCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "패션투표",
+          contentImg: "festival_fashionvote_img",
+          openTime: "11:00~12:00",
+          contentCrowded: 0,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "전당포",
+          contentImg: "festival_pawnshop_img",
+          openTime: "11:00~12:00",
+          contentCrowded: pawnshopCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "인화부스",
+          contentImg: "festival_photoprinting_img",
+          openTime: "11:00~12:00",
+          contentCrowded: photoprintingCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "믓쟁이 의상소",
+          contentImg: "festival_costume_img",
+          openTime: "11:00~12:00",
+          contentCrowded: costumeCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "오락부스",
+          contentImg: "festival_gameroom_img",
+          openTime: "11:00~12:00",
+          contentCrowded: gameroomCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+      FestivalInfoWidget(
+          contentTitle: "어의상회",
+          contentImg: "festival_startshop_img",
+          openTime: "11:00~12:00",
+          contentCrowded: startshopCrowded,
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+    ];
+
+    lineupList =  <FestivalLineupWidget>[
+      // lineup0921 == [] ?:
+      FestivalLineupWidget(lineupDay: "9월 21일",lineups: lineup0921),
+      FestivalLineupWidget(lineupDay: "9월 22일",lineups: lineup0922),
+      FestivalLineupWidget(lineupDay: "9월 23일",lineups: lineup0923),
+    ];
+    print("확인:$lineup0921 , $lineup0922 , $lineup0923");
   }
 
   Future<bool> isStampable(String place) async {
@@ -886,3 +1321,5 @@ class StampStatusWithError {
   bool isError;
   bool isExpired;
 }
+
+
