@@ -42,7 +42,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
 
   bool isContents = true;
   late List<FestivalInfoWidget> contentsList;
-  late List <FestivalLineupWidget> lineupList;
+  late List<FestivalLineupWidget> lineupList;
 
   int postofficeCrowded = 1,
       exhibitionCrowded = 1,
@@ -64,7 +64,6 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
   bool isSangSang = false;
   bool isBungEoBang = false;
   bool isGround = false;
-
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -88,26 +87,26 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
         },
       ),
       Marker(
-          markerId: MarkerId("fleamarket"),
-          position: LatLng(37.6327762, 127.077273),
+          markerId: const MarkerId("fleamarket"),
+          position: const LatLng(37.6327762, 127.077273),
           onTap: () async {
             await markerOnTap("fleamarket");
           }),
       Marker(
-          markerId: MarkerId("sangsang"),
-          position: LatLng(37.63089, 127.0796858),
+          markerId: const MarkerId("sangsang"),
+          position: const LatLng(37.63089, 127.0796858),
           onTap: () async {
             await markerOnTap("sangsang");
           }),
       Marker(
-          markerId: MarkerId("bungeobang"),
-          position: LatLng(37.6331603, 127.0785649),
+          markerId: const MarkerId("bungeobang"),
+          position: const LatLng(37.6331603, 127.0785649),
           onTap: () async {
             await markerOnTap("bungeobang");
           }),
       Marker(
-          markerId: MarkerId("ground"),
-          position: LatLng(37.6297553, 127.0770174),
+          markerId: const MarkerId("ground"),
+          position: const LatLng(37.6297553, 127.0770174),
           onTap: () async {
             await markerOnTap("ground");
           }),
@@ -235,12 +234,12 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                         }
                       },
                       icon: isGetGpsLoading == false
-                          ? Icon(Icons.gps_fixed)
-                          : Icon(Icons.access_time)),
+                          ? const Icon(Icons.gps_fixed)
+                          : const Icon(Icons.access_time)),
                 ),
               ),
             )),
-        Container(
+        SizedBox(
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -308,7 +307,14 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                       setState(() {
                                         alertLevel = 3;
                                       });
-                                    }, () {
+                                    }, () async {
+                                      final stampPlaceResult =
+                                          await stampPlace("prized");
+                                      if (stampPlaceResult !=
+                                          StatusCode.SUCCESS) {
+                                        return;
+                                      }
+
                                       setState(() {
                                         alertLevel = 4;
                                       });
@@ -364,13 +370,12 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                     child: SvgPicture.asset("assets/icon_festival_info.svg"),
                   ),
                   onTap: () {
-
                     showModalBottomSheet(
                         backgroundColor: HexColor("#F8EAE1"),
                         isScrollControlled: true,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(30.0)),
+                              BorderRadius.vertical(top: Radius.circular(30.0)),
                         ),
                         context: context,
                         builder: (context) {
@@ -386,7 +391,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
                                         SizedBox(
                                             height: 40.h,
@@ -397,41 +402,34 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                                     isContents = true;
                                                   });
                                                 },
+                                                style: ButtonStyle(
+                                                    overlayColor: MaterialStateColor.resolveWith((states) =>
+                                                        HexColor("#F8EAE1")),
+                                                    backgroundColor: isContents
+                                                        ? MaterialStateProperty.all<Color>(HexColor(
+                                                            "#50FFFFFF"))
+                                                        : MaterialStateProperty.all<Color>(
+                                                            HexColor(
+                                                                "#FFFFFF")),
+                                                    shape: MaterialStateProperty
+                                                        .all<RoundedRectangleBorder>(
+                                                            const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                              topLeft: Radius
+                                                                  .circular(20),
+                                                              bottomLeft: Radius
+                                                                  .circular(
+                                                                      20)),
+                                                      // side: BorderSide(color: Colors.red)
+                                                    ))),
                                                 child: !isContents
                                                     ? Text("컨텐츠",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                        FontWeight.w600,
-                                                        fontSize: 17.5.sp,
-                                                        color: HexColor(
-                                                            "#425C5A")))
-                                                    : Text("컨텐츠",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                        FontWeight.w600,
-                                                        fontSize: 17.5.sp,
-                                                        color: HexColor(
-                                                            "#50425C5A"))),
-                                                style: ButtonStyle(
-                                                    overlayColor:
-                                                    MaterialStateColor.resolveWith(
-                                                            (states) => HexColor(
-                                                            "#F8EAE1")),
-                                                    backgroundColor: isContents
-                                                        ? MaterialStateProperty.all<
-                                                        Color>(
-                                                        HexColor("#50FFFFFF"))
-                                                        : MaterialStateProperty.all<Color>(HexColor("#FFFFFF")),
-                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.only(
-                                                          topLeft: Radius
-                                                              .circular(20),
-                                                          bottomLeft: Radius
-                                                              .circular(
-                                                              20)),
-                                                      // side: BorderSide(color: Colors.red)
-                                                    ))))),
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.w600,
+                                                            fontSize: 17.5.sp,
+                                                            color: HexColor("#425C5A")))
+                                                    : Text("컨텐츠", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#50425C5A"))))),
                                         SizedBox(
                                             height: 40.h,
                                             width: 160.w,
@@ -441,46 +439,44 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                                     isContents = false;
                                                   });
                                                 },
+                                                style: ButtonStyle(
+                                                    overlayColor: MaterialStateColor.resolveWith((states) =>
+                                                        HexColor("#F8EAE1")),
+                                                    backgroundColor: !isContents
+                                                        ? MaterialStateProperty.all<Color>(
+                                                            HexColor(
+                                                                "#50FFFFFF"))
+                                                        : MaterialStateProperty.all<Color>(
+                                                            HexColor(
+                                                                "#FFFFFF")),
+                                                    shape: MaterialStateProperty.all<
+                                                            RoundedRectangleBorder>(
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                              topRight: Radius
+                                                                  .circular(20),
+                                                              bottomRight:
+                                                                  Radius
+                                                                      .circular(
+                                                                          20)),
+                                                      // side: BorderSide(color: Colors.red)
+                                                    ))),
                                                 child: !isContents
                                                     ? Text("무대 라인업",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                        FontWeight.w600,
-                                                        fontSize: 17.5.sp,
-                                                        color: HexColor(
-                                                            "#50425C5A")))
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.w600,
+                                                            fontSize: 17.5.sp,
+                                                            color: HexColor("#50425C5A")))
                                                     : Text(
-                                                  "무대 라인업",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                      FontWeight.w600,
-                                                      fontSize: 17.5.sp,
-                                                      color: HexColor(
-                                                          "#425C5A")),
-                                                ),
-                                                style: ButtonStyle(
-                                                    overlayColor:
-                                                    MaterialStateColor.resolveWith(
-                                                            (states) => HexColor(
-                                                            "#F8EAE1")),
-                                                    backgroundColor: !isContents
-                                                        ? MaterialStateProperty
-                                                        .all<Color>(HexColor(
-                                                        "#50FFFFFF"))
-                                                        : MaterialStateProperty.all<
-                                                        Color>(
-                                                        HexColor("#FFFFFF")),
-                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.only(
-                                                          topRight: Radius
-                                                              .circular(20),
-                                                          bottomRight:
-                                                          Radius
-                                                              .circular(
-                                                              20)),
-                                                      // side: BorderSide(color: Colors.red)
-                                                    )))))
+                                                        "무대 라인업",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 17.5.sp,
+                                                            color: HexColor(
+                                                                "#425C5A")),
+                                                      )))
                                       ],
                                     ),
                                     SizedBox(
@@ -489,13 +485,12 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                     Expanded(
                                         child: isContents
                                             ? _getContentsCrowded(
-                                            scrollController)
+                                                scrollController)
                                             : _getLineupInfo(scrollController))
                                   ]);
                                 });
                           });
                         });
-
                   })
             ],
           ),
@@ -538,27 +533,26 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
         List<String> _boothInfo = [];
         List<int> _crowdedInfo = [];
 
-
-        for(Map e in data[0]["boothList"]){
+        for (Map e in data[0]["boothList"]) {
           _boothInfo.add(e.values.toList()[1]);
           _crowdedInfo.add(e.values.toList()[2]);
         }
 
         String time, lineupTime = '';
 
-        for(Map e in data[0]["lineUpList"]){
-          if(e["lineUpDay"] == "2022-09-21"){
+        for (Map e in data[0]["lineUpList"]) {
+          if (e["lineUpDay"] == "2022-09-21") {
             time = e["lineUpTime"].split('T')[1];
             lineupTime = "${time.split(':')[0]}:${time.split(':')[1]}";
-            lineup0921.add([lineupTime,e["lineUpTitle"]]);
-          }else if(e["lineUpDay"] == "2022-09-22"){
+            lineup0921.add([lineupTime, e["lineUpTitle"]]);
+          } else if (e["lineUpDay"] == "2022-09-22") {
             time = e["lineUpTime"].split('T')[1];
             lineupTime = "${time.split(':')[0]}:${time.split(':')[1]}";
-            lineup0922.add([lineupTime,e["lineUpTitle"]]);
-          }else if(e["lineUpDay"] == "2022-09-23"){
+            lineup0922.add([lineupTime, e["lineUpTitle"]]);
+          } else if (e["lineUpDay"] == "2022-09-23") {
             time = e["lineUpTime"].split('T')[1];
             lineupTime = "${time.split(':')[0]}:${time.split(':')[1]}";
-            lineup0923.add([lineupTime,e["lineUpTitle"]]);
+            lineup0923.add([lineupTime, e["lineUpTitle"]]);
           }
         }
 
@@ -766,11 +760,11 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
           contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
     ];
 
-    lineupList =  <FestivalLineupWidget>[
+    lineupList = <FestivalLineupWidget>[
       // lineup0921 == [] ?:
-      FestivalLineupWidget(lineupDay: "9월 21일",lineups: lineup0921),
-      FestivalLineupWidget(lineupDay: "9월 22일",lineups: lineup0922),
-      FestivalLineupWidget(lineupDay: "9월 23일",lineups: lineup0923),
+      FestivalLineupWidget(lineupDay: "9월 21일", lineups: lineup0921),
+      FestivalLineupWidget(lineupDay: "9월 22일", lineups: lineup0922),
+      FestivalLineupWidget(lineupDay: "9월 23일", lineups: lineup0923),
     ];
     print("확인:$lineup0921 , $lineup0922 , $lineup0923");
   }
@@ -823,6 +817,8 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
               body: json.encode(bodyData))
           .timeout(const Duration(seconds: 30));
       final resData = jsonDecode(utf8.decode(resString.bodyBytes));
+
+      print(resData);
 
       if (resData["status"] == 409) {
         return StatusCode.REQUEST_ERROR;
@@ -885,6 +881,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
             "Bearer ${await secureStorage.read(key: "ACCESS_TOKEN")}"
       }).timeout(const Duration(seconds: 20));
       final resData = jsonDecode(utf8.decode(resString.bodyBytes));
+      print(resData);
 
       if (resData["status"] != 200) {
         return StampStatusWithError(
@@ -1005,7 +1002,11 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                           width: 250.w,
                           height: 40.h,
                           decoration: BoxDecoration(
-                              color: HexColor("#425C5A"),
+                              color: getFromStampStatus(
+                                          stampStatusWithErrorResult, place) ==
+                                      true
+                                  ? HexColor("#929d9c")
+                                  : HexColor("#425c5a"),
                               borderRadius: BorderRadius.circular(15)),
                           alignment: Alignment.center,
                           child: isLoading
@@ -1018,18 +1019,38 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                           color: HexColor("#f3f3f3"),
                                         ),
                                 )
-                              : Text(
-                                  "도장찍기",
-                                  style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: HexColor("#F8EAE1")),
+                              : Center(
+                                  child: getFromStampStatus(
+                                              stampStatusWithErrorResult,
+                                              place) ==
+                                          true
+                                      ? Text(
+                                          "참여완료",
+                                          style: TextStyle(
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: HexColor("#f3f3f3")),
+                                        )
+                                      : Text(
+                                          "도장찍기",
+                                          style: TextStyle(
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: HexColor("#F8EAE1")),
+                                        ),
                                 )),
                       onTap: () async {
                         /// 스탬프로 다이얼로그 열고 2주동안 대기하는 상황 배제
+
+                        if (getFromStampStatus(
+                                stampStatusWithErrorResult, place) ==
+                            true) {
+                          return;
+                        }
                         setState(() {
                           isLoading = true;
                         });
+
                         final stampPlaceResult = await stampPlace(place);
 
                         if (stampPlaceResult == StatusCode.REQUEST_ERROR) {
@@ -1219,54 +1240,51 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                   fontWeight: FontWeight.w300,
                   color: HexColor("#EE795F")),
             ),
-            GestureDetector(
-              onTap: next2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: next3,
-                    child: Container(
-                      width: 110.w,
-                      height: 40.h,
-                      decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10),
-                          ),
-                          color: HexColor("#EE795F")),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "상품수령",
-                        style: TextStyle(
-                            fontSize: 17.5.sp, color: HexColor("#f3f3f3")),
-                      ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: next3,
+                  child: Container(
+                    width: 110.w,
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        ),
+                        color: HexColor("#EE795F")),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "상품수령",
+                      style: TextStyle(
+                          fontSize: 17.5.sp, color: HexColor("#f3f3f3")),
                     ),
                   ),
-                  SizedBox(
-                    width: 6.w,
-                  ),
-                  GestureDetector(
-                    onTap: cancel1,
-                    child: Container(
-                      width: 110.w,
-                      height: 40.h,
-                      decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(10),
-                            bottomRight: Radius.circular(10),
-                          ),
-                          color: HexColor("#EE795F")),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "취소",
-                        style: TextStyle(
-                            fontSize: 17.5.sp, color: HexColor("#f3f3f3")),
-                      ),
+                ),
+                SizedBox(
+                  width: 6.w,
+                ),
+                GestureDetector(
+                  onTap: cancel1,
+                  child: Container(
+                    width: 110.w,
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
+                        color: HexColor("#EE795F")),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "취소",
+                      style: TextStyle(
+                          fontSize: 17.5.sp, color: HexColor("#f3f3f3")),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             )
           ],
         ),
@@ -1321,5 +1339,3 @@ class StampStatusWithError {
   bool isError;
   bool isExpired;
 }
-
-

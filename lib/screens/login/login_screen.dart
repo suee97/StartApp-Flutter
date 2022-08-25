@@ -142,6 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderSide: BorderSide(color: HexColor("#425c5a")),
                       ),
                     ),
+                    obscureText: true,
                   ),
                 )),
             SizedBox(
@@ -182,12 +183,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text("자동 로그인",
                     style: TextStyle(
                         fontSize: 14.sp, fontWeight: FontWeight.w300)),
-                TextButton(
-                    onPressed: () {
-                      studentIdController.text = "17101246";
-                      pwController.text = "qwer1234";
-                    },
-                    child: Text("ID/PW입력"))
               ],
             ),
             SizedBox(
