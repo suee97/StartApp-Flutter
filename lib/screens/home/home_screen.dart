@@ -22,6 +22,8 @@ import '../../utils/common.dart';
 import '../../widgets/yellow_line.dart';
 import 'package:http/http.dart' as http;
 
+import 'festival/new_festival/new_festival_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -107,8 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Column(
                         children: [
                           SizedBox(
-                              width: 280.w,
-                              height: 280.h,
+                              width: 260.w,
+                              height: 260.h,
                               child: PageView.builder(
                                 controller: PageController(
                                   initialPage: 0,
@@ -314,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const FestivalScreen()))
+                                              const NewFestivalScreen()))
                                 }),
                         MainWidget(
                             title: "이벤트 참여",

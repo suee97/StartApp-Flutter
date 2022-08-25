@@ -74,7 +74,7 @@ class DevInfoScreen extends StatelessWidget {
                       fontSize: 15.5.sp,
                       fontWeight: FontWeight.w300,
                       color: HexColor("#425C5A"))),
-              Text("김영산 황정연 이도원 이혜윤 권오훈",
+              Text("김영산 황정연 이도원 이혜윤 권오훈 김성우",
                   style: TextStyle(
                       fontSize: 15.5.sp,
                       fontWeight: FontWeight.w300,

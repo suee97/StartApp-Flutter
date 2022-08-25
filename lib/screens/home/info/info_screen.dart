@@ -30,7 +30,7 @@ class _InfoScreenState extends State<InfoScreen> {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
+        physics: const ClampingScrollPhysics(),
         child: Column(
           children: [
             Row(
@@ -235,36 +235,32 @@ class FAQ extends StatelessWidget {
             //컨테이너 재활용
             Container(
                 child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [faqContents(Common.faq_q1, Common.faq_a1),
-                faqContents(Common.faq_q2, Common.faq_a2),
-                faqContents(Common.faq_q3, Common.faq_a3),
-                faqContents(Common.faq_q4, Common.faq_a4),
-                faqContents(Common.faq_q5, Common.faq_a5),
-                faqContents(Common.faq_q6, Common.faq_a6),
-                faqContents(Common.faq_q7, Common.faq_a7),
-                faqContents(Common.faq_q8, Common.faq_a8),]
-            )),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                  faqContents(Common.faq_q1, Common.faq_a1),
+                  faqContents(Common.faq_q2, Common.faq_a2),
+                  faqContents(Common.faq_q3, Common.faq_a3),
+                  faqContents(Common.faq_q4, Common.faq_a4),
+                  faqContents(Common.faq_q5, Common.faq_a5),
+                  faqContents(Common.faq_q6, Common.faq_a6),
+                  faqContents(Common.faq_q7, Common.faq_a7),
+                  faqContents(Common.faq_q8, Common.faq_a8),
+                ])),
           ],
         ));
   }
 
-  Widget faqContents(String que, String ans){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-        children :[
+  Widget faqContents(String que, String ans) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(que,
-          style: TextStyle(
-              fontSize: 12.5.sp, fontWeight: FontWeight.w600)),
+          style: TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w600)),
       SizedBox(height: 7.h),
       Text(ans,
-          style: TextStyle(
-              fontSize: 12.5.sp, fontWeight: FontWeight.w400)),
+          style: TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w400)),
       SizedBox(height: 12.5.h),
     ]);
   }
-
 }
 
 class ChongHakFunction extends StatelessWidget {
