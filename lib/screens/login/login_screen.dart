@@ -318,17 +318,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         MaterialPageRoute(
                             builder: (context) => PwResettingScreen()));
                   },
-                  child: Container(
-                    margin: EdgeInsets.only(left: 20.w),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 8.h, bottom: 8.h, left: 8.w, right: 8.w),
-                      child: Text(
-                        "비밀번호 재설정",
-                        style: TextStyle(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w400,
-                            color: HexColor("#425C5A")),
+                  child: GestureDetector(
+                    onTap: () {
+                      Common.showSnackBar(context, "준비중입니다.");
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20.w),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 8.h, bottom: 8.h, left: 8.w, right: 8.w),
+                        child: Text(
+                          "비밀번호 재설정",
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                              color: HexColor("#425C5A")),
+                        ),
                       ),
                     ),
                   ),

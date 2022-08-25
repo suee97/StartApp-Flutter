@@ -287,7 +287,9 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                         SettingSemiTitle(
                           title: "회원탈퇴",
-                          onPressed: () {},
+                          onPressed: () {
+                            Common.showSnackBar(context, "준비중입니다.");
+                          },
                         ),
                         SizedBox(
                           height: 8.h,
