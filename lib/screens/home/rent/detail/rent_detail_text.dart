@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class RentDetailText extends StatelessWidget {
   var category, itemPurpose, itemWarning;
@@ -15,7 +16,7 @@ class RentDetailText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 172.w,
-      height: 150.h,
+      height: 190.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +46,8 @@ class RentDetailText extends StatelessWidget {
           SizedBox(
             height: 10.h,
           ),
-          Text("주의사항 : ${itemWarning}",
+          AutoSizeText(
+              "주의사항 : ${itemWarning}",
               style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w400,
