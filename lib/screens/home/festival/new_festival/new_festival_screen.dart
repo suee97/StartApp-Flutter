@@ -19,7 +19,6 @@ import '../../../../utils/common.dart';
 import 'dart:io' show Platform, SocketException;
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:http/http.dart' as http;
-
 import '../festival_info_widget.dart';
 import '../festival_lineup_widget.dart';
 
@@ -37,7 +36,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
   final secureStorage = const FlutterSecureStorage();
   bool isGetGpsLoading = false;
   bool isLoading = false;
-  int boundaryDistance = 2000;
+  int boundaryDistance = 50;
   int alertLevel = 1;
 
   bool isContents = true;
