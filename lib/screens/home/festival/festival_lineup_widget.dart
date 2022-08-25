@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -17,9 +18,7 @@ class FestivalLineupWidget extends StatefulWidget {
 
 class _FestivalLineupWidgetState extends State<FestivalLineupWidget> {
   List lineupInfoList = [];
-
   List lineupTitle = [];
-
   List lineupTime = [];
 
   @override
@@ -44,34 +43,15 @@ class _FestivalLineupWidgetState extends State<FestivalLineupWidget> {
       lineupTitle.add(e[1]);
     }
 
-    return lineupTitle=="" && lineupTime=="" ? Container(
+    return Container(
       width: 300.w,
       height: 250.h,
       margin: EdgeInsets.only(bottom: 16.h, left: 30.w, right: 30.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("  ${widget.lineupDay}", style: TextStyle(fontSize: 17.5.sp, fontWeight: FontWeight.w500, color: HexColor("#425C5A"), )),
-          SizedBox(
-            height: 8.h,
-          ),
-          Container(
-            width: 300.w,
-            height: 40.h,
-            child: Text("라인업 없음.", style: TextStyle(color: Colors.transparent, fontSize: 15.5.sp, fontWeight: FontWeight.w500),),
-          )
-        ],
-      ),
-    ) : Container(
-      width: 300.w,
-      height: 250.h,
-      margin: EdgeInsets.only(bottom: 16.h, left: 30.w, right: 30.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-        FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Text("  ${widget.lineupDay}", style: TextStyle(fontSize: 17.5.sp, fontWeight: FontWeight.w500, color: HexColor("#425C5A")))),
+        Text(
+        "  ${widget.lineupDay}", style: TextStyle(fontSize: 17.5.sp, fontWeight: FontWeight.w500, color: HexColor("#425C5A"))),
           SizedBox(
             height: 8.h,
           ),
@@ -115,11 +95,11 @@ class _FestivalLineupWidgetState extends State<FestivalLineupWidget> {
             width: 200.w,
             height: 40.h,
             alignment: Alignment.center,
-            child: Text(title, style: TextStyle(fontSize: 15.5.sp, fontWeight: FontWeight.w500, color: HexColor("#425C5A"))),
             decoration: BoxDecoration(
                 color: HexColor("#FFFFFF"),
                 borderRadius: getRightTileType(num, last)
             ),
+            child: AutoSizeText(title, style: TextStyle(fontSize: 15.5.sp, fontWeight: FontWeight.w500, color: HexColor("#425C5A"))),
           )
         ]
       ),
