@@ -646,10 +646,9 @@ class _SettingScreenState extends State<SettingScreen> {
       return;
     }
 
-    if (await canLaunchUrlString(webUrl)) {
-      await launchUrlString(webUrl);
-    } else {
-      throw 'Could not launch $webUrl';
+    final urlAnd = Uri.parse('https://www.instagram.com/seoultech_38/');
+    if (await canLaunchUrl(urlAnd)) {
+      await launchUrl(urlAnd);
     }
   }
 
