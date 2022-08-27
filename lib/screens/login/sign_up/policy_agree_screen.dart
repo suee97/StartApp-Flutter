@@ -33,7 +33,6 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(top: 21.h),
               width: double.infinity,
               height: 260.h,
               child: const Center(
