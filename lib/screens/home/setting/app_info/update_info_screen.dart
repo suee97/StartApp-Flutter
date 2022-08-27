@@ -23,7 +23,7 @@ class UpdateInfoScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           UpdateHistoryWidget(
-              "1.0.0", DateTime(2022, 8, 23), ["ST'art 총학생회 어플리케이션 출시"]),
+              "1.0.0", DateTime(2022, 8, 23), ["ST'art 총학생회 어플리케이션 1차 테스트 배포"]),
         ],
       ),
       backgroundColor: HexColor("#f3f3f3"),
@@ -57,7 +57,7 @@ class UpdateInfoScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 12.w),
               child: Text(
-                "업데이트 내역",
+                "- 업데이트 내역",
                 style:
                     TextStyle(fontSize: 15.5.sp, fontWeight: FontWeight.w500),
               ),
@@ -69,7 +69,7 @@ class UpdateInfoScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: historyList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Text("    - ${historyList[index]}");
+                  return Text("${historyList[index]}");
                 }),
             SizedBox(
               height: 16.h,

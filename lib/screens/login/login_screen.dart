@@ -155,8 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 24.w,
                 ),
                 SizedBox(
-                  width: 32.w,
-                  height: 30.h,
+                  width: 24.w,
+                  height: 24.h,
                   child: Transform.scale(
                     scale: 1.2,
                     child: Checkbox(
@@ -180,9 +180,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         }),
                   ),
                 ),
-                Text("자동 로그인",
-                    style: TextStyle(
-                        fontSize: 14.sp, fontWeight: FontWeight.w300)),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      autoLoginCheckBoxState = !autoLoginCheckBoxState;
+                    });
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 8.w, right: 8.w, top: 4.h, bottom: 4.h),
+                    child: Text("자동 로그인",
+                        style: TextStyle(
+                            fontSize: 14.sp, fontWeight: FontWeight.w300)),
+                  ),
+                ),
               ],
             ),
             SizedBox(
@@ -318,17 +329,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         MaterialPageRoute(
                             builder: (context) => PwResettingScreen()));
                   },
-                  child: Container(
-                    margin: EdgeInsets.only(left: 20.w),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 8.h, bottom: 8.h, left: 8.w, right: 8.w),
-                      child: Text(
-                        "비밀번호 재설정",
-                        style: TextStyle(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w400,
-                            color: HexColor("#425C5A")),
+                  child: GestureDetector(
+                    onTap: () {
+                      Common.showSnackBar(context, "준비중입니다.");
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20.w),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 8.h, bottom: 8.h, left: 8.w, right: 8.w),
+                        child: Text(
+                          "비밀번호 재설정",
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                              color: HexColor("#425C5A")),
+                        ),
                       ),
                     ),
                   ),

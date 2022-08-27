@@ -287,7 +287,9 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                         SettingSemiTitle(
                           title: "회원탈퇴",
-                          onPressed: () {},
+                          onPressed: () {
+                            Common.showSnackBar(context, "준비중입니다.");
+                          },
                         ),
                         SizedBox(
                           height: 8.h,
@@ -644,10 +646,9 @@ class _SettingScreenState extends State<SettingScreen> {
       return;
     }
 
-    if (await canLaunchUrlString(webUrl)) {
-      await launchUrlString(webUrl);
-    } else {
-      throw 'Could not launch $webUrl';
+    final urlAnd = Uri.parse('https://www.instagram.com/seoultech_38/');
+    if (await canLaunchUrl(urlAnd)) {
+      await launchUrl(urlAnd);
     }
   }
 

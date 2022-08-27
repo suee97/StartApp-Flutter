@@ -4,8 +4,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
 import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/sign_up/check_info_screen.dart';
-import 'package:start_app/utils/common.dart';
-
 import '../../home/setting/policy/service_policy_screen.dart';
 
 class PolicyAgreeScreen extends StatefulWidget {
@@ -35,7 +33,6 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(top: 21.h),
               width: double.infinity,
               height: 260.h,
               child: const Center(
@@ -81,7 +78,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   width: 68.w,
@@ -109,14 +106,26 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                   ),
                 ),
                 SizedBox(
-                  width: 12.w,
+                  width: 4.w,
                 ),
-                Text(
-                  "서비스 이용약관",
-                  style: TextStyle(
-                      fontSize: 17.5.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      servicePolicyAgreeState = !servicePolicyAgreeState;
+                    });
+                    checkIsAllAgree();
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 8.w, right: 8.w, top: 4.h, bottom: 4.h),
+                    child: Text(
+                      "서비스 이용약관",
+                      style: TextStyle(
+                          fontSize: 17.5.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black),
+                    ),
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -171,14 +180,26 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                   ),
                 ),
                 SizedBox(
-                  width: 12.w,
+                  width: 4.w,
                 ),
-                Text(
-                  "개인정보처리방침",
-                  style: TextStyle(
-                      fontSize: 17.5.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      privacyPolicyAgreeState = !privacyPolicyAgreeState;
+                    });
+                    checkIsAllAgree();
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 8.w, right: 8.w, top: 4.h, bottom: 4.h),
+                    child: Text(
+                      "개인정보처리방침",
+                      style: TextStyle(
+                          fontSize: 17.5.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black),
+                    ),
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
