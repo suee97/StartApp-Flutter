@@ -155,8 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 24.w,
                 ),
                 SizedBox(
-                  width: 32.w,
-                  height: 30.h,
+                  width: 24.w,
+                  height: 24.h,
                   child: Transform.scale(
                     scale: 1.2,
                     child: Checkbox(
@@ -180,9 +180,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         }),
                   ),
                 ),
-                Text("자동 로그인",
-                    style: TextStyle(
-                        fontSize: 14.sp, fontWeight: FontWeight.w300)),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      autoLoginCheckBoxState = !autoLoginCheckBoxState;
+                    });
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 8.w, right: 8.w, top: 4.h, bottom: 4.h),
+                    child: Text("자동 로그인",
+                        style: TextStyle(
+                            fontSize: 14.sp, fontWeight: FontWeight.w300)),
+                  ),
+                ),
               ],
             ),
             SizedBox(
