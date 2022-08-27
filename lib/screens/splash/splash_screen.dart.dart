@@ -90,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       notifyText = "0.5초 후 로직이 시작됩니다.";
     });
-    await Future.delayed(const Duration(milliseconds: 500));
+    // await Future.delayed(const Duration(milliseconds: 500));
 
     /// load env
     setState(() {
@@ -106,7 +106,7 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       notifyText = "비로그인 정보 확인중입니다.";
     });
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
     if (await Common.isNonLogin() && !await Common.isAutoLogin()) {
       await Common.clearStudentInfoPref();
       Common.setIsLogin(false);
@@ -120,7 +120,7 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       notifyText = "일반 로그인 정보 확인중입니다.";
     });
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
     if (!await Common.isNonLogin() && !await Common.isAutoLogin()) {
       await Common.clearStudentInfoPref();
       Common.setIsLogin(false);
@@ -152,7 +152,7 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       notifyText = "access token 로드 중";
     });
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
     final ACCESS_TOKEN =
         await secureStorage.read(key: "ACCESS_TOKEN"); // 엑세스 토큰 로드
 
