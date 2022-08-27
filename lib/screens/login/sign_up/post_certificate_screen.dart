@@ -35,11 +35,11 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
   Widget build(BuildContext context) {
     return Consumer<SignUpNotifier>(builder: (context, signUpNotifier, child) {
       return Scaffold(
-        body: Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+        body: Stack(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SizedBox(height: 120.h,),
               Row(
                 children: [
                   SizedBox(
@@ -67,7 +67,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                 ],
               ),
               SizedBox(
-                height: 16.h,
+                height: 36.h,
               ),
               Row(
                 children: [
@@ -89,7 +89,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                     width: 28.w,
                   ),
                   Text(
-                    "1. 카드 번호, 유효기간, 사진을 가리고 업로드 해주세요.\n2. 빛 반사에 주의해주세요.\n3. 학생증이 손상된 경우 문의해주세요.",
+                    "1. 카드 번호, 유효기간, 사진을 가리고 업로드 해주세요.\n2. 빛 반사에 주의해주세요.\n3. 학생증이 손상된 경우 문의해주세요.\n    (02-970-7012)",
                     style:
                         TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400),
                   ),
@@ -104,13 +104,11 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                       source: ImageSource.camera,
                       maxWidth: 1920,
                       maxHeight: 1080,
-                      imageQuality: 100
-                      );
+                      imageQuality: 100);
 
                   if (file?.path != null) {
                     setState(() {
                       imageFile = File(file!.path);
-                      print(imageFile?.path);
                     });
                   }
                 },
@@ -130,93 +128,96 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
               SizedBox(
                 height: 64.h,
               ),
-              GestureDetector(
-                onTap: imageFile != null
-                    ? () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        final studentNo = signUpNotifier.getStudentNo();
-                        final appPassword = signUpNotifier.getAppPassword();
-                        final name = signUpNotifier.getName();
-                        final department = signUpNotifier.getDepartment();
-                        final fcmToken =
-                            signUpNotifier.getFcmToken(); // 미구현, 미사용
-
-                        final postCertificateResult = await postCertificate(
-                            studentNo, appPassword, name, department, fcmToken);
-
-                        if (postCertificateResult != StatusCode.SUCCESS) {
-                          if (mounted) {
-                            Common.showSnackBar(context, "회원가입 요청 오류가 발생했습니다.");
-                          }
-                          setState(() {
-                            isLoading = false;
-                          });
-                          return;
-                        }
-
-                        setState(() {
-                          isLoading = false;
-                        });
-
-                        if (mounted) {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignUpEndScreen()),
-                              (route) => false);
-                        }
-                      }
-                    : () {
-                        Common.showSnackBar(context, "카메라로 사진을 찍어 업로드해주세요.");
-                      },
-                child: imageFile != null
-                    ? Container(
-                        width: 304.w,
-                        height: 54.h,
-                        decoration: BoxDecoration(
-                            color: HexColor("#425C5A"),
-                            borderRadius: BorderRadius.circular(10)),
-                        alignment: Alignment.center,
-                        child: isLoading == true
-                            ? Center(
-                                child: Platform.isIOS
-                                    ? const CupertinoActivityIndicator(
-                                        color: Colors.white,
-                                      )
-                                    : CircularProgressIndicator(
-                                        color: HexColor("#f3f3f3"),
-                                      ),
-                              )
-                            : Text(
-                                "다음",
-                                style: TextStyle(
-                                    fontSize: 19.5.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white),
-                              ))
-                    : Container(
-                        width: 304.w,
-                        height: 54.h,
-                        decoration: BoxDecoration(
-                            color: HexColor("#929d9c"),
-                            borderRadius: BorderRadius.circular(10)),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "다음",
-                          style: TextStyle(
-                              fontSize: 19.5.sp,
-                              fontWeight: FontWeight.w500,
-                              color: HexColor("#d9d9d9")),
-                        )),
-              ),
               SizedBox(
                 height: 14.h,
               )
             ],
           ),
-        ),
+          GestureDetector(
+            onTap: imageFile != null
+                ? () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    final studentNo = signUpNotifier.getStudentNo();
+                    final appPassword = signUpNotifier.getAppPassword();
+                    final name = signUpNotifier.getName();
+                    final department = signUpNotifier.getDepartment();
+                    final fcmToken = signUpNotifier.getFcmToken(); // 미구현, 미사용
+
+                    final postCertificateResult = await postCertificate(
+                        studentNo, appPassword, name, department, fcmToken);
+
+                    if (postCertificateResult != StatusCode.SUCCESS) {
+                      if (mounted) {
+                        Common.showSnackBar(context, "회원가입 요청 오류가 발생했습니다.");
+                      }
+                      setState(() {
+                        isLoading = false;
+                      });
+                      return;
+                    }
+
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    if (mounted) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignUpEndScreen()),
+                          (route) => false);
+                    }
+                  }
+                : () {
+                    Common.showSnackBar(context, "카메라로 사진을 찍어 업로드해주세요.");
+                  },
+            child: imageFile != null
+                ? Container(
+                    width: double.infinity,
+                    height: 54.h,
+                    margin:
+                        EdgeInsets.only(left: 27.w, right: 27.w, top: 570.h),
+                    decoration: BoxDecoration(
+                        color: HexColor("#425C5A"),
+                        borderRadius: BorderRadius.circular(10)),
+                    alignment: Alignment.center,
+                    child: isLoading == true
+                        ? Center(
+                            child: Platform.isIOS
+                                ? const CupertinoActivityIndicator(
+                                    color: Colors.white,
+                                  )
+                                : CircularProgressIndicator(
+                                    color: HexColor("#f3f3f3"),
+                                  ),
+                          )
+                        : Text(
+                            "다음",
+                            style: TextStyle(
+                                fontSize: 19.5.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ))
+                : Container(
+                    width: double.infinity,
+                    height: 54.h,
+                    margin:
+                        EdgeInsets.only(left: 27.w, right: 27.w, top: 570.h),
+                    decoration: BoxDecoration(
+                        color: HexColor("#929d9c"),
+                        borderRadius: BorderRadius.circular(10)),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "다음",
+                      style: TextStyle(
+                          fontSize: 19.5.sp,
+                          fontWeight: FontWeight.w500,
+                          color: HexColor("#d9d9d9")),
+                    )),
+          ),
+        ]),
         backgroundColor: HexColor("#f3f3f3"),
       );
     });
@@ -228,9 +229,10 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
     dio.options.contentType = 'multipart/form-data';
 
     final _file = await MultipartFile.fromFile(imageFile!.path,
-        filename: "file_name", contentType: MediaType("image", "jpg")).timeout(const Duration(seconds: 30));
+            filename: "file_name", contentType: MediaType("image", "jpg"))
+        .timeout(const Duration(seconds: 30));
 
-    FormData _formData = FormData.fromMap({
+    FormData formData = FormData.fromMap({
       "studentNo": studentNo,
       "appPassword": appPassword,
       "name": name,
@@ -241,13 +243,12 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
 
     try {
       final resString = await dio
-          .post("${dotenv.get("DEV_API_BASE_URL")}/member", data: _formData);
+          .post("${dotenv.get("DEV_API_BASE_URL")}/member", data: formData);
 
       if (resString.data["status"] == 201) {
         print("postCertificate() call success");
         return StatusCode.SUCCESS;
       }
-
 
       return StatusCode.UNCATCHED_ERROR;
     } on SocketException catch (e) {
