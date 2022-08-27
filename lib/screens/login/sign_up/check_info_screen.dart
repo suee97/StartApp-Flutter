@@ -37,7 +37,7 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
           DepartmentMatch.disciplinaryDepartments.toList() +
           DepartmentMatch.cccsDepartments.toList() +
           DepartmentMatch.cultureDepartments.toList();
-  String selectedDepartment = "기계시스템디자인공학과기계";
+  String selectedDepartment = "기계시스템디자인공학과";
 
   @override
   void initState() {

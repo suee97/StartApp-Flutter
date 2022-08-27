@@ -1,7 +1,7 @@
 class DepartmentMatch {
   static Set<String> engineerDepartments = {
-    '기계시스템디자인공학과기계',
-    '자동차공학과',
+    '기계시스템디자인공학과',
+    '기계자동차공학과',
     '안전공학과',
     '신소재공학과',
     '건설시스템공학과',
