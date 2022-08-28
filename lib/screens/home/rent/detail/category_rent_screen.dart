@@ -22,12 +22,8 @@ class CategoryRentScreen extends StatefulWidget {
       required this.categoryEng,
       required this.itemIcon,
       required this.itemImg,
-<<<<<<< HEAD
       required this.itemPurpose,
       required this.itemTotalCnt})
-=======
-      required this.itemPurpose})
->>>>>>> master
       : super(key: key);
 
   String categoryKr;
@@ -35,10 +31,7 @@ class CategoryRentScreen extends StatefulWidget {
   String itemIcon;
   String itemImg;
   String itemPurpose;
-<<<<<<< HEAD
   String itemTotalCnt;
-=======
->>>>>>> master
 
   @override
   State<CategoryRentScreen> createState() => _CategoryRentScreenState();
@@ -116,12 +109,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                 ),
                 RentDetailText(
                     category: widget.categoryKr,
-<<<<<<< HEAD
                     itemPurpose: widget.itemPurpose,
                     itemTotalCnt: widget.itemTotalCnt,)
-=======
-                    itemPurpose: widget.itemPurpose)
->>>>>>> master
               ],
             ),
             SizedBox(
