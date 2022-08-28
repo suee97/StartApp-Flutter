@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -151,8 +150,6 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                               );
 
                               if (result != null) {
-                                print(
-                                    "${result.start.toString()} ~ ${result.end.toString()}");
                                 setState(() {
                                   _selectedDateRange = result;
                                 });
@@ -191,20 +188,18 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 30.w, right: 30.w),
-                  child: Container(
-                    child: RentCustomTextField(
-                      label: "수량",
-                      labelHint: '대여할 물품의 수량을 적어주세요.',
-                      controller: rentAmountController,
-                      isObscure: false,
-                      inputType: TextInputType.number,
-                    ),
+                  child: RentCustomTextField(
+                    label: "수량",
+                    labelHint: '대여할 물품의 수량을 적어주세요.',
+                    controller: rentAmountController,
+                    isObscure: false,
+                    inputType: TextInputType.number,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 30.w),
                   child: Text(
-                    "이용약관",
+                    "주의사항",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         fontSize: 17.5.sp, fontWeight: FontWeight.w400),
@@ -222,7 +217,8 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                       borderRadius: const BorderRadius.all(Radius.circular(5))),
                   child: Stack(children: [
                     Padding(
-                        padding: EdgeInsets.only(top: 8.h, left: 8.w),
+                        padding:
+                            EdgeInsets.only(top: 8.h, left: 8.w, right: 8.w),
                         child: Text(
                           getPolicyTextFromCategory(widget.categoryEng),
                         )),
@@ -236,7 +232,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                           Container(
                               height: 32.h,
                               alignment: Alignment.center,
-                              child: Text("동의합니다",
+                              child: Text("읽었습니다",
                                   style: TextStyle(fontSize: 10.sp))),
                           SizedBox(
                             width: 32.w,
@@ -369,7 +365,6 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                         isLoading = false;
                       });
                       if (!mounted) return;
-                      print("rent오류:$e");
                       Common.showSnackBar(context, "오류가 발생했습니다.");
                       return;
                     }
@@ -431,17 +426,17 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
   String getPolicyTextFromCategory(String category) {
     switch (category) {
       case "CANOPY":
-        return "1. 캐노피";
+        return "1. 캐노피를 설치할 때 충분한 인원을 동반해주세요.\n2. 운반 시 바닥에 끌리지 않게 들어서 운반해주세요.";
       case "TABLE":
-        return "1. 듀라";
+        return "1. 테이블을 조립하거나 정리할 때 접합부 또는 관절 부분에 손이 끼이지 않도록 조심해주세요.";
       case "AMP":
-        return "1. 앰프";
+        return "1. 물이 들어가지 않도록 조심해주세요.\n2. 다른 장비를 연결하여 사용하는 경우 앰프에 장비를 연결한 후 전원을 켜주세요.\n3. 장비 분리 시 볼륨노브를 0으로 설정한 뒤 엠프의 전원을 끄고 장비를 분리해주세요.";
       case "WIRE":
-        return "1. 리드선";
+        return "1. 선을 정리할 때 한 쪽으로 선이 치우치지 않도록 해주세요.";
       case "CART":
-        return "1. 엘카";
+        return "1. 바퀴가 고장나지 않도록 주의해주세요.";
       default:
-        return "1. 의자";
+        return "1. 반납 시 더럽혀진 부분이 있는지 확인해주세요.";
     }
   }
 }

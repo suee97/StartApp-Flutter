@@ -22,8 +22,7 @@ class CategoryRentScreen extends StatefulWidget {
       required this.categoryEng,
       required this.itemIcon,
       required this.itemImg,
-      required this.itemPurpose,
-      required this.itemWarning})
+      required this.itemPurpose})
       : super(key: key);
 
   String categoryKr;
@@ -31,7 +30,6 @@ class CategoryRentScreen extends StatefulWidget {
   String itemIcon;
   String itemImg;
   String itemPurpose;
-  String itemWarning;
 
   @override
   State<CategoryRentScreen> createState() => _CategoryRentScreenState();
@@ -109,8 +107,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                 ),
                 RentDetailText(
                     category: widget.categoryKr,
-                    itemPurpose: widget.itemPurpose,
-                    itemWarning: widget.itemWarning)
+                    itemPurpose: widget.itemPurpose)
               ],
             ),
             SizedBox(
@@ -379,8 +376,10 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           ),
                         )
                       : GestureDetector(
-                          onTap: () =>
-                              {Common.showSnackBar(context, "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.")},
+                          onTap: () => {
+                            Common.showSnackBar(context,
+                                "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.")
+                          },
                           child: Container(
                             width: 320.w,
                             height: 50.h,
