@@ -144,9 +144,10 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                     final name = signUpNotifier.getName();
                     final department = signUpNotifier.getDepartment();
                     final fcmToken = signUpNotifier.getFcmToken(); // 미구현, 미사용
+                    final phoneNo = signUpNotifier.getPhoneNo();
 
                     final postCertificateResult = await postCertificate(
-                        studentNo, appPassword, name, department, fcmToken);
+                        studentNo, appPassword, name, department, fcmToken, phoneNo);
 
                     if (postCertificateResult != StatusCode.SUCCESS) {
                       if (mounted) {
@@ -224,7 +225,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
   }
 
   Future<StatusCode> postCertificate(String studentNo, String appPassword,
-      String name, String department, String fcmToken) async {
+      String name, String department, String fcmToken, String phoneNo) async {
     Dio dio = Dio();
     dio.options.contentType = 'multipart/form-data';
 
@@ -238,7 +239,8 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
       "name": name,
       "department": department,
       "fcmToken": "none",
-      "file": _file
+      "file": _file,
+      "phoneNo": phoneNo
     });
 
     try {

@@ -331,7 +331,7 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
       final resString = await http
           .get(
             Uri.parse(
-                "${dotenv.get("DEV_API_BASE_URL")}/member/duplicate?studentNo=$_studentId"),
+                "${dotenv.get("DEV_API_BASE_URL")}/member/duplicate?studentNo=${_studentId}"),
           )
           .timeout(const Duration(seconds: 10));
       resData = jsonDecode(utf8.decode(resString.bodyBytes));

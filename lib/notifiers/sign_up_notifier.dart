@@ -7,7 +7,8 @@ class SignUpNotifier extends ChangeNotifier {
   var _name = "";
   var _department = "";
   var _fcmToken = "";
-  var _file = null;
+  var _phoneNo = "";
+  var _file;
 
   String getStudentNo() {
     return _studentNo;
@@ -23,6 +24,9 @@ class SignUpNotifier extends ChangeNotifier {
   }
   String getFcmToken() {
     return _fcmToken;
+  }
+  String getPhoneNo() {
+    return _phoneNo;
   }
   String getFile() {
     return _file;
@@ -46,6 +50,10 @@ class SignUpNotifier extends ChangeNotifier {
   }
   void setFcmToken(String value) {
     _fcmToken = value;
+    notifyListeners();
+  }
+  void setPhoneNo(String value) {
+    _phoneNo = value;
     notifyListeners();
   }
   void setFile(String value) {

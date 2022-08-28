@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:start_app/notifiers/sign_up_notifier.dart';
-import 'package:start_app/screens/login/sign_up/IOS_phone_certificate_screen.dart';
-import 'package:start_app/screens/login/sign_up/post_certificate_screen.dart';
+import 'package:start_app/screens/login/sign_up/phone_certificate_screen.dart';
 import 'package:start_app/utils/common.dart';
-
-import 'Android_phone_certificate_screen.dart';
 
 class PwSettingScreen extends StatefulWidget {
   const PwSettingScreen({Key? key}) : super(key: key);
@@ -220,21 +215,11 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
 
                   signUpNotifier.setAppPassword(pw1);
 
-                  if (Platform.isIOS) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const IOSPhoneCertificateScreen()));
-                    return;
-                  } else {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const AndroidPhoneCertificateScreen()));
-                    return;
-                  }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                          const PhoneCertificateScreen()));
                 },
                 child: Container(
                     width: double.infinity,
