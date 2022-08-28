@@ -1834,6 +1834,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                     ),
                   ),
                   onTap: () {
+
                     showModalBottomSheet(
                         backgroundColor: HexColor("#F8EAE1"),
                         isScrollControlled: true,
@@ -1843,8 +1844,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
                         ),
                         context: context,
                         builder: (context) {
-                          return StatefulBuilder(builder:
-                              (BuildContext context, StateSetter setState) {
                             return DraggableScrollableSheet(
                                 expand: false,
                                 builder: (BuildContext context,
@@ -1866,7 +1865,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                     isContents = true;
                                                   });
                                                 },
-                                                child: !isContents
+                                                child: isContents
                                                     ? Text("컨텐츠",
                                                     style: TextStyle(
                                                         fontWeight:
@@ -1886,7 +1885,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                     MaterialStateColor.resolveWith(
                                                             (states) => HexColor(
                                                             "#F8EAE1")),
-                                                    backgroundColor: isContents
+                                                    backgroundColor: !isContents
                                                         ? MaterialStateProperty.all<
                                                         Color>(
                                                         HexColor("#50FFFFFF"))
@@ -1910,7 +1909,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                     isContents = false;
                                                   });
                                                 },
-                                                child: !isContents
+                                                child: isContents
                                                     ? Text("무대 라인업",
                                                     style: TextStyle(
                                                         fontWeight:
@@ -1932,7 +1931,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                     MaterialStateColor.resolveWith(
                                                             (states) => HexColor(
                                                             "#F8EAE1")),
-                                                    backgroundColor: !isContents
+                                                    backgroundColor: isContents
                                                         ? MaterialStateProperty
                                                         .all<Color>(HexColor(
                                                         "#50FFFFFF"))
@@ -1962,7 +1961,6 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                             : _getLineupInfo(scrollController))
                                   ]);
                                 });
-                          });
                         });
                   })
             ],
