@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RentDetailText extends StatelessWidget {
+<<<<<<< HEAD
   var category, itemPurpose, itemTotalCnt;
 
   RentDetailText(
@@ -9,11 +10,16 @@ class RentDetailText extends StatelessWidget {
       required this.category,
       required this.itemPurpose,
       required this.itemTotalCnt})
+=======
+  String category, itemPurpose;
+
+  RentDetailText({Key? key, required this.category, required this.itemPurpose})
+>>>>>>> master
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 172.w,
       height: 190.h,
       child: Column(
@@ -37,7 +43,11 @@ class RentDetailText extends StatelessWidget {
                 fontWeight: FontWeight.w400,
                 color: Colors.white),
           ),
+<<<<<<< HEAD
           Text("사용 목적 : ${itemPurpose}",
+=======
+          Text("사용 목적 : $itemPurpose",
+>>>>>>> master
               style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w400,
