@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 import 'package:start_app/screens/home/setting/suggest/suggest_error_screen.dart';
 import 'package:start_app/screens/home/setting/suggest/suggest_etc_screen.dart';
 import 'package:start_app/screens/home/setting/suggest/suggest_feature_screen.dart';
+import 'package:start_app/screens/login/login_option_screen.dart';
 import 'package:start_app/screens/login/login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -154,7 +155,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                       .pushAndRemoveUntil(
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  const LoginScreen()),
+                                                                  const LoginOptionScreen()),
                                                           (route) => false);
                                                 }),
                                             CupertinoDialogAction(
@@ -177,7 +178,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 .pushAndRemoveUntil(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const LoginScreen()),
+                                                            const LoginOptionScreen()),
                                                     (route) => false);
                                           },
                                           onCancelPressed: () {
