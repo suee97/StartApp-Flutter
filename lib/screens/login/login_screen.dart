@@ -468,7 +468,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print("getStudentInfoAndSave() call success");
         final pref = await SharedPreferences.getInstance();
 
-        print(resData["data"]);
+        debugPrint("유저 정보 : ${resData["data"]}");
         List<dynamic> data = resData["data"];
 
         if (data[0]["memberStatus"] == "PRE_CARD_AUTH") {

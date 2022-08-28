@@ -37,7 +37,7 @@ class LoginOptionScreen extends StatelessWidget {
               title: '로그인',
               onPressed: () => {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()))
+                    MaterialPageRoute(builder: (context) => const LoginScreen()))
               },
               width: 330.w,
             ),

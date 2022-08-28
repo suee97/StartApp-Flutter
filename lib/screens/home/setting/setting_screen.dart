@@ -19,7 +19,6 @@ import 'package:start_app/screens/home/setting/suggest/suggest_error_screen.dart
 import 'package:start_app/screens/home/setting/suggest/suggest_etc_screen.dart';
 import 'package:start_app/screens/home/setting/suggest/suggest_feature_screen.dart';
 import 'package:start_app/screens/login/login_option_screen.dart';
-import 'package:start_app/screens/login/login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../utils/common.dart';
@@ -39,6 +38,7 @@ class _SettingScreenState extends State<SettingScreen> {
   String _studentNo = '';
   String _studentGroup = '';
   String _department = '';
+  String _phoneNo = '';
   final secureStorage = const FlutterSecureStorage();
 
   @override
@@ -118,6 +118,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500)),
                             Text(_department,
+                                style: TextStyle(
+                                    fontSize: 13.5.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)),
+                            Text(_phoneNo,
                                 style: TextStyle(
                                     fontSize: 13.5.sp,
                                     color: Colors.white,
@@ -629,6 +634,7 @@ class _SettingScreenState extends State<SettingScreen> {
       _studentNo = (prefs.getString('appStudentNo') ?? '');
       _department = (prefs.getString('department') ?? '');
       _studentGroup = DepartmentMatch.getGroup(_department);
+      _phoneNo = (prefs.getString('appPhoneNo') ?? '');
     });
   }
 
