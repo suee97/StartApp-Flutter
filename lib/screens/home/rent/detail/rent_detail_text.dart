@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class RentDetailText extends StatelessWidget {
-  var category, itemPurpose, itemWarning;
+  var category, itemPurpose;
 
   RentDetailText(
       {Key? key,
       required this.category,
-      required this.itemPurpose,
-      required this.itemWarning})
+      required this.itemPurpose})
       : super(key: key);
 
   @override
@@ -39,15 +37,6 @@ class RentDetailText extends StatelessWidget {
                 color: Colors.white),
           ),
           Text("사용 목적 : ${itemPurpose}",
-              style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white)),
-          SizedBox(
-            height: 10.h,
-          ),
-          AutoSizeText(
-              "주의사항 : ${itemWarning}",
               style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w400,
