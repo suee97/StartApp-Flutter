@@ -82,7 +82,7 @@ class _MyRentScreenState extends State<MyRentScreen> {
               shape: BoxShape.circle,
               border: Border.all(width: 9.w, color: HexColor("#f3f3f3"))),
           child: Container(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
                   color: HexColor("#425C5A"), shape: BoxShape.circle),
               child: SvgPicture.asset(
@@ -94,10 +94,11 @@ class _MyRentScreenState extends State<MyRentScreen> {
         Container(
           width: 170.w,
           height: 90.h,
-          margin: EdgeInsets.only(left: 160.w, top: 30.h),
+          margin: EdgeInsets.only(left: 158.w, top: 30.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 4.h,),
               Row(
                 children: [
                   Text(
@@ -107,13 +108,10 @@ class _MyRentScreenState extends State<MyRentScreen> {
                         color: Colors.white,
                         fontWeight: FontWeight.w700),
                   ),
-                  SizedBox(
-                    width: 12.w,
-                  ),
                 ],
               ),
               SizedBox(
-                height: 12.h,
+                height: 7.h,
               ),
               myUserInfoText(_studentNo),
               myUserInfoText(_studentGroup),
@@ -206,7 +204,8 @@ class _MyRentScreenState extends State<MyRentScreen> {
       style: TextStyle(
           color: HexColor("#5C7775"),
           fontSize: 13.5.sp,
-          fontWeight: FontWeight.w500),
+          fontWeight: FontWeight.w500,
+          height: 1.3),
     );
   }
 

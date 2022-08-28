@@ -52,7 +52,7 @@ class _RentScreenState extends State<RentScreen> {
         itemIcon: "assets/icon_canopy_green.svg",
         itemImg: "images/rent_canopy_img.jpg",
         itemPurpose: "기둥과 천막으로 부스를 만들 수 있습니다.",
-        itemWarning: "캐노피를 설치하거나 기둥 높이를 조절할 때에는 여럿이서 작업하도록 하고, 운반 시에 끌지 않고 들어서 이동시켜야 합니다. 또한, 캐노피를 경사면에 설치하지 마십시오.",
+        itemTotalCnt: "2"
       ),
       CategoryRentScreen(
         categoryKr: "듀라테이블",
@@ -60,7 +60,7 @@ class _RentScreenState extends State<RentScreen> {
         itemIcon: "assets/icon_table_green.svg",
         itemImg: "images/rent_table_img.jpg",
         itemPurpose: "간이 테이블로 사용할 수 있습니다.",
-        itemWarning: "듀라테이블을 조립하거나 정리할 때 테이블 다리 접합부 또는 관절 부분에 손이 끼이지 않도록 주의해 주세요.",
+        itemTotalCnt: "4"
       ),
       CategoryRentScreen(
         categoryKr: "앰프&마이크",
@@ -68,7 +68,7 @@ class _RentScreenState extends State<RentScreen> {
         itemIcon: "assets/icon_amp_green.svg",
         itemImg: "images/rent_amp_img.jpg",
         itemPurpose: "행사 시에 큰 음향을 낼 수 있습니다.",
-        itemWarning: "엠프에 물이 들어가지 않도록 주의해 주세요.\n엠프에 다른 장비를 연결한 뒤에 엠프의 전원을 켜주시고, 사용 후에는 볼륨노브를 0으로 설정한 뒤 엠프의 전원을 끄고 장비를 분리해주세요.",
+        itemTotalCnt: "2"
       ),
       CategoryRentScreen(
         categoryKr: "리드선",
@@ -76,7 +76,7 @@ class _RentScreenState extends State<RentScreen> {
         itemIcon: "assets/icon_wire_green.svg",
         itemImg: "images/rent_wire_img.jpg",
         itemPurpose: "콘센트를 연장하여 사용할 수 있습니다.",
-        itemWarning: "선을 말아서 정리할 때 릴의 한쪽으로 선이 치우치지 않도록 해주세요. 또한, 리드선을 모두 풀어서 사용해야 부하를 최소화할 수 있습니다.",
+        itemTotalCnt: "2"
       ),
       CategoryRentScreen(
           categoryKr: "엘카",
@@ -84,14 +84,15 @@ class _RentScreenState extends State<RentScreen> {
           itemIcon: "assets/icon_cart_green.svg",
           itemImg: "images/rent_cart_img.jpg",
           itemPurpose: "여러 짐을 한 번에 옮길 수 있습니다.",
-          itemWarning: "바퀴가 고장나지 않도록 주의해 주세요."),
+          itemTotalCnt: "2",
+      ),
       CategoryRentScreen(
           categoryKr: "의자",
           categoryEng: "CHAIR",
           itemIcon: "assets/icon_chair_green.svg",
           itemImg: "images/rent_chair_img.jpg",
           itemPurpose: "외부 행사 시에 간이 의자로 활용할 수 있습니다.",
-          itemWarning: "의자를 포개서 정리할 때 의자 사이에 손이 끼지 않도록 주의해 주세요.")
+          itemTotalCnt: "10")
     ];
 
     return Scaffold(
@@ -109,7 +110,7 @@ class _RentScreenState extends State<RentScreen> {
         Container(
           width: double.infinity,
           height: double.infinity,
-          margin: EdgeInsets.only(top: 55.h),
+          margin: EdgeInsets.only(top: 50.h),
           decoration: BoxDecoration(
               color: HexColor("#425C5A"),
               borderRadius: const BorderRadius.only(
@@ -258,7 +259,7 @@ class _RentScreenState extends State<RentScreen> {
               shape: BoxShape.circle,
               border: Border.all(width: 9.w, color: HexColor("#425C5A"))),
           child: Container(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(18),
               decoration: const BoxDecoration(
                   color: Colors.white, shape: BoxShape.circle),
               child: SvgPicture.asset(
@@ -269,16 +270,16 @@ class _RentScreenState extends State<RentScreen> {
         ),
         Common.getIsLogin()
             ? Container(
-                width: 190.w,
+                width: 170.w,
                 height: 90.h,
-                margin: EdgeInsets.only(left: 160.w, top: 30.h),
+                margin: EdgeInsets.only(left: 158.w, top: 26.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         Container(
-                          width: 72.w,
+                          margin: EdgeInsets.only(top: 4.h, right: 15.w),
                           child: Text(
                             _name,
                             style: TextStyle(
@@ -286,9 +287,6 @@ class _RentScreenState extends State<RentScreen> {
                                 color: HexColor("#425C5A"),
                                 fontWeight: FontWeight.w700),
                           ),
-                        ),
-                        SizedBox(
-                          width: 12.w,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -298,7 +296,7 @@ class _RentScreenState extends State<RentScreen> {
                                     builder: (context) => MyRentScreen()));
                           },
                           child: Container(
-                            width: 100.w,
+                            width: 103.w,
                             height: 20.h,
                             decoration: BoxDecoration(
                                 color: HexColor("#FFCEA2"),
@@ -317,7 +315,7 @@ class _RentScreenState extends State<RentScreen> {
                       ],
                     ),
                     SizedBox(
-                      height: 12.h,
+                      height: 7.h,
                     ),
                     userInfoText(_studentNo),
                     userInfoText(_studentGroup),
@@ -328,7 +326,7 @@ class _RentScreenState extends State<RentScreen> {
             : Container(
                 width: 170.w,
                 height: 90.h,
-                margin: EdgeInsets.only(left: 160.w, top: 30.h),
+                margin: EdgeInsets.only(left: 158.w, top: 30.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -344,7 +342,7 @@ class _RentScreenState extends State<RentScreen> {
                       ],
                     ),
                     SizedBox(
-                      height: 15.h,
+                      height: 10.h,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -397,7 +395,7 @@ class _RentScreenState extends State<RentScreen> {
                         }
                       },
                       child: Container(
-                        width: 100.w,
+                        width: 103.w,
                         height: 20.h,
                         decoration: BoxDecoration(
                             color: HexColor("#FFCEA2"),
@@ -425,7 +423,7 @@ class _RentScreenState extends State<RentScreen> {
     return Text(
       title,
       style: TextStyle(
-          color: Colors.white, fontSize: 13.5.sp, fontWeight: FontWeight.w500),
+          color: Colors.white, fontSize: 13.5.sp, fontWeight: FontWeight.w500, height: 1.3),
     );
   }
 }
