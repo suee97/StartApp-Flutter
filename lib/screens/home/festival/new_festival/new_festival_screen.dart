@@ -1056,6 +1056,17 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                           isLoading = true;
                         });
 
+                        final isStampableResult = await isStampable(place);
+                        print("isStampableResult : $isStampableResult");
+                        if (!isStampableResult) {
+                          if (!mounted) return;
+                          Common.showSnackBar(context, "원 안으로 들어와 주세요!");
+                          setState(() {
+                            isLoading = false;
+                          });
+                          return;
+                        }
+
                         final stampPlaceResult = await stampPlace(place);
 
                         if (stampPlaceResult == StatusCode.REQUEST_ERROR) {
@@ -1071,17 +1082,6 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                         if (stampPlaceResult != StatusCode.SUCCESS) {
                           if (!mounted) return;
                           Common.showSnackBar(context, "오류가 발생했습니다.");
-                          setState(() {
-                            isLoading = false;
-                          });
-                          return;
-                        }
-
-                        final isStampableResult = await isStampable(place);
-                        print("isStampableResult : $isStampableResult");
-                        if (!isStampableResult) {
-                          if (!mounted) return;
-                          Common.showSnackBar(context, "원 안으로 들어와 주세요!");
                           setState(() {
                             isLoading = false;
                           });
