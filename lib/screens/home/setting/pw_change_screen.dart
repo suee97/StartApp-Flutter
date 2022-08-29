@@ -148,7 +148,13 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                 onPressed: () async {
                   if (afterAppPwController.text.isEmpty ||
                       beforeAppPwController.text.isEmpty) {
-                    Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요");
+                    Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
+                    return;
+                  }
+
+                  if (afterAppPwController.text == beforeAppPwController.text) {
+                    Common.showSnackBar(
+                        context, "변경할 비밀번호를 기존 비밀번호와 다르게 설정해주세요.");
                     return;
                   }
 
