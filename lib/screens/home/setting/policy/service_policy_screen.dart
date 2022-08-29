@@ -19,6 +19,6 @@ class ServicePolicyScreen extends StatelessWidget {
           foregroundColor: HexColor("425C5A"),
           backgroundColor: Colors.white,
         ),
-        body: SfPdfViewer.asset("pdfs/service_policy_220823.pdf"));
+        body: SfPdfViewer.network("https://devstartappbucket.s3.ap-northeast-2.amazonaws.com/app/etc/service_policy_220823.pdf"));
   }
 }

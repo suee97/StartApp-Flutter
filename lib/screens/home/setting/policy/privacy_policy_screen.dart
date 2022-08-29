@@ -19,6 +19,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
           foregroundColor: HexColor("425C5A"),
           backgroundColor: Colors.white,
         ),
-        body: SfPdfViewer.asset("pdfs/privacy_policy_220828.pdf"));
+        body: SfPdfViewer.network("https://devstartappbucket.s3.ap-northeast-2.amazonaws.com/app/etc/privacy_policy_220828.pdf"));
   }
 }

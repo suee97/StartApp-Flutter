@@ -132,7 +132,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ServicePolicyScreen()));
+                            builder: (context) => const ServicePolicyScreen()));
                   },
                   child: Padding(
                     padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 8.h),
@@ -152,7 +152,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   width: 68.w,
@@ -206,7 +206,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PrivacyPolicyScreen()));
+                            builder: (context) => const PrivacyPolicyScreen()));
                   },
                   child: Padding(
                     padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 8.h),
