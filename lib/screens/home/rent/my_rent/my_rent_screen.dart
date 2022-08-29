@@ -150,10 +150,16 @@ class _MyRentScreenState extends State<MyRentScreen> {
       setState(() {
         isLoading = false;
       });
+      await secureStorage.write(key: "ACCESS_TOKEN", value: "");
+      await secureStorage.write(key: "REFRESH_TOKEN", value: "");
+      await Common.setNonLogin(false);
+      await Common.setAutoLogin(false);
+      Common.setIsLogin(false);
+      await Common.clearStudentInfoPref();
       if (mounted) {
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
             (route) => false);
       }
 

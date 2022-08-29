@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/login/login_option_screen.dart';
 import 'package:start_app/screens/login/login_widgets.dart';
@@ -169,6 +170,13 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
 
                   final changePwResult = await changePw();
                   if (changePwResult == StatusCode.REFRESH_EXPIRED) {
+                    final secureStorage = FlutterSecureStorage();
+                    await secureStorage.write(key: "ACCESS_TOKEN", value: "");
+                    await secureStorage.write(key: "REFRESH_TOKEN", value: "");
+                    await Common.setNonLogin(false);
+                    await Common.setAutoLogin(false);
+                    Common.setIsLogin(false);
+                    await Common.clearStudentInfoPref();
                     if (!mounted) return;
                     Common.showSnackBar(context, "다시 로그인해주세요.");
                     return;

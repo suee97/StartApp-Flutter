@@ -258,6 +258,12 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                   final stampStatusWithErrorResult = await fetchStampStatus();
 
                   if (stampStatusWithErrorResult.isExpired) {
+                    await secureStorage.write(key: "ACCESS_TOKEN", value: "");
+                    await secureStorage.write(key: "REFRESH_TOKEN", value: "");
+                    await Common.setNonLogin(false);
+                    await Common.setAutoLogin(false);
+                    Common.setIsLogin(false);
+                    await Common.clearStudentInfoPref();
                     if (!mounted) return;
                     Common.showSnackBar(context, "다시 로그인해주세요.");
                     Navigator.pushAndRemoveUntil(

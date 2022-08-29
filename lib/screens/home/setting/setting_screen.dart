@@ -321,6 +321,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   await deleteUser();
                                               if (deleteUserResult ==
                                                   StatusCode.REFRESH_EXPIRED) {
+                                                await secureStorage.write(key: "ACCESS_TOKEN", value: "");
+                                                await secureStorage.write(key: "REFRESH_TOKEN", value: "");
+                                                await Common.setNonLogin(false);
+                                                await Common.setAutoLogin(false);
+                                                Common.setIsLogin(false);
+                                                await Common.clearStudentInfoPref();
                                                 if (!mounted) return;
                                                 Common.showSnackBar(
                                                     context, "다시 로그인해주세요.");
@@ -393,6 +399,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   if (deleteUserResult ==
                                                       StatusCode
                                                           .REFRESH_EXPIRED) {
+                                                    await secureStorage.write(key: "ACCESS_TOKEN", value: "");
+                                                    await secureStorage.write(key: "REFRESH_TOKEN", value: "");
+                                                    await Common.setNonLogin(false);
+                                                    await Common.setAutoLogin(false);
+                                                    Common.setIsLogin(false);
+                                                    await Common.clearStudentInfoPref();
                                                     if (!mounted) return;
                                                     Common.showSnackBar(
                                                         context, "다시 로그인해주세요.");
@@ -406,6 +418,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   }
                                                   if (deleteUserResult ==
                                                       StatusCode.SUCCESS) {
+                                                    await secureStorage.write(key: "ACCESS_TOKEN", value: "");
+                                                    await secureStorage.write(key: "REFRESH_TOKEN", value: "");
+                                                    await Common.setNonLogin(false);
+                                                    await Common.setAutoLogin(false);
+                                                    Common.setIsLogin(false);
+                                                    await Common.clearStudentInfoPref();
                                                     if (!mounted) return;
                                                     Common.showSnackBar(context,
                                                         "탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.");
