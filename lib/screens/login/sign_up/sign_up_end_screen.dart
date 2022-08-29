@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -26,7 +25,7 @@ class SignUpEndScreen extends StatelessWidget {
               height: 32.h,
             ),
             Text(
-              "72시간 내로 승인이 완료됩니다.",
+              "72시간 내로 승인이 완료됩니다.\n문의 : 02-970-7012",
               style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w400),
             ),
             SizedBox(
