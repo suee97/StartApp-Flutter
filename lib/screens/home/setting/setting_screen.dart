@@ -9,6 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:start_app/models/status_code.dart';
 import 'package:start_app/screens/home/setting/app_info/dev_info_screen.dart';
 import 'package:start_app/screens/home/setting/app_info/update_info_screen.dart';
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
@@ -20,8 +21,10 @@ import 'package:start_app/screens/home/setting/suggest/suggest_error_screen.dart
 import 'package:start_app/screens/home/setting/suggest/suggest_etc_screen.dart';
 import 'package:start_app/screens/home/setting/suggest/suggest_feature_screen.dart';
 import 'package:start_app/screens/login/login_option_screen.dart';
+import 'package:start_app/screens/login/login_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import '../../../utils/auth.dart';
 import '../../../utils/common.dart';
 import '../../../utils/department_match.dart';
 import '../../../widgets/start_android_dialog.dart';
@@ -291,13 +294,201 @@ class _SettingScreenState extends State<SettingScreen> {
                         SettingSemiTitle(
                           title: "비밀번호 재설정",
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const PwChangeScreen()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PwChangeScreen()));
                           },
                         ),
                         SettingSemiTitle(
                           title: "회원탈퇴",
                           onPressed: () {
-                            Common.showSnackBar(context, "준비중입니다.");
+                            if (Platform.isIOS) {
+                              showCupertinoDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return CupertinoAlertDialog(
+                                      title: const Text("회원탈퇴"),
+                                      content: const Text(
+                                          "회원탈퇴 시 재가입이 어려울 수 있습니다. (문의 : 02-970-7012)\n탈퇴하시려면 \"탈퇴\"버튼을 눌러주세요."),
+                                      actions: [
+                                        CupertinoDialogAction(
+                                            isDefaultAction: false,
+                                            child: const Text("탈퇴"),
+                                            onPressed: () async {
+                                              final deleteUserResult =
+                                                  await deleteUser();
+                                              if (deleteUserResult ==
+                                                  StatusCode.REFRESH_EXPIRED) {
+                                                if (!mounted) return;
+                                                Common.showSnackBar(
+                                                    context, "다시 로그인해주세요.");
+                                                Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const LoginScreen()),
+                                                    (route) => false);
+                                                return;
+                                              }
+                                              if (deleteUserResult ==
+                                                  StatusCode.SUCCESS) {
+                                                if (!mounted) return;
+                                                Common.showSnackBar(context,
+                                                    "탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.");
+                                                Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const LoginOptionScreen()),
+                                                    (route) => false);
+                                                return;
+                                              }
+                                              if (!mounted) return;
+                                              Common.showSnackBar(
+                                                  context, "오류가 발생했습니다.");
+                                            }),
+                                        CupertinoDialogAction(
+                                            isDefaultAction: true,
+                                            child: const Text("취소"),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            })
+                                      ],
+                                    );
+                                  });
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        "회원탈퇴",
+                                        style: TextStyle(
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: HexColor("#425C5A")),
+                                      ),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Text(
+                                              "회원탈퇴 시 재가입이 어려울 수 있습니다. (문의 : 02-970-7012)"),
+                                          const Text(
+                                              "탈퇴하시려면 \"탈퇴\"버튼을 두번 탭해주세요."),
+                                          SizedBox(
+                                            height: 16.h,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              GestureDetector(
+                                                behavior:
+                                                    HitTestBehavior.translucent,
+                                                onDoubleTap: () async {
+                                                  final deleteUserResult =
+                                                      await deleteUser();
+                                                  if (deleteUserResult ==
+                                                      StatusCode
+                                                          .REFRESH_EXPIRED) {
+                                                    if (!mounted) return;
+                                                    Common.showSnackBar(
+                                                        context, "다시 로그인해주세요.");
+                                                    Navigator.pushAndRemoveUntil(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const LoginScreen()),
+                                                        (route) => false);
+                                                    return;
+                                                  }
+                                                  if (deleteUserResult ==
+                                                      StatusCode.SUCCESS) {
+                                                    if (!mounted) return;
+                                                    Common.showSnackBar(context,
+                                                        "탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.");
+                                                    Navigator.pushAndRemoveUntil(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const LoginOptionScreen()),
+                                                        (route) => false);
+                                                    return;
+                                                  }
+                                                  if (!mounted) return;
+                                                  Common.showSnackBar(
+                                                      context, "오류가 발생했습니다.");
+                                                },
+                                                child: Container(
+                                                  width: 114.w,
+                                                  height: 40.h,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          HexColor("#425c5a"),
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .only(
+                                                              topLeft: Radius
+                                                                  .circular(10),
+                                                              bottomLeft: Radius
+                                                                  .circular(
+                                                                      10))),
+                                                  child: Text(
+                                                    "탈퇴",
+                                                    style: TextStyle(
+                                                        fontSize: 18.sp,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 6.w,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Container(
+                                                  width: 114.w,
+                                                  height: 40.h,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      color: HexColor(
+                                                          "#425c5a"),
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .only(
+                                                              topRight: Radius
+                                                                  .circular(10),
+                                                              bottomRight:
+                                                                  Radius
+                                                                      .circular(
+                                                                          10))),
+                                                  child: Text(
+                                                    "취소",
+                                                    style: TextStyle(
+                                                        fontSize: 18.sp,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                    );
+                                  });
+                            }
                           },
                         ),
                         SizedBox(
@@ -626,6 +817,37 @@ class _SettingScreenState extends State<SettingScreen> {
     navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const SplashScreen()),
         (route) => false);
+  }
+
+  Future<StatusCode> deleteUser() async {
+    final authTokenAndReIssueResult = await Auth.authTokenAndReIssue();
+    if (authTokenAndReIssueResult == StatusCode.REFRESH_EXPIRED) {
+      return StatusCode.REFRESH_EXPIRED;
+    }
+
+    if (authTokenAndReIssueResult != StatusCode.SUCCESS) {
+      return StatusCode.UNCATCHED_ERROR;
+    }
+    final AT = await Common.secureStorage.read(key: "ACCESS_TOKEN");
+
+    try {
+      final resString = await http.delete(
+          Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/member"),
+          headers: {
+            "Authorization": "Bearer $AT",
+            "Content-Type": "application/json"
+          }).timeout(const Duration(seconds: 10));
+      final resData = jsonDecode(utf8.decode(resString.bodyBytes));
+      debugPrint(resData.toString());
+      if (resData["status"] == 200) {
+        return StatusCode.SUCCESS;
+      }
+
+      return StatusCode.UNCATCHED_ERROR;
+    } catch (e) {
+      debugPrint(e.toString());
+      return StatusCode.UNCATCHED_ERROR;
+    }
   }
 
   void _loadStudentInfo() async {
