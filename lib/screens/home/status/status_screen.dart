@@ -30,7 +30,7 @@ class _StatusScreenState extends State<StatusScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "재학생 확인 및 자치회비 납부 확인",
+          "자치회비 납부 확인",
           style: Common.startAppBarTextStyle,
         ),
         centerTitle: true,

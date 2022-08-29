@@ -274,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const PlanScreen()))
                                 }),
                         MainWidget(
-                            title: "재학생 확인 및\n자치회비 납부 확인",
+                            title: "자치회비 납부 확인",
                             svgPath: "assets/icon_status.svg",
                             isUnderRow: false,
                             onPressed: () {
