@@ -202,7 +202,7 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     "주의사항",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        fontSize: 17.5.sp, fontWeight: FontWeight.w400),
+                        color: HexColor("#425c5a"), fontWeight: FontWeight.w400, fontSize: 17.5.sp),
                   ),
                 ),
                 Container(
@@ -211,16 +211,16 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                   height: 150.h,
                   decoration: BoxDecoration(
                       border: Border.all(
-                        width: 2,
-                        color: Colors.black,
+                        width: 1.2,
+                        color: HexColor("#425c5a")
                       ),
                       borderRadius: const BorderRadius.all(Radius.circular(5))),
                   child: Stack(children: [
                     Padding(
-                        padding:
-                            EdgeInsets.only(top: 8.h, left: 8.w, right: 8.w),
+                        padding: EdgeInsets.only(top: 8.h, left: 12.w, right: 10.w),
                         child: Text(
                           getPolicyTextFromCategory(widget.categoryEng),
+                          style: TextStyle(fontSize: 15.5.sp, height: 1.4, fontWeight: FontWeight.w400),
                         )),
                     SizedBox(
                       width: double.infinity,
@@ -232,8 +232,8 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                           Container(
                               height: 32.h,
                               alignment: Alignment.center,
-                              child: Text("읽었습니다",
-                                  style: TextStyle(fontSize: 10.sp))),
+                              child: Text("동의합니다",
+                                  style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300))),
                           SizedBox(
                             width: 32.w,
                             height: 32.h,
@@ -426,17 +426,17 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
   String getPolicyTextFromCategory(String category) {
     switch (category) {
       case "CANOPY":
-        return "1. 캐노피를 설치할 때 충분한 인원을 동반해주세요.\n2. 운반 시 바닥에 끌리지 않게 들어서 운반해주세요.";
+        return "1. 캐노피를 설치하거나 기둥 높이를 조절할 때에는 여럿이서 작업해야 합니다.\n2. 운반 시에 끌지 않고 들어서 이동시켜야 합니다.\n3. 캐노피를 경사면에 설치하지 않도록 해주세요.";
       case "TABLE":
-        return "1. 테이블을 조립하거나 정리할 때 접합부 또는 관절 부분에 손이 끼이지 않도록 조심해주세요.";
+        return "1. 듀라테이블을 조립하거나 정리할 때, 테이블 다리 접합부 또는 관절 부분에 손이 끼이지 않도록 주의해 주세요.";
       case "AMP":
-        return "1. 물이 들어가지 않도록 조심해주세요.\n2. 다른 장비를 연결하여 사용하는 경우 앰프에 장비를 연결한 후 전원을 켜주세요.\n3. 장비 분리 시 볼륨노브를 0으로 설정한 뒤 엠프의 전원을 끄고 장비를 분리해주세요.";
+        return "1. 엠프에 물이 들어가지 않도록 해야 합니다.\n2. 다른 장비를 연결한 뒤에 엠프의 전원을 켜주세요.\n3. 사용 후에는 볼륨노브를 0으로 설정한 뒤 엠프의 전원을 끄고 장비를 분리해주세요.";
       case "WIRE":
-        return "1. 선을 정리할 때 한 쪽으로 선이 치우치지 않도록 해주세요.";
+        return "1. 선을 말아서 정리할 때, 릴의 한쪽으로 선이 치우치지 않도록 해주세요.\n2. 리드선을 모두 풀어서 사용해야 부하를 최소화할 수 있습니다.";
       case "CART":
-        return "1. 바퀴가 고장나지 않도록 주의해주세요.";
+        return "1. 바퀴가 고장나지 않도록 조심히 다뤄 주세요.\n2. 카트를 끌 때, 사람이 올라 타지 않도록 해야 합니다.";
       default:
-        return "1. 반납 시 더럽혀진 부분이 있는지 확인해주세요.";
+        return "1. 의자를 포개서 정리할 때, 의자 사이에 손이 끼이지 않도록 주의해 주세요.\n2. 의자 위에 무거운 물건을 올리지 말아 주세요.";
     }
   }
 }

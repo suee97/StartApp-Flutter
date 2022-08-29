@@ -163,7 +163,7 @@ class AboutChongHak extends StatelessWidget {
       //MediaQuery.of(context).size.width
       // height: 940.h,
       color: HexColor("#FFFFFF"),
-      padding: EdgeInsets.only(top: 14, left: 20, right: 20),
+      padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -209,7 +209,7 @@ class AboutChongHak extends StatelessWidget {
             style: TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w400),
           ),
           SizedBox(
-            height: 12.5.h,
+            height: 25.h,
           ),
         ],
       ),
@@ -227,7 +227,7 @@ class FAQ extends StatelessWidget {
         //MediaQuery.of(context).size.width
         // height: 1000.h,
         color: HexColor("#B2BFB6"),
-        padding: EdgeInsets.only(top: 14, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -246,7 +246,8 @@ class FAQ extends StatelessWidget {
                   faqContents(Common.faq_q6, Common.faq_a6),
                   faqContents(Common.faq_q7, Common.faq_a7),
                   faqContents(Common.faq_q8, Common.faq_a8),
-                ])),
+                  SizedBox(height: 12.5.h),
+                    ])),
           ],
         ));
   }
@@ -273,7 +274,7 @@ class ChongHakFunction extends StatelessWidget {
       //MediaQuery.of(context).size.width
       // height: 800.h,
       color: HexColor("#F8EAE1"),
-      padding: EdgeInsets.only(top: 14, left: 20, right: 20),
+      padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -396,7 +397,7 @@ class ChongHakFunction extends StatelessWidget {
                 style:
                     TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w400)),
             SizedBox(
-              height: 12.5.h,
+              height: 25.h,
             ),
           ]),
     );
