@@ -63,14 +63,30 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   Container(
                     height: 120.h,
                     margin: EdgeInsets.only(left: 28.w, right: 28.w),
-                    child: Text(
-                      "휴대폰 인증을 진행해주세요.\n휴대폰 번호는 가입 승인 알림, 비밀번호 재설정 및 상시사업 신청 알림에 사용됩니다.\n인증번호는 3분간 유효합니다.",
-                      style: TextStyle(
-                          fontSize: 12.sp, fontWeight: FontWeight.w400),
-                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "휴대폰 인증을 진행해주세요.",
+                          style: TextStyle(
+                              fontSize: 12.sp, fontWeight: FontWeight.w400),
+                        ),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                        Text(
+                          "휴대폰 번호는 가입 승인 알림, 비밀번호 재설정 및 상시사업 신청 알림에 사용됩니다.\n인증번호는 3분간 유효합니다.",
+                          style: TextStyle(
+                              fontSize: 12.sp, fontWeight: FontWeight.w300, height: 1.25),
+                        ),
+                      ],
+                    )
                   ),
                   textFiledTitleRowWidget("휴대폰 번호"),
                   SizedBox(

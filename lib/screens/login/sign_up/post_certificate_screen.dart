@@ -54,6 +54,9 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 8.h,
+              ),
               Row(
                 children: [
                   SizedBox(
@@ -67,7 +70,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                 ],
               ),
               SizedBox(
-                height: 36.h,
+                height: 28.h,
               ),
               Row(
                 children: [
@@ -83,6 +86,9 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 8.h,
+              ),
               Row(
                 children: [
                   SizedBox(
@@ -91,12 +97,12 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                   Text(
                     "1. 카드 번호, 유효기간, 사진을 가리고 업로드 해주세요.\n2. 빛 반사에 주의해주세요.\n3. 학생증이 손상된 경우 문의해주세요.\n    (02-970-7012)",
                     style:
-                        TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400),
+                        TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, height: 1.25),
                   ),
                 ],
               ),
               SizedBox(
-                height: 36.h,
+                height: 28.h,
               ),
               GestureDetector(
                 onTap: () async {

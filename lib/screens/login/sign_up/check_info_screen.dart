@@ -90,6 +90,9 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   Row(
                     children: [
                       SizedBox(
@@ -103,7 +106,7 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
                     ],
                   ),
                   SizedBox(
-                    height: 280.h,
+                    height: 272.h,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       mainAxisSize: MainAxisSize.min,

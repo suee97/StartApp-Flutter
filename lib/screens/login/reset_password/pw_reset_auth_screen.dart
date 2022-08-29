@@ -77,13 +77,14 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                     child: Text(
                       "비밀번호 재설정을 위해 가입된 계정의 학번을 입력해주세요.\n인증요청을 누르면 학번으로 가입된 계정의 휴대전화 번호로 인증코드는 3분 내로 입력해주세요.",
                       style: TextStyle(
-                          fontSize: 13.5.sp,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w300,
-                          color: Colors.black),
+                          color: Colors.black,
+                      height: 1.25),
                     ),
                   ),
                   SizedBox(
-                    height: 44.h,
+                    height: 36.h,
                   ),
                   textFiledTitleRowWidget("학번"),
                   Padding(

@@ -68,6 +68,9 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   Row(
                     children: [
                       SizedBox(
@@ -79,6 +82,9 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                             fontSize: 12.sp, fontWeight: FontWeight.w400),
                       ),
                     ],
+                  ),
+                  SizedBox(
+                    height: 4.h,
                   ),
                   Row(
                     children: [
@@ -93,7 +99,7 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                     ],
                   ),
                   SizedBox(
-                    height: 240.h,
+                    height: 216.h,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

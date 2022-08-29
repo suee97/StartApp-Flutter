@@ -108,7 +108,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                 SizedBox(
                   width: 4.w,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     setState(() {
                       servicePolicyAgreeState = !servicePolicyAgreeState;
@@ -182,7 +182,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                 SizedBox(
                   width: 4.w,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     setState(() {
                       privacyPolicyAgreeState = !privacyPolicyAgreeState;
