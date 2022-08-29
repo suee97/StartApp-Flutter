@@ -39,7 +39,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
   int boundaryDistance = 50;
   int alertLevel = 1;
 
-  bool isContents = true;
+  bool isContents = false;
   late List<FestivalInfoWidget> contentsList;
   late List<FestivalLineupWidget> lineupList;
 
@@ -404,7 +404,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                             child: TextButton(
                                                 onPressed: () {
                                                   setState(() {
-                                                    isContents = true;
+                                                    isContents = false;
                                                   });
                                                 },
                                                 style: ButtonStyle(
@@ -441,7 +441,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                             child: TextButton(
                                                 onPressed: () {
                                                   setState(() {
-                                                    isContents = false;
+                                                    isContents = true;
                                                   });
                                                 },
                                                 style: ButtonStyle(
@@ -488,7 +488,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                       height: 14.h,
                                     ),
                                     Expanded(
-                                        child: isContents
+                                        child: !isContents
                                             ? _getContentsCrowded(
                                                 scrollController)
                                             : _getLineupInfo(scrollController))
