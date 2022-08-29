@@ -70,6 +70,9 @@ class _PwResetScreenState extends State<PwResetScreen> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 8.h,
+                ),
                 Row(
                   children: [
                     SizedBox(
@@ -82,6 +85,9 @@ class _PwResetScreenState extends State<PwResetScreen> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 4.h,
+                ),
                 Row(
                   children: [
                     SizedBox(
@@ -90,7 +96,7 @@ class _PwResetScreenState extends State<PwResetScreen> {
                     Text(
                       "특수문자, 대소문자, 숫자 포함\n8자 이상 15자 이내로 입력해주세요.",
                       style: TextStyle(
-                          fontSize: 12.sp, fontWeight: FontWeight.w300),
+                          fontSize: 12.sp, fontWeight: FontWeight.w300, height: 1.25),
                     ),
                   ],
                 ),
