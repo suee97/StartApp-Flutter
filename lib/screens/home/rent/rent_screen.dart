@@ -66,7 +66,7 @@ class _RentScreenState extends State<RentScreen> {
         categoryKr: "앰프&마이크",
         categoryEng: "AMP",
         itemIcon: "assets/icon_amp_green.svg",
-        itemImg: "images/rent_amp_img.jpg",
+        itemImg: "images/rent_amp_img.jpeg",
         itemPurpose: "행사 시에 큰 음향을 낼 수 있습니다.",
         itemTotalCnt: "2"
       ),
