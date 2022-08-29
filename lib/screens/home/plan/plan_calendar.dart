@@ -12,7 +12,7 @@ class PlanCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<PlanNotifier>(builder: (context, planNotifier, child) {
-      final _source = planNotifier.getMeetingList();
+      final source = planNotifier.getMeetingList();
 
       return Container(
         color: planNotifier.getIsLoading()
@@ -31,8 +31,6 @@ class PlanCalendar extends StatelessWidget {
                   .visibleDates[viewChangedDetails.visibleDates.length ~/ 2]);
               await planNotifier.fetchMeetingList(
                   int.parse(_year), int.parse(_month));
-              print("현재 연도 & 달 : $_year , $_month");
-              print(_source.length);
             });
           },
           onSelectionChanged: (_) {
@@ -69,7 +67,7 @@ class PlanCalendar extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(4)),
             shape: BoxShape.rectangle,
           ),
-          dataSource: MeetingDataSource(_source),
+          dataSource: MeetingDataSource(source),
           todayHighlightColor: HexColor("#EE795F"),
           monthViewSettings: MonthViewSettings(
             appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,

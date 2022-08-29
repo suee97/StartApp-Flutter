@@ -10,7 +10,6 @@ import 'stack_line.dart';
 import 'dart:io' show Platform;
 
 class PlanScreen extends StatefulWidget {
-
   const PlanScreen({Key? key}) : super(key: key);
 
   @override
@@ -50,7 +49,7 @@ class _PlanScreenState extends State<PlanScreen> {
                           ScrollController scrollController) {
                         return SingleChildScrollView(
                           controller: scrollController,
-                          child: PlanBottomSheet(),
+                          child: const PlanBottomSheet(),
                         );
                       },
                     ),
@@ -72,7 +71,7 @@ class _PlanScreenState extends State<PlanScreen> {
                           ScrollController scrollController) {
                         return SingleChildScrollView(
                           controller: scrollController,
-                          child: PlanBottomSheet(),
+                          child: const PlanBottomSheet(),
                         );
                       },
                     ),
@@ -109,11 +108,11 @@ class PlanBottomSheet extends StatelessWidget {
       margin: const EdgeInsets.all(0),
       child: Container(
         height: 590.h,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(24), topLeft: Radius.circular(24)),
             color: Colors.white),
-        child: PlanBottomSheetContent(),
+        child: const PlanBottomSheetContent(),
       ),
     );
   }
@@ -126,17 +125,17 @@ class PlanBottomSheetContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        SizedBox(height: 12),
-        CustomDraggingHandle(),
-        SizedBox(height: 16),
+        const SizedBox(height: 12),
+        const CustomDraggingHandle(),
+        const SizedBox(height: 16),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: const [
             PlanDayInfo(),
             PlanAgenda(),
           ],
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
       ],
     );
   }
@@ -150,9 +149,9 @@ class CustomDraggingHandle extends StatelessWidget {
     return Container(
       height: 10,
       width: 100,
-      padding: EdgeInsets.only(bottom: 5), //적용X
+      padding: const EdgeInsets.only(bottom: 5), //적용X
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
         color: HexColor("#92AEAC"),
       ),
     );

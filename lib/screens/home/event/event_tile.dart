@@ -32,7 +32,7 @@ class EventTile extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
+                SizedBox(
                   width: 200.w,
                   child: Text(
                     event.title,
@@ -73,10 +73,10 @@ class EventTile extends StatelessWidget {
     );
   }
 
-  String checkExpiredAndReturn(String _eventStatus) {
-    if (_eventStatus == "END") {
+  String checkExpiredAndReturn(String eventStatus) {
+    if (eventStatus == "END") {
       return "assets/event_tile_end.svg";
-    } else if (_eventStatus == "PROCEEDING") {
+    } else if (eventStatus == "PROCEEDING") {
       return "assets/event_tile_proceeding.svg";
     } else {
       return "assets/event_tile_proceeding.svg";

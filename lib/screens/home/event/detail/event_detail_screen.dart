@@ -98,7 +98,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         return Center(
                           child: AspectRatio(
                             aspectRatio: 1 / 1.13,
-                            child: Container(
+                            child: SizedBox(
                               width: double.infinity,
                               height: MediaQuery.of(context).size.height - 210.h,
                               child: CachedNetworkImage(
@@ -170,9 +170,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     );
   }
 
-  Future<void> _launchUrl(String _uri) async {
-    if (!await launchUrl(Uri.parse(_uri))) {
-      throw 'Could not launch ${_uri}';
+  Future<void> _launchUrl(String uri) async {
+    if (!await launchUrl(Uri.parse(uri))) {
+      throw 'Could not launch $uri';
     }
   }
 }
@@ -184,35 +184,33 @@ class GoToFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.arrow_drop_down,
-            color: HexColor(mainColorHex),
-            size: 42.w,
-          ),
-          SizedBox(
-            width: 4.w,
-          ),
-          Text(
-            "구글폼으로 이동",
-            style: TextStyle(
-                fontSize: 21.5.sp,
-                color: HexColor(mainColorHex),
-                fontWeight: FontWeight.w600),
-          ),
-          SizedBox(
-            width: 4.w,
-          ),
-          Icon(
-            Icons.arrow_drop_down,
-            color: HexColor(mainColorHex),
-            size: 42.w,
-          ),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.arrow_drop_down,
+          color: HexColor(mainColorHex),
+          size: 42.w,
+        ),
+        SizedBox(
+          width: 4.w,
+        ),
+        Text(
+          "구글폼으로 이동",
+          style: TextStyle(
+              fontSize: 21.5.sp,
+              color: HexColor(mainColorHex),
+              fontWeight: FontWeight.w600),
+        ),
+        SizedBox(
+          width: 4.w,
+        ),
+        Icon(
+          Icons.arrow_drop_down,
+          color: HexColor(mainColorHex),
+          size: 42.w,
+        ),
+      ],
     );
   }
 }

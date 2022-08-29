@@ -20,7 +20,7 @@ class DevInfoScreen extends StatelessWidget {
         foregroundColor: HexColor("#425C5A"),
       ),
       body: Stack(children: [
-        Container(
+        SizedBox(
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +57,7 @@ class DevInfoScreen extends StatelessWidget {
             ],
           ),
         ),
-        Container(
+        SizedBox(
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,

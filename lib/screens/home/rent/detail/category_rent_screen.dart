@@ -452,8 +452,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
       setState(() {
         meetingList = tempMeetingList;
       });
-      print("fetchSelectedItemRentState() call : Error");
-      print(e);
+      debugPrint("fetchSelectedItemRentState() call : Error");
+      debugPrint(e.toString());
     }
   }
 
@@ -465,22 +465,22 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
           .timeout(const Duration(seconds: 30));
       Map<String, dynamic> resData =
           jsonDecode(utf8.decode(resString.bodyBytes));
-      print(resData);
+      debugPrint(resData.toString());
 
       if (resData["status"] != 200) {
-        print("fetchTotalAvailableCount() call : Error. not 200");
+        debugPrint("fetchTotalAvailableCount() call : Error. not 200");
         return StatusCode.UNCATCHED_ERROR;
       }
 
-      print("fetchTotalAvailableCount() call : Success");
+      debugPrint("fetchTotalAvailableCount() call : Success");
 
       setState(() {
         totalAvailableCount = resData["data"][0]["count"];
       });
-      print("totalAvailableCount : $totalAvailableCount");
+      debugPrint("totalAvailableCount : ${totalAvailableCount.toString()}");
       return StatusCode.SUCCESS;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return StatusCode.UNCATCHED_ERROR;
     }
   }

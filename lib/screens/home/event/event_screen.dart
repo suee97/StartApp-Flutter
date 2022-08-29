@@ -59,30 +59,30 @@ class _EventScreenState extends State<EventScreen> {
       Map<String, dynamic> resData =
           jsonDecode(utf8.decode(resString.bodyBytes));
 
-      List<Event> _eventList = [];
-      List<Event> _tempList = [];
+      List<Event> eventList = [];
+      List<Event> tempList = [];
       if (resData["data"] != null) {
         /// not null
         List<dynamic> data = resData["data"];
         for (var e in data) {
-          if (e["eventStatus"] == "END") _eventList.add(Event.fromJson(e));
+          if (e["eventStatus"] == "END") eventList.add(Event.fromJson(e));
         }
         for (var e in data) {
-          if (e["eventStatus"] == "BEFORE") _tempList.add(Event.fromJson(e));
+          if (e["eventStatus"] == "BEFORE") tempList.add(Event.fromJson(e));
         }
-        _eventList = _eventList + _tempList.reversed.toList();
+        eventList = eventList + tempList.reversed.toList();
         for (var e in data) {
           if (e["eventStatus"] == "PROCEEDING") {
-            _eventList.add(Event.fromJson(e));
+            eventList.add(Event.fromJson(e));
           }
         }
       } else {
         /// null
-        print("${resData["status"]}");
+        debugPrint(resData["status"].toString());
         return Future.error("");
       }
 
-      return _eventList.reversed.toList();
+      return eventList.reversed.toList();
     } on TimeoutException catch (e) {
       return Future.error("TimeoutException : $e");
     } on SocketException catch (e) {
@@ -159,7 +159,7 @@ class _EventScreenState extends State<EventScreen> {
                           SizedBox(
                             height: 120.h,
                           ),
-                          Container(
+                          SizedBox(
                             width: 132.w,
                             child: const Image(
                                 fit: BoxFit.fitWidth,
@@ -185,11 +185,11 @@ class _EventScreenState extends State<EventScreen> {
                           SizedBox(
                             height: 120.h,
                           ),
-                          Container(
+                          SizedBox(
                             width: 132.w,
                             child: Image(
                               fit: BoxFit.fitWidth,
-                              image: AssetImage("images/logo_crying_ready.png"),
+                              image: const AssetImage("images/logo_crying_ready.png"),
                               color: Colors.white.withOpacity(0.5),
                               colorBlendMode: BlendMode.modulate,
                             ),

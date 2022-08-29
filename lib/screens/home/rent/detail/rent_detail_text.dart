@@ -13,7 +13,7 @@ class RentDetailText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 172.w,
       height: 190.h,
       child: Column(
@@ -31,13 +31,13 @@ class RentDetailText extends StatelessWidget {
             height: 10.h,
           ),
           Text(
-            "수량 : ${itemTotalCnt}개",
+            "수량 : $itemTotalCnt개",
             style: TextStyle(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w400,
                 color: Colors.white),
           ),
-          Text("사용 목적 : ${itemPurpose}",
+          Text("사용 목적 : $itemPurpose",
               style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w400,
