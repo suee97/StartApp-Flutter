@@ -178,7 +178,7 @@ class _SuggestErrorScreenState extends State<SuggestErrorScreen> {
                 ],
               ),
               SizedBox(
-                height: 104.h,
+                height: 30.h,
               ),
               Container(
                 width: double.infinity,
