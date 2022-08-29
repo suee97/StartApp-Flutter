@@ -13,6 +13,7 @@ import 'package:start_app/screens/home/setting/app_info/dev_info_screen.dart';
 import 'package:start_app/screens/home/setting/app_info/update_info_screen.dart';
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
 import 'package:start_app/screens/home/setting/policy/service_policy_screen.dart';
+import 'package:start_app/screens/home/setting/pw_change_screen.dart';
 import 'package:start_app/screens/home/setting/setting_widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:start_app/screens/home/setting/suggest/suggest_error_screen.dart';
@@ -289,7 +290,9 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                         SettingSemiTitle(
                           title: "비밀번호 재설정",
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const PwChangeScreen()));
+                          },
                         ),
                         SettingSemiTitle(
                           title: "회원탈퇴",
