@@ -217,24 +217,49 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 /// ID/PW 인증하고 토큰 받기
                 final loginAuthAndGetTokenResult = await loginAuthAndGetToken();
-                if (loginAuthAndGetTokenResult != StatusCode.SUCCESS) {
-                  if (loginAuthAndGetTokenResult == StatusCode.REQUEST_ERROR) {
-                    setState(() {
-                      isLoading = false;
-                    });
-                    if (mounted) {
-                      Common.showSnackBar(context, "인증 대기중인 계정입니다.");
-                    }
-                    return;
-                  }
 
-                  print("loginAuthAndGetToken() call error");
+                if(loginAuthAndGetTokenResult == LoginResCode.ST041) {
+                  if(!mounted) return;
                   setState(() {
                     isLoading = false;
                   });
-                  if (mounted) {
-                    Common.showSnackBar(context, "인증에 실패했습니다.");
-                  }
+                  Common.showSnackBar(context, "일치하는 계정을 찾을 수 없습니다.");
+                  return;
+                }
+
+                if(loginAuthAndGetTokenResult == LoginResCode.ST050) {
+                  if(!mounted) return;
+                  setState(() {
+                    isLoading = false;
+                  });
+                  Common.showSnackBar(context, "비밀번호를 확인해주세요.");
+                  return;
+                }
+
+                if(loginAuthAndGetTokenResult == LoginResCode.ST057) {
+                  if(!mounted) return;
+                  setState(() {
+                    isLoading = false;
+                  });
+                  Common.showSnackBar(context, "인증 대기중인 계정입니다.");
+                  return;
+                }
+
+                if(loginAuthAndGetTokenResult == LoginResCode.ST058) {
+                  if(!mounted) return;
+                  setState(() {
+                    isLoading = false;
+                  });
+                  Common.showSnackBar(context, "탈퇴한 계정입니다. 재가입시 문의바랍니다. (02-970-7012)");
+                  return;
+                }
+
+                if(loginAuthAndGetTokenResult == LoginResCode.UNCATCHED_ERROR) {
+                  if(!mounted) return;
+                  setState(() {
+                    isLoading = false;
+                  });
+                  Common.showSnackBar(context, "오류가 발생했습니다.");
                   return;
                 }
 
@@ -383,7 +408,7 @@ class _LoginScreenState extends State<LoginScreen> {
   /// ########################################################
   /// ##################### 인증 후 토큰발급 #####################
   /// ########################################################
-  Future<StatusCode> loginAuthAndGetToken() async {
+  Future<LoginResCode> loginAuthAndGetToken() async {
     Map bodyData = {
       "studentNo": studentIdController.text,
       "password": pwController.text
@@ -410,18 +435,26 @@ class _LoginScreenState extends State<LoginScreen> {
         print("access Token : $AT");
         print("refresh Token : $RT");
 
-        return StatusCode.SUCCESS;
+        return LoginResCode.SUCCESS;
       }
 
-      if (resData["status"] == 409 && resData["errorCode"] == "ST057") {
-        print("loginAuthAndGetToken() call error : 409 : ST057 : 인증 대기중인 상태");
-        return StatusCode.REQUEST_ERROR;
+      if (resData["errorCode"] == "ST041") {
+        return LoginResCode.ST041;
+      }
+      if (resData["errorCode"] == "ST050") {
+        return LoginResCode.ST050;
+      }
+      if (resData["errorCode"] == "ST057") {
+        return LoginResCode.ST057;
+      }
+      if (resData["errorCode"] == "ST058") {
+        return LoginResCode.ST058;
       }
 
-      return StatusCode.UNCATCHED_ERROR;
+      return LoginResCode.UNCATCHED_ERROR;
     } catch (e) {
       print(e);
-      return StatusCode.UNCATCHED_ERROR;
+      return LoginResCode.UNCATCHED_ERROR;
     }
   }
 
@@ -495,4 +528,13 @@ class _LoginScreenState extends State<LoginScreen> {
       return StatusCode.UNCATCHED_ERROR;
     }
   }
+}
+
+enum LoginResCode {
+  ST041,
+  ST050,
+  SUCCESS,
+  ST057,
+  ST058,
+  UNCATCHED_ERROR
 }
