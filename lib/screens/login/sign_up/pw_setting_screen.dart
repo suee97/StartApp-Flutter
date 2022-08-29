@@ -245,6 +245,4 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
       );
     });
   }
-
-  void onPressed(BuildContext context) {}
 }

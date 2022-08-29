@@ -9,7 +9,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/screens/home/home_screen.dart';
 import 'package:start_app/screens/login/sign_up/policy_agree_screen.dart';
-import 'package:start_app/screens/login/sign_up/pw_resetting_screen.dart';
+import 'package:start_app/screens/login/reset_password/pw_reset_auth_screen.dart';
 import 'package:start_app/utils/common.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -327,11 +327,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PwResettingScreen()));
+                            builder: (context) => PwResetAuthScreen()));
                   },
                   child: GestureDetector(
                     onTap: () {
-                      Common.showSnackBar(context, "준비중입니다.");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const PwResetAuthScreen()));
                     },
                     child: Container(
                       margin: EdgeInsets.only(left: 20.w),
@@ -468,7 +468,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print("getStudentInfoAndSave() call success");
         final pref = await SharedPreferences.getInstance();
 
-        debugPrint("유저 정보 : ${resData["data"]}");
+        debugPrint("유저 정보 : ${resData["data"].toString()}");
         List<dynamic> data = resData["data"];
 
         if (data[0]["memberStatus"] == "PRE_CARD_AUTH") {
