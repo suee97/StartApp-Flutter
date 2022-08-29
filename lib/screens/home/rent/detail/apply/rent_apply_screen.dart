@@ -196,8 +196,8 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     inputType: TextInputType.number,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 30.w),
+                Container(
+                  padding: EdgeInsets.only(left: 30.w, top: 10.h),
                   child: Text(
                     "주의사항",
                     textAlign: TextAlign.left,
@@ -209,54 +209,46 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                   margin: EdgeInsets.only(left: 30.w),
                   width: 300.w,
                   height: 150.h,
+                  padding: EdgeInsets.only(top: 8.h, left: 12.w, right: 10.w, bottom: 8.h),
                   decoration: BoxDecoration(
                       border: Border.all(
                         width: 1.2,
                         color: HexColor("#425c5a")
                       ),
                       borderRadius: const BorderRadius.all(Radius.circular(5))),
-                  child: Stack(children: [
-                    Padding(
-                        padding: EdgeInsets.only(top: 8.h, left: 12.w, right: 10.w),
-                        child: Text(
+                  child: SingleChildScrollView(
+                      child: Text(
                           getPolicyTextFromCategory(widget.categoryEng),
                           style: TextStyle(fontSize: 15.5.sp, height: 1.4, fontWeight: FontWeight.w400),
-                        )),
-                    SizedBox(
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                              height: 32.h,
-                              alignment: Alignment.center,
-                              child: Text("동의합니다",
-                                  style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300))),
-                          SizedBox(
-                            width: 32.w,
-                            height: 32.h,
-                            child: Checkbox(
-                                shape: const CircleBorder(),
-                                side: MaterialStateBorderSide.resolveWith(
-                                  (states) => BorderSide(
-                                      width: 1.5, color: HexColor("#EE795F")),
-                                ),
-                                value: agreementCheckBoxState,
-                                checkColor: HexColor("#EE795F"),
-                                activeColor: Colors.transparent,
-                                onChanged: (value) {
-                                  setState(() {
-                                    agreementCheckBoxState = value!;
-                                  });
-                                }),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]),
+                        ))
                 ),
+                Container(
+                  margin: EdgeInsets.only(right: 30.w),
+                  child : Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("주의사항을 숙지하였습니다. ",
+                              style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w400)),
+                      SizedBox(
+                        width: 20.w,
+                        height: 20.h,
+                        child: Checkbox(
+                            shape: const CircleBorder(),
+                            side: MaterialStateBorderSide.resolveWith(
+                                  (states) => BorderSide(
+                                  width: 1.5, color: HexColor("#EE795F")),
+                            ),
+                            value: agreementCheckBoxState,
+                            checkColor: HexColor("#EE795F"),
+                            activeColor: Colors.transparent,
+                            onChanged: (value) {
+                              setState(() {
+                                agreementCheckBoxState = value!;
+                              });
+                            }),
+                      ),
+                    ],
+                  ),),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
