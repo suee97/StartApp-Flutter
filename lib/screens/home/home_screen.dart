@@ -311,13 +311,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: "축제 이벤트",
                             svgPath: "assets/icon_festival.svg",
                             isUnderRow: true,
-                            onPressed: () => {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const NewFestivalScreen()))
-                                }),
+                            onPressed: () async {
+                              if (await isFestivalOpen()) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const NewFestivalScreen()));
+                                return;
+                              }
+                              Common.showSnackBar(context,
+                                  "축제기간이 아니거나 오류가 발생했습니다.\n장애가 계속될 시 문의해주세요. (02-970-7012)");
+                            }),
                         MainWidget(
                             title: "이벤트 참여",
                             svgPath: "assets/icon_event.svg",
@@ -414,5 +419,19 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       return StatusCode.UNCATCHED_ERROR;
     }
+  }
+
+  Future<bool> isFestivalOpen() async {
+    final resString = await http
+        .get(
+          Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/banner"),
+        )
+        .timeout(const Duration(seconds: 10));
+    final resData = jsonDecode(utf8.decode(resString.bodyBytes));
+    debugPrint(resData.toString());
+    if (resData["status"] == 200) {
+      return true;
+    }
+    return false;
   }
 }
