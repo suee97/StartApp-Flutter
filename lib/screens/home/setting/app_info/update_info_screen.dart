@@ -3,11 +3,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/utils/common.dart';
 
-class UpdateInfoScreen extends StatelessWidget {
+class UpdateInfoScreen extends StatefulWidget {
   const UpdateInfoScreen({Key? key}) : super(key: key);
 
   @override
+  State<UpdateInfoScreen> createState() => _UpdateInfoScreenState();
+}
+
+class _UpdateInfoScreenState extends State<UpdateInfoScreen> {
+  @override
   Widget build(BuildContext context) {
+    final historyList = [
+      UpdateHistoryWidget(
+          "1.0.0", DateTime(2022, 8, 23), ["ST'art 총학생회 어플리케이션 1차 테스트 배포"]),
+      UpdateHistoryWidget("1.0.1", DateTime(2022, 8, 30),
+          ["UI/UX 수정", "회원탈퇴 기능 추가", "SMS인증 기능 추가", "비밀번호 재설정 기능 추가", "개인정보처리방침 수정"]),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -19,13 +31,14 @@ class UpdateInfoScreen extends StatelessWidget {
         foregroundColor: HexColor("#425c5a"),
         backgroundColor: HexColor("#f3f3f3"),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          UpdateHistoryWidget(
-              "1.0.0", DateTime(2022, 8, 23), ["ST'art 총학생회 어플리케이션 1차 테스트 배포"]),
-        ],
-      ),
+      body: ListView.builder(
+          itemCount: historyList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
+              child: historyList.reversed.toList()[index],
+            );
+          }),
       backgroundColor: HexColor("#f3f3f3"),
     );
   }
@@ -54,13 +67,10 @@ class UpdateInfoScreen extends StatelessWidget {
             SizedBox(
               height: 16.h,
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 12.w),
-              child: Text(
-                "- 업데이트 내역",
-                style:
-                    TextStyle(fontSize: 15.5.sp, fontWeight: FontWeight.w500),
-              ),
+            Text(
+              "업데이트 내역",
+              style:
+                  TextStyle(fontSize: 15.5.sp, fontWeight: FontWeight.w600, color: HexColor("#425c5a")),
             ),
             SizedBox(
               height: 8.h,
@@ -69,7 +79,7 @@ class UpdateInfoScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: historyList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Text("${historyList[index]}");
+                  return Text(historyList[index]);
                 }),
             SizedBox(
               height: 16.h,
