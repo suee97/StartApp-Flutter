@@ -695,7 +695,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
           contentImg: "festival_info3_img",
           openTime: "17:30~  ",
           contentCrowded: 0,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "플리마켓",
           contentImg: "festival_fleamarket_img",
@@ -717,7 +717,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
       FestivalInfoWidget(
           contentTitle: "베스트드레서",
           contentImg: "festival_fashionvote_img",
-          openTime: "11:00~19:00",
+          openTime: "9월 23일 금요일\n11:00~19:00",
           contentCrowded: 0,
           contentFee: ""),
       FestivalInfoWidget(
