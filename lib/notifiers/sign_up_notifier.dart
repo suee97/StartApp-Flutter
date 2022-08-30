@@ -67,20 +67,9 @@ class SignUpNotifier extends ChangeNotifier {
     _name = "";
     _department = "";
     _fcmToken = "";
+    _phoneNo = "";
     _file = null;
 
     notifyListeners();
   }
-}
-
-class EnrollStudent {
-  EnrollStudent(this.studentNo, this.appPassword, this.name, this.department,
-      this.fcmToken, this.file);
-
-  String studentNo;
-  String appPassword;
-  String name;
-  String department;
-  String fcmToken;
-  String file;
 }

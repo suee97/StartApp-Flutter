@@ -166,7 +166,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                         phoneNo);
 
                     if (postCertificateResult ==
-                        postSignUpCode.UNCATCHED_ERROR) {
+                        PostSignUpCode.UNCATCHED_ERROR) {
                       if (!mounted) return;
                       Common.showSnackBar(context, "회원가입 요청 오류가 발생했습니다.");
                       setState(() {
@@ -175,7 +175,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                       return;
                     }
 
-                    if (postCertificateResult == postSignUpCode.ST053) {
+                    if (postCertificateResult == PostSignUpCode.ST053) {
                       if (!mounted) return;
                       Common.showSnackBar(context, "이미 가입된 계정이 있습니다.");
                       setState(() {
@@ -183,7 +183,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                       });
                       return;
                     }
-                    if (postCertificateResult == postSignUpCode.ST058) {
+                    if (postCertificateResult == PostSignUpCode.ST058) {
                       if (!mounted) return;
                       Common.showSnackBar(
                           context, "탈퇴한 계정입니다.\n재가입시 문의주세요. (02-970-7012)");
@@ -192,7 +192,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                       });
                       return;
                     }
-                    if (postCertificateResult == postSignUpCode.ST066) {
+                    if (postCertificateResult == PostSignUpCode.ST066) {
                       if (!mounted) return;
                       Common.showSnackBar(
                           context, "휴대폰 인증 정보가 만료되었습니다. 다시 진행해주세요.");
@@ -206,7 +206,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                       });
                       return;
                     }
-                    if (postCertificateResult == postSignUpCode.TIMEOUT) {
+                    if (postCertificateResult == PostSignUpCode.TIMEOUT) {
                       if (!mounted) return;
                       Common.showSnackBar(
                           context, "네트워크 오류가 발생했습니다. 다시 시도해주세요.");
@@ -215,7 +215,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                       });
                       return;
                     }
-                    if (postCertificateResult == postSignUpCode.SUCCESS) {
+                    if (postCertificateResult == PostSignUpCode.SUCCESS) {
                       if (!mounted) return;
                       Common.showSnackBar(context, "회원가입 요청이 완료되었습니다.");
                       setState(() {
@@ -287,7 +287,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
     });
   }
 
-  Future<postSignUpCode> postCertificate(String studentNo, String appPassword,
+  Future<PostSignUpCode> postCertificate(String studentNo, String appPassword,
       String name, String department, String fcmToken, String phoneNo) async {
     Dio dio = Dio();
     dio.options.contentType = 'multipart/form-data';
@@ -315,27 +315,27 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
 
       if (resString.data["status"] == 201) {
         print("postCertificate() call success");
-        return postSignUpCode.SUCCESS;
+        return PostSignUpCode.SUCCESS;
       }
 
-      return postSignUpCode.UNCATCHED_ERROR;
+      return PostSignUpCode.UNCATCHED_ERROR;
     } on TimeoutException catch (e) {
-      return postSignUpCode.TIMEOUT;
+      return PostSignUpCode.TIMEOUT;
     } catch (e) {
       if(e is DioError) {
         if (e.response?.data["errorCode"] == "ST066") {
-          return postSignUpCode.ST066;
+          return PostSignUpCode.ST066;
         }
         if (e.response?.data["errorCode"] == "ST058") {
-          return postSignUpCode.ST058;
+          return PostSignUpCode.ST058;
         }
         if (e.response?.data["errorCode"] == "ST053") {
-          return postSignUpCode.ST053;
+          return PostSignUpCode.ST053;
         }
-        return postSignUpCode.UNCATCHED_ERROR;
+        return PostSignUpCode.UNCATCHED_ERROR;
       }
       debugPrint(e.toString());
-      return postSignUpCode.UNCATCHED_ERROR;
+      return PostSignUpCode.UNCATCHED_ERROR;
     }
   }
 
@@ -360,4 +360,4 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
   }
 }
 
-enum postSignUpCode { SUCCESS, UNCATCHED_ERROR, ST053, ST058, ST066, TIMEOUT }
+enum PostSignUpCode { SUCCESS, UNCATCHED_ERROR, ST053, ST058, ST066, TIMEOUT }
