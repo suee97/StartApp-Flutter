@@ -27,6 +27,7 @@ class SignUpEndScreen extends StatelessWidget {
             Text(
               "72시간 내로 승인이 완료됩니다.\n문의 : 02-970-7012",
               style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w400),
+              textAlign: TextAlign.center,
             ),
             SizedBox(
               height: 4.h,
@@ -43,9 +44,10 @@ class SignUpEndScreen extends StatelessWidget {
             ),
             LoginNavButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()), (
-                          route) => false);
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      (route) => false);
                 },
                 title: "로그인 화면으로 이동",
                 colorHex: "#425C5A",
