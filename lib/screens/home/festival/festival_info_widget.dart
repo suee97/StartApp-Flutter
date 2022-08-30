@@ -84,10 +84,18 @@ class _FestivalInfoWidgetState extends State<FestivalInfoWidget> {
                 SizedBox(
                   height: 2.h,
                 ),
-                Text("요금",
+                widget.contentFee == ""
+                    ? Text("  ",
+                    style: TextStyle(
+                        fontSize: 10.5.sp, fontWeight: FontWeight.w600))
+                    :Text("요금",
                     style: TextStyle(
                         fontSize: 10.5.sp, fontWeight: FontWeight.w600)),
-                Text(widget.contentFee,
+                widget.contentFee == ""
+                    ? Text("  ",
+                    style: TextStyle(
+                        fontSize: 10.5.sp, fontWeight: FontWeight.w600))
+                    :Text(widget.contentFee,
                     style: TextStyle(
                         fontSize: 10.5.sp, fontWeight: FontWeight.w400)),
               ],

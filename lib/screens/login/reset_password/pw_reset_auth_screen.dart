@@ -151,7 +151,7 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                           PostSmsByIdCode.ST058) {
                                         if (!mounted) return;
                                         Common.showSnackBar(
-                                            context, "탈퇴한 계정입니다. 재가입시 문의해주세요. (02");
+                                            context, "탈퇴한 계정입니다. 재가입시 문의해주세요. (02-970-7012)");
                                         return;
                                       }
                                       if (!mounted) return;

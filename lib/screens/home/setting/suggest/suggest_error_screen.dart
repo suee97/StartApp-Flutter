@@ -108,48 +108,37 @@ class _SuggestErrorScreenState extends State<SuggestErrorScreen> {
                     },
                     child: Container(
                         child: imageFile != null
-                            ? Column(
+                            ? Stack(
+                            alignment: Alignment.center,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 12.w),
-                                    child: Container(
+                                  Container(
+                                      alignment: Alignment.center,
+                                      margin: EdgeInsets.only(left: 15.w, right: 15.w),
+                                      padding: EdgeInsets.all(10),
                                       width: 300.w,
-                                      child: Text(imageFile!.path,
-                                          style: TextStyle(
-                                              fontSize: 13.sp,
-                                              fontWeight: FontWeight.w400)),
-                                    ),
+                                      height: 300.h,
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color: HexColor("#f9b7a9")
+                                                .withOpacity(0.5),
+                                          )),
+                                      child: Image.file(File(imageFile!.path), fit: BoxFit.cover)
                                   ),
-                                  SizedBox(
-                                    height: 8.h,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 12.w),
-                                    child: GestureDetector(
+                                  GestureDetector(
                                       onTap: () {
                                         setState(() {
                                           imageFile = null;
                                         });
                                       },
                                       child: Container(
-                                        alignment: Alignment.center,
-                                        width: 312.w,
-                                        height: 40.h,
-                                        decoration: BoxDecoration(
-                                          color: HexColor("#f5efea"),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          border: Border.all(
-                                            width: 1.w,
-                                            color: HexColor("#f9b7a9")
-                                                .withOpacity(0.5),
-                                          ),
-                                        ),
-                                        child: Text("업로드 취소하기",
-                                            style: TextStyle(
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w400)),
-                                      ),
+                                        alignment: Alignment.topRight,
+                                        width: 310.w,
+                                        height: 310.h,
+                                        padding: EdgeInsets.only(top: 12.h, left: 12.w, right: 12.w),
+                                        child: Icon(Icons.cancel),
                                     ),
                                   ),
                                 ],
@@ -178,7 +167,7 @@ class _SuggestErrorScreenState extends State<SuggestErrorScreen> {
                 ],
               ),
               SizedBox(
-                height: 30.h,
+                height: 16.h,
               ),
               Container(
                 width: double.infinity,
