@@ -63,6 +63,9 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
               ),
             ],
           ),
+          SizedBox(
+            height: 8.h,
+          ),
           Padding(
             padding: EdgeInsets.only(left: 28.w),
             child: Text(

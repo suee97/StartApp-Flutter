@@ -424,7 +424,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<bool> isFestivalOpen() async {
     final resString = await http
         .get(
-          Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/banner"),
+          Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/festival"),
         )
         .timeout(const Duration(seconds: 10));
     final resData = jsonDecode(utf8.decode(resString.bodyBytes));

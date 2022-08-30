@@ -15,6 +15,19 @@ class _InfoScreenState extends State<InfoScreen> {
   bool _isvisible2 = false;
   bool _isvisible3 = false;
 
+  var _opacity1 = 0.5;
+  var _xOffset1 = 0.5;
+  var _yOffset1 = 0.5;
+  var _blurRadius1 = 0.5;
+  var _opacity2 = 1.0;
+  var _xOffset2 = 0.0;
+  var _yOffset2 = 0.0;
+  var _blurRadius2 = 0.0;
+  var _opacity3 = 1.0;
+  var _xOffset3 = 0.0;
+  var _yOffset3 = 0.0;
+  var _blurRadius3 = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +49,7 @@ class _InfoScreenState extends State<InfoScreen> {
             Row(
               children: [
                 //탭1
-                GestureDetector(
+                InkWell(
                   onTap: () => {changeVisible1()},
                   child: Container(
                     width: 120.w,
@@ -51,15 +64,23 @@ class _InfoScreenState extends State<InfoScreen> {
                       child: Text(
                         '총학생회란?',
                         style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600),
+                          color: Colors.black,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(_opacity1),
+                              offset: Offset(_xOffset1, _yOffset1),
+                              blurRadius: _blurRadius1,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
                 //탭2
-                GestureDetector(
+                InkWell(
                   onTap: () => {changeVisible2()},
                   child: Container(
                     width: 120.w,
@@ -74,15 +95,23 @@ class _InfoScreenState extends State<InfoScreen> {
                       child: Text(
                         'FAQ',
                         style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600),
+                          color: Colors.black,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(_opacity2),
+                              offset: Offset(_xOffset2, _yOffset2),
+                              blurRadius: _blurRadius2,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
                 //탭3
-                GestureDetector(
+                InkWell(
                   onTap: () => {changeVisible3()},
                   child: Container(
                     width: 120.w,
@@ -97,9 +126,17 @@ class _InfoScreenState extends State<InfoScreen> {
                       child: Text(
                         '학생회 구성 및 기능',
                         style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600),
+                          color: Colors.black,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(_opacity3),
+                              offset: Offset(_xOffset3, _yOffset3),
+                              blurRadius: _blurRadius3,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -133,6 +170,18 @@ class _InfoScreenState extends State<InfoScreen> {
       this._isvisible1 = true;
       this._isvisible2 = false;
       this._isvisible3 = false;
+      _opacity1 == 1.0 ? _opacity1 = 0.5 : _opacity1 = 1.0;
+      _xOffset1 == 0.0 ? _xOffset1 = 0.5 : _xOffset1 = 0.0;
+      _yOffset1 == 0.0 ? _yOffset1 = 0.5 : _yOffset1 = 0.0;
+      _blurRadius1 == 0.0 ? _blurRadius1 = 0.5 : _blurRadius1 = 0.0;
+      _opacity2 = 1.0;
+      _xOffset2 = 0.0;
+      _yOffset2 = 0.0;
+      _blurRadius2 = 0.0;
+      _opacity3 = 1.0;
+      _xOffset3 = 0.0;
+      _yOffset3 = 0.0;
+      _blurRadius3 = 0.0;
     });
   }
 
@@ -141,6 +190,18 @@ class _InfoScreenState extends State<InfoScreen> {
       this._isvisible1 = false;
       this._isvisible2 = true;
       this._isvisible3 = false;
+      _opacity1 = 1.0;
+      _xOffset1 = 0.0;
+      _yOffset1 = 0.0;
+      _blurRadius1 = 0.0;
+      _opacity2 = 0.5;
+      _xOffset2 = 0.5;
+      _yOffset2 = 0.5;
+      _blurRadius2 = 0.5;
+      _opacity3 = 1.0;
+      _xOffset3 = 0.0;
+      _yOffset3 = 0.0;
+      _blurRadius3 = 0.0;
     });
   }
 
@@ -149,6 +210,18 @@ class _InfoScreenState extends State<InfoScreen> {
       this._isvisible1 = false;
       this._isvisible2 = false;
       this._isvisible3 = true;
+      _opacity1 = 1.0;
+      _xOffset1 = 0.0;
+      _yOffset1 = 0.0;
+      _blurRadius1 = 0.0;
+      _opacity2 = 1.0;
+      _xOffset2 = 0.0;
+      _yOffset2 = 0.0;
+      _blurRadius2 = 0.0;
+      _opacity3 = 0.5;
+      _xOffset3 = 0.5;
+      _yOffset3 = 0.5;
+      _blurRadius3 = 0.5;
     });
   }
 }
@@ -247,7 +320,7 @@ class FAQ extends StatelessWidget {
                   faqContents(Common.faq_q7, Common.faq_a7),
                   faqContents(Common.faq_q8, Common.faq_a8),
                   SizedBox(height: 12.5.h),
-                    ])),
+                ])),
           ],
         ));
   }
