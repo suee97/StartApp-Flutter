@@ -17,7 +17,7 @@ class _UpdateInfoScreenState extends State<UpdateInfoScreen> {
       UpdateHistoryWidget(
           "1.0.0", DateTime(2022, 8, 23), ["ST'art 총학생회 어플리케이션 1차 테스트 배포"]),
       UpdateHistoryWidget("1.0.1", DateTime(2022, 8, 30),
-          ["UI/UX 수정", "회원탈퇴 기능 추가", "SMS인증 기능 추가", "비밀번호 재설정 기능 추가", "개인정보처리방침 수정"]),
+          ["UI/UX 수정", "회원탈퇴 기능 추가", "SMS인증 기능 추가", "비밀번호 재설정 기능 추가", "개인정보처리방침 수정 "]),
     ];
 
     return Scaffold(
