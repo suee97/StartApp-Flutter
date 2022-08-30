@@ -45,7 +45,6 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
 
   int postofficeCrowded = 1,
       exhibitionCrowded = 1,
-      bikingCrowded = 1,
       ccCrowded = 1,
       info1Crowded = 1,
       photozoneCrowded = 1,
@@ -576,12 +575,6 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
             setState(() {
               exhibitionCrowded = crowded;
             });
-          } else if (booth == "미니바이킹") {
-            num = _boothInfo.indexOf(booth);
-            crowded = _crowdedInfo[num];
-            setState(() {
-              bikingCrowded = crowded;
-            });
           } else if (booth == "씨씨는 사랑을 싣고") {
             num = _boothInfo.indexOf(booth);
             crowded = _crowdedInfo[num];
@@ -658,111 +651,105 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
       FestivalInfoWidget(
           contentTitle: "과기대\n잡화점의 기적",
           contentImg: "festival_postoffice_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~17:00",
           contentCrowded: postofficeCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "나만의 전시회",
           contentImg: "festival_exhibition_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~18:00",
           contentCrowded: exhibitionCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "낙서 캔버스",
           contentImg: "festival_doodlewall_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~19:00",
           contentCrowded: 0,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "마당사업",
           contentImg: "festival_madangbiz_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~18:00",
           contentCrowded: 0,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
-      FestivalInfoWidget(
-          contentTitle: "미니바이킹",
-          contentImg: "festival_biking_img",
-          openTime: "11:00~12:00",
-          contentCrowded: bikingCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "씨씨는 사랑을 싣고",
           contentImg: "festival_cc_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~17:00",
           contentCrowded: ccCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "제1안내소",
           contentImg: "festival_info1_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~17:00",
           contentCrowded: info1Crowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "매표소",
           contentImg: "festival_ticketbooth_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~19:00",
           contentCrowded: 0,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "제3안내소",
           contentImg: "festival_info3_img",
-          openTime: "11:00~12:00",
+          openTime: "17:30~  ",
           contentCrowded: 0,
           contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
       FestivalInfoWidget(
           contentTitle: "플리마켓",
           contentImg: "festival_fleamarket_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~18:00",
           contentCrowded: 0,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "포토존",
           contentImg: "festival_photozone_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~17:00",
           contentCrowded: photozoneCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "포토부스",
           contentImg: "festival_photoism_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~19:00",
           contentCrowded: photoismCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(1,000원)\n외부인(2,000원)"),
       FestivalInfoWidget(
-          contentTitle: "패션투표",
+          contentTitle: "베스트드레서",
           contentImg: "festival_fashionvote_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~19:00",
           contentCrowded: 0,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "전당포",
           contentImg: "festival_pawnshop_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~18:00",
           contentCrowded: pawnshopCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
       FestivalInfoWidget(
           contentTitle: "인화부스",
           contentImg: "festival_photoprinting_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~17:00",
           contentCrowded: photoprintingCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: "자치회비 납부자\n(하루 1장 무료)"),
       FestivalInfoWidget(
           contentTitle: "믓쟁이 의상소",
           contentImg: "festival_costume_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~17:00",
           contentCrowded: costumeCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: "무료"),
       FestivalInfoWidget(
           contentTitle: "오락부스",
           contentImg: "festival_gameroom_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~17:00",
           contentCrowded: gameroomCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: "무료"),
       FestivalInfoWidget(
           contentTitle: "어의상회",
           contentImg: "festival_startshop_img",
-          openTime: "11:00~12:00",
+          openTime: "11:00~18:00",
           contentCrowded: startshopCrowded,
-          contentFee: "자치회비 납부자(무료)\n자치회비 미납부자(500원)\n외부 참가자(2,000원)"),
+          contentFee: ""),
     ];
 
     lineupList = <FestivalLineupWidget>[
