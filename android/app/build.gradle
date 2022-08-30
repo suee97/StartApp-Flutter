@@ -66,21 +66,21 @@ android {
     }
 
     // start of signingConfigs
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-        }
-    }
+//    signingConfigs {
+//        release {
+//            keyAlias keystoreProperties['keyAlias']
+//            keyPassword keystoreProperties['keyPassword']
+//            storeFile file(keystoreProperties['storeFile'])
+//            storePassword keystoreProperties['storePassword']
+//        }
+//    }
     // end of signingConfigs
-    buildTypes {
-        release {
-            // release 속성으로 변경
-            signingConfig signingConfigs.release
-        }
-    }
+//    buildTypes {
+//        release {
+//            // release 속성으로 변경
+//            signingConfig signingConfigs.release
+//        }
+//    }
 //    buildTypes {
 //        release {
 //            // TODO: Add your own signing config for the release build.
