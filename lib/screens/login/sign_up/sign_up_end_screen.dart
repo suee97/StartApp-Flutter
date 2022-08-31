@@ -33,7 +33,7 @@ class SignUpEndScreen extends StatelessWidget {
               height: 4.h,
             ),
             Text(
-              "행사 기간는 빠른 처리가 진행될 예정입니다.",
+              "행사 기간 중에는 빠른 처리가 진행될 예정입니다.",
               style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
