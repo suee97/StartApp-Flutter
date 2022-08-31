@@ -395,6 +395,10 @@ class _HomeScreenState extends State<HomeScreen> {
       if (resData["status"] == 200) {
         List<String> tempBannerLinkList = [];
 
+        if (resData["data"].isEmpty) {
+          return StatusCode.TIMEOUT_ERROR;
+        }
+
         for (var e in resData["data"]) {
           tempBannerLinkList.add(e["imageUrl"]);
         }
