@@ -227,7 +227,7 @@ class _RentScreenState extends State<RentScreen> {
                       height: 7.h,
                     ),
                     Text(
-                      "- 대여 물품이 파손되었을 시, 수리 비용의 80%를 대여인(또는 대여 기구) 측에서 비용하고 나머지 20%는 총학생회 자치회비에서 부담한다.",
+                      "- 대여 물품이 파손되었을 시, 수리 비용의 80%를 대여인(또는 대여 기구) 측에서 비용하고 나머지 20%는 총학생회 자치회비에서 부담합니다.",
                       style: TextStyle(
                           fontSize: 11.5.sp,
                           fontWeight: FontWeight.w400,
@@ -236,7 +236,7 @@ class _RentScreenState extends State<RentScreen> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "- 파손에 대해 수리가 불가하다고 판단될 시, 대여인(또는 대여 기구)에서 같은 제품 또는 그에 걸맞는 비용을 부담하여아 한다.",
+                      "- 파손에 대해 수리가 불가하다고 판단될 시, 대여인(또는 대여 기구)에서 같은 제품 또는 그에 걸맞는 비용을 부담해야 합니다.",
                       style: TextStyle(
                           fontSize: 11.5.sp,
                           fontWeight: FontWeight.w400,
