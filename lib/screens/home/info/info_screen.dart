@@ -34,7 +34,7 @@ class _InfoScreenState extends State<InfoScreen> {
       backgroundColor: HexColor("#425C5A"),
       appBar: AppBar(
         title: Text(
-          "총학생회 설명",
+          "소개",
           style: Common.startAppBarTextStyle,
         ),
         centerTitle: true,
