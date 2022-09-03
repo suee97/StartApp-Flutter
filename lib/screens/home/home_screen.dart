@@ -252,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         MainWidget(
-                            title: "소개",
+                            title: "총학생회 소개",
                             svgPath: "assets/icon_info.svg",
                             isUnderRow: false,
                             onPressed: () => {
