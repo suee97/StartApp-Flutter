@@ -8,13 +8,16 @@ class LoginNavButton extends StatelessWidget {
         required this.onPressed,
         required this.title,
         required this.colorHex,
-        required this.width})
+        required this.width,
+        this.margin
+      })
       : super(key: key);
 
   VoidCallback onPressed;
   String title;
   String colorHex;
   double width;
+  EdgeInsets? margin = EdgeInsets.zero;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,7 @@ class LoginNavButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         width: width,
+        margin: margin,
         height: 54.h,
         decoration: BoxDecoration(
             color: HexColor(colorHex),
@@ -47,7 +51,7 @@ class LoginInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 24.h,
       child: TextField(
         controller: controller,

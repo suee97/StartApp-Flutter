@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../models/status_code.dart';
@@ -150,5 +151,19 @@ class Common {
   }
   static bool getIsLogin() {
     return _isLogin;
+  }
+
+  // 회원가입 플로우 앱바
+  static AppBar SignUpAppBar(String title) {
+    return AppBar(
+      title: Text(
+        title,
+        style: Common.startAppBarTextStyle,
+      ),
+      centerTitle: true,
+      elevation: 0,
+      backgroundColor: HexColor("#f3f3f3"),
+      foregroundColor: HexColor("#425c5a"),
+    );
   }
 }

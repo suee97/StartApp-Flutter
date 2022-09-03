@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
 import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/sign_up/check_info_screen.dart';
+import 'package:start_app/utils/common.dart';
 import '../../home/setting/policy/service_policy_screen.dart';
 
 class PolicyAgreeScreen extends StatefulWidget {
@@ -27,14 +28,15 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: Common.SignUpAppBar("약관동의"),
       body: Stack(children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: double.infinity,
-              height: 260.h,
+              height: 200.h,
               child: const Center(
                 child: Image(
                   image: AssetImage("images/logo_app.png"),
@@ -74,7 +76,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
               color: HexColor("#425C5A"),
             ),
             SizedBox(
-              height: 120.h,
+              height: 144.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -108,7 +110,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                 SizedBox(
                   width: 4.w,
                 ),
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     setState(() {
                       servicePolicyAgreeState = !servicePolicyAgreeState;
@@ -182,7 +184,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                 SizedBox(
                   width: 4.w,
                 ),
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     setState(() {
                       privacyPolicyAgreeState = !privacyPolicyAgreeState;
@@ -223,13 +225,11 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
             )
           ],
         ),
-        Container(
-          width: double.infinity,
-          height: double.infinity,
+        Align(
           alignment: Alignment.bottomCenter,
-          margin: EdgeInsets.only(bottom: 16.h),
           child: isAllAgree == true
               ? LoginNavButton(
+                  margin: EdgeInsets.only(bottom: 16.h),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -240,6 +240,7 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                   colorHex: "#425C5A",
                   width: 304.w)
               : LoginNavButton(
+                  margin: EdgeInsets.only(bottom: 16.h),
                   onPressed: () {},
                   title: "다음",
                   colorHex: "#929d9c",
