@@ -54,317 +54,343 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 21.h),
-              width: double.infinity,
-              height: 260.h,
-              child: const Center(
-                child: Image(
-                  image: AssetImage("images/logo_app.png"),
+        appBar: Common.SignUpAppBar("학생증 인증"),
+        body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          reverse: true,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 21.h),
+                width: double.infinity,
+                height: 200.h,
+                child: const Center(
+                  child: Image(
+                    image: AssetImage("images/logo_app.png"),
+                  ),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 28.w,
-                ),
-                Text(
-                  "학번",
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w300,
-                      color: HexColor("#425c5a")),
-                ),
-              ],
-            ),
-            Padding(
-                padding: EdgeInsets.only(left: 28.w, right: 28.w),
-                child: SizedBox(
-                  height: 30.h,
-                  child: TextField(
-                    controller: studentIdController,
-                    keyboardType: TextInputType.number,
-                    cursorColor: HexColor("#425C5A"),
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    maxLines: 1,
-                    enableSuggestions: false,
-                    style: TextStyle(
-                        fontSize: 17.5.sp, fontWeight: FontWeight.w300),
-                    decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: HexColor("#425c5a")),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: HexColor("#425c5a")),
-                      ),
-                    ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 28.w,
                   ),
-                )),
-            SizedBox(
-              height: 24.h,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 28.w,
-                ),
-                Text(
-                  "비밀번호",
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w300,
-                      color: HexColor("#425c5a")),
-                ),
-              ],
-            ),
-            Padding(
-                padding: EdgeInsets.only(left: 28.w, right: 28.w),
-                child: SizedBox(
-                  height: 30.h,
-                  child: TextField(
-                    controller: pwController,
-                    cursorColor: HexColor("#425C5A"),
-                    maxLines: 1,
-                    enableSuggestions: false,
+                  Text(
+                    "학번",
                     style: TextStyle(
-                        fontSize: 17.5.sp, fontWeight: FontWeight.w300),
-                    decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: HexColor("#425c5a")),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: HexColor("#425c5a")),
-                      ),
-                    ),
-                    obscureText: true,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w300,
+                        color: HexColor("#425c5a")),
                   ),
-                )),
-            SizedBox(
-              height: 12.h,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 24.w,
-                ),
-                SizedBox(
-                  width: 24.w,
-                  height: 24.h,
-                  child: Transform.scale(
-                    scale: 1.2,
-                    child: Checkbox(
-                        shape: const CircleBorder(),
-                        side: MaterialStateBorderSide.resolveWith(
-                          (states) => BorderSide(
-                              width: 2.w,
-                              color: autoLoginCheckBoxState == false
-                                  ? HexColor("#929d9c")
-                                  : HexColor("#425C5A")),
+                ],
+              ),
+              Padding(
+                  padding: EdgeInsets.only(left: 28.w, right: 28.w),
+                  child: SizedBox(
+                    height: 30.h,
+                    child: TextField(
+                      controller: studentIdController,
+                      keyboardType: TextInputType.number,
+                      cursorColor: HexColor("#425C5A"),
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      maxLines: 1,
+                      enableSuggestions: false,
+                      style: TextStyle(
+                          fontSize: 17.5.sp, fontWeight: FontWeight.w300),
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: HexColor("#425c5a")),
                         ),
-                        value: autoLoginCheckBoxState,
-                        checkColor: autoLoginCheckBoxState == false
-                            ? Colors.white
-                            : Colors.white,
-                        activeColor: HexColor("#425C5A"),
-                        onChanged: (value) {
-                          setState(() {
-                            autoLoginCheckBoxState = value!;
-                          });
-                        }),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: HexColor("#425c5a")),
+                        ),
+                      ),
+                    ),
+                  )),
+              SizedBox(
+                height: 24.h,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 28.w,
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
+                  Text(
+                    "비밀번호",
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w300,
+                        color: HexColor("#425c5a")),
+                  ),
+                ],
+              ),
+              Padding(
+                  padding: EdgeInsets.only(left: 28.w, right: 28.w),
+                  child: SizedBox(
+                    height: 30.h,
+                    child: TextField(
+                      controller: pwController,
+                      cursorColor: HexColor("#425C5A"),
+                      maxLines: 1,
+                      enableSuggestions: false,
+                      style: TextStyle(
+                          fontSize: 17.5.sp, fontWeight: FontWeight.w300),
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: HexColor("#425c5a")),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: HexColor("#425c5a")),
+                        ),
+                      ),
+                      obscureText: true,
+                    ),
+                  )),
+              SizedBox(
+                height: 12.h,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 24.w,
+                  ),
+                  SizedBox(
+                    width: 24.w,
+                    height: 24.h,
+                    child: Transform.scale(
+                      scale: 1.2,
+                      child: Checkbox(
+                          shape: const CircleBorder(),
+                          side: MaterialStateBorderSide.resolveWith(
+                            (states) => BorderSide(
+                                width: 2.w,
+                                color: autoLoginCheckBoxState == false
+                                    ? HexColor("#929d9c")
+                                    : HexColor("#425C5A")),
+                          ),
+                          value: autoLoginCheckBoxState,
+                          checkColor: autoLoginCheckBoxState == false
+                              ? Colors.white
+                              : Colors.white,
+                          activeColor: HexColor("#425C5A"),
+                          onChanged: (value) {
+                            setState(() {
+                              autoLoginCheckBoxState = value!;
+                            });
+                          }),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        autoLoginCheckBoxState = !autoLoginCheckBoxState;
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: 8.w, right: 8.w, top: 4.h, bottom: 4.h),
+                      child: Text("자동 로그인",
+                          style: TextStyle(
+                              fontSize: 14.sp, fontWeight: FontWeight.w300)),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 60.h,
+              ),
+              GestureDetector(
+                onTap: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+
+                  /// 유효성 검사
+                  if (studentIdController.text.isEmpty ||
+                      pwController.text.isEmpty) {
+                    Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
                     setState(() {
-                      autoLoginCheckBoxState = !autoLoginCheckBoxState;
+                      isLoading = false;
                     });
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 8.w, right: 8.w, top: 4.h, bottom: 4.h),
-                    child: Text("자동 로그인",
-                        style: TextStyle(
-                            fontSize: 14.sp, fontWeight: FontWeight.w300)),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 60.h,
-            ),
-            GestureDetector(
-              onTap: () async {
-                setState(() {
-                  isLoading = true;
-                });
-
-                /// 유효성 검사
-                if (studentIdController.text.isEmpty ||
-                    pwController.text.isEmpty) {
-                  Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
-                  setState(() {
-                    isLoading = false;
-                  });
-                  return;
-                }
-
-                /// ID/PW 인증하고 토큰 받기
-                final loginAuthAndGetTokenResult = await loginAuthAndGetToken();
-
-                if(loginAuthAndGetTokenResult == LoginResCode.ST041) {
-                  if(!mounted) return;
-                  setState(() {
-                    isLoading = false;
-                  });
-                  Common.showSnackBar(context, "일치하는 계정을 찾을 수 없습니다.");
-                  return;
-                }
-
-                if(loginAuthAndGetTokenResult == LoginResCode.ST050) {
-                  if(!mounted) return;
-                  setState(() {
-                    isLoading = false;
-                  });
-                  Common.showSnackBar(context, "비밀번호를 확인해주세요.");
-                  return;
-                }
-
-                if(loginAuthAndGetTokenResult == LoginResCode.ST057) {
-                  if(!mounted) return;
-                  setState(() {
-                    isLoading = false;
-                  });
-                  Common.showSnackBar(context, "인증 대기중인 계정입니다.");
-                  return;
-                }
-
-                if(loginAuthAndGetTokenResult == LoginResCode.ST058) {
-                  if(!mounted) return;
-                  setState(() {
-                    isLoading = false;
-                  });
-                  Common.showSnackBar(context, "탈퇴한 계정입니다. 재가입시 문의바랍니다. (02-970-7012)");
-                  return;
-                }
-
-                if(loginAuthAndGetTokenResult == LoginResCode.UNCATCHED_ERROR) {
-                  if(!mounted) return;
-                  setState(() {
-                    isLoading = false;
-                  });
-                  Common.showSnackBar(context, "오류가 발생했습니다.");
-                  return;
-                }
-
-                /// Access Token 으로 로그인 인증
-                final authAccessTokenResult = await authAccessToken();
-                if (authAccessTokenResult != StatusCode.SUCCESS) {
-                  print("authAccessToken() call error");
-                  setState(() {
-                    isLoading = false;
-                  });
-                  if (mounted) {
-                    Common.showSnackBar(context, "인증에 실패했습니다.");
+                    return;
                   }
-                  return;
-                }
 
-                /// 토큰으로 유저 정보 가져와서 pref에 저장
-                final getStudentInfoAndSaveResult =
-                    await getStudentInfoAndSave();
-                if (getStudentInfoAndSaveResult != StatusCode.SUCCESS) {
-                  if (getStudentInfoAndSaveResult == StatusCode.REQUEST_ERROR) {
+                  /// ID/PW 인증하고 토큰 받기
+                  final loginAuthAndGetTokenResult = await loginAuthAndGetToken();
+
+                  if(loginAuthAndGetTokenResult == LoginResCode.ST041) {
+                    if(!mounted) return;
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Common.showSnackBar(context, "일치하는 계정을 찾을 수 없습니다.");
+                    return;
+                  }
+
+                  if(loginAuthAndGetTokenResult == LoginResCode.ST050) {
+                    if(!mounted) return;
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Common.showSnackBar(context, "비밀번호를 확인해주세요.");
+                    return;
+                  }
+
+                  if(loginAuthAndGetTokenResult == LoginResCode.ST057) {
+                    if(!mounted) return;
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Common.showSnackBar(context, "인증 대기중인 계정입니다.");
+                    return;
+                  }
+
+                  if(loginAuthAndGetTokenResult == LoginResCode.ST058) {
+                    if(!mounted) return;
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Common.showSnackBar(context, "탈퇴한 계정입니다. 재가입시 문의바랍니다. (02-970-7012)");
+                    return;
+                  }
+
+                  if(loginAuthAndGetTokenResult == LoginResCode.UNCATCHED_ERROR) {
+                    if(!mounted) return;
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Common.showSnackBar(context, "오류가 발생했습니다.");
+                    return;
+                  }
+
+                  /// Access Token 으로 로그인 인증
+                  final authAccessTokenResult = await authAccessToken();
+                  if (authAccessTokenResult != StatusCode.SUCCESS) {
+                    print("authAccessToken() call error");
                     setState(() {
                       isLoading = false;
                     });
                     if (mounted) {
-                      Common.showSnackBar(context, "승인 대기중입니다.");
+                      Common.showSnackBar(context, "인증에 실패했습니다.");
                     }
                     return;
                   }
+
+                  /// 토큰으로 유저 정보 가져와서 pref에 저장
+                  final getStudentInfoAndSaveResult =
+                      await getStudentInfoAndSave();
+                  if (getStudentInfoAndSaveResult != StatusCode.SUCCESS) {
+                    if (getStudentInfoAndSaveResult == StatusCode.REQUEST_ERROR) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      if (mounted) {
+                        Common.showSnackBar(context, "승인 대기중입니다.");
+                      }
+                      return;
+                    }
+                    setState(() {
+                      isLoading = false;
+                    });
+                    if (mounted) {
+                      Common.showSnackBar(context, "유저 정보를 불러오지 못했습니다.");
+                    }
+                    return;
+                  }
+
+                  if (autoLoginCheckBoxState) {
+                    await Common.setAutoLogin(true);
+                  }
+                  await Common.setNonLogin(false);
+                  Common.setIsLogin(true);
+
                   setState(() {
                     isLoading = false;
                   });
+
                   if (mounted) {
-                    Common.showSnackBar(context, "유저 정보를 불러오지 못했습니다.");
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        (route) => false);
                   }
                   return;
-                }
-
-                if (autoLoginCheckBoxState) {
-                  await Common.setAutoLogin(true);
-                }
-                await Common.setNonLogin(false);
-                Common.setIsLogin(true);
-
-                setState(() {
-                  isLoading = false;
-                });
-
-                if (mounted) {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                      (route) => false);
-                }
-                return;
-              },
-              child: Container(
-                width: 320.w,
-                height: 54.h,
-                decoration: BoxDecoration(
-                    color: HexColor("#425C5A"),
-                    borderRadius: BorderRadius.circular(10)),
-                alignment: Alignment.center,
-                child: isLoading == false
-                    ? Text(
-                        "로그인",
-                        style: TextStyle(
-                            fontSize: 19.5.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      )
-                    : Center(
-                        child: Platform.isIOS
-                            ? const CupertinoActivityIndicator(
-                                color: Colors.white,
-                              )
-                            : CircularProgressIndicator(
-                                color: HexColor("#f3f3f3"),
-                              ),
-                      ),
+                },
+                child: Container(
+                  width: 320.w,
+                  height: 54.h,
+                  decoration: BoxDecoration(
+                      color: HexColor("#425C5A"),
+                      borderRadius: BorderRadius.circular(10)),
+                  alignment: Alignment.center,
+                  child: isLoading == false
+                      ? Text(
+                          "로그인",
+                          style: TextStyle(
+                              fontSize: 19.5.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        )
+                      : Center(
+                          child: Platform.isIOS
+                              ? const CupertinoActivityIndicator(
+                                  color: Colors.white,
+                                )
+                              : CircularProgressIndicator(
+                                  color: HexColor("#f3f3f3"),
+                                ),
+                        ),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 4.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PwResetAuthScreen()));
-                  },
-                  child: GestureDetector(
+              SizedBox(
+                height: 4.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const PwResetAuthScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PwResetAuthScreen()));
+                    },
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const PwResetAuthScreen()));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 20.w),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: 8.h, bottom: 8.h, left: 8.w, right: 8.w),
+                          child: Text(
+                            "비밀번호 재설정",
+                            style: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w400,
+                                color: HexColor("#425C5A")),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PolicyAgreeScreen()));
                     },
                     child: Container(
-                      margin: EdgeInsets.only(left: 20.w),
+                      margin: EdgeInsets.only(right: 20.w),
                       child: Padding(
                         padding: EdgeInsets.only(
                             top: 8.h, bottom: 8.h, left: 8.w, right: 8.w),
                         child: Text(
-                          "비밀번호 재설정",
+                          "회원가입",
                           style: TextStyle(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
@@ -373,32 +399,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PolicyAgreeScreen()));
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: 20.w),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 8.h, bottom: 8.h, left: 8.w, right: 8.w),
-                      child: Text(
-                        "회원가입",
-                        style: TextStyle(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w400,
-                            color: HexColor("#425C5A")),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
         backgroundColor: HexColor("#f3f3f3"),
       ),
