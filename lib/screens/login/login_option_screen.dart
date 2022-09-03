@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/common.dart';
 import '../home/home_screen.dart';
 import 'login_widgets.dart';
@@ -36,8 +35,10 @@ class LoginOptionScreen extends StatelessWidget {
               colorHex: "#425c5a",
               title: '로그인',
               onPressed: () => {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()))
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()))
               },
               width: 330.w,
             ),
@@ -45,6 +46,7 @@ class LoginOptionScreen extends StatelessWidget {
               height: 12.h,
             ),
             LoginNavButton(
+              margin: EdgeInsets.only(bottom: 16.h),
               colorHex: "#929d9c",
               title: '로그인 없이 이용하기',
               onPressed: () {

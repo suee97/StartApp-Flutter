@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:start_app/notifiers/sign_up_notifier.dart';
 import 'package:start_app/screens/login/login_option_screen.dart';
+import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/sign_up/sign_up_end_screen.dart';
 import 'package:start_app/utils/common.dart';
 
@@ -36,12 +36,13 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
   Widget build(BuildContext context) {
     return Consumer<SignUpNotifier>(builder: (context, signUpNotifier, child) {
       return Scaffold(
+        appBar: Common.SignUpAppBar("학생증 인증"),
         body: Stack(children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                height: 120.h,
+                height: 80.h,
               ),
               Row(
                 children: [
@@ -144,142 +145,134 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
               )
             ],
           ),
-          GestureDetector(
-            onTap: imageFile != null
-                ? () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    final studentNo = signUpNotifier.getStudentNo();
-                    final appPassword = signUpNotifier.getAppPassword();
-                    final name = signUpNotifier.getName();
-                    final department = signUpNotifier.getDepartment();
-                    final fcmToken = signUpNotifier.getFcmToken(); // 미구현, 미사용
-                    final phoneNo = signUpNotifier.getPhoneNo();
-
-                    final postCertificateResult = await postCertificate(
-                        studentNo,
-                        appPassword,
-                        name,
-                        department,
-                        fcmToken,
-                        phoneNo);
-
-                    if (postCertificateResult ==
-                        PostSignUpCode.UNCATCHED_ERROR) {
-                      if (!mounted) return;
-                      Common.showSnackBar(context, "회원가입 요청 오류가 발생했습니다.");
-                      setState(() {
-                        isLoading = false;
-                      });
-                      return;
-                    }
-
-                    if (postCertificateResult == PostSignUpCode.ST053) {
-                      if (!mounted) return;
-                      Common.showSnackBar(context, "이미 가입된 계정이 있습니다.");
-                      setState(() {
-                        isLoading = false;
-                      });
-                      return;
-                    }
-                    if (postCertificateResult == PostSignUpCode.ST058) {
-                      if (!mounted) return;
-                      Common.showSnackBar(
-                          context, "탈퇴한 계정입니다.\n재가입시 문의주세요. (02-970-7012)");
-                      setState(() {
-                        isLoading = false;
-                      });
-                      return;
-                    }
-                    if (postCertificateResult == PostSignUpCode.ST066) {
-                      if (!mounted) return;
-                      Common.showSnackBar(
-                          context, "휴대폰 인증 정보가 만료되었습니다. 다시 진행해주세요.");
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginOptionScreen()),
-                          (route) => false);
-                      setState(() {
-                        isLoading = false;
-                      });
-                      return;
-                    }
-                    if (postCertificateResult == PostSignUpCode.TIMEOUT) {
-                      if (!mounted) return;
-                      Common.showSnackBar(
-                          context, "네트워크 오류가 발생했습니다. 다시 시도해주세요.");
-                      setState(() {
-                        isLoading = false;
-                      });
-                      return;
-                    }
-                    if (postCertificateResult == PostSignUpCode.SUCCESS) {
-                      if (!mounted) return;
-                      Common.showSnackBar(context, "회원가입 요청이 완료되었습니다.");
-                      setState(() {
-                        isLoading = false;
-                      });
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignUpEndScreen()),
-                          (route) => false);
-                      return;
-                    }
-                    if (!mounted) return;
-                    Common.showSnackBar(context, "오류가 발생했습니다..");
-                    setState(() {
-                      isLoading = false;
-                    });
-                  }
-                : () {
-                    Common.showSnackBar(context, "카메라로 사진을 찍어 업로드해주세요.");
-                  },
+          Align(
+            alignment: Alignment.bottomCenter,
             child: imageFile != null
-                ? Container(
-                    width: double.infinity,
-                    height: 54.h,
-                    margin:
-                        EdgeInsets.only(left: 27.w, right: 27.w, top: 570.h),
-                    decoration: BoxDecoration(
-                        color: HexColor("#425C5A"),
-                        borderRadius: BorderRadius.circular(10)),
-                    alignment: Alignment.center,
-                    child: isLoading == true
-                        ? Center(
-                            child: Platform.isIOS
-                                ? const CupertinoActivityIndicator(
-                                    color: Colors.white,
-                                  )
-                                : CircularProgressIndicator(
-                                    color: HexColor("#f3f3f3"),
-                                  ),
-                          )
-                        : Text(
-                            "다음",
-                            style: TextStyle(
-                                fontSize: 19.5.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ))
-                : Container(
-                    width: double.infinity,
-                    height: 54.h,
-                    margin:
-                        EdgeInsets.only(left: 27.w, right: 27.w, top: 570.h),
-                    decoration: BoxDecoration(
-                        color: HexColor("#929d9c"),
-                        borderRadius: BorderRadius.circular(10)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "다음",
-                      style: TextStyle(
-                          fontSize: 19.5.sp,
-                          fontWeight: FontWeight.w500,
-                          color: HexColor("#d9d9d9")),
-                    )),
+                ? isLoading == true
+                    ? LoginNavButton(
+                        onPressed: () {},
+                        title: "로딩중",
+                        colorHex: "#425C5A",
+                        margin: EdgeInsets.only(bottom: 16.h),
+                        width: 304.w)
+                    : LoginNavButton(
+                        onPressed: imageFile != null
+                            ? () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                final studentNo = signUpNotifier.getStudentNo();
+                                final appPassword =
+                                    signUpNotifier.getAppPassword();
+                                final name = signUpNotifier.getName();
+                                final department =
+                                    signUpNotifier.getDepartment();
+                                final fcmToken =
+                                    signUpNotifier.getFcmToken(); // 미구현, 미사용
+                                final phoneNo = signUpNotifier.getPhoneNo();
+
+                                final postCertificateResult =
+                                    await postCertificate(
+                                        studentNo,
+                                        appPassword,
+                                        name,
+                                        department,
+                                        fcmToken,
+                                        phoneNo);
+
+                                if (postCertificateResult ==
+                                    PostSignUpCode.UNCATCHED_ERROR) {
+                                  if (!mounted) return;
+                                  Common.showSnackBar(
+                                      context, "회원가입 요청 오류가 발생했습니다.");
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  return;
+                                }
+
+                                if (postCertificateResult ==
+                                    PostSignUpCode.ST053) {
+                                  if (!mounted) return;
+                                  Common.showSnackBar(
+                                      context, "이미 가입된 계정이 있습니다.");
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  return;
+                                }
+                                if (postCertificateResult ==
+                                    PostSignUpCode.ST058) {
+                                  if (!mounted) return;
+                                  Common.showSnackBar(context,
+                                      "탈퇴한 계정입니다.\n재가입시 문의주세요. (02-970-7012)");
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  return;
+                                }
+                                if (postCertificateResult ==
+                                    PostSignUpCode.ST066) {
+                                  if (!mounted) return;
+                                  Common.showSnackBar(context,
+                                      "휴대폰 인증 정보가 만료되었습니다. 다시 진행해주세요.");
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LoginOptionScreen()),
+                                      (route) => false);
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  return;
+                                }
+                                if (postCertificateResult ==
+                                    PostSignUpCode.TIMEOUT) {
+                                  if (!mounted) return;
+                                  Common.showSnackBar(
+                                      context, "네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  return;
+                                }
+                                if (postCertificateResult ==
+                                    PostSignUpCode.SUCCESS) {
+                                  if (!mounted) return;
+                                  Common.showSnackBar(
+                                      context, "회원가입 요청이 완료되었습니다.");
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignUpEndScreen()),
+                                      (route) => false);
+                                  return;
+                                }
+                                if (!mounted) return;
+                                Common.showSnackBar(context, "오류가 발생했습니다..");
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
+                            : () {
+                                Common.showSnackBar(
+                                    context, "카메라로 사진을 찍어 업로드해주세요.");
+                              },
+                        title: "다음",
+                        colorHex: "#425C5A",
+                        margin: EdgeInsets.only(bottom: 16.h),
+                        width: 304.w)
+                : LoginNavButton(
+                    onPressed: () {},
+                    title: "다음",
+                    colorHex: "#929D9C",
+                    margin: EdgeInsets.only(bottom: 16.h),
+                    width: 304.w),
           ),
         ]),
         backgroundColor: HexColor("#f3f3f3"),
@@ -322,7 +315,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
     } on TimeoutException catch (e) {
       return PostSignUpCode.TIMEOUT;
     } catch (e) {
-      if(e is DioError) {
+      if (e is DioError) {
         if (e.response?.data["errorCode"] == "ST066") {
           return PostSignUpCode.ST066;
         }

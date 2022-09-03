@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:start_app/notifiers/sign_up_notifier.dart';
+import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/sign_up/post_certificate_screen.dart';
 import 'package:start_app/utils/common.dart';
 
@@ -28,6 +29,7 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
   Widget build(BuildContext context) {
     return Consumer<SignUpNotifier>(builder: (builder, signUpNotifier, child) {
       return Scaffold(
+        appBar: Common.SignUpAppBar("휴대폰 인증"),
         body: GestureDetector(
           onTap: () {
             FocusScopeNode currentFocus = FocusScope.of(context);
@@ -36,13 +38,16 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
               FocusManager.instance.primaryFocus?.unfocus();
             }
           },
-          child: SingleChildScrollView(
-            child: Stack(children: [
-              Column(
+          child: Stack(children: [
+            SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              padding: EdgeInsets.only(bottom: 102.h),
+              reverse: true,
+              child: Column(
                 children: [
                   SizedBox(
                     width: double.infinity,
-                    height: 260.h,
+                    height: 200.h,
                     child: const Center(
                       child: Image(
                         image: AssetImage("images/logo_app.png"),
@@ -67,7 +72,7 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                     height: 8.h,
                   ),
                   Container(
-                      height: 120.h,
+                      height: 100.h,
                       margin: EdgeInsets.only(left: 28.w, right: 28.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,9 +284,12 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                       )),
                 ],
               ),
-              nextButtonActive == true
-                  ? GestureDetector(
-                      onTap: () {
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: nextButtonActive == true
+                  ? LoginNavButton(
+                      onPressed: () {
                         signUpNotifier.setPhoneNo(
                             withoutHyphenToWithHyphen(phoneNoController.text));
                         Navigator.push(
@@ -290,42 +298,20 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                 builder: (context) =>
                                     const PostCertificateScreen()));
                       },
-                      child: Container(
-                          width: double.infinity,
-                          height: 54.h,
-                          margin: EdgeInsets.only(
-                              left: 27.w, right: 27.w, top: 570.h),
-                          decoration: BoxDecoration(
-                              color: HexColor("#425C5A"),
-                              borderRadius: BorderRadius.circular(10)),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "다음",
-                            style: TextStyle(
-                                fontSize: 19.5.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          )),
-                    )
-                  : Container(
-                      width: double.infinity,
-                      height: 54.h,
-                      margin:
-                          EdgeInsets.only(left: 27.w, right: 27.w, top: 570.h),
-                      decoration: BoxDecoration(
-                          color: HexColor("#929d9c"),
-                          borderRadius: BorderRadius.circular(10)),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "다음",
-                        style: TextStyle(
-                            fontSize: 19.5.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      )),
-            ]),
-          ),
+                      title: "다음",
+                      colorHex: "#425C5A",
+                      margin: EdgeInsets.only(bottom: 16.h),
+                      width: 304.w)
+                  : LoginNavButton(
+                      onPressed: () {},
+                      title: "다음",
+                      colorHex: "#929D9C",
+                      margin: EdgeInsets.only(bottom: 16.h),
+                      width: 304.w),
+            )
+          ]),
         ),
+        backgroundColor: HexColor("#f3f3f3"),
       );
     });
   }

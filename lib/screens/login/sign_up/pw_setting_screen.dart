@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:start_app/notifiers/sign_up_notifier.dart';
+import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/sign_up/phone_certificate_screen.dart';
 import 'package:start_app/utils/common.dart';
 
@@ -32,22 +33,26 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<SignUpNotifier>(builder: (context, signUpNotifier, child) {
-      return GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus &&
-              currentFocus.focusedChild != null) {
-            FocusManager.instance.primaryFocus?.unfocus();
-          }
-        },
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: Stack(children: [
-              Column(
+      return Scaffold(
+        appBar: Common.SignUpAppBar("비밀번호 설정"),
+        body: GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            }
+          },
+          child: Stack(children: [
+            SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              reverse: true,
+              padding: EdgeInsets.only(bottom: 72.h),
+              child: Column(
                 children: [
                   SizedBox(
                     width: double.infinity,
-                    height: 260.h,
+                    height: 200.h,
                     child: const Center(
                       child: Image(
                         image: AssetImage("images/logo_app.png"),
@@ -192,8 +197,13 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                   ),
                 ],
               ),
-              GestureDetector(
-                onTap: () {
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: LoginNavButton(
+                width: 304.w,
+                margin: EdgeInsets.only(bottom: 16.h),
+                onPressed: () {
                   String pw1 = appPwController_1.text;
                   String pw2 = appPwController_2.text;
 
@@ -225,29 +235,15 @@ class _PwSettingScreenState extends State<PwSettingScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                          const PhoneCertificateScreen()));
+                              const PhoneCertificateScreen()));
                 },
-                child: Container(
-                    width: double.infinity,
-                    height: 54.h,
-                    margin:
-                        EdgeInsets.only(left: 27.w, right: 27.w, top: 570.h),
-                    decoration: BoxDecoration(
-                        color: HexColor("#425C5A"),
-                        borderRadius: BorderRadius.circular(10)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "다음",
-                      style: TextStyle(
-                          fontSize: 19.5.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
-                    )),
+                title: "다음",
+                colorHex: '#425C5A',
               ),
-            ]),
-          ),
-          backgroundColor: HexColor("#f3f3f3"),
+            ),
+          ]),
         ),
+        backgroundColor: HexColor("#f3f3f3"),
       );
     });
   }

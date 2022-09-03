@@ -10,10 +10,10 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:start_app/models/status_code.dart';
 import 'package:start_app/notifiers/sign_up_notifier.dart';
+import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/sign_up/pw_setting_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:start_app/utils/department_match.dart';
-import 'dart:io' show Platform;
 import '../../../utils/common.dart';
 
 class CheckInfoScreen extends StatefulWidget {
@@ -63,13 +63,17 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
           }
         },
         child: Scaffold(
-          body: SingleChildScrollView(
-            child: Stack(children: [
-              Column(
+          appBar: Common.SignUpAppBar("회원가입"),
+          body: Stack(children: [
+            SingleChildScrollView(
+              reverse: true,
+              physics: const ClampingScrollPhysics(),
+              padding: EdgeInsets.only(bottom: 72.h),
+              child: Column(
                 children: [
                   SizedBox(
                     width: double.infinity,
-                    height: 260.h,
+                    height: 200.h,
                     child: const Center(
                       child: Image(
                         image: AssetImage("images/logo_app.png"),
@@ -208,117 +212,107 @@ class _CheckInfoScreenState extends State<CheckInfoScreen> {
                   ),
                 ],
               ),
-              GestureDetector(
-                onTap: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: isLoading == false
+                  ? LoginNavButton(
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
 
-                  /// 학번 유효성 검사
-                  if (studentIdController.text.isEmpty) {
-                    Common.showSnackBar(context, "학번을 입력해주세요.");
-                    setState(() {
-                      isLoading = false;
-                    });
-                    return;
-                  }
+                        /// 학번 유효성 검사
+                        if (studentIdController.text.isEmpty) {
+                          Common.showSnackBar(context, "학번을 입력해주세요.");
+                          setState(() {
+                            isLoading = false;
+                          });
+                          return;
+                        }
 
-                  if (studentIdController.text.length != 8) {
-                    Common.showSnackBar(context, "올바른 학번을 입력해주세요.");
-                    setState(() {
-                      isLoading = false;
-                    });
-                    return;
-                  }
+                        if (studentIdController.text.length != 8) {
+                          Common.showSnackBar(context, "올바른 학번을 입력해주세요.");
+                          setState(() {
+                            isLoading = false;
+                          });
+                          return;
+                        }
 
-                  /// 학번 중복 검사
-                  final statusCode = await checkIdDuplication(
-                      studentIdController.text, context);
+                        /// 학번 중복 검사
+                        final statusCode = await checkIdDuplication(
+                            studentIdController.text, context);
 
-                  if (statusCode == StatusCode.CONNECTION_ERROR) {
-                    if (mounted) {
-                      Common.showSnackBar(context, "오류가 발생했습니다.");
-                    }
-                    setState(() {
-                      isLoading = false;
-                    });
-                    return;
-                  }
+                        if (statusCode == StatusCode.CONNECTION_ERROR) {
+                          if (mounted) {
+                            Common.showSnackBar(context, "오류가 발생했습니다.");
+                          }
+                          setState(() {
+                            isLoading = false;
+                          });
+                          return;
+                        }
 
-                  if (statusCode == StatusCode.UNCATCHED_ERROR) {
-                    if (mounted) {
-                      Common.showSnackBar(context, "같은 학번으로 가입된 계정이 존재합니다.");
-                    }
-                    setState(() {
-                      isLoading = false;
-                    });
-                    return;
-                  }
+                        if (statusCode == StatusCode.UNCATCHED_ERROR) {
+                          if (mounted) {
+                            Common.showSnackBar(
+                                context, "같은 학번으로 가입된 계정이 존재합니다.");
+                          }
+                          setState(() {
+                            isLoading = false;
+                          });
+                          return;
+                        }
 
-                  /// 이름 유효성 검사
-                  if (studentNameController.text.isEmpty) {
-                    if (mounted) {
-                      Common.showSnackBar(context, "이름을 입력해주세요.");
-                    }
-                    setState(() {
-                      isLoading = false;
-                    });
-                    return;
-                  }
+                        /// 이름 유효성 검사
+                        if (studentNameController.text.isEmpty) {
+                          if (mounted) {
+                            Common.showSnackBar(context, "이름을 입력해주세요.");
+                          }
+                          setState(() {
+                            isLoading = false;
+                          });
+                          return;
+                        }
 
-                  if (statusCode == StatusCode.SUCCESS) {
-                    signUpNotifier.setStudentNo(studentIdController.text);
-                    signUpNotifier.setName(studentNameController.text);
-                    signUpNotifier.setDepartment(selectedDepartment);
+                        if (statusCode == StatusCode.SUCCESS) {
+                          signUpNotifier
+                              .setStudentNo(studentIdController.text);
+                          signUpNotifier.setName(studentNameController.text);
+                          signUpNotifier.setDepartment(selectedDepartment);
 
-                    if (mounted) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PwSettingScreen()));
-                      setState(() {
-                        isLoading = false;
-                      });
-                    }
-                    return;
-                  }
+                          if (mounted) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PwSettingScreen()));
+                            setState(() {
+                              isLoading = false;
+                            });
+                          }
+                          return;
+                        }
 
-                  if (mounted) {
-                    Common.showSnackBar(context, "오류가 발생했습니다.");
-                  }
-                  setState(() {
-                    isLoading = false;
-                  });
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 54.h,
-                  margin: EdgeInsets.only(left: 27.w, right: 27.w, top: 570.h),
-                  decoration: BoxDecoration(
-                      color: HexColor("#425C5A"),
-                      borderRadius: BorderRadius.circular(10)),
-                  alignment: Alignment.center,
-                  child: isLoading == false
-                      ? Text(
-                          "다음",
-                          style: TextStyle(
-                              fontSize: 19.5.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white),
-                        )
-                      : Center(
-                          child: Platform.isIOS
-                              ? const CupertinoActivityIndicator(
-                                  color: Colors.white,
-                                )
-                              : CircularProgressIndicator(
-                                  color: HexColor("#f3f3f3"),
-                                ),
-                        ),
-                ),
-              ),
-            ]),
-          ),
+                        if (mounted) {
+                          Common.showSnackBar(context, "오류가 발생했습니다.");
+                        }
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                      title: "다음",
+                      colorHex: "#425C5A",
+                      width: 304.w,
+                      margin: EdgeInsets.only(bottom: 16.h))
+                  : LoginNavButton(
+                      onPressed: () {},
+                      title: "다음",
+                      colorHex: "#425c5a",
+                      width: 304.w,
+                      margin: EdgeInsets.only(bottom: 16.h)),
+            ),
+          ]),
           backgroundColor: HexColor("#f3f3f3"),
         ),
       );

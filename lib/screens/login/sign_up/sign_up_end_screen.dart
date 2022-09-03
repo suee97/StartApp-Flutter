@@ -43,6 +43,8 @@ class SignUpEndScreen extends StatelessWidget {
               height: 24.h,
             ),
             LoginNavButton(
+                margin: EdgeInsets.only(bottom: 16.h),
+
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                       context,
