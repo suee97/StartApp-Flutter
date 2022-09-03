@@ -115,7 +115,7 @@ class Common {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(inputMsg,
-          style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+          style: const TextStyle(color: Colors.white), textAlign: TextAlign.center,),
         backgroundColor: Colors.black,
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
