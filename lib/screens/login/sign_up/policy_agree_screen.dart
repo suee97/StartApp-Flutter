@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
 import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/sign_up/check_info_screen.dart';
 import 'package:start_app/utils/common.dart';
-import '../../home/setting/policy/service_policy_screen.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class PolicyAgreeScreen extends StatefulWidget {
   const PolicyAgreeScreen({Key? key}) : super(key: key);
@@ -131,10 +130,9 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ServicePolicyScreen()));
+                    const url =
+                        'https://suee97.notion.site/2022-09-04-f4d6b4b0db614adba75d4c619371aea9';
+                    launchUrlString(url);
                   },
                   child: Padding(
                     padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 8.h),
@@ -205,10 +203,9 @@ class _PolicyAgreeScreenState extends State<PolicyAgreeScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const PrivacyPolicyScreen()));
+                    const url =
+                        'https://suee97.notion.site/2022-09-04-a48b73c5ed6a43068286d8f2d6adab05';
+                    launchUrlString(url);
                   },
                   child: Padding(
                     padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 8.h),
