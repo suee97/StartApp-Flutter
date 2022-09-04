@@ -67,6 +67,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^20.2.44-beta
   double_back_to_close_app: ^2.1.0
   auto_size_text: ^3.0.0
+  webview_flutter: ^3.0.4
 
 dev_dependencies:
   flutter_test:
