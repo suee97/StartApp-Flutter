@@ -12,8 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:start_app/models/status_code.dart';
 import 'package:start_app/screens/home/setting/app_info/dev_info_screen.dart';
 import 'package:start_app/screens/home/setting/app_info/update_info_screen.dart';
-import 'package:start_app/screens/home/setting/policy/privacy_policy_screen.dart';
-import 'package:start_app/screens/home/setting/policy/service_policy_screen.dart';
 import 'package:start_app/screens/home/setting/pw_change_screen.dart';
 import 'package:start_app/screens/home/setting/setting_widgets.dart';
 import 'package:http/http.dart' as http;
@@ -58,7 +56,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "설정", // 설정
+          "설정",
           style: Common.startAppBarTextStyle,
         ),
         foregroundColor: Colors.white,
@@ -321,12 +319,18 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   await deleteUser();
                                               if (deleteUserResult ==
                                                   StatusCode.REFRESH_EXPIRED) {
-                                                await secureStorage.write(key: "ACCESS_TOKEN", value: "");
-                                                await secureStorage.write(key: "REFRESH_TOKEN", value: "");
+                                                await secureStorage.write(
+                                                    key: "ACCESS_TOKEN",
+                                                    value: "");
+                                                await secureStorage.write(
+                                                    key: "REFRESH_TOKEN",
+                                                    value: "");
                                                 await Common.setNonLogin(false);
-                                                await Common.setAutoLogin(false);
+                                                await Common.setAutoLogin(
+                                                    false);
                                                 Common.setIsLogin(false);
-                                                await Common.clearStudentInfoPref();
+                                                await Common
+                                                    .clearStudentInfoPref();
                                                 if (!mounted) return;
                                                 Common.showSnackBar(
                                                     context, "다시 로그인해주세요.");
@@ -399,12 +403,19 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   if (deleteUserResult ==
                                                       StatusCode
                                                           .REFRESH_EXPIRED) {
-                                                    await secureStorage.write(key: "ACCESS_TOKEN", value: "");
-                                                    await secureStorage.write(key: "REFRESH_TOKEN", value: "");
-                                                    await Common.setNonLogin(false);
-                                                    await Common.setAutoLogin(false);
+                                                    await secureStorage.write(
+                                                        key: "ACCESS_TOKEN",
+                                                        value: "");
+                                                    await secureStorage.write(
+                                                        key: "REFRESH_TOKEN",
+                                                        value: "");
+                                                    await Common.setNonLogin(
+                                                        false);
+                                                    await Common.setAutoLogin(
+                                                        false);
                                                     Common.setIsLogin(false);
-                                                    await Common.clearStudentInfoPref();
+                                                    await Common
+                                                        .clearStudentInfoPref();
                                                     if (!mounted) return;
                                                     Common.showSnackBar(
                                                         context, "다시 로그인해주세요.");
@@ -418,12 +429,19 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   }
                                                   if (deleteUserResult ==
                                                       StatusCode.SUCCESS) {
-                                                    await secureStorage.write(key: "ACCESS_TOKEN", value: "");
-                                                    await secureStorage.write(key: "REFRESH_TOKEN", value: "");
-                                                    await Common.setNonLogin(false);
-                                                    await Common.setAutoLogin(false);
+                                                    await secureStorage.write(
+                                                        key: "ACCESS_TOKEN",
+                                                        value: "");
+                                                    await secureStorage.write(
+                                                        key: "REFRESH_TOKEN",
+                                                        value: "");
+                                                    await Common.setNonLogin(
+                                                        false);
+                                                    await Common.setAutoLogin(
+                                                        false);
                                                     Common.setIsLogin(false);
-                                                    await Common.clearStudentInfoPref();
+                                                    await Common
+                                                        .clearStudentInfoPref();
                                                     if (!mounted) return;
                                                     Common.showSnackBar(context,
                                                         "탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.");
@@ -757,21 +775,17 @@ class _SettingScreenState extends State<SettingScreen> {
                   SettingSemiTitle(
                     title: "서비스 이용약관",
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ServicePolicyScreen()));
+                      const url =
+                          'https://suee97.notion.site/2022-09-04-f4d6b4b0db614adba75d4c619371aea9';
+                      launchUrlString(url);
                     },
                   ),
                   SettingSemiTitle(
                     title: "개인정보 처리방침",
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const PrivacyPolicyScreen()));
+                      const url =
+                          'https://suee97.notion.site/2022-09-04-a48b73c5ed6a43068286d8f2d6adab05';
+                      launchUrlString(url);
                     },
                   ),
                   SizedBox(
