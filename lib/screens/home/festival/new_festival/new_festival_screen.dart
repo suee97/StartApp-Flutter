@@ -1039,7 +1039,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
     }
 
     if(await checkLocationPermission() == false){
-      Common.showSnackBar(context, "위치서비스를 사용할 수 없습니다.\n기기의 \"설정 > Start App > 위치\"에서\n위치서비스를 켜주세요.");
+      Common.showSnackBar(context, "위치서비스를 사용할 수 없습니다.\n기기의 \"설정\"에서 위치서비스를 켜주세요.");
       return;
     }
 
