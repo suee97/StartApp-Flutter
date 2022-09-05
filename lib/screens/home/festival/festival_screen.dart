@@ -881,7 +881,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                               height: 22.h,
                             ),
                             isSangSang
-                                ? SvgPicture.asset("assets/stamp_sangsang.svg",
+                                ? SvgPicture.asset("assets/stamp_ground.svg",
                                 width: 130.w, height: 130.h)
                                 : SvgPicture.asset(
                                 "assets/gray_stamp_sangsang.svg",
@@ -1118,7 +1118,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                     ),
                                     isGround
                                         ? SvgPicture.asset(
-                                        "assets/stamp_ground.svg",
+                                        "assets/stamp_sangsang.svg",
                                         width: 130.w,
                                         height: 130.h)
                                         : SvgPicture.asset(
@@ -1753,7 +1753,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                               children: [
                                                 isGround
                                                     ? SvgPicture.asset(
-                                                  "assets/stamp_ground.svg",
+                                                  "assets/stamp_sangsang.svg",
                                                   width: 67.w,
                                                   height: 67.h,
                                                 )
@@ -1808,7 +1808,7 @@ class _FestivalScreenState extends State<FestivalScreen> {
                                                 ),
                                                 isSangSang
                                                     ? SvgPicture.asset(
-                                                    "assets/stamp_sangsang.svg",
+                                                    "assets/stamp_ground.svg",
                                                     width: 67.w,
                                                     height: 67.h)
                                                     : SvgPicture.asset(
