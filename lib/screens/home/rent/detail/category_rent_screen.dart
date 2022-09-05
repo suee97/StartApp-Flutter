@@ -18,12 +18,12 @@ import 'package:http/http.dart' as http;
 class CategoryRentScreen extends StatefulWidget {
   CategoryRentScreen(
       {Key? key,
-      required this.categoryKr,
-      required this.categoryEng,
-      required this.itemIcon,
-      required this.itemImg,
-      required this.itemPurpose,
-      required this.itemTotalCnt})
+        required this.categoryKr,
+        required this.categoryEng,
+        required this.itemIcon,
+        required this.itemImg,
+        required this.itemPurpose,
+        required this.itemTotalCnt})
       : super(key: key);
 
   String categoryKr;
@@ -87,17 +87,15 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 13.h,
-            ),
             Row(
               children: [
                 SizedBox(
-                  width: 16.w,
+                  width: 25.w,
                 ),
                 Container(
-                  width: 144.w,
-                  height: 192.h,
+                  margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
+                  width: 130.w,
+                  height: 140.h,
                   color: HexColor("#F3F3F3"),
                   child: Image(
                     image: AssetImage(widget.itemImg),
@@ -105,20 +103,68 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                   ),
                 ),
                 SizedBox(
-                  width: 12.w,
+                  width: 15.w,
                 ),
-                RentDetailText(
-                    category: widget.categoryKr,
-                    itemPurpose: widget.itemPurpose,
-                    itemTotalCnt: widget.itemTotalCnt,)
+                Column(
+                  children: [
+                    RentDetailText(
+                      category: widget.categoryKr,
+                      itemPurpose: widget.itemPurpose,
+                      itemTotalCnt: widget.itemTotalCnt,),
+                    Common.getIsLogin()
+                        ? GestureDetector(
+                      onTap: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RentApplyScreen(
+                                  categoryKr: widget.categoryKr,
+                                  categoryEng: widget.categoryEng,
+                                  itemIcon: widget.itemIcon,
+                                )))
+                      },
+                      child: Container(
+                        width: 120.w,
+                        height: 25.h,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: HexColor("#ffcea2"),
+                            borderRadius: BorderRadius.circular(25)),
+                        child: Text(
+                          "대여하러 가기",
+                          style: TextStyle(
+                              fontSize: 13.5.sp,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    )
+                        : GestureDetector(
+                      onTap: () => {
+                        Common.showSnackBar(context,
+                            "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.")
+                      },
+                      child: Container(
+                        width: 120.w,
+                        height: 25.h,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: HexColor("#ffcea2"),
+                            borderRadius: BorderRadius.circular(25)),
+                        child: Text(
+                          "대여하러 가기",
+                          style: TextStyle(
+                              fontSize: 13.5.sp,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
-            ),
-            SizedBox(
-              height: 16.h,
             ),
             Container(
               width: double.infinity,
-              height: 370.h,
+              height: 360.h,
               decoration: BoxDecoration(
                   color: HexColor("#f3f3f3"),
                   borderRadius: const BorderRadius.only(
@@ -133,7 +179,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                       decoration: BoxDecoration(
                           color: HexColor("#FFCEA2"),
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(10))),
+                          const BorderRadius.all(Radius.circular(10))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -193,8 +239,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           if (_calendarController.view == CalendarView.month) {
                             _headerText = DateFormat('MMMM')
                                 .format(viewChangedDetails.visibleDates[
-                                    viewChangedDetails.visibleDates.length ~/
-                                        2])
+                            viewChangedDetails.visibleDates.length ~/
+                                2])
                                 .toString();
                           }
                           if (_headerText == 'January') {
@@ -230,17 +276,17 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
 
                           final _year = DateFormat('yyyy').format(
                               viewChangedDetails.visibleDates[
-                                  viewChangedDetails.visibleDates.length ~/ 2]);
+                              viewChangedDetails.visibleDates.length ~/ 2]);
                           final _month = DateFormat('M').format(
                               viewChangedDetails.visibleDates[
-                                  viewChangedDetails.visibleDates.length ~/ 2]);
+                              viewChangedDetails.visibleDates.length ~/ 2]);
                           await fetchSelectedItemRentState(
                               widget.categoryEng, _year, _month);
                         },
                         onSelectionChanged: (CalendarSelectionDetails
-                            calendarSelectionDetails) {
+                        calendarSelectionDetails) {
                           final nowDate =
-                              DateTime(today.year, today.month, today.day);
+                          DateTime(today.year, today.month, today.day);
                           int selectedDayBookCount = 0;
                           if (totalAvailableCount == 0) {
                             return;
@@ -289,7 +335,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                         monthViewSettings: MonthViewSettings(
                           appointmentDisplayCount: 4,
                           appointmentDisplayMode:
-                              MonthAppointmentDisplayMode.appointment,
+                          MonthAppointmentDisplayMode.appointment,
                           monthCellStyle: MonthCellStyle(
                             textStyle: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -306,9 +352,9 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                             backgroundColor: HexColor("#f3f3f3"),
                             todayBackgroundColor: HexColor("#f3f3f3"),
                             leadingDatesBackgroundColor:
-                                HexColor("#92AEAC").withOpacity(0.5),
+                            HexColor("#92AEAC").withOpacity(0.5),
                             trailingDatesBackgroundColor:
-                                HexColor("#92AEAC").withOpacity(0.5),
+                            HexColor("#92AEAC").withOpacity(0.5),
                           ),
                         ),
                         dataSource: MeetingDataSource(meetingList),
@@ -320,7 +366,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           border: Border.all(
                               color: HexColor("#EE795F"), width: 1.5),
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(4)),
+                          const BorderRadius.all(Radius.circular(4)),
                           shape: BoxShape.rectangle,
                         ),
                         cellBorderColor: HexColor("#425c5a"),
@@ -351,55 +397,9 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                       ],
                     ),
                   ),
-                  Common.getIsLogin()
-                      ? GestureDetector(
-                          onTap: () => {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RentApplyScreen(
-                                          categoryKr: widget.categoryKr,
-                                          categoryEng: widget.categoryEng,
-                                          itemIcon: widget.itemIcon,
-                                        )))
-                          },
-                          child: Container(
-                            width: 320.w,
-                            height: 50.h,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: HexColor("#ffcea2"),
-                                borderRadius: BorderRadius.circular(25)),
-                            child: Text(
-                              "대여하러 가기",
-                              style: TextStyle(
-                                  fontSize: 21.5.sp,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        )
-                      : GestureDetector(
-                          onTap: () => {
-                            Common.showSnackBar(context,
-                                "로그인이 필요한 기능입니다. '설정 > 로그인 하기'에서 로그인해주세요.")
-                          },
-                          child: Container(
-                            width: 320.w,
-                            height: 50.h,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: HexColor("#ffcea2"),
-                                borderRadius: BorderRadius.circular(25)),
-                            child: Text(
-                              "대여하러 가기",
-                              style: TextStyle(
-                                  fontSize: 21.5.sp,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
+
                   SizedBox(
-                    height: 20.h,
+                    height: 10.h,
                   )
                 ],
               ),
@@ -418,10 +418,10 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
     try {
       final resString = await http
           .get(Uri.parse(
-              "${dotenv.get("DEV_API_BASE_URL")}/rent/calendar?month=${month}&year=${year}&category=${itemCategory}"))
+          "${dotenv.get("DEV_API_BASE_URL")}/rent/calendar?month=${month}&year=${year}&category=${itemCategory}"))
           .timeout(const Duration(seconds: 30));
       Map<String, dynamic> resData =
-          jsonDecode(utf8.decode(resString.bodyBytes));
+      jsonDecode(utf8.decode(resString.bodyBytes));
 
       if (resData["status"] != 200) {
         return;
@@ -461,10 +461,10 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
     try {
       final resString = await http
           .get(Uri.parse(
-              "${dotenv.get("DEV_API_BASE_URL")}/rent/item/calendar?category=${itemCategory}"))
+          "${dotenv.get("DEV_API_BASE_URL")}/rent/item/calendar?category=${itemCategory}"))
           .timeout(const Duration(seconds: 30));
       Map<String, dynamic> resData =
-          jsonDecode(utf8.decode(resString.bodyBytes));
+      jsonDecode(utf8.decode(resString.bodyBytes));
       debugPrint(resData.toString());
 
       if (resData["status"] != 200) {
