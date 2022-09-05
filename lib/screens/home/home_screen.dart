@@ -11,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/models/status_code.dart';
 import 'package:start_app/screens/home/event/event_screen.dart';
-import 'package:start_app/screens/home/festival/festival_screen.dart';
 import 'package:start_app/screens/home/info/info_screen.dart';
 import 'package:start_app/screens/home/plan/plan_screen.dart';
 import 'package:start_app/screens/home/setting/setting_screen.dart';
@@ -21,7 +20,6 @@ import 'package:start_app/widgets/main_widget.dart';
 import '../../utils/common.dart';
 import '../../widgets/yellow_line.dart';
 import 'package:http/http.dart' as http;
-
 import 'festival/new_festival/new_festival_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -122,45 +120,51 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 itemCount: bannerLinkList.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return AspectRatio(
-                                    aspectRatio: 1 / 1,
-                                    child: CachedNetworkImage(
-                                      imageUrl: bannerLinkList[index],
-                                      placeholder: (context, url) => Platform
-                                              .isIOS
-                                          ? const CupertinoActivityIndicator()
-                                          : Center(
-                                              child: CircularProgressIndicator(
-                                              color: HexColor("#425c5a"),
-                                            )),
-                                      errorWidget: (context, url, error) =>
-                                          Center(
-                                        child: AspectRatio(
-                                          aspectRatio: 1 / 1,
-                                          child: Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                                color: HexColor("#c4c4c4"),
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const Image(
-                                                    image: AssetImage(
-                                                        "images/logo_crying_ready.png")),
-                                                Text(
-                                                  "이미지를 불러오지 못했습니다.",
-                                                  style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color:
-                                                          HexColor("#6c6c6c")),
-                                                )
-                                              ],
+                                  return GestureDetector(
+                                    onTap: () {
+                                      onImageTap(index);
+                                    },
+                                    child: AspectRatio(
+                                      aspectRatio: 1 / 1,
+                                      child: CachedNetworkImage(
+                                        imageUrl: bannerLinkList[index],
+                                        placeholder: (context, url) => Platform
+                                                .isIOS
+                                            ? const CupertinoActivityIndicator()
+                                            : Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                color: HexColor("#425c5a"),
+                                              )),
+                                        errorWidget: (context, url, error) =>
+                                            Center(
+                                          child: AspectRatio(
+                                            aspectRatio: 1 / 1,
+                                            child: Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                  color: HexColor("#c4c4c4"),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  const Image(
+                                                      image: AssetImage(
+                                                          "images/logo_crying_ready.png")),
+                                                  Text(
+                                                    "이미지를 불러오지 못했습니다.",
+                                                    style: TextStyle(
+                                                        fontSize: 16.sp,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: HexColor(
+                                                            "#6c6c6c")),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -347,6 +351,27 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       backgroundColor: HexColor("#425c5a"),
     );
+  }
+
+  void onImageTap(int index) {
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.black45,
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (BuildContext buildContext, Animation animation,
+            Animation secondaryAnimation) {
+          return Center(
+            child: SizedBox(
+                width: double.infinity,
+                height: 360.h,
+                child: InteractiveViewer(
+                    panEnabled: false,
+                    child: Image.network(bannerLinkList[index]))),
+          );
+        });
   }
 
   Widget BannerContainer(String title) {
