@@ -24,9 +24,8 @@ class LoginNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(isLoading.toString());
     return GestureDetector(
-      onTap: onPressed,
+      onTap: isLoading == false ? onPressed : () {},
       child: Container(
         width: width,
         margin: margin,

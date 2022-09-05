@@ -21,6 +21,7 @@ class PwChangeScreen extends StatefulWidget {
 class _PwChangeScreenState extends State<PwChangeScreen> {
   final beforeAppPwController = TextEditingController();
   final afterAppPwController = TextEditingController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -29,6 +30,8 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
 
   @override
   void dispose() {
+    beforeAppPwController.dispose();
+    afterAppPwController.dispose();
     super.dispose();
   }
 
@@ -171,8 +174,15 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                     return;
                   }
 
+                  setState(() {
+                    isLoading = true;
+                  });
+
                   final changePwResult = await changePw();
                   if (changePwResult == StatusCode.REFRESH_EXPIRED) {
+                    setState(() {
+                      isLoading = false;
+                    });
                     final secureStorage = FlutterSecureStorage();
                     await secureStorage.write(key: "ACCESS_TOKEN", value: "");
                     await secureStorage.write(key: "REFRESH_TOKEN", value: "");
@@ -185,17 +195,26 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                     return;
                   }
                   if (changePwResult == StatusCode.REQUEST_ERROR) {
+                    setState(() {
+                      isLoading = false;
+                    });
                     if (!mounted) return;
                     Common.showSnackBar(context, "패스워드가 일치하지 않습니다. 확인해주세요.");
                     return;
                   }
                   if (changePwResult == StatusCode.UNCATCHED_ERROR ||
                       changePwResult != StatusCode.SUCCESS) {
+                    setState(() {
+                      isLoading = false;
+                    });
                     if (!mounted) return;
                     Common.showSnackBar(context, "오류가 발생했습니다.");
                     return;
                   }
                   // 성공 케이스
+                  setState(() {
+                    isLoading = false;
+                  });
                   if (!mounted) return;
                   Common.showSnackBar(context, "변경이 완료되었습니다. 다시 로그인해주세요.");
                   Navigator.pushAndRemoveUntil(
@@ -207,7 +226,7 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                 },
                 title: "변경하기",
                 colorHex: "#425C5A",
-                width: double.infinity),
+                width: double.infinity, isLoading: isLoading,),
           )
         ],
       ),
