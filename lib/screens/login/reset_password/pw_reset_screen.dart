@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:start_app/screens/login/login_screen.dart';
+import 'package:start_app/screens/login/login_widgets.dart';
 import '../../../utils/common.dart';
 
 class PwResetScreen extends StatefulWidget {
@@ -43,13 +44,17 @@ class _PwResetScreenState extends State<PwResetScreen> {
         }
       },
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Stack(children: [
-            Column(
+        appBar: Common.SignUpAppBar("비밀번호 재설정"),
+        body: Stack(children: [
+          SingleChildScrollView(
+            reverse: true,
+            physics: const ClampingScrollPhysics(),
+            padding: EdgeInsets.only(bottom: 72.h),
+            child: Column(
               children: [
                 SizedBox(
                   width: double.infinity,
-                  height: 260.h,
+                  height: 200.h,
                   child: const Center(
                     child: Image(
                       image: AssetImage("images/logo_app.png"),
@@ -96,12 +101,14 @@ class _PwResetScreenState extends State<PwResetScreen> {
                     Text(
                       "특수문자, 대소문자, 숫자 포함\n8자 이상 15자 이내로 입력해주세요.",
                       style: TextStyle(
-                          fontSize: 12.sp, fontWeight: FontWeight.w300, height: 1.25),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w300,
+                          height: 1.25),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 240.h,
+                  height: 200.h,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -194,76 +201,67 @@ class _PwResetScreenState extends State<PwResetScreen> {
                 ),
               ],
             ),
-            GestureDetector(
-              onTap: () async {
-                String pw1 = appPwController_1.text;
-                String pw2 = appPwController_2.text;
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: LoginNavButton(
+                onPressed: () async {
+                  String pw1 = appPwController_1.text;
+                  String pw2 = appPwController_2.text;
 
-                /// 비어있는지 확인
-                if (pw1.isEmpty || pw2.isEmpty) {
-                  Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
-                  return;
-                }
+                  /// 비어있는지 확인
+                  if (pw1.isEmpty || pw2.isEmpty) {
+                    Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
+                    return;
+                  }
 
-                /// 같은지 확인
-                if (pw1 != pw2) {
-                  Common.showSnackBar(context, "비밀번호 입력이 동일한지 확인해주세요.");
-                  return;
-                }
+                  /// 같은지 확인
+                  if (pw1 != pw2) {
+                    Common.showSnackBar(context, "비밀번호 입력이 동일한지 확인해주세요.");
+                    return;
+                  }
 
-                /// 유효성 검사 (특수문자, 대소문자, 숫자 포함 8자 이상 16자 이내)
-                final validationResult = RegExp(
-                        r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$')
-                    .hasMatch(pw1);
-                if (!validationResult) {
-                  Common.showSnackBar(context,
-                      "비밀번호를 다음과 같이 맞춰주세요.\n특수문자, 대소문자, 숫자 포함 8자 이상 16자 이내");
-                  return;
-                }
+                  /// 유효성 검사 (특수문자, 대소문자, 숫자 포함 8자 이상 16자 이내)
+                  final validationResult = RegExp(
+                          r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$')
+                      .hasMatch(pw1);
+                  if (!validationResult) {
+                    Common.showSnackBar(context,
+                        "비밀번호를 다음과 같이 맞춰주세요.\n특수문자, 대소문자, 숫자 포함 8자 이상 16자 이내");
+                    return;
+                  }
 
-                final resetPwResult = await resetPw(pw1);
-                if(resetPwResult == PwResetNonLoginCode.ST066) {
-                  if(!mounted) return;
-                  Common.showSnackBar(context,
-                      "오류가 발생했습니다.");
+                  final resetPwResult = await resetPw(pw1);
+                  if (resetPwResult == PwResetNonLoginCode.ST066) {
+                    if (!mounted) return;
+                    Common.showSnackBar(context, "휴대폰 인증정보가 만료되었습니다. 다시 진행해주세요.");
+                    return;
+                  }
+                  if (resetPwResult == PwResetNonLoginCode.UNCATCHED_ERROR) {
+                    if (!mounted) return;
+                    Common.showSnackBar(context, "오류가 발생했습니다.");
+                    return;
+                  }
+                  if (resetPwResult == PwResetNonLoginCode.SUCCESS) {
+                    if (!mounted) return;
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                        (route) => false);
+                    Common.showSnackBar(context, "비밀번호 설정이 완료되었습니다. 로그인해주세요.");
+                    return;
+                  }
+                  if (!mounted) return;
+                  Common.showSnackBar(context, "오류가 발생했습니다.");
                   return;
-                }
-                if(resetPwResult == PwResetNonLoginCode.UNCATCHED_ERROR) {
-                  if(!mounted) return;
-                  Common.showSnackBar(context,
-                      "오류가 발생했습니다.");
-                  return;
-                }
-                if(resetPwResult == PwResetNonLoginCode.SUCCESS) {
-                  if(!mounted) return;
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false);
-                  Common.showSnackBar(context,
-                      "비밀번호 설정이 완료되었습니다. 로그인해주세요.");
-                  return;
-                }
-                if(!mounted) return;
-                Common.showSnackBar(context,
-                    "오류가 발생했습니다.");
-                return;
-              },
-              child: Container(
-                  width: double.infinity,
-                  height: 54.h,
-                  margin: EdgeInsets.only(left: 27.w, right: 27.w, top: 570.h),
-                  decoration: BoxDecoration(
-                      color: HexColor("#425C5A"),
-                      borderRadius: BorderRadius.circular(10)),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "다음",
-                    style: TextStyle(
-                        fontSize: 19.5.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white),
-                  )),
-            ),
-          ]),
-        ),
+                },
+                title: "다음",
+                colorHex: "#425C5A",
+                margin: EdgeInsets.only(bottom: 16.h),
+                width: 304.w),
+          ),
+        ]),
         backgroundColor: HexColor("#f3f3f3"),
       ),
     );

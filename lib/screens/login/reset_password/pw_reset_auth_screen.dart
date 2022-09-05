@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:start_app/screens/login/login_widgets.dart';
 import 'package:start_app/screens/login/reset_password/pw_reset_screen.dart';
 import 'package:start_app/utils/common.dart';
 
@@ -44,15 +45,19 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
         }
       },
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Column(
+        appBar: Common.SignUpAppBar("비밀번호 재설정"),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              reverse: true,
+              physics: const ClampingScrollPhysics(),
+              padding: EdgeInsets.only(bottom: 102.h),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
                     width: double.infinity,
-                    height: 260.h,
+                    height: 200.h,
                     child: const Center(
                       child: Image(
                         image: AssetImage("images/logo_app.png"),
@@ -75,12 +80,12 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 24.w, right: 24.w),
                     child: Text(
-                      "비밀번호 재설정을 위해 가입된 계정의 학번을 입력해주세요.\n인증요청을 누르면 학번으로 가입된 계정의 휴대전화 번호로 인증코드는 3분 내로 입력해주세요.",
+                      "비밀번호 재설정을 위해 가입된 계정의 학번을 입력해주세요.\n인증요청을 누르면 학번으로 가입된 계정의 휴대전화 번호로 인증코드가 발송됩니다.\n인증코드는 3분 내로 입력해주세요.",
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w300,
                           color: Colors.black,
-                      height: 1.25),
+                          height: 1.25),
                     ),
                   ),
                   SizedBox(
@@ -150,8 +155,8 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                       if (postSmsByIdResult ==
                                           PostSmsByIdCode.ST058) {
                                         if (!mounted) return;
-                                        Common.showSnackBar(
-                                            context, "탈퇴한 계정입니다. 재가입시 문의해주세요. (02-970-7012)");
+                                        Common.showSnackBar(context,
+                                            "탈퇴한 계정입니다. 재가입시 문의해주세요. (02-970-7012)");
                                         return;
                                       }
                                       if (!mounted) return;
@@ -263,50 +268,33 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                       )),
                 ],
               ),
-              nextButtonActive == true
-                  ? GestureDetector(
-                      onTap: () {
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: nextButtonActive == true
+                  ? LoginNavButton(
+                      onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PwResetScreen(studentId: studentIdController.text,)));
+                                builder: (context) => PwResetScreen(
+                                      studentId: studentIdController.text,
+                                    )));
                       },
-                      child: Container(
-                          width: double.infinity,
-                          height: 54.h,
-                          margin: EdgeInsets.only(
-                              left: 27.w, right: 27.w, top: 570.h),
-                          decoration: BoxDecoration(
-                              color: HexColor("#425C5A"),
-                              borderRadius: BorderRadius.circular(10)),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "다음",
-                            style: TextStyle(
-                                fontSize: 19.5.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          )),
-                    )
-                  : Container(
-                      width: double.infinity,
-                      height: 54.h,
-                      margin:
-                          EdgeInsets.only(left: 27.w, right: 27.w, top: 570.h),
-                      decoration: BoxDecoration(
-                          color: HexColor("#929d9c"),
-                          borderRadius: BorderRadius.circular(10)),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "다음",
-                        style: TextStyle(
-                            fontSize: 19.5.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      )),
-            ],
-          ),
+                      title: "다음",
+                      colorHex: "#425C5A",
+                      margin: EdgeInsets.only(bottom: 16.h),
+                      width: 304.w)
+                  : LoginNavButton(
+                      onPressed: () {},
+                      title: "다음",
+                      colorHex: "#929d9c",
+                      margin: EdgeInsets.only(bottom: 16.h),
+                      width: 304.w),
+            )
+          ],
         ),
+        backgroundColor: HexColor("#f3f3f3"),
       ),
     );
   }

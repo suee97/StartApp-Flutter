@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,6 +43,7 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
         foregroundColor: HexColor("#425C5A"),
         backgroundColor: HexColor("#f3f3f3"),
         elevation: 0,
+        centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
