@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -22,6 +23,7 @@ import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'package:http/http.dart' as http;
 import '../festival_info_widget.dart';
 import '../festival_lineup_widget.dart';
+import 'dart:ui' as ui;
 
 class NewFestivalScreen extends StatefulWidget {
   const NewFestivalScreen({Key? key}) : super(key: key);
@@ -76,6 +78,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
 
   @override
   void initState() {
+    getCurrentLocationGps();
     addMarkers();
     super.initState();
     setContentsInfo();
@@ -87,26 +90,12 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
   }
 
   addMarkers() async {
-    BitmapDescriptor exhibitionmarker = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(),
-      "images/exhibition_marker.png",
-    );
-    BitmapDescriptor fleamarketmarker = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(),
-      "images/fleamarket_marker.png",
-    );
-    BitmapDescriptor sangsangmarker = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(),
-      "images/sangsang_marker.png",
-    );
-    BitmapDescriptor bungeobangmarker = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(),
-      "images/bungeobang_marker.png",
-    );
-    BitmapDescriptor groundmarker = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(),
-      "images/ground_marker.png",
-    );
+
+    final Uint8List markerIcon_exhibition = await getBytesFromAsset('images/exhibition_marker.png', 100);
+    final Uint8List markerIcon_fleamarket = await getBytesFromAsset('images/fleamarket_marker.png', 100);
+    final Uint8List markerIcon_sangsang = await getBytesFromAsset('images/sangsang_marker.png', 100);
+    final Uint8List markerIcon_bungeobang = await getBytesFromAsset('images/bungeobang_marker.png', 100);
+    final Uint8List markerIcon_ground = await getBytesFromAsset('images/ground_marker.png', 100);
 
     baseMarkerList = {
       Marker(
@@ -146,7 +135,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
       Marker(
         markerId: const MarkerId("exhibition"),
         position: const LatLng(37.6313962, 127.0767797),
-        icon: await exhibitionmarker,
+        icon: BitmapDescriptor.fromBytes(markerIcon_exhibition),
         onTap: () async {
           await markerOnTap("exhibition");
         },
@@ -154,28 +143,28 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
       Marker(
           markerId: const MarkerId("fleamarket"),
           position: const LatLng(37.6327762, 127.077273),
-          icon: await fleamarketmarker,
+          icon: BitmapDescriptor.fromBytes(markerIcon_fleamarket),
           onTap: () async {
             await markerOnTap("fleamarket");
           }),
       Marker(
           markerId: const MarkerId("sangsang"),
           position: const LatLng(37.63089, 127.0796858),
-          icon: await sangsangmarker,
+          icon: BitmapDescriptor.fromBytes(markerIcon_sangsang),
           onTap: () async {
             await markerOnTap("sangsang");
           }),
       Marker(
           markerId: const MarkerId("bungeobang"),
           position: const LatLng(37.6331603, 127.0785649),
-          icon: await bungeobangmarker,
+          icon: BitmapDescriptor.fromBytes(markerIcon_bungeobang),
           onTap: () async {
             await markerOnTap("bungeobang");
           }),
       Marker(
           markerId: const MarkerId("ground"),
           position: const LatLng(37.6297553, 127.0770174),
-          icon: await groundmarker,
+          icon: BitmapDescriptor.fromBytes(markerIcon_ground),
           onTap: () async {
             await markerOnTap("ground");
           }),
@@ -220,6 +209,14 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
     };
 
     await showFestivalDialog();
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    print("hi");
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
   }
 
   @override
