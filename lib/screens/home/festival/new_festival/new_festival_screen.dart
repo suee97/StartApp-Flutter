@@ -78,10 +78,9 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
 
   @override
   void initState() {
-    getCurrentLocationGps();
     addMarkers();
-    super.initState();
     setContentsInfo();
+    super.initState();
   }
 
   @override
@@ -89,7 +88,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
     super.dispose();
   }
 
-  addMarkers() async {
+  Future<void> addMarkers() async {
 
     final Uint8List markerIcon_exhibition = await getBytesFromAsset('images/exhibition_marker.png', 100);
     final Uint8List markerIcon_fleamarket = await getBytesFromAsset('images/fleamarket_marker.png', 100);
@@ -131,88 +130,89 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
           }),
     };
 
-    markerList = {
-      Marker(
-        markerId: const MarkerId("exhibition"),
-        position: const LatLng(37.6313962, 127.0767797),
-        icon: BitmapDescriptor.fromBytes(markerIcon_exhibition),
-        onTap: () async {
-          await markerOnTap("exhibition");
-        },
-      ),
-      Marker(
-          markerId: const MarkerId("fleamarket"),
-          position: const LatLng(37.6327762, 127.077273),
-          icon: BitmapDescriptor.fromBytes(markerIcon_fleamarket),
+    setState(() {
+      markerList = {
+        Marker(
+          markerId: const MarkerId("exhibition"),
+          position: const LatLng(37.6313962, 127.0767797),
+          icon: BitmapDescriptor.fromBytes(markerIcon_exhibition),
           onTap: () async {
-            await markerOnTap("fleamarket");
-          }),
-      Marker(
-          markerId: const MarkerId("sangsang"),
-          position: const LatLng(37.63089, 127.0796858),
-          icon: BitmapDescriptor.fromBytes(markerIcon_sangsang),
-          onTap: () async {
-            await markerOnTap("sangsang");
-          }),
-      Marker(
-          markerId: const MarkerId("bungeobang"),
-          position: const LatLng(37.6331603, 127.0785649),
-          icon: BitmapDescriptor.fromBytes(markerIcon_bungeobang),
-          onTap: () async {
-            await markerOnTap("bungeobang");
-          }),
-      Marker(
-          markerId: const MarkerId("ground"),
-          position: const LatLng(37.6297553, 127.0770174),
-          icon: BitmapDescriptor.fromBytes(markerIcon_ground),
-          onTap: () async {
-            await markerOnTap("ground");
-          }),
-    };
+            await markerOnTap("exhibition");
+          },
+        ),
+        Marker(
+            markerId: const MarkerId("fleamarket"),
+            position: const LatLng(37.6327762, 127.077273),
+            icon: BitmapDescriptor.fromBytes(markerIcon_fleamarket),
+            onTap: () async {
+              await markerOnTap("fleamarket");
+            }),
+        Marker(
+            markerId: const MarkerId("sangsang"),
+            position: const LatLng(37.63089, 127.0796858),
+            icon: BitmapDescriptor.fromBytes(markerIcon_sangsang),
+            onTap: () async {
+              await markerOnTap("sangsang");
+            }),
+        Marker(
+            markerId: const MarkerId("bungeobang"),
+            position: const LatLng(37.6331603, 127.0785649),
+            icon: BitmapDescriptor.fromBytes(markerIcon_bungeobang),
+            onTap: () async {
+              await markerOnTap("bungeobang");
+            }),
+        Marker(
+            markerId: const MarkerId("ground"),
+            position: const LatLng(37.6297553, 127.0770174),
+            icon: BitmapDescriptor.fromBytes(markerIcon_ground),
+            onTap: () async {
+              await markerOnTap("ground");
+            }),
+      };
+    });
 
     circleList = {
       Circle(
           circleId: const CircleId("jeon-si"),
           center: const LatLng(37.6313962, 127.0767797),
           radius: Common.CIRCLE_RADIUS,
-          fillColor: Color(0x29EE795F),
+          fillColor: HexColor("#929d9c").withOpacity(0.2),
           strokeWidth: 2,
-          strokeColor: HexColor("#EE795F")),
+          strokeColor: HexColor("#425c5a").withOpacity(0.5)),
       Circle(
           circleId: const CircleId("market"),
           center: const LatLng(37.6327762, 127.077273),
           radius: Common.CIRCLE_RADIUS,
-          fillColor: Color(0x29EE795F),
+          fillColor: HexColor("#929d9c").withOpacity(0.2),
           strokeWidth: 2,
-          strokeColor: HexColor("#EE795F")),
+          strokeColor: HexColor("#425c5a").withOpacity(0.5)),
       Circle(
           circleId: const CircleId("sang-sang"),
           center: const LatLng(37.63089, 127.0796858),
           radius: Common.CIRCLE_RADIUS,
-          fillColor: Color(0x29EE795F),
+          fillColor: HexColor("#929d9c").withOpacity(0.2),
           strokeWidth: 2,
-          strokeColor: HexColor("#EE795F")),
+          strokeColor: HexColor("#425c5a").withOpacity(0.5)),
       Circle(
           circleId: const CircleId("bung-uh"),
           center: const LatLng(37.6331603, 127.0785649),
           radius: Common.CIRCLE_RADIUS,
-          fillColor: Color(0x29EE795F),
+          fillColor: HexColor("#929d9c").withOpacity(0.2),
           strokeWidth: 2,
-          strokeColor: HexColor("#EE795F")),
+          strokeColor: HexColor("#425c5a").withOpacity(0.5)),
       Circle(
           circleId: const CircleId("sand-undong"),
           center: const LatLng(37.6297553, 127.0770174),
           radius: Common.CIRCLE_RADIUS,
-          fillColor: Color(0x29EE795F),
+          fillColor: HexColor("#929d9c").withOpacity(0.2),
           strokeWidth: 2,
-          strokeColor: HexColor("#EE795F")),
+          strokeColor: HexColor("#425c5a").withOpacity(0.5)),
     };
 
     await showFestivalDialog();
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
-    print("hi");
     ByteData data = await rootBundle.load(path);
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
@@ -894,7 +894,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
           mp.LatLng(37.6297553, 127.0770174));
     }
 
-    print("${place}와의 거리 : ${distance}");
+    debugPrint("$place와의 거리 : $distance");
 
     if (distance > boundaryDistance) {
       return false;
@@ -928,14 +928,14 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
 
       return StatusCode.SUCCESS;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return StatusCode.UNCATCHED_ERROR;
     }
   }
 
   Future<LocationData> getCurrentLocationGps() async {
     var currentLocation = await Location().getLocation();
-    print("currentLocation : ${currentLocation}");
+    debugPrint("currentLocation : $currentLocation");
     return currentLocation;
   }
 
@@ -1416,7 +1416,6 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
   }
 
   Future<String> _fetchMarker() async {
-    await Future.delayed(Duration(seconds: 0));
     return 'call marker data';
   }
 
@@ -1442,65 +1441,61 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                 ),
               ],
             ),
-            content: Container(
-                width: double.infinity,
-                height: 215.h,
-                alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    Text("축제 장소를 찾아가 도장을 모아보세요!", style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646")), ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 5.w, right: 5.w),
-                      child:
-                      Row(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("축제 장소를 찾아가 도장을 모아보세요!", style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646")), ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 5.w, right: 5.w),
+                  child:
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset("assets/icon_festival_info.svg"),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                              Text("축제정보", style: TextStyle(fontSize: 17.5.sp, color: HexColor("##425C5A"), fontWeight: FontWeight.w500),),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Text("축제 관련 정보", style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"))),
+                              SizedBox(
+                                height: 7.h,
+                              ),
+                              Text('- 위치\n- 요금\n- 축제일정\n ', style: TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"), height: 1.3))
+                            ]),
+                        SizedBox(
+                          width: 18.w,
+                        ),
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset("assets/icon_festival_info.svg"),
-                                  SizedBox(
-                                    height: 15.h,
-                                  ),
-                                  Text("축제정보", style: TextStyle(fontSize: 17.5.sp, color: HexColor("##425C5A"), fontWeight: FontWeight.w500),),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  Text("축제 관련 정보", style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"))),
-                                  SizedBox(
-                                    height: 7.h,
-                                  ),
-                                  Text('- 위치\n- 요금\n- 축제일정\n ', style: TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"), height: 1.3))
-                                ]),
+                            SvgPicture.asset("assets/icon_check_stamp_status.svg"),
                             SizedBox(
-                              width: 18.w,
+                              height: 15.h,
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset("assets/icon_check_stamp_status.svg"),
-                                SizedBox(
-                                  height: 15.h,
-                                ),
-                                Text("도장현황", style: TextStyle(fontSize: 17.5.sp, color: HexColor("##425C5A"), fontWeight: FontWeight.w500)),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Text("방문 도장 이벤트", style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"))),
-                                SizedBox(
-                                  height: 7.h,
-                                ),
-                                Text('- 지도에 표시된\n  5개의 장소에\n  방문하여 마커를\n  클릭해 보세요', style: TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"), height: 1.3))
-                              ],
-                            )]
-                      ),
-                    )
-                  ],
+                            Text("도장현황", style: TextStyle(fontSize: 17.5.sp, color: HexColor("##425C5A"), fontWeight: FontWeight.w500)),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Text("방문 도장 이벤트", style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"))),
+                            SizedBox(
+                              height: 7.h,
+                            ),
+                            Text('- 지도에 표시된\n  5개의 장소에\n  방문하여 마커를\n  클릭해 보세요', style: TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"), height: 1.3))
+                          ],
+                        )]
+                  ),
                 )
+              ],
             ),
           );
         });
