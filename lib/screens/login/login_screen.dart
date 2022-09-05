@@ -27,11 +27,11 @@ class _LoginScreenState extends State<LoginScreen> {
   late bool isLoading;
   final studentIdController = TextEditingController();
   final pwController = TextEditingController();
-  final secureStorage = FlutterSecureStorage();
+  final secureStorage = const FlutterSecureStorage();
 
   @override
   void initState() {
-    autoLoginCheckBoxState = false;
+    autoLoginCheckBoxState = true;
     isLoading = false;
     super.initState();
   }
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: Scaffold(
-        appBar: Common.SignUpAppBar("학생증 인증"),
+        appBar: Common.SignUpAppBar("로그인"),
         body: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           reverse: true,
@@ -157,46 +157,46 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     width: 24.w,
                   ),
-                  SizedBox(
-                    width: 24.w,
-                    height: 24.h,
-                    child: Transform.scale(
-                      scale: 1.2,
-                      child: Checkbox(
-                          shape: const CircleBorder(),
-                          side: MaterialStateBorderSide.resolveWith(
-                            (states) => BorderSide(
-                                width: 2.w,
-                                color: autoLoginCheckBoxState == false
-                                    ? HexColor("#929d9c")
-                                    : HexColor("#425C5A")),
-                          ),
-                          value: autoLoginCheckBoxState,
-                          checkColor: autoLoginCheckBoxState == false
-                              ? Colors.white
-                              : Colors.white,
-                          activeColor: HexColor("#425C5A"),
-                          onChanged: (value) {
-                            setState(() {
-                              autoLoginCheckBoxState = value!;
-                            });
-                          }),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        autoLoginCheckBoxState = !autoLoginCheckBoxState;
-                      });
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 8.w, right: 8.w, top: 4.h, bottom: 4.h),
-                      child: Text("자동 로그인",
-                          style: TextStyle(
-                              fontSize: 14.sp, fontWeight: FontWeight.w300)),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   width: 24.w,
+                  //   height: 24.h,
+                  //   child: Transform.scale(
+                  //     scale: 1.2,
+                  //     child: Checkbox(
+                  //         shape: const CircleBorder(),
+                  //         side: MaterialStateBorderSide.resolveWith(
+                  //           (states) => BorderSide(
+                  //               width: 2.w,
+                  //               color: autoLoginCheckBoxState == false
+                  //                   ? HexColor("#929d9c")
+                  //                   : HexColor("#425C5A")),
+                  //         ),
+                  //         value: autoLoginCheckBoxState,
+                  //         checkColor: autoLoginCheckBoxState == false
+                  //             ? Colors.white
+                  //             : Colors.white,
+                  //         activeColor: HexColor("#425C5A"),
+                  //         onChanged: (value) {
+                  //           setState(() {
+                  //             autoLoginCheckBoxState = value!;
+                  //           });
+                  //         }),
+                  //   ),
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     setState(() {
+                  //       autoLoginCheckBoxState = !autoLoginCheckBoxState;
+                  //     });
+                  //   },
+                  //   child: Padding(
+                  //     padding: EdgeInsets.only(
+                  //         left: 8.w, right: 8.w, top: 4.h, bottom: 4.h),
+                  //     child: Text("자동 로그인",
+                  //         style: TextStyle(
+                  //             fontSize: 14.sp, fontWeight: FontWeight.w300)),
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(
