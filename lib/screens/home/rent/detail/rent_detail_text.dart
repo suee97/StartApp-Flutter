@@ -6,16 +6,16 @@ class RentDetailText extends StatelessWidget {
 
   RentDetailText(
       {Key? key,
-      required this.category,
-      required this.itemPurpose,
-      required this.itemTotalCnt})
+        required this.category,
+        required this.itemPurpose,
+        required this.itemTotalCnt})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 172.w,
-      height: 190.h,
+      height: 100.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
