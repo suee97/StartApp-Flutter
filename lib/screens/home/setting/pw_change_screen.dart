@@ -21,6 +21,7 @@ class PwChangeScreen extends StatefulWidget {
 class _PwChangeScreenState extends State<PwChangeScreen> {
   final beforeAppPwController = TextEditingController();
   final afterAppPwController = TextEditingController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -29,6 +30,8 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
 
   @override
   void dispose() {
+    beforeAppPwController.dispose();
+    afterAppPwController.dispose();
     super.dispose();
   }
 
@@ -149,65 +152,83 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
           Padding(
             padding: EdgeInsets.only(left: 27.w, right: 27.w),
             child: LoginNavButton(
-                onPressed: () async {
-                  if (afterAppPwController.text.isEmpty ||
-                      beforeAppPwController.text.isEmpty) {
-                    Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
-                    return;
-                  }
-
-                  if (afterAppPwController.text == beforeAppPwController.text) {
-                    Common.showSnackBar(
-                        context, "변경할 비밀번호를 기존 비밀번호와 다르게 설정해주세요.");
-                    return;
-                  }
-
-                  final validationResult = RegExp(
-                          r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$')
-                      .hasMatch(afterAppPwController.text);
-                  if (!validationResult) {
-                    Common.showSnackBar(context,
-                        "비밀번호를 다음과 같이 맞춰주세요.\n특수문자, 대소문자, 숫자 포함 8자 이상 16자 이내");
-                    return;
-                  }
-
-                  final changePwResult = await changePw();
-                  if (changePwResult == StatusCode.REFRESH_EXPIRED) {
-                    final secureStorage = FlutterSecureStorage();
-                    await secureStorage.write(key: "ACCESS_TOKEN", value: "");
-                    await secureStorage.write(key: "REFRESH_TOKEN", value: "");
-                    await Common.setNonLogin(false);
-                    await Common.setAutoLogin(false);
-                    Common.setIsLogin(false);
-                    await Common.clearStudentInfoPref();
-                    if (!mounted) return;
-                    Common.showSnackBar(context, "다시 로그인해주세요.");
-                    return;
-                  }
-                  if (changePwResult == StatusCode.REQUEST_ERROR) {
-                    if (!mounted) return;
-                    Common.showSnackBar(context, "패스워드가 일치하지 않습니다. 확인해주세요.");
-                    return;
-                  }
-                  if (changePwResult == StatusCode.UNCATCHED_ERROR ||
-                      changePwResult != StatusCode.SUCCESS) {
-                    if (!mounted) return;
-                    Common.showSnackBar(context, "오류가 발생했습니다.");
-                    return;
-                  }
-                  // 성공 케이스
-                  if (!mounted) return;
-                  Common.showSnackBar(context, "변경이 완료되었습니다. 다시 로그인해주세요.");
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginOptionScreen()),
-                      (route) => false);
+              onPressed: () async {
+                if (afterAppPwController.text.isEmpty ||
+                    beforeAppPwController.text.isEmpty) {
+                  Common.showSnackBar(context, "비어있는 필드가 있는지 확인해주세요.");
                   return;
-                },
-                title: "변경하기",
-                colorHex: "#425C5A",
-                width: double.infinity),
+                }
+
+                if (afterAppPwController.text == beforeAppPwController.text) {
+                  Common.showSnackBar(
+                      context, "변경할 비밀번호를 기존 비밀번호와 다르게 설정해주세요.");
+                  return;
+                }
+
+                final validationResult = RegExp(
+                        r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$')
+                    .hasMatch(afterAppPwController.text);
+                if (!validationResult) {
+                  Common.showSnackBar(context,
+                      "비밀번호를 다음과 같이 맞춰주세요.\n특수문자, 대소문자, 숫자 포함 8자 이상 16자 이내");
+                  return;
+                }
+
+                setState(() {
+                  isLoading = true;
+                });
+
+                final changePwResult = await changePw();
+                if (changePwResult == StatusCode.REFRESH_EXPIRED) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                  final secureStorage = FlutterSecureStorage();
+                  await secureStorage.write(key: "ACCESS_TOKEN", value: "");
+                  await secureStorage.write(key: "REFRESH_TOKEN", value: "");
+                  await Common.setNonLogin(false);
+                  await Common.setAutoLogin(false);
+                  Common.setIsLogin(false);
+                  await Common.clearStudentInfoPref();
+                  if (!mounted) return;
+                  Common.showSnackBar(context, "다시 로그인해주세요.");
+                  return;
+                }
+                if (changePwResult == StatusCode.REQUEST_ERROR) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                  if (!mounted) return;
+                  Common.showSnackBar(context, "패스워드가 일치하지 않습니다. 확인해주세요.");
+                  return;
+                }
+                if (changePwResult == StatusCode.UNCATCHED_ERROR ||
+                    changePwResult != StatusCode.SUCCESS) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                  if (!mounted) return;
+                  Common.showSnackBar(context, "오류가 발생했습니다.");
+                  return;
+                }
+                // 성공 케이스
+                setState(() {
+                  isLoading = false;
+                });
+                if (!mounted) return;
+                Common.showSnackBar(context, "변경이 완료되었습니다. 다시 로그인해주세요.");
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginOptionScreen()),
+                    (route) => false);
+                return;
+              },
+              title: "변경하기",
+              colorHex: "#425C5A",
+              width: double.infinity,
+              isLoading: isLoading,
+            ),
           )
         ],
       ),

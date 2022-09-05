@@ -20,6 +20,7 @@ class PwResetScreen extends StatefulWidget {
 class _PwResetScreenState extends State<PwResetScreen> {
   final appPwController_1 = TextEditingController();
   final appPwController_2 = TextEditingController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -231,18 +232,31 @@ class _PwResetScreenState extends State<PwResetScreen> {
                     return;
                   }
 
+                  setState(() {
+                    isLoading = true;
+                  });
+
                   final resetPwResult = await resetPw(pw1);
                   if (resetPwResult == PwResetNonLoginCode.ST066) {
+                    setState(() {
+                      isLoading = false;
+                    });
                     if (!mounted) return;
                     Common.showSnackBar(context, "휴대폰 인증정보가 만료되었습니다. 다시 진행해주세요.");
                     return;
                   }
                   if (resetPwResult == PwResetNonLoginCode.UNCATCHED_ERROR) {
+                    setState(() {
+                      isLoading = false;
+                    });
                     if (!mounted) return;
                     Common.showSnackBar(context, "오류가 발생했습니다.");
                     return;
                   }
                   if (resetPwResult == PwResetNonLoginCode.SUCCESS) {
+                    setState(() {
+                      isLoading = false;
+                    });
                     if (!mounted) return;
                     Navigator.pushAndRemoveUntil(
                         context,
@@ -252,6 +266,9 @@ class _PwResetScreenState extends State<PwResetScreen> {
                     Common.showSnackBar(context, "비밀번호 설정이 완료되었습니다. 로그인해주세요.");
                     return;
                   }
+                  setState(() {
+                    isLoading = false;
+                  });
                   if (!mounted) return;
                   Common.showSnackBar(context, "오류가 발생했습니다.");
                   return;
@@ -259,7 +276,7 @@ class _PwResetScreenState extends State<PwResetScreen> {
                 title: "다음",
                 colorHex: "#425C5A",
                 margin: EdgeInsets.only(bottom: 16.h),
-                width: 304.w),
+                width: 304.w, isLoading: isLoading,),
           ),
         ]),
         backgroundColor: HexColor("#f3f3f3"),

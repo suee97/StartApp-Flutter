@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -23,7 +25,21 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
   final codeNoController = TextEditingController();
   bool authRequestActive = true;
   bool codeRequestActive = false;
+  bool authRequestLoading = false;
+  bool codeRequestLoading = false;
   bool nextButtonActive = false;
+
+  @override
+  void dispose() {
+    phoneNoController.dispose();
+    codeNoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +140,13 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                               padding: EdgeInsets.only(bottom: 4.h),
                               child: authRequestActive == true
                                   ? phoneAuthButton("인증요청", () async {
+                                      setState(() {
+                                        authRequestLoading = true;
+                                      });
                                       if (phoneNoController.text.isEmpty) {
+                                        setState(() {
+                                          authRequestLoading = false;
+                                        });
                                         Common.showSnackBar(
                                             context, "휴대폰 번호를 입력해주세요.");
                                         return;
@@ -132,6 +154,9 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                       final checkPhoneNoValidationResult =
                                           checkPhoneNoValidation();
                                       if (!checkPhoneNoValidationResult) {
+                                        setState(() {
+                                          authRequestLoading = false;
+                                        });
                                         Common.showSnackBar(
                                             context, "잘못된 휴대폰 번호 형식입니다.");
                                         return;
@@ -142,6 +167,9 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                               phoneNoController.text));
                                       if (postSmsResult ==
                                           SmsAuthStatusCode.ST064) {
+                                        setState(() {
+                                          authRequestLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "이미 인증을 완료한 휴대폰 번호입니다.");
@@ -149,6 +177,9 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                       }
                                       if (postSmsResult ==
                                           SmsAuthStatusCode.ST065) {
+                                        setState(() {
+                                          authRequestLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(context,
                                             "너무 많은 인증요청을 보낸 휴대폰 번호입니다.\n잠시 후 다시 시도해주세요.");
@@ -156,6 +187,9 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                       }
                                       if (postSmsResult ==
                                           SmsAuthStatusCode.UNCATCHED_ERROR) {
+                                        setState(() {
+                                          authRequestLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "오류가 발생했습니다.");
@@ -163,22 +197,26 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                       }
                                       if (postSmsResult ==
                                           SmsAuthStatusCode.SUCCESS) {
-                                        if (!mounted) return;
-                                        Common.showSnackBar(context,
-                                            "인증번호가 발송되었습니다. 3분 안에 입력해주세요.");
                                         setState(() {
                                           authRequestActive = false;
                                           codeRequestActive = true;
+                                          authRequestLoading = false;
                                         });
+                                        if (!mounted) return;
+                                        Common.showSnackBar(context,
+                                            "인증번호가 발송되었습니다. 3분 안에 입력해주세요.");
                                         return;
                                       }
+                                      setState(() {
+                                        authRequestLoading = false;
+                                      });
                                       if (!mounted) return;
                                       Common.showSnackBar(
                                           context, "오류가 발생했습니다.");
                                       return;
-                                    }, HexColor("#EE795F"))
-                                  : phoneAuthButton(
-                                      "인증요청", () {}, HexColor("#F9B7A9")),
+                                    }, HexColor("#EE795F"), authRequestLoading)
+                                  : phoneAuthButton("인증요청", () {},
+                                      HexColor("#F9B7A9"), false),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide:
@@ -223,9 +261,15 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                               padding: EdgeInsets.only(bottom: 4.h),
                               child: codeRequestActive == false
                                   ? phoneAuthButton(
-                                      "확인", () {}, HexColor("#F9B7A9"))
+                                      "확인", () {}, HexColor("#F9B7A9"), false)
                                   : phoneAuthButton("확인", () async {
+                                      setState(() {
+                                        codeRequestLoading = true;
+                                      });
                                       if (codeNoController.text.length != 6) {
+                                        setState(() {
+                                          codeRequestLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "올바른 인증번호를 입력해주세요.");
@@ -236,6 +280,9 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                           await checkAuthCode();
                                       if (checkAuthCodeResult ==
                                           SmsAuthStatusCode.ST066) {
+                                        setState(() {
+                                          codeRequestLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "유효한 인증번호가 아닙니다.");
@@ -243,6 +290,9 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                       }
                                       if (checkAuthCodeResult ==
                                           SmsAuthStatusCode.ST067) {
+                                        setState(() {
+                                          codeRequestLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(context,
                                             "인증번호 기간이 만료되었습니다. 다시 요청해주세요.");
@@ -250,6 +300,9 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                       }
                                       if (checkAuthCodeResult ==
                                           SmsAuthStatusCode.UNCATCHED_ERROR) {
+                                        setState(() {
+                                          codeRequestLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "오류가 발생했습니다.");
@@ -257,19 +310,23 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                       }
                                       if (checkAuthCodeResult ==
                                           SmsAuthStatusCode.SUCCESS) {
-                                        if (!mounted) return;
-                                        Common.showSnackBar(context,
-                                            "인증에 성공하였습니다!\n다음 버튼을 눌러 추가인증을 진행해주세요.");
                                         setState(() {
+                                          codeRequestLoading = false;
                                           codeRequestActive = false;
                                           nextButtonActive = true;
                                         });
+                                        if (!mounted) return;
+                                        Common.showSnackBar(context,
+                                            "인증에 성공하였습니다!\n다음 버튼을 눌러 추가인증을 진행해주세요.");
                                         return;
                                       }
+                                      setState(() {
+                                        codeRequestLoading = false;
+                                      });
                                       if (!mounted) return;
                                       Common.showSnackBar(
                                           context, "오류가 발생했습니다.");
-                                    }, HexColor("#EE795F")),
+                                    }, HexColor("#EE795F"), codeRequestLoading),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide:
@@ -411,7 +468,8 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
     );
   }
 
-  Widget phoneAuthButton(String title, VoidCallback onPressed, Color color) {
+  Widget phoneAuthButton(
+      String title, VoidCallback onPressed, Color color, bool isLoading) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -420,13 +478,23 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
         decoration: BoxDecoration(
             color: color, borderRadius: BorderRadius.circular(15)),
         alignment: Alignment.center,
-        child: Text(
-          title,
-          style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w400,
-              color: Colors.white),
-        ),
+        child: isLoading == false
+            ? Text(
+                title,
+                style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
+              )
+            : Center(
+                child: Platform.isIOS
+                    ? CupertinoActivityIndicator(
+                        color: HexColor("#f3f3f3"),
+                      )
+                    : CircularProgressIndicator(
+                        color: HexColor("#f3f3f3"),
+                      ),
+              ),
       ),
     );
   }

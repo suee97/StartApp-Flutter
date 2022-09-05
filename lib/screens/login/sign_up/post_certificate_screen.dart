@@ -24,11 +24,10 @@ class PostCertificateScreen extends StatefulWidget {
 class _PostCertificateScreenState extends State<PostCertificateScreen> {
   File? imageFile;
   final ImagePicker imagePicker = ImagePicker();
-  late bool isLoading;
+  bool isLoading = false;
 
   @override
   void initState() {
-    isLoading = false;
     super.initState();
   }
 
@@ -148,125 +147,112 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
           Align(
             alignment: Alignment.bottomCenter,
             child: imageFile != null
-                ? isLoading == true
-                    ? LoginNavButton(
-                        onPressed: () {},
-                        title: "로딩중",
-                        colorHex: "#425C5A",
-                        margin: EdgeInsets.only(bottom: 16.h),
-                        width: 304.w)
-                    : LoginNavButton(
-                        onPressed: imageFile != null
-                            ? () async {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                final studentNo = signUpNotifier.getStudentNo();
-                                final appPassword =
-                                    signUpNotifier.getAppPassword();
-                                final name = signUpNotifier.getName();
-                                final department =
-                                    signUpNotifier.getDepartment();
-                                final fcmToken =
-                                    signUpNotifier.getFcmToken(); // 미구현, 미사용
-                                final phoneNo = signUpNotifier.getPhoneNo();
+                ? LoginNavButton(
+                    onPressed: imageFile != null
+                        ? () async {
+                            setState(() {
+                              isLoading = true;
+                            });
 
-                                final postCertificateResult =
-                                    await postCertificate(
-                                        studentNo,
-                                        appPassword,
-                                        name,
-                                        department,
-                                        fcmToken,
-                                        phoneNo);
+                            final studentNo = signUpNotifier.getStudentNo();
+                            final appPassword = signUpNotifier.getAppPassword();
+                            final name = signUpNotifier.getName();
+                            final department = signUpNotifier.getDepartment();
+                            final fcmToken =
+                                signUpNotifier.getFcmToken(); // 미구현, 미사용
+                            final phoneNo = signUpNotifier.getPhoneNo();
 
-                                if (postCertificateResult ==
-                                    PostSignUpCode.UNCATCHED_ERROR) {
-                                  if (!mounted) return;
-                                  Common.showSnackBar(
-                                      context, "회원가입 요청 오류가 발생했습니다.");
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  return;
-                                }
+                            final postCertificateResult = await postCertificate(
+                                studentNo,
+                                appPassword,
+                                name,
+                                department,
+                                fcmToken,
+                                phoneNo);
 
-                                if (postCertificateResult ==
-                                    PostSignUpCode.ST053) {
-                                  if (!mounted) return;
-                                  Common.showSnackBar(
-                                      context, "이미 가입된 계정이 있습니다.");
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  return;
-                                }
-                                if (postCertificateResult ==
-                                    PostSignUpCode.ST058) {
-                                  if (!mounted) return;
-                                  Common.showSnackBar(context,
-                                      "탈퇴한 계정입니다.\n재가입시 문의주세요. (02-970-7012)");
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  return;
-                                }
-                                if (postCertificateResult ==
-                                    PostSignUpCode.ST066) {
-                                  if (!mounted) return;
-                                  Common.showSnackBar(context,
-                                      "휴대폰 인증 정보가 만료되었습니다. 다시 진행해주세요.");
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginOptionScreen()),
-                                      (route) => false);
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  return;
-                                }
-                                if (postCertificateResult ==
-                                    PostSignUpCode.TIMEOUT) {
-                                  if (!mounted) return;
-                                  Common.showSnackBar(
-                                      context, "네트워크 오류가 발생했습니다. 다시 시도해주세요.");
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  return;
-                                }
-                                if (postCertificateResult ==
-                                    PostSignUpCode.SUCCESS) {
-                                  if (!mounted) return;
-                                  Common.showSnackBar(
-                                      context, "회원가입 요청이 완료되었습니다.");
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SignUpEndScreen()),
-                                      (route) => false);
-                                  return;
-                                }
-                                if (!mounted) return;
-                                Common.showSnackBar(context, "오류가 발생했습니다..");
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              }
-                            : () {
-                                Common.showSnackBar(
-                                    context, "카메라로 사진을 찍어 업로드해주세요.");
-                              },
-                        title: "다음",
-                        colorHex: "#425C5A",
-                        margin: EdgeInsets.only(bottom: 16.h),
-                        width: 304.w)
+                            if (postCertificateResult ==
+                                PostSignUpCode.UNCATCHED_ERROR) {
+                              if (!mounted) return;
+                              Common.showSnackBar(
+                                  context, "회원가입 요청 오류가 발생했습니다.");
+                              setState(() {
+                                isLoading = false;
+                              });
+                              return;
+                            }
+
+                            if (postCertificateResult == PostSignUpCode.ST053) {
+                              if (!mounted) return;
+                              Common.showSnackBar(context, "이미 가입된 계정이 있습니다.");
+                              setState(() {
+                                isLoading = false;
+                              });
+                              return;
+                            }
+                            if (postCertificateResult == PostSignUpCode.ST058) {
+                              if (!mounted) return;
+                              Common.showSnackBar(context,
+                                  "탈퇴한 계정입니다.\n재가입시 문의주세요. (02-970-7012)");
+                              setState(() {
+                                isLoading = false;
+                              });
+                              return;
+                            }
+                            if (postCertificateResult == PostSignUpCode.ST066) {
+                              if (!mounted) return;
+                              Common.showSnackBar(
+                                  context, "휴대폰 인증 정보가 만료되었습니다. 다시 진행해주세요.");
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginOptionScreen()),
+                                  (route) => false);
+                              setState(() {
+                                isLoading = false;
+                              });
+                              return;
+                            }
+                            if (postCertificateResult ==
+                                PostSignUpCode.TIMEOUT) {
+                              if (!mounted) return;
+                              Common.showSnackBar(
+                                  context, "네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+                              setState(() {
+                                isLoading = false;
+                              });
+                              return;
+                            }
+                            if (postCertificateResult ==
+                                PostSignUpCode.SUCCESS) {
+                              if (!mounted) return;
+                              Common.showSnackBar(context, "회원가입 요청이 완료되었습니다.");
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SignUpEndScreen()),
+                                  (route) => false);
+                              return;
+                            }
+                            if (!mounted) return;
+                            Common.showSnackBar(context, "오류가 발생했습니다..");
+                            setState(() {
+                              isLoading = false;
+                            });
+                          }
+                        : () {
+                            Common.showSnackBar(
+                                context, "카메라로 사진을 찍어 업로드해주세요.");
+                          },
+                    title: "다음",
+                    colorHex: "#425C5A",
+                    margin: EdgeInsets.only(bottom: 16.h),
+                    isLoading: isLoading,
+                    width: 304.w)
                 : LoginNavButton(
                     onPressed: () {},
                     title: "다음",

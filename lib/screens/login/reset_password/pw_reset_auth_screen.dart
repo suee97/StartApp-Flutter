@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +23,8 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
   final codeController = TextEditingController();
   bool studentIdActive = true;
   bool authCodeActive = false;
+  bool studentIdLoading = false;
+  bool authCodeLoading = false;
   bool nextButtonActive = false;
 
   @override
@@ -118,21 +122,28 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                             context, "올바른 학번을 입력해주세요.");
                                         return;
                                       }
+                                      setState(() {
+                                        studentIdLoading = true;
+                                      });
                                       final postSmsByIdResult =
                                           await postSmsById(id);
                                       if (postSmsByIdResult ==
                                           PostSmsByIdCode.SUCCESS) {
-                                        if (!mounted) return;
-                                        Common.showSnackBar(
-                                            context, "인증번호가 발송되었습니다.");
                                         setState(() {
+                                          studentIdLoading = false;
                                           studentIdActive = false;
                                           authCodeActive = true;
                                         });
+                                        if (!mounted) return;
+                                        Common.showSnackBar(
+                                            context, "인증번호가 발송되었습니다.");
                                         return;
                                       }
                                       if (postSmsByIdResult ==
                                           PostSmsByIdCode.ST041) {
+                                        setState(() {
+                                          studentIdLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "등록된 학번이 아닙니다.");
@@ -140,6 +151,9 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                       }
                                       if (postSmsByIdResult ==
                                           PostSmsByIdCode.ST057) {
+                                        setState(() {
+                                          studentIdLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "인증 대기중인 학번입니다.");
@@ -147,6 +161,9 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                       }
                                       if (postSmsByIdResult ==
                                           PostSmsByIdCode.ST065) {
+                                        setState(() {
+                                          studentIdLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(context,
                                             "너무 많은 요청을 보냈습니다. 잠시 후 다시 시도해주세요.");
@@ -154,17 +171,23 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                       }
                                       if (postSmsByIdResult ==
                                           PostSmsByIdCode.ST058) {
+                                        setState(() {
+                                          studentIdLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(context,
                                             "탈퇴한 계정입니다. 재가입시 문의해주세요. (02-970-7012)");
                                         return;
                                       }
+                                      setState(() {
+                                        studentIdLoading = false;
+                                      });
                                       if (!mounted) return;
                                       Common.showSnackBar(
                                           context, "오류가 발생했습니다.");
-                                    }, HexColor("#EE795F"))
+                                    }, HexColor("#EE795F"), studentIdLoading)
                                   : phoneAuthButton(
-                                      "인증요청", () {}, HexColor("#F9B7A9")),
+                                      "인증요청", () {}, HexColor("#F9B7A9"), false),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide:
@@ -209,10 +232,17 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                         return;
                                       }
 
+                                      setState(() {
+                                        authCodeLoading = true;
+                                      });
+
                                       final checkPassWordAuthCodeResult =
                                           await checkPassWordAuthCode(id, code);
                                       if (checkPassWordAuthCodeResult ==
                                           PostSmsByIdCode.ST066) {
+                                        setState(() {
+                                          authCodeLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "인증 정보가 일치하지 않습니다.");
@@ -220,17 +250,21 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                       }
                                       if (checkPassWordAuthCodeResult ==
                                           PostSmsByIdCode.ST067) {
-                                        if (!mounted) return;
-                                        Common.showSnackBar(
-                                            context, "시간이 초과했습니다. 다시 요청해주세요.");
                                         setState(() {
+                                          authCodeLoading = false;
                                           authCodeActive = false;
                                           studentIdActive = true;
                                         });
+                                        if (!mounted) return;
+                                        Common.showSnackBar(
+                                            context, "시간이 초과했습니다. 다시 요청해주세요.");
                                         return;
                                       }
                                       if (checkPassWordAuthCodeResult ==
                                           PostSmsByIdCode.SUCCESS) {
+                                        setState(() {
+                                          authCodeLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(context,
                                             "인증에 성공했습니다. 다음으로 이동해주세요.");
@@ -242,18 +276,24 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                       }
                                       if (checkPassWordAuthCodeResult ==
                                           PostSmsByIdCode.UNCATCHED_ERROR) {
+                                        setState(() {
+                                          authCodeLoading = false;
+                                        });
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "오류가 발생했습니다.");
                                         return;
                                       }
+                                      setState(() {
+                                        authCodeLoading = false;
+                                      });
                                       if (!mounted) return;
                                       Common.showSnackBar(
                                           context, "오류가 발생했습니다.");
                                       return;
-                                    }, HexColor("#EE795F"))
+                                    }, HexColor("#EE795F"), authCodeLoading)
                                   : phoneAuthButton(
-                                      "확인", () {}, HexColor("#F9B7A9")),
+                                      "확인", () {}, HexColor("#F9B7A9"), false),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide:
@@ -376,7 +416,8 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
     );
   }
 
-  Widget phoneAuthButton(String title, VoidCallback onPressed, Color color) {
+  Widget phoneAuthButton(
+      String title, VoidCallback onPressed, Color color, bool isLoading) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -385,12 +426,22 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
         decoration: BoxDecoration(
             color: color, borderRadius: BorderRadius.circular(15)),
         alignment: Alignment.center,
-        child: Text(
+        child: isLoading == false
+            ? Text(
           title,
           style: TextStyle(
               fontSize: 12.sp,
               fontWeight: FontWeight.w400,
               color: Colors.white),
+        )
+            : Center(
+          child: Platform.isIOS
+              ? CupertinoActivityIndicator(
+            color: HexColor("#f3f3f3"),
+          )
+              : CircularProgressIndicator(
+            color: HexColor("#f3f3f3"),
+          ),
         ),
       ),
     );
