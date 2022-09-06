@@ -1,6 +1,5 @@
-import 'dart:async';
+import ㅇ'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +40,6 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
   bool isLoading = false;
   int boundaryDistance = 50;
   int alertLevel = 1;
-
   bool isContents = false;
   late List<FestivalInfoWidget> contentsList;
   late List<FestivalLineupWidget> lineupList;
@@ -67,9 +65,9 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
   bool isGround = false;
 
   late IconData markericon;
-  Set<Marker> markerList = Set();
-  Set<Marker> baseMarkerList = Set();
-  Set<Circle> circleList = Set();
+  Set<Marker> markerList = {};
+  Set<Marker> baseMarkerList = {};
+  Set<Circle> circleList = {};
 
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -85,16 +83,21 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
   }
 
   Future<void> addMarkers() async {
-
-    final Uint8List markerIcon_exhibition = await getBytesFromAsset('images/exhibition_marker.png', 100);
-    final Uint8List markerIcon_fleamarket = await getBytesFromAsset('images/fleamarket_marker.png', 100);
-    final Uint8List markerIcon_sangsang = await getBytesFromAsset('images/sangsang_marker.png', 100);
-    final Uint8List markerIcon_bungeobang = await getBytesFromAsset('images/bungeobang_marker.png', 100);
-    final Uint8List markerIcon_ground = await getBytesFromAsset('images/ground_marker.png', 100);
+    final Uint8List markerIcon_exhibition =
+        await getBytesFromAsset('images/exhibition_marker.png', 100);
+    final Uint8List markerIcon_fleamarket =
+        await getBytesFromAsset('images/fleamarket_marker.png', 100);
+    final Uint8List markerIcon_sangsang =
+        await getBytesFromAsset('images/sangsang_marker.png', 100);
+    final Uint8List markerIcon_bungeobang =
+        await getBytesFromAsset('images/bungeobang_marker.png', 100);
+    final Uint8List markerIcon_ground =
+        await getBytesFromAsset('images/ground_marker.png', 100);
 
     baseMarkerList = {
       Marker(
@@ -214,14 +217,16 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -240,7 +245,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
               if (snapshot.hasData == false) {
                 return GoogleMap(
                   initialCameraPosition:
-                  CameraPosition(target: initialCameraPosition, zoom: 16.5),
+                      CameraPosition(target: initialCameraPosition, zoom: 16.5),
                   mapType: MapType.normal,
                   onMapCreated: _onMapCreated,
                   myLocationEnabled: true,
@@ -253,7 +258,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
               else if (snapshot.hasError) {
                 return GoogleMap(
                   initialCameraPosition:
-                  CameraPosition(target: initialCameraPosition, zoom: 16.5),
+                      CameraPosition(target: initialCameraPosition, zoom: 16.5),
                   mapType: MapType.normal,
                   onMapCreated: _onMapCreated,
                   myLocationEnabled: true,
@@ -266,7 +271,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
               else {
                 return GoogleMap(
                   initialCameraPosition:
-                  CameraPosition(target: initialCameraPosition, zoom: 16.5),
+                      CameraPosition(target: initialCameraPosition, zoom: 16.5),
                   mapType: MapType.normal,
                   onMapCreated: _onMapCreated,
                   myLocationEnabled: true,
@@ -375,7 +380,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const LoginOptionScreen()),
-                            (route) => false);
+                        (route) => false);
                     return;
                   }
 
@@ -419,7 +424,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                       });
                                     }, () async {
                                       final stampPlaceResult =
-                                      await stampPlace("prized");
+                                          await stampPlace("prized");
                                       if (stampPlaceResult !=
                                           StatusCode.SUCCESS) {
                                         return;
@@ -485,7 +490,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                           borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(30.0)),
+                              BorderRadius.vertical(top: Radius.circular(30.0)),
                         ),
                         context: context,
                         builder: (context) {
@@ -501,7 +506,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
                                         SizedBox(
                                             height: 40.h,
@@ -517,28 +522,28 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                                         HexColor("#F8EAE1")),
                                                     backgroundColor: isContents
                                                         ? MaterialStateProperty.all<Color>(HexColor(
-                                                        "#50FFFFFF"))
+                                                            "#50FFFFFF"))
                                                         : MaterialStateProperty.all<Color>(
-                                                        HexColor(
-                                                            "#FFFFFF")),
+                                                            HexColor(
+                                                                "#FFFFFF")),
                                                     shape: MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder>(
                                                         const RoundedRectangleBorder(
-                                                          borderRadius:
+                                                      borderRadius:
                                                           BorderRadius.only(
                                                               topLeft: Radius
                                                                   .circular(20),
                                                               bottomLeft: Radius
                                                                   .circular(
-                                                                  20)),
-                                                          // side: BorderSide(color: Colors.red)
-                                                        ))),
+                                                                      20)),
+                                                      // side: BorderSide(color: Colors.red)
+                                                    ))),
                                                 child: !isContents
                                                     ? Text("컨텐츠",
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w600,
-                                                        fontSize: 17.5.sp,
-                                                        color: HexColor("#425C5A")))
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.w600,
+                                                            fontSize: 17.5.sp,
+                                                            color: HexColor("#425C5A")))
                                                     : Text("컨텐츠", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.5.sp, color: HexColor("#50425C5A"))))),
                                         SizedBox(
                                             height: 40.h,
@@ -554,39 +559,39 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                                         HexColor("#F8EAE1")),
                                                     backgroundColor: !isContents
                                                         ? MaterialStateProperty.all<Color>(
-                                                        HexColor(
-                                                            "#50FFFFFF"))
+                                                            HexColor(
+                                                                "#50FFFFFF"))
                                                         : MaterialStateProperty.all<Color>(
-                                                        HexColor(
-                                                            "#FFFFFF")),
+                                                            HexColor(
+                                                                "#FFFFFF")),
                                                     shape: MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder>(
                                                         const RoundedRectangleBorder(
-                                                          borderRadius:
+                                                      borderRadius:
                                                           BorderRadius.only(
                                                               topRight: Radius
                                                                   .circular(20),
                                                               bottomRight:
-                                                              Radius
-                                                                  .circular(
-                                                                  20)),
-                                                          // side: BorderSide(color: Colors.red)
-                                                        ))),
+                                                                  Radius
+                                                                      .circular(
+                                                                          20)),
+                                                      // side: BorderSide(color: Colors.red)
+                                                    ))),
                                                 child: !isContents
                                                     ? Text("무대 라인업",
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w600,
-                                                        fontSize: 17.5.sp,
-                                                        color: HexColor("#50425C5A")))
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.w600,
+                                                            fontSize: 17.5.sp,
+                                                            color: HexColor("#50425C5A")))
                                                     : Text(
-                                                  "무대 라인업",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                      FontWeight.w600,
-                                                      fontSize: 17.5.sp,
-                                                      color: HexColor(
-                                                          "#425C5A")),
-                                                )))
+                                                        "무대 라인업",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 17.5.sp,
+                                                            color: HexColor(
+                                                                "#425C5A")),
+                                                      )))
                                       ],
                                     ),
                                     SizedBox(
@@ -595,7 +600,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                                     Expanded(
                                         child: !isContents
                                             ? _getContentsCrowded(
-                                            scrollController)
+                                                scrollController)
                                             : _getLineupInfo(scrollController))
                                   ]);
                                 });
@@ -907,12 +912,12 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
       Map bodyData = {"target": place};
       final resString = await http
           .post(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/stamp"),
-          headers: {
-            "Authorization":
-            "Bearer ${await secureStorage.read(key: "ACCESS_TOKEN")}",
-            "Content-Type": "application/json"
-          },
-          body: json.encode(bodyData))
+              headers: {
+                "Authorization":
+                    "Bearer ${await secureStorage.read(key: "ACCESS_TOKEN")}",
+                "Content-Type": "application/json"
+              },
+              body: json.encode(bodyData))
           .timeout(const Duration(seconds: 30));
       final resData = jsonDecode(utf8.decode(resString.bodyBytes));
 
@@ -976,7 +981,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
       final resString = await http
           .get(Uri.parse("${dotenv.get("DEV_API_BASE_URL")}/stamp"), headers: {
         "Authorization":
-        "Bearer ${await secureStorage.read(key: "ACCESS_TOKEN")}"
+            "Bearer ${await secureStorage.read(key: "ACCESS_TOKEN")}"
       }).timeout(const Duration(seconds: 20));
       final resData = jsonDecode(utf8.decode(resString.bodyBytes));
       print(resData);
@@ -1038,8 +1043,9 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
       return;
     }
 
-    if(await checkLocationPermission() == false){
-      Common.showSnackBar(context, "위치서비스를 사용할 수 없습니다.\n기기의 \"설정\"에서 위치서비스를 켜주세요.");
+    if (await checkLocationPermission() == false) {
+      Common.showSnackBar(
+          context, "위치서비스를 사용할 수 없습니다.\n기기의 \"설정\"에서 위치서비스를 켜주세요.");
       return;
     }
 
@@ -1051,7 +1057,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
-              (route) => false);
+          (route) => false);
       return;
     }
 
@@ -1061,7 +1067,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
       return;
     }
 
-    showDialog(
+    await showDialog(
         context: context,
         builder: (context) {
           return StatefulBuilder(
@@ -1086,17 +1092,17 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                       height: 8.h,
                     ),
                     getFromStampStatus(stampStatusWithErrorResult, place) ==
-                        true
+                            true
                         ? SvgPicture.asset(
-                      "assets/stamp_$place.svg",
-                      width: 130.w,
-                      height: 130.h,
-                    )
+                            "assets/stamp_$place.svg",
+                            width: 130.w,
+                            height: 130.h,
+                          )
                         : SvgPicture.asset(
-                      "assets/stamp_${place}_grey.svg",
-                      width: 130.w,
-                      height: 130.h,
-                    ),
+                            "assets/stamp_${place}_grey.svg",
+                            width: 130.w,
+                            height: 130.h,
+                          ),
                     SizedBox(
                       height: 22.h,
                     ),
@@ -1106,46 +1112,46 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                           height: 40.h,
                           decoration: BoxDecoration(
                               color: getFromStampStatus(
-                                  stampStatusWithErrorResult, place) ==
-                                  true
+                                          stampStatusWithErrorResult, place) ==
+                                      true
                                   ? HexColor("#929d9c")
                                   : HexColor("#425c5a"),
                               borderRadius: BorderRadius.circular(15)),
                           alignment: Alignment.center,
                           child: isLoading
                               ? Center(
-                            child: Platform.isIOS
-                                ? CupertinoActivityIndicator(
-                              color: HexColor("#f3f3f3"),
-                            )
-                                : CircularProgressIndicator(
-                              color: HexColor("#f3f3f3"),
-                            ),
-                          )
+                                  child: Platform.isIOS
+                                      ? CupertinoActivityIndicator(
+                                          color: HexColor("#f3f3f3"),
+                                        )
+                                      : CircularProgressIndicator(
+                                          color: HexColor("#f3f3f3"),
+                                        ),
+                                )
                               : Center(
-                            child: getFromStampStatus(
-                                stampStatusWithErrorResult,
-                                place) ==
-                                true
-                                ? Text(
-                              "참여완료",
-                              style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: HexColor("#f3f3f3")),
-                            )
-                                : Text(
-                              "도장찍기",
-                              style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: HexColor("#F8EAE1")),
-                            ),
-                          )),
+                                  child: getFromStampStatus(
+                                              stampStatusWithErrorResult,
+                                              place) ==
+                                          true
+                                      ? Text(
+                                          "참여완료",
+                                          style: TextStyle(
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: HexColor("#f3f3f3")),
+                                        )
+                                      : Text(
+                                          "도장찍기",
+                                          style: TextStyle(
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: HexColor("#F8EAE1")),
+                                        ),
+                                )),
                       onTap: () async {
                         /// 스탬프로 다이얼로그 열고 2주동안 대기하는 상황 배제
                         if (getFromStampStatus(
-                            stampStatusWithErrorResult, place) ==
+                                stampStatusWithErrorResult, place) ==
                             true) {
                           return;
                         }
@@ -1310,7 +1316,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                 child: Text(
                   "상품수령",
                   style:
-                  TextStyle(fontSize: 17.5.sp, color: HexColor("#f3f3f3")),
+                      TextStyle(fontSize: 17.5.sp, color: HexColor("#f3f3f3")),
                 ),
               ),
             )
@@ -1424,7 +1430,7 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
     return 'call marker data';
   }
 
-  Future showFestivalDialog() async{
+  Future showFestivalDialog() async {
     showDialog(
         context: context,
         barrierDismissible: true,
@@ -1449,14 +1455,19 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("축제 장소를 찾아가 도장을 모아보세요!", style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646")), ),
+                Text(
+                  "축제 장소를 찾아가 도장을 모아보세요!",
+                  style: TextStyle(
+                      fontSize: 13.5.sp,
+                      fontWeight: FontWeight.w300,
+                      color: HexColor("##464646")),
+                ),
                 SizedBox(
                   height: 20.h,
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 5.w, right: 5.w),
-                  child:
-                  Row(
+                  child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -1467,15 +1478,30 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                               SizedBox(
                                 height: 15.h,
                               ),
-                              Text("축제정보", style: TextStyle(fontSize: 17.5.sp, color: HexColor("##425C5A"), fontWeight: FontWeight.w500),),
+                              Text(
+                                "축제정보",
+                                style: TextStyle(
+                                    fontSize: 17.5.sp,
+                                    color: HexColor("##425C5A"),
+                                    fontWeight: FontWeight.w500),
+                              ),
                               SizedBox(
                                 height: 10.h,
                               ),
-                              Text("축제 관련 정보", style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"))),
+                              Text("축제 관련 정보",
+                                  style: TextStyle(
+                                      fontSize: 13.5.sp,
+                                      fontWeight: FontWeight.w300,
+                                      color: HexColor("##464646"))),
                               SizedBox(
                                 height: 7.h,
                               ),
-                              Text('- 위치\n- 요금\n- 축제일정\n ', style: TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"), height: 1.3))
+                              Text('- 위치\n- 요금\n- 축제일정\n ',
+                                  style: TextStyle(
+                                      fontSize: 12.5.sp,
+                                      fontWeight: FontWeight.w300,
+                                      color: HexColor("##464646"),
+                                      height: 1.3))
                             ]),
                         SizedBox(
                           width: 18.w,
@@ -1483,22 +1509,36 @@ class _NewFestivalScreenState extends State<NewFestivalScreen> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SvgPicture.asset("assets/icon_check_stamp_status.svg"),
+                            SvgPicture.asset(
+                                "assets/icon_check_stamp_status.svg"),
                             SizedBox(
                               height: 15.h,
                             ),
-                            Text("도장현황", style: TextStyle(fontSize: 17.5.sp, color: HexColor("##425C5A"), fontWeight: FontWeight.w500)),
+                            Text("도장현황",
+                                style: TextStyle(
+                                    fontSize: 17.5.sp,
+                                    color: HexColor("##425C5A"),
+                                    fontWeight: FontWeight.w500)),
                             SizedBox(
                               height: 10.h,
                             ),
-                            Text("방문 도장 이벤트", style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"))),
+                            Text("방문 도장 이벤트",
+                                style: TextStyle(
+                                    fontSize: 13.5.sp,
+                                    fontWeight: FontWeight.w300,
+                                    color: HexColor("##464646"))),
                             SizedBox(
                               height: 7.h,
                             ),
-                            Text('- 지도에 표시된\n  5개의 장소에\n  방문하여 마커를\n  클릭해 보세요', style: TextStyle(fontSize: 12.5.sp, fontWeight: FontWeight.w300, color: HexColor("##464646"), height: 1.3))
+                            Text('- 지도에 표시된\n  5개의 장소에\n  방문하여 마커를\n  클릭해 보세요',
+                                style: TextStyle(
+                                    fontSize: 12.5.sp,
+                                    fontWeight: FontWeight.w300,
+                                    color: HexColor("##464646"),
+                                    height: 1.3))
                           ],
-                        )]
-                  ),
+                        )
+                      ]),
                 )
               ],
             ),
