@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
@@ -27,14 +28,22 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
   bool authCodeLoading = false;
   bool nextButtonActive = false;
 
+  int _counter = 180;
+  late String min, sec;
+  late Timer _timer;
+
   @override
   void dispose() {
     studentIdController.dispose();
+    codeController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
   @override
   void initState() {
+    min = "03";
+    sec = "00";
     super.initState();
   }
 
@@ -134,6 +143,7 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                           studentIdActive = false;
                                           authCodeActive = true;
                                         });
+                                        _startTimer();
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "인증번호가 발송되었습니다.");
@@ -186,8 +196,8 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                       Common.showSnackBar(
                                           context, "오류가 발생했습니다.");
                                     }, HexColor("#EE795F"), studentIdLoading)
-                                  : phoneAuthButton(
-                                      "인증요청", () {}, HexColor("#F9B7A9"), false),
+                                  : phoneAuthButton("$min:$sec", () {},
+                                      HexColor("#F9B7A9"), false),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide:
@@ -428,23 +438,45 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
         alignment: Alignment.center,
         child: isLoading == false
             ? Text(
-          title,
-          style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w400,
-              color: Colors.white),
-        )
+                title,
+                style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
+              )
             : Center(
-          child: Platform.isIOS
-              ? CupertinoActivityIndicator(
-            color: HexColor("#f3f3f3"),
-          )
-              : CircularProgressIndicator(
-            color: HexColor("#f3f3f3"),
-          ),
-        ),
+                child: Platform.isIOS
+                    ? CupertinoActivityIndicator(
+                        color: HexColor("#f3f3f3"),
+                      )
+                    : CircularProgressIndicator(
+                        color: HexColor("#f3f3f3"),
+                      ),
+              ),
       ),
     );
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (_counter < 0) {
+        setState(() {
+          timer.cancel();
+        });
+        return;
+      }
+      min = (_counter ~/ 60).toString();
+      sec = (_counter % 60).toString();
+      if (min.toString().length == 1) {
+        min = "0$min";
+      }
+      if (sec.toString().length == 1) {
+        sec = "0$sec";
+      }
+      setState(() {
+        _counter--;
+      });
+    });
   }
 }
 
