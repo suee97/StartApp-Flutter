@@ -41,7 +41,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                height: 80.h,
+                height: 20.h,
               ),
               Row(
                 children: [
