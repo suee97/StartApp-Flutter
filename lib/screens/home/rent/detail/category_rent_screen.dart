@@ -427,18 +427,23 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
 
       List<dynamic> data = resData["data"];
       for (var e in data) {
-        tempMeetingList.add(Meeting(
-            "",
-            DateTime(
-                int.parse(e["startTime"].substring(0, 4)),
-                int.parse(e["startTime"].substring(5, 7)),
-                int.parse(e["startTime"].substring(8, 10))),
-            DateTime(
-                int.parse(e["endTime"].substring(0, 4)),
-                int.parse(e["endTime"].substring(5, 7)),
-                int.parse(e["endTime"].substring(8, 10))),
-            getRandomColor(),
-            true));
+
+        for(int i = 0; i < e["account"]; i++) {
+          tempMeetingList.add(Meeting(
+              "",
+              DateTime(
+                  int.parse(e["startTime"].substring(0, 4)),
+                  int.parse(e["startTime"].substring(5, 7)),
+                  int.parse(e["startTime"].substring(8, 10))),
+              DateTime(
+                  int.parse(e["endTime"].substring(0, 4)),
+                  int.parse(e["endTime"].substring(5, 7)),
+                  int.parse(e["endTime"].substring(8, 10))),
+              getRandomColor(),
+              true));
+        }
+
+
       }
 
       setState(() {
