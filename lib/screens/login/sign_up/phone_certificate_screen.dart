@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
@@ -29,15 +30,22 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
   bool codeRequestLoading = false;
   bool nextButtonActive = false;
 
+  int _counter = 180;
+  late String min, sec;
+  late Timer _timer;
+
   @override
   void dispose() {
     phoneNoController.dispose();
     codeNoController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
   @override
   void initState() {
+    min = "03";
+    sec = "00";
     super.initState();
   }
 
@@ -202,6 +210,7 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                           codeRequestActive = true;
                                           authRequestLoading = false;
                                         });
+                                        _startTimer();
                                         if (!mounted) return;
                                         Common.showSnackBar(context,
                                             "인증번호가 발송되었습니다. 3분 안에 입력해주세요.");
@@ -215,7 +224,7 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                           context, "오류가 발생했습니다.");
                                       return;
                                     }, HexColor("#EE795F"), authRequestLoading)
-                                  : phoneAuthButton("인증요청", () {},
+                                  : phoneAuthButton("$min:$sec", () {},
                                       HexColor("#F9B7A9"), false),
                             ),
                             enabledBorder: UnderlineInputBorder(
@@ -497,6 +506,28 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
               ),
       ),
     );
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (_counter < 0) {
+        setState(() {
+          timer.cancel();
+        });
+        return;
+      }
+      min = (_counter ~/ 60).toString();
+      sec = (_counter % 60).toString();
+      if (min.toString().length == 1) {
+        min = "0$min";
+      }
+      if (sec.toString().length == 1) {
+        sec = "0$sec";
+      }
+      setState(() {
+        _counter--;
+      });
+    });
   }
 }
 
