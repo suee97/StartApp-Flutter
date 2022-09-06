@@ -20,7 +20,7 @@ import 'package:start_app/widgets/main_widget.dart';
 import '../../utils/common.dart';
 import '../../widgets/yellow_line.dart';
 import 'package:http/http.dart' as http;
-import 'festival/new_festival/new_festival_screen.dart';
+import 'festival/festival_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

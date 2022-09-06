@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:start_app/screens/home/festival/new_festival/new_festival_screen.dart';
+import 'package:start_app/screens/home/festival/festival_screen.dart';
 
 class StampStatusDialog extends StatelessWidget {
   StampStatusDialog({Key? key, required this.stampStatusWithError})
