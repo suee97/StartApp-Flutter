@@ -166,7 +166,6 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
             ),
             Container(
               width: double.infinity,
-              height: 360.h,
               decoration: BoxDecoration(
                   color: HexColor("#f3f3f3"),
                   borderRadius: const BorderRadius.only(
@@ -370,37 +369,26 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                         ),
                         cellBorderColor: HexColor("#425c5a"),
                       ),
-                    )
-                  ])),
-            ),
-            Container(
-              width: double.infinity,
-              color: HexColor("#f3f3f3"),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 8.h, bottom: 14.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 16.w),
-                          child: Text(
-                            "$selectedDayAvailableCount개 대여가능",
-                            style: TextStyle(
-                                fontSize: 11.5.sp, fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  )
-                ],
-              ),
+                    Container(
+                      padding: EdgeInsets.only(top: 10.h, left: 16.w),
+                      margin: EdgeInsets.only(bottom: 100.h),
+                      alignment: Alignment.topLeft,
+                      child: Column(
+                        children: [
+                          Text(
+                              "$selectedDayAvailableCount개 대여가능",
+                              style: TextStyle(
+                                  fontSize: 11.5.sp, fontWeight: FontWeight.w400)
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          )
+                        ],
+                      )
+                    )
+
+                  ])),
             ),
           ],
         ),
