@@ -23,7 +23,7 @@ class CategoryRentScreen extends StatefulWidget {
       required this.itemIcon,
       required this.itemImg,
       required this.itemPurpose,
-      required this.itemTotalCnt})
+      })
       : super(key: key);
 
   String categoryKr;
@@ -31,7 +31,6 @@ class CategoryRentScreen extends StatefulWidget {
   String itemIcon;
   String itemImg;
   String itemPurpose;
-  String itemTotalCnt;
 
   @override
   State<CategoryRentScreen> createState() => _CategoryRentScreenState();
@@ -111,7 +110,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                     RentDetailText(
                       category: widget.categoryKr,
                       itemPurpose: widget.itemPurpose,
-                      itemTotalCnt: widget.itemTotalCnt,
+                      itemTotalCnt: totalAvailableCount,
                     ),
                     Common.getIsLogin()
                         ? GestureDetector(
@@ -292,7 +291,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           if (totalAvailableCount == 0) {
                             return;
                           }
-                          
+
                           if (calendarSelectionDetails.date == null) {
                             return;
                           }
@@ -371,23 +370,20 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(top: 10.h, left: 16.w),
-                      margin: EdgeInsets.only(bottom: 100.h),
-                      alignment: Alignment.topLeft,
-                      child: Column(
-                        children: [
-                          Text(
-                              "$selectedDayAvailableCount개 대여가능",
-                              style: TextStyle(
-                                  fontSize: 11.5.sp, fontWeight: FontWeight.w400)
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          )
-                        ],
-                      )
-                    )
-
+                        padding: EdgeInsets.only(top: 10.h, left: 16.w),
+                        margin: EdgeInsets.only(bottom: 100.h),
+                        alignment: Alignment.topLeft,
+                        child: Column(
+                          children: [
+                            Text("$selectedDayAvailableCount개 대여가능",
+                                style: TextStyle(
+                                    fontSize: 11.5.sp,
+                                    fontWeight: FontWeight.w400)),
+                            SizedBox(
+                              height: 10.h,
+                            )
+                          ],
+                        ))
                   ])),
             ),
           ],
@@ -415,8 +411,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
 
       List<dynamic> data = resData["data"];
       for (var e in data) {
-
-        for(int i = 0; i < e["account"]; i++) {
+        for (int i = 0; i < e["account"]; i++) {
           tempMeetingList.add(Meeting(
               "",
               DateTime(
@@ -430,8 +425,6 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
               getRandomColor(),
               true));
         }
-
-
       }
 
       setState(() {

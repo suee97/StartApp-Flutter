@@ -52,7 +52,6 @@ class _RentScreenState extends State<RentScreen> {
         itemIcon: "assets/icon_canopy_green.svg",
         itemImg: "images/rent_canopy_img.jpg",
         itemPurpose: "기둥과 천막으로 부스를 만들 수 있습니다.",
-        itemTotalCnt: "2"
       ),
       CategoryRentScreen(
         categoryKr: "듀라테이블",
@@ -60,7 +59,6 @@ class _RentScreenState extends State<RentScreen> {
         itemIcon: "assets/icon_table_green.svg",
         itemImg: "images/rent_table_img.jpg",
         itemPurpose: "간이 테이블로 사용할 수 있습니다.",
-        itemTotalCnt: "4"
       ),
       CategoryRentScreen(
         categoryKr: "앰프&마이크",
@@ -68,7 +66,6 @@ class _RentScreenState extends State<RentScreen> {
         itemIcon: "assets/icon_amp_green.svg",
         itemImg: "images/rent_amp_img.jpeg",
         itemPurpose: "행사 시에 큰 음향을 낼 수 있습니다.",
-        itemTotalCnt: "2"
       ),
       CategoryRentScreen(
         categoryKr: "리드선",
@@ -76,23 +73,21 @@ class _RentScreenState extends State<RentScreen> {
         itemIcon: "assets/icon_wire_green.svg",
         itemImg: "images/rent_wire_img.jpg",
         itemPurpose: "콘센트를 연장하여 사용할 수 있습니다.",
-        itemTotalCnt: "2"
       ),
       CategoryRentScreen(
-          categoryKr: "엘카",
-          categoryEng: "CART",
-          itemIcon: "assets/icon_cart_green.svg",
-          itemImg: "images/rent_cart_img.jpg",
-          itemPurpose: "여러 짐을 한 번에 옮길 수 있습니다.",
-          itemTotalCnt: "2",
+        categoryKr: "엘카",
+        categoryEng: "CART",
+        itemIcon: "assets/icon_cart_green.svg",
+        itemImg: "images/rent_cart_img.jpg",
+        itemPurpose: "여러 짐을 한 번에 옮길 수 있습니다.",
       ),
       CategoryRentScreen(
-          categoryKr: "의자",
-          categoryEng: "CHAIR",
-          itemIcon: "assets/icon_chair_green.svg",
-          itemImg: "images/rent_chair_img.jpg",
-          itemPurpose: "외부 행사 시에 간이 의자로 활용할 수 있습니다.",
-          itemTotalCnt: "10")
+        categoryKr: "의자",
+        categoryEng: "CHAIR",
+        itemIcon: "assets/icon_chair_green.svg",
+        itemImg: "images/rent_chair_img.jpg",
+        itemPurpose: "외부 행사 시에 간이 의자로 활용할 수 있습니다.",
+      )
     ];
 
     return Scaffold(
@@ -423,7 +418,10 @@ class _RentScreenState extends State<RentScreen> {
     return Text(
       title,
       style: TextStyle(
-          color: Colors.white, fontSize: 13.5.sp, fontWeight: FontWeight.w500, height: 1.3),
+          color: Colors.white,
+          fontSize: 13.5.sp,
+          fontWeight: FontWeight.w500,
+          height: 1.3),
     );
   }
 }
