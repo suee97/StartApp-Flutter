@@ -41,7 +41,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                height: 80.h,
+                height: 20.h,
               ),
               Row(
                 children: [
@@ -66,7 +66,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                     width: 28.w,
                   ),
                   Text(
-                    "학생증을 촬영하여 업로드해주세요.",
+                    "실물 학생증을 직접 촬영하거나\n모바일 학생증 캡쳐 사진을 업로드해 주세요.",
                     style:
                         TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400),
                   ),
@@ -110,18 +110,115 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                 height: 28.h,
               ),
               GestureDetector(
-                onTap: () async {
-                  final file = await ImagePicker().pickImage(
-                      source: ImageSource.camera,
-                      maxWidth: 1920,
-                      maxHeight: 1080,
-                      imageQuality: 100);
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          backgroundColor: HexColor("#F8EAE1"),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                          title:
 
-                  if (file?.path != null) {
-                    setState(() {
-                      imageFile = File(file!.path);
-                    });
-                  }
+                          Text(
+                            "학생증 사진 업로드",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 24.sp, fontWeight: FontWeight.w500),
+                          ),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "실물 학생증 사진을 촬영하거나 모바일 학생증 사진을 업로드할 수 있습니다.",
+                                style: TextStyle(
+                                    fontSize: 15.5.sp,
+                                    fontWeight: FontWeight.w300,height: 1.5),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+
+                                      final file = await ImagePicker().pickImage(
+                                          source: ImageSource.camera,
+                                          maxWidth: 1920,
+                                          maxHeight: 1080,
+                                          imageQuality: 100);
+
+                                      if (file?.path != null) {
+                                        setState(() {
+                                          imageFile = File(file!.path);
+                                        });
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                    child: Container(
+                                      width: 114.w,
+                                      height: 76.h,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: HexColor("#425c5a"),
+                                          borderRadius: const BorderRadius.all(Radius.circular(10))),
+                                      child: Text(
+                                        "학생증\n촬영",
+                                        style: TextStyle(
+                                            fontSize: 19.5.sp,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 6.w,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+
+                                        final file = await ImagePicker().pickImage(
+                                            source: ImageSource.gallery,
+                                            maxWidth: 1920,
+                                            maxHeight: 1080,
+                                            imageQuality: 100 //0-100
+                                        );
+
+                                        if (file?.path != null) {
+                                          setState(() {
+                                            imageFile = File(file!.path);
+                                          });
+                                          Navigator.pop(context);
+                                        }
+                                    },
+                                    child: Container(
+                                      width: 114.w,
+                                      height: 76.h,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: HexColor("#425c5a"),
+                                          borderRadius: const BorderRadius.all(Radius.circular(10))),
+                                      child: Text(
+                                        "모바일\n학생증\n업로드",
+                                        style: TextStyle(
+                                            fontSize: 19.5.sp,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      });
                 },
                 child: imageFile != null
                     ? Container(
@@ -135,6 +232,9 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
                                 image: FileImage(File(imageFile!.path)))),
                       )
                     : noCertificateContainer(),
+              ),
+              SizedBox(
+                height: 14.h,
               ),
               SizedBox(
                 height: 64.h,
@@ -328,7 +428,7 @@ class _PostCertificateScreenState extends State<PostCertificateScreen> {
       ),
       child: Center(
         child: Text(
-          "이곳을 누르면 카메라가 실행됩니다.",
+          "이곳을 눌러서 사진을 업로드해주세요.",
           style: TextStyle(
               fontSize: 13.sp,
               fontWeight: FontWeight.w400,
