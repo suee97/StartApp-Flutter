@@ -804,7 +804,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
   Future<void> _launchUrl(String _uri) async {
     if (!await launchUrl(Uri.parse(_uri))) {
-      throw 'Could not launch ${_uri}';
+      throw 'Could not launch $_uri';
     }
   }
 
@@ -905,14 +905,14 @@ class _SettingScreenState extends State<SettingScreen> {
       } else if (await canLaunchUrlString(webUrl)) {
         await launchUrlString(webUrl);
       } else {
-        print("can't open Instagram");
+        debugPrint("can't open Instagram (ios)");
       }
       return;
     }
 
-    final urlAnd = Uri.parse('https://www.instagram.com/seoultech_38/');
-    if (await canLaunchUrl(urlAnd)) {
-      await launchUrl(urlAnd);
+    const _uri = 'https://www.instagram.com/seoultech_38';
+    if (!await launchUrl(Uri.parse(_uri))) {
+      throw 'Could not launch $_uri';
     }
   }
 

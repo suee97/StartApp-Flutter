@@ -18,12 +18,12 @@ import 'package:http/http.dart' as http;
 class CategoryRentScreen extends StatefulWidget {
   CategoryRentScreen(
       {Key? key,
-        required this.categoryKr,
-        required this.categoryEng,
-        required this.itemIcon,
-        required this.itemImg,
-        required this.itemPurpose,
-        required this.itemTotalCnt})
+      required this.categoryKr,
+      required this.categoryEng,
+      required this.itemIcon,
+      required this.itemImg,
+      required this.itemPurpose,
+      })
       : super(key: key);
 
   String categoryKr;
@@ -31,7 +31,6 @@ class CategoryRentScreen extends StatefulWidget {
   String itemIcon;
   String itemImg;
   String itemPurpose;
-  String itemTotalCnt;
 
   @override
   State<CategoryRentScreen> createState() => _CategoryRentScreenState();
@@ -111,7 +110,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                     RentDetailText(
                       category: widget.categoryKr,
                       itemPurpose: widget.itemPurpose,
-                      itemTotalCnt: widget.itemTotalCnt,
+                      itemTotalCnt: totalAvailableCount,
                     ),
                     Common.getIsLogin()
                         ? GestureDetector(
@@ -292,9 +291,6 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           if (totalAvailableCount == 0) {
                             return;
                           }
-                          if (meetingList.isEmpty) {
-                            return;
-                          }
 
                           if (calendarSelectionDetails.date == null) {
                             return;
@@ -381,18 +377,15 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                         alignment: Alignment.topLeft,
                         child: Column(
                           children: [
-                            Text(
-                                "$selectedDayAvailableCount개 대여가능",
+                            Text("$selectedDayAvailableCount개 대여가능",
                                 style: TextStyle(
-                                    fontSize: 11.5.sp, fontWeight: FontWeight.w400)
-                            ),
+                                    fontSize: 11.5.sp,
+                                    fontWeight: FontWeight.w400)),
                             SizedBox(
                               height: 10.h,
                             )
                           ],
-                        )
-                    )
-
+                        ))
                   ])),
             ),
           ],
@@ -420,18 +413,20 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
 
       List<dynamic> data = resData["data"];
       for (var e in data) {
-        tempMeetingList.add(Meeting(
-            "",
-            DateTime(
-                int.parse(e["startTime"].substring(0, 4)),
-                int.parse(e["startTime"].substring(5, 7)),
-                int.parse(e["startTime"].substring(8, 10))),
-            DateTime(
-                int.parse(e["endTime"].substring(0, 4)),
-                int.parse(e["endTime"].substring(5, 7)),
-                int.parse(e["endTime"].substring(8, 10))),
-            getRandomColor(),
-            true));
+        for (int i = 0; i < e["account"]; i++) {
+          tempMeetingList.add(Meeting(
+              "",
+              DateTime(
+                  int.parse(e["startTime"].substring(0, 4)),
+                  int.parse(e["startTime"].substring(5, 7)),
+                  int.parse(e["startTime"].substring(8, 10))),
+              DateTime(
+                  int.parse(e["endTime"].substring(0, 4)),
+                  int.parse(e["endTime"].substring(5, 7)),
+                  int.parse(e["endTime"].substring(8, 10))),
+              getRandomColor(),
+              true));
+        }
       }
 
       setState(() {
