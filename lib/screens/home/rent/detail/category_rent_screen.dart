@@ -22,8 +22,7 @@ class CategoryRentScreen extends StatefulWidget {
       required this.categoryEng,
       required this.itemIcon,
       required this.itemImg,
-      required this.itemPurpose,
-      })
+      required this.itemPurpose})
       : super(key: key);
 
   String categoryKr;
@@ -291,6 +290,9 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           if (totalAvailableCount == 0) {
                             return;
                           }
+                          if (meetingList.isEmpty) {
+                            return;
+                          }
 
                           if (calendarSelectionDetails.date == null) {
                             return;
@@ -330,9 +332,11 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           });
                         },
                         monthViewSettings: MonthViewSettings(
-                          appointmentDisplayCount: 4,
-                          appointmentDisplayMode:
-                              MonthAppointmentDisplayMode.appointment,
+                          appointmentDisplayCount:
+                              widget.categoryKr == "의자" ? 10 : 4,
+                          appointmentDisplayMode: widget.categoryKr == "의자"
+                              ? MonthAppointmentDisplayMode.indicator
+                              : MonthAppointmentDisplayMode.appointment,
                           monthCellStyle: MonthCellStyle(
                             textStyle: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -411,20 +415,18 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
 
       List<dynamic> data = resData["data"];
       for (var e in data) {
-        for (int i = 0; i < e["account"]; i++) {
-          tempMeetingList.add(Meeting(
-              "",
-              DateTime(
-                  int.parse(e["startTime"].substring(0, 4)),
-                  int.parse(e["startTime"].substring(5, 7)),
-                  int.parse(e["startTime"].substring(8, 10))),
-              DateTime(
-                  int.parse(e["endTime"].substring(0, 4)),
-                  int.parse(e["endTime"].substring(5, 7)),
-                  int.parse(e["endTime"].substring(8, 10))),
-              getRandomColor(),
-              true));
-        }
+        tempMeetingList.add(Meeting(
+            "",
+            DateTime(
+                int.parse(e["startTime"].substring(0, 4)),
+                int.parse(e["startTime"].substring(5, 7)),
+                int.parse(e["startTime"].substring(8, 10))),
+            DateTime(
+                int.parse(e["endTime"].substring(0, 4)),
+                int.parse(e["endTime"].substring(5, 7)),
+                int.parse(e["endTime"].substring(8, 10))),
+            getRandomColor(),
+            true));
       }
 
       setState(() {
