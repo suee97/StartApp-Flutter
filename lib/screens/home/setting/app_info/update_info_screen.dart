@@ -15,7 +15,7 @@ class _UpdateInfoScreenState extends State<UpdateInfoScreen> {
   Widget build(BuildContext context) {
     final historyList = [
       UpdateHistoryWidget(
-          "1.0.0", DateTime(2022, 9, 7), ["ST'art 총학생회 어플리케이션 출시"]),
+          "1.0.1", DateTime(2022, 9, 7), ["ST'art 총학생회 어플리케이션 출시"]),
     ];
 
     return Scaffold(
