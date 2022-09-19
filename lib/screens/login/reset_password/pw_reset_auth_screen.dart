@@ -273,6 +273,7 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "시간이 초과했습니다. 다시 요청해주세요.");
+                                        codeController.text = "";
                                         return;
                                       }
                                       if (checkPassWordAuthCodeResult ==
