@@ -30,22 +30,19 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
   bool codeRequestLoading = false;
   bool nextButtonActive = false;
 
-  int _counter = 180;
-  late String min, sec;
+  late int _counter;
   late Timer _timer;
 
   @override
   void dispose() {
     phoneNoController.dispose();
     codeNoController.dispose();
-    _timer.cancel();
     super.dispose();
+    _cancelTimer();
   }
 
   @override
   void initState() {
-    min = "03";
-    sec = "00";
     super.initState();
   }
 
@@ -210,6 +207,9 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                           codeRequestActive = true;
                                           authRequestLoading = false;
                                         });
+                                        var now = DateTime.now();
+                                        var threeHours = now.add(Duration(minutes: 3)).difference(now);
+                                        _counter = threeHours.inSeconds;
                                         _startTimer();
                                         if (!mounted) return;
                                         Common.showSnackBar(context,
@@ -224,7 +224,7 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                           context, "오류가 발생했습니다.");
                                       return;
                                     }, HexColor("#EE795F"), authRequestLoading)
-                                  : phoneAuthButton("$min:$sec", () {},
+                                  : phoneAuthButton(setTime(_counter), () {},
                                       HexColor("#F9B7A9"), false),
                             ),
                             enabledBorder: UnderlineInputBorder(
@@ -301,10 +301,13 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
                                           SmsAuthStatusCode.ST067) {
                                         setState(() {
                                           codeRequestLoading = false;
+                                          codeRequestActive = false;
+                                          authRequestActive = true;
                                         });
                                         if (!mounted) return;
                                         Common.showSnackBar(context,
                                             "인증번호 기간이 만료되었습니다. 다시 요청해주세요.");
+                                        codeNoController.text = "";
                                         return;
                                       }
                                       if (checkAuthCodeResult ==
@@ -509,26 +512,43 @@ class _PhoneCertificateScreenState extends State<PhoneCertificateScreen> {
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      if (_counter < 0) {
-        setState(() {
-          timer.cancel();
-        });
-        return;
-      }
-      min = (_counter ~/ 60).toString();
-      sec = (_counter % 60).toString();
-      if (min.toString().length == 1) {
-        min = "0$min";
-      }
-      if (sec.toString().length == 1) {
-        sec = "0$sec";
-      }
+    const period = const Duration(seconds: 1);
+    _timer = Timer.periodic(period, (timer) {
       setState(() {
         _counter--;
       });
+      if (_counter == 0) {
+        _cancelTimer();
+      }
     });
   }
+
+  void _cancelTimer() {
+    if (_timer != null) {
+      _timer.cancel();
+      // _timer = null;
+    }
+  }
+}
+
+String setTime(int seconds) {
+  int minute = seconds % 3600 ~/ 60;
+  int second = seconds % 60;
+
+  String min = "0", sec = "0";
+
+  if(minute < 10){
+    min = "0" + minute.toString();
+  }else{
+    min = minute.toString();
+  }
+
+  if(second < 10){
+    sec = "0" + second.toString();
+  }else{
+    sec = second.toString();
+  }
+  return "$min:$sec";
 }
 
 enum SmsAuthStatusCode { SUCCESS, ST064, ST065, UNCATCHED_ERROR, ST066, ST067 }
