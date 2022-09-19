@@ -298,9 +298,6 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                           if (totalAvailableCount == 0) {
                             return;
                           }
-                          if (meetingList.isEmpty) {
-                            return;
-                          }
 
                           if (calendarSelectionDetails.date == null) {
                             return;
