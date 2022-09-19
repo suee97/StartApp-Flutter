@@ -434,8 +434,6 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
       setState(() {
         meetingList = tempMeetingList;
       });
-
-      setFirstAvailableCount();
       return;
     } catch (e) {
       setState(() {
@@ -443,6 +441,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
       });
       debugPrint("fetchSelectedItemRentState() call : Error");
       debugPrint(e.toString());
+      Common.showSnackBar(context, "오류가 발생했습니다.");
     }
   }
 
@@ -467,6 +466,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
         totalAvailableCount = resData["data"][0]["count"];
       });
       debugPrint("totalAvailableCount : ${totalAvailableCount.toString()}");
+
+      setFirstAvailableCount();
       return StatusCode.SUCCESS;
     } catch (e) {
       debugPrint(e.toString());
@@ -482,9 +483,6 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
   void setFirstAvailableCount() {
     final nowDate = today;
     int selectedDayBookCount = 0;
-    if (totalAvailableCount == 0) {
-      return;
-    }
 
     int ac = totalAvailableCount;
 
@@ -495,9 +493,6 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
       int? tmp2 = nowDate
           .difference(e.to)
           .inHours;
-      if (tmp1 == null || tmp2 == null) {
-        return;
-      }
       if (tmp1 >= 0 && tmp2 <= 0) {
         selectedDayBookCount++;
       }
