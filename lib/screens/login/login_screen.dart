@@ -218,6 +218,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     return;
                   }
 
+                  /// 정규식 검사
+                  final validationResult = RegExp(
+                                            r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$')
+                                        .hasMatch(pwController.text);
+
+                  if (!validationResult) {
+                    Common.showSnackBar(context,
+                        "비밀번호를 다음과 같이 맞춰주세요.\n특수문자, 대소문자, 숫자 포함 8자 이상 16자 이내");
+                    setState(() {
+                      isLoading = false;
+                    });
+                    return;
+                  }
+
                   /// ID/PW 인증하고 토큰 받기
                   final loginAuthAndGetTokenResult = await loginAuthAndGetToken();
 
