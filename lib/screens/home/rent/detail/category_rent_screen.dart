@@ -66,6 +66,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
     fetchSelectedItemRentState(
         widget.categoryEng, today.year.toString(), today.month.toString());
     fetchTotalAvailableCount(widget.categoryEng);
+    _calendarController.selectedDate = today;
     super.initState();
   }
 
@@ -409,6 +410,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
           jsonDecode(utf8.decode(resString.bodyBytes));
 
       if (resData["status"] != 200) {
+        if(!mounted) return;
+        Common.showSnackBar(context, "서버에서 정보를 불러오지 못했습니다.");
         return;
       }
 
@@ -432,6 +435,7 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
         meetingList = tempMeetingList;
       });
 
+      setFirstAvailableCount();
       return;
     } catch (e) {
       setState(() {
@@ -473,5 +477,34 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
   Color getRandomColor() {
     int ranNum = Random().nextInt(10);
     return colorList[ranNum];
+  }
+
+  void setFirstAvailableCount() {
+    final nowDate = today;
+    int selectedDayBookCount = 0;
+    if (totalAvailableCount == 0) {
+      return;
+    }
+
+    int ac = totalAvailableCount;
+
+    for (var e in meetingList) {
+      int? tmp1 = nowDate
+          .difference(e.from)
+          .inHours;
+      int? tmp2 = nowDate
+          .difference(e.to)
+          .inHours;
+      if (tmp1 == null || tmp2 == null) {
+        return;
+      }
+      if (tmp1 >= 0 && tmp2 <= 0) {
+        selectedDayBookCount++;
+      }
+    }
+    ac = totalAvailableCount - selectedDayBookCount;
+    setState(() {
+      selectedDayAvailableCount = ac;
+    });
   }
 }
