@@ -28,22 +28,19 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
   bool authCodeLoading = false;
   bool nextButtonActive = false;
 
-  int _counter = 180;
-  late String min, sec;
+  late int _counter;
   late Timer _timer;
 
   @override
   void dispose() {
     studentIdController.dispose();
     codeController.dispose();
-    _timer.cancel();
     super.dispose();
+    _cancelTimer();
   }
 
   @override
   void initState() {
-    min = "03";
-    sec = "00";
     super.initState();
   }
 
@@ -117,9 +114,13 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           maxLines: 1,
+                          enabled: studentIdActive,
                           enableSuggestions: false,
                           style: TextStyle(
-                              fontSize: 17.5.sp, fontWeight: FontWeight.w300),
+                              fontSize: 17.5.sp, fontWeight: FontWeight.w300,
+                              color: studentIdActive == true
+                                  ? Colors.black
+                                  : HexColor("#929D9C")),
                           decoration: InputDecoration(
                             suffixIcon: Padding(
                               padding: EdgeInsets.only(bottom: 4.h),
@@ -143,12 +144,16 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                           studentIdActive = false;
                                           authCodeActive = true;
                                         });
+                                        var now = DateTime.now();
+                                        var threeHours = now.add(Duration(minutes: 3)).difference(now);
+                                        _counter = threeHours.inSeconds;
                                         _startTimer();
                                         if (!mounted) return;
                                         Common.showSnackBar(
                                             context, "인증번호가 발송되었습니다.");
                                         return;
                                       }
+                                      print("안녕$postSmsByIdResult");
                                       if (postSmsByIdResult ==
                                           PostSmsByIdCode.ST041) {
                                         setState(() {
@@ -196,7 +201,7 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
                                       Common.showSnackBar(
                                           context, "오류가 발생했습니다.");
                                     }, HexColor("#EE795F"), studentIdLoading)
-                                  : phoneAuthButton("$min:$sec", () {},
+                                  : phoneAuthButton(setTime(_counter), () {},
                                       HexColor("#F9B7A9"), false),
                             ),
                             enabledBorder: UnderlineInputBorder(
@@ -401,6 +406,9 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
       if (resData["errorCode"] == "ST058") {
         return PostSmsByIdCode.ST058;
       }
+      if (resData["errorCode"] == "ST065") {
+        return PostSmsByIdCode.ST065;
+      }
 
       return PostSmsByIdCode.UNCATCHED_ERROR;
     } catch (e) {
@@ -458,26 +466,43 @@ class _PwResetAuthScreenState extends State<PwResetAuthScreen> {
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      if (_counter < 0) {
-        setState(() {
-          timer.cancel();
-        });
-        return;
-      }
-      min = (_counter ~/ 60).toString();
-      sec = (_counter % 60).toString();
-      if (min.toString().length == 1) {
-        min = "0$min";
-      }
-      if (sec.toString().length == 1) {
-        sec = "0$sec";
-      }
+    const period = const Duration(seconds: 1);
+    _timer = Timer.periodic(period, (timer) {
       setState(() {
         _counter--;
       });
+      if (_counter == 0) {
+        _cancelTimer();
+      }
     });
   }
+
+  void _cancelTimer() {
+    if (_timer != null) {
+      _timer.cancel();
+      // _timer = null;
+    }
+  }
+}
+
+String setTime(int seconds) {
+  int minute = seconds % 3600 ~/ 60;
+  int second = seconds % 60;
+
+  String min = "0", sec = "0";
+
+  if(minute < 10){
+    min = "0" + minute.toString();
+  }else{
+    min = minute.toString();
+  }
+
+  if(second < 10){
+    sec = "0" + second.toString();
+  }else{
+    sec = second.toString();
+  }
+  return "$min:$sec";
 }
 
 enum PostSmsByIdCode {
