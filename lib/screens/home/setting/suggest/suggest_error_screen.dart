@@ -77,7 +77,7 @@ class _SuggestErrorScreenState extends State<SuggestErrorScreen> {
                 padding: EdgeInsets.only(left: 20.w, right: 20.w),
                 child: SuggestContentTextField(
                   textController: contentTextController,
-                  hintText: "요류 내용을 적어주세요",
+                  hintText: "오류 내용을 적어주세요",
                 ),
               ),
               SizedBox(
