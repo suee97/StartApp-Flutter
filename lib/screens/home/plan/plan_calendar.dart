@@ -8,7 +8,13 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../models/meeting.dart';
 
-class PlanCalendar extends StatelessWidget {
+class PlanCalendar extends StatefulWidget {
+  @override
+  State<PlanCalendar> createState() => _PlanCalendarState();
+}
+
+class _PlanCalendarState extends State<PlanCalendar> {
+
   @override
   Widget build(BuildContext context) {
     return Consumer<PlanNotifier>(builder: (context, planNotifier, child) {
