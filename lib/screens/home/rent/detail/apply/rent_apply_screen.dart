@@ -202,40 +202,45 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                     "주의사항",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color: HexColor("#425c5a"), fontWeight: FontWeight.w400, fontSize: 17.5.sp),
+                        color: HexColor("#425c5a"),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 17.5.sp),
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 30.w),
-                  width: 300.w,
-                  height: 150.h,
-                  padding: EdgeInsets.only(top: 8.h, left: 12.w, right: 10.w, bottom: 8.h),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.2,
-                        color: HexColor("#425c5a")
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(5))),
-                  child: SingleChildScrollView(
-                      child: Text(
-                          getPolicyTextFromCategory(widget.categoryEng),
-                          style: TextStyle(fontSize: 15.5.sp, height: 1.4, fontWeight: FontWeight.w400),
-                        ))
-                ),
+                    margin: EdgeInsets.only(left: 30.w),
+                    width: 300.w,
+                    height: 150.h,
+                    padding: EdgeInsets.only(
+                        top: 8.h, left: 12.w, right: 10.w, bottom: 8.h),
+                    decoration: BoxDecoration(
+                        border:
+                            Border.all(width: 1.2, color: HexColor("#425c5a")),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5))),
+                    child: SingleChildScrollView(
+                        child: Text(
+                      getPolicyTextFromCategory(widget.categoryEng),
+                      style: TextStyle(
+                          fontSize: 15.5.sp,
+                          height: 1.4,
+                          fontWeight: FontWeight.w400),
+                    ))),
                 Container(
                   margin: EdgeInsets.only(right: 30.w),
-                  child : Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text("주의사항을 숙지하였습니다. ",
-                              style: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.w400)),
+                          style: TextStyle(
+                              fontSize: 13.5.sp, fontWeight: FontWeight.w400)),
                       SizedBox(
                         width: 20.w,
                         height: 20.h,
                         child: Checkbox(
                             shape: const CircleBorder(),
                             side: MaterialStateBorderSide.resolveWith(
-                                  (states) => BorderSide(
+                              (states) => BorderSide(
                                   width: 1.5, color: HexColor("#EE795F")),
                             ),
                             value: agreementCheckBoxState,
@@ -248,7 +253,8 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                             }),
                       ),
                     ],
-                  ),),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
@@ -342,7 +348,8 @@ class _RentApplyScreenState extends State<RentApplyScreen> {
                           isLoading = false;
                         });
                         if (!mounted) return;
-                        Common.showSnackBar(context, "신청 정보를 확인해주세요.");
+                        Common.showSnackBar(context,
+                            "올바른 신청 정보가 아닙니다.\n신청 정보 및 해당 날짜의 예약현황을 확인해주세요.");
                         return;
                       }
 

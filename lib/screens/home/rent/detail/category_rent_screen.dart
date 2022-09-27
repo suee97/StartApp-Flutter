@@ -251,31 +251,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
                                         2])
                                 .toString();
                           }
-                          if (_headerText == 'January') {
-                            _headerText = "1월 예약 현황";
-                          } else if (_headerText == 'February') {
-                            _headerText = "2월 예약 현황";
-                          } else if (_headerText == 'March') {
-                            _headerText = "3월 예약 현황";
-                          } else if (_headerText == 'April') {
-                            _headerText = "4월 예약 현황";
-                          } else if (_headerText == 'May') {
-                            _headerText = "5월 예약 현황";
-                          } else if (_headerText == 'June') {
-                            _headerText = "6월 예약 현황";
-                          } else if (_headerText == 'July') {
-                            _headerText = "7월 예약 현황";
-                          } else if (_headerText == 'August') {
-                            _headerText = "8월 예약 현황";
-                          } else if (_headerText == 'September') {
-                            _headerText = "9월 예약 현황";
-                          } else if (_headerText == 'October') {
-                            _headerText = "10월 예약 현황";
-                          } else if (_headerText == 'November') {
-                            _headerText = "11월 예약 현황";
-                          } else if (_headerText == 'December') {
-                            _headerText = "12월 예약 현황";
-                          }
+
+                          _headerText = getHeaderText(_headerText);
 
                           SchedulerBinding.instance
                               .addPostFrameCallback((duration) {
@@ -410,25 +387,27 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
           jsonDecode(utf8.decode(resString.bodyBytes));
 
       if (resData["status"] != 200) {
-        if(!mounted) return;
+        if (!mounted) return;
         Common.showSnackBar(context, "서버에서 정보를 불러오지 못했습니다.");
         return;
       }
 
       List<dynamic> data = resData["data"];
       for (var e in data) {
-        tempMeetingList.add(Meeting(
-            "",
-            DateTime(
-                int.parse(e["startTime"].substring(0, 4)),
-                int.parse(e["startTime"].substring(5, 7)),
-                int.parse(e["startTime"].substring(8, 10))),
-            DateTime(
-                int.parse(e["endTime"].substring(0, 4)),
-                int.parse(e["endTime"].substring(5, 7)),
-                int.parse(e["endTime"].substring(8, 10))),
-            getRandomColor(),
-            true));
+        for (var i = 0; i < e["account"]; i++) {
+          tempMeetingList.add(Meeting(
+              "",
+              DateTime(
+                  int.parse(e["startTime"].substring(0, 4)),
+                  int.parse(e["startTime"].substring(5, 7)),
+                  int.parse(e["startTime"].substring(8, 10))),
+              DateTime(
+                  int.parse(e["endTime"].substring(0, 4)),
+                  int.parse(e["endTime"].substring(5, 7)),
+                  int.parse(e["endTime"].substring(8, 10))),
+              getRandomColor(),
+              true));
+        }
       }
 
       setState(() {
@@ -487,12 +466,8 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
     int ac = totalAvailableCount;
 
     for (var e in meetingList) {
-      int? tmp1 = nowDate
-          .difference(e.from)
-          .inHours;
-      int? tmp2 = nowDate
-          .difference(e.to)
-          .inHours;
+      int? tmp1 = nowDate.difference(e.from).inHours;
+      int? tmp2 = nowDate.difference(e.to).inHours;
       if (tmp1 >= 0 && tmp2 <= 0) {
         selectedDayBookCount++;
       }
@@ -501,5 +476,35 @@ class _CategoryRentScreenState extends State<CategoryRentScreen> {
     setState(() {
       selectedDayAvailableCount = ac;
     });
+  }
+
+  String getHeaderText(String text) {
+    if (text == 'January') {
+      return "1월 예약 현황";
+    } else if (text == 'February') {
+      return "2월 예약 현황";
+    } else if (text == 'March') {
+      return "3월 예약 현황";
+    } else if (text == 'April') {
+      return "4월 예약 현황";
+    } else if (text == 'May') {
+      return "5월 예약 현황";
+    } else if (text == 'June') {
+      return "6월 예약 현황";
+    } else if (text == 'July') {
+      return "7월 예약 현황";
+    } else if (text == 'August') {
+      return "8월 예약 현황";
+    } else if (text == 'September') {
+      return "9월 예약 현황";
+    } else if (text == 'October') {
+      return "10월 예약 현황";
+    } else if (text == 'November') {
+      return "11월 예약 현황";
+    } else if (text == 'December') {
+      return "12월 예약 현황";
+    } else {
+      return "";
+    }
   }
 }
