@@ -18,6 +18,8 @@ class _UpdateInfoScreenState extends State<UpdateInfoScreen> {
           "1.0.1", DateTime(2022, 9, 7), ["ST'art 총학생회 어플리케이션 출시"]),
       UpdateHistoryWidget(
           "1.0.2", DateTime(2022, 9, 20), ["오타 및 버그 수정", "UI/UX 개선"]),
+      UpdateHistoryWidget(
+          "1.0.3", DateTime(2022, 9, 20), ["상시사업 현황이 제대로 보이지 않는 문제 수정"]),
     ];
 
     return Scaffold(

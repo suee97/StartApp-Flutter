@@ -34,7 +34,7 @@ class DevInfoScreen extends StatelessWidget {
                     color: HexColor("#425C5A")),
               ),
               Text(
-                "1.0.2",
+                "1.0.3",
                 style: TextStyle(
                     fontSize: 49.5.sp,
                     fontWeight: FontWeight.w500,
