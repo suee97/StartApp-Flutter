@@ -1,5 +1,5 @@
 
-# 서울과학기술대학교 총학생회 어플리케이션
+# 서울과학기술대학교 38 총학생회 어플리케이션
 <div>
   <p align = "center">
     <img width = "300" src = "https://user-images.githubusercontent.com/55964078/230644493-f2c8afe2-36ad-4427-8b3d-03f55c2dd4d2.svg">
