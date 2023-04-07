@@ -31,17 +31,17 @@
 # Overview
 <div>
   <p align = "center">
-    <img width = "212" src = "https://user-images.githubusercontent.com/55964078/230649833-bcfafb37-6ea3-4325-9ef5-734d221c646c.png">
-    <img width = "212" src = "https://user-images.githubusercontent.com/55964078/230650018-7c0b7697-6c98-4351-b7f2-b644c9c13260.png">
-    <img width = "212" src = "https://user-images.githubusercontent.com/55964078/230650026-99d14451-dc64-4bc3-85ec-ea61d8687489.png">
-    <img width = "212" src = "https://user-images.githubusercontent.com/55964078/230650033-7f8a0c0a-e21a-446e-a3d7-784cba9b69e6.png">
+    <img width = "188" src = "https://user-images.githubusercontent.com/55964078/230649833-bcfafb37-6ea3-4325-9ef5-734d221c646c.png">
+    <img width = "188" src = "https://user-images.githubusercontent.com/55964078/230650018-7c0b7697-6c98-4351-b7f2-b644c9c13260.png">
+    <img width = "188" src = "https://user-images.githubusercontent.com/55964078/230650026-99d14451-dc64-4bc3-85ec-ea61d8687489.png">
+    <img width = "188" src = "https://user-images.githubusercontent.com/55964078/230650033-7f8a0c0a-e21a-446e-a3d7-784cba9b69e6.png">
   </p>
 </div>
 <div>
   <p align = "center">
-    <img width = "212" src = "https://user-images.githubusercontent.com/55964078/230650038-7540a9af-0228-4873-b961-efa64e2e5cc1.png">
-    <img width = "212" src = "https://user-images.githubusercontent.com/55964078/230650041-04f7b659-99b3-462d-9763-c0ba05f6cb9c.png">
-    <img width = "212" src = "https://user-images.githubusercontent.com/55964078/230650045-205cf040-6e9f-48d8-9e40-95e9e7bd3bd6.png">
+    <img width = "188" src = "https://user-images.githubusercontent.com/55964078/230650038-7540a9af-0228-4873-b961-efa64e2e5cc1.png">
+    <img width = "188" src = "https://user-images.githubusercontent.com/55964078/230650041-04f7b659-99b3-462d-9763-c0ba05f6cb9c.png">
+    <img width = "188" src = "https://user-images.githubusercontent.com/55964078/230650045-205cf040-6e9f-48d8-9e40-95e9e7bd3bd6.png">
   </p>
 </div>
 
