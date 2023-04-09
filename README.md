@@ -11,6 +11,7 @@
 * [Distribution](https://github.com/suee97/StartApp-Flutter/#Distribution)
 * [Overview](https://github.com/suee97/StartApp-Flutter/#Overview)
 * [App](https://github.com/suee97/StartApp-Flutter/#App)
+* [Backend repo](https://github.com/InHyeok-J/STartApp-Back)
 
 # Introduction
 서울과학기술대학교 총학생회 앱은 학우들에게 총학생회 및 여러 자치기구의 사업들에 대한 정보들을 빠르게 제공하고 다양한 사업에 쉽게 접근할 수 있도록 합니다.
